@@ -2,12 +2,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../credentials_storage.dart';
 
-class SecureCredentialsStorage implements CredentialsStorage {
-  SecureCredentialsStorage(this._storage);
+class AssignUnitMerakStorage implements CredentialsStorage {
+  AssignUnitMerakStorage(this._storage);
 
   final FlutterSecureStorage _storage;
 
-  static const _key = 'credentials';
+  static const _key = 'assign_unit_merak';
 
   String? _cachedCredentials;
 

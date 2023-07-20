@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/routes/route_names.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,7 +30,13 @@ class CrannyScaffold extends ConsumerWidget {
           child: ListView.builder(
               itemCount: labels.length,
               itemBuilder: (context, index) => TextButton(
-                  onPressed: () => context.pushNamed(RouteNames.spkNameRoute),
+                  onPressed: () async {
+                    ref
+                        .read(modeNotifierProvider.notifier)
+                        .changeModeAplikasi(labels[index]);
+
+                    await context.pushNamed(RouteNames.spkNameRoute);
+                  },
                   child: CrannyItem(label: labels[index])))),
       drawer: Drawer(),
       bottomNavigationBar: VBottomNav(),

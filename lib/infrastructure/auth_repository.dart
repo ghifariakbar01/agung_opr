@@ -8,7 +8,7 @@ import '../domain/auth_failure.dart';
 import '../domain/user_failure.dart';
 import '../domain/value_objects_copy.dart';
 import 'auth_remote_service.dart';
-import 'credentials_storage/credentials_storage.dart';
+import 'credentials_storage.dart';
 import 'exceptions.dart';
 
 class AuthRepository {
