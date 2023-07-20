@@ -1,0 +1,66 @@
+name: agung_opr
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #* UI
+  auto_size_text: ^3.0.0
+  cached_network_image: ^3.2.2
+  flash: ^2.0.5
+  flutter_keyboard_visibility: ^5.4.0
+  flutter_svg: ^2.0.0
+  flutter_typeahead: ^4.6.2
+  google_fonts: ^3.0.1
+
+  #* Network
+  dio: ^4.0.6
+  pretty_dio_logger: ^1.2.0-beta-1
+
+  #* Dart data class
+  freezed_annotation: ^2.2.0
+  json_annotation: ^4.7.0
+
+  #* State management
+  hooks_riverpod: ^2.1.0
+
+  #* Logging
+  logging: ^1.1.0
+
+  #* Routing
+  go_router: ^8.0.3
+
+  #* Persistent storage
+  flutter_secure_storage: ^6.0.0
+  shared_preferences: ^2.2.0
+
+  #* UUID
+  uuid: ^3.0.7
+
+  #* Misc
+  collection: ^1.16.0
+  dartz: ^0.10.1
+  intl: ^0.18.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  #* Code generators
+  build_runner: ^2.3.2
+  flutter_launcher_icons: ^0.10.0
+  flutter_native_splash: ^2.2.13
+  freezed: ^2.2.1
+  json_serializable: ^6.5.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+  #   - images/a_dot_ham.jpeg
