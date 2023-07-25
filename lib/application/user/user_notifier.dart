@@ -22,7 +22,7 @@ class UserNotifier extends StateNotifier<UserState> {
 
     state = state.copyWith(isGetting: true, failureOrSuccessOption: none());
 
-    failureOrSuccess = await _repository.getSignedInCredentials();
+    failureOrSuccess = await _repository.getSignedInUser();
 
     state = state.copyWith(
         isGetting: false, failureOrSuccessOption: optionOf(failureOrSuccess));
@@ -55,20 +55,21 @@ class UserNotifier extends StateNotifier<UserState> {
   }
 
   void setUser(UserModelWithPassword user) {
-    log('user ${user.noTelp1}');
     state = state.copyWith(user: user);
   }
 
-  void onUserParsed({
+  Future<void> onUserParsed({
     required UserModelWithPassword user,
-    required Function dioRequestSet,
+    required Function initializeDioRequest,
+    required Function initializeAndCheckData,
+    required Function initializeAutoData,
     required Function checkAndUpdateStatus,
-    required Function checkAndUpdateImei,
-  }) {
+  }) async {
     setUser(user);
-    dioRequestSet();
-    checkAndUpdateStatus();
-    checkAndUpdateImei();
+    await initializeDioRequest();
+    await initializeAndCheckData();
+    await initializeAutoData();
+    await checkAndUpdateStatus();
   }
 
   Future<void> logout(UserModelWithPassword user) async {

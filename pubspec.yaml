@@ -16,8 +16,11 @@ dependencies:
   flash: ^2.0.5
   flutter_keyboard_visibility: ^5.4.0
   flutter_svg: ^2.0.0
-  flutter_typeahead: ^4.6.2
+  # flutter_typeahead: ^4.6.2
   google_fonts: ^3.0.1
+
+  #* IO
+  mobile_scanner: ^3.3.0
 
   #* Network
   dio: ^4.0.6

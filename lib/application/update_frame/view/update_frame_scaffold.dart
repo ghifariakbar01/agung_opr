@@ -5,10 +5,13 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../spk/spk.dart';
 import 'update_frame_item.dart';
 
 class UpdateFrameScaffold extends ConsumerWidget {
-  const UpdateFrameScaffold();
+  const UpdateFrameScaffold({required this.spk});
+
+  final SPK spk;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

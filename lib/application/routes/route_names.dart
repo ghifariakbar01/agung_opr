@@ -5,11 +5,14 @@ class RouteNames {
   static const signInRoute = '/signin';
   static const signInNameRoute = '/signin';
 
-  static const crannyNameRoute = 'cranny';
-  static const crannyName = 'cranny';
+  static const crannyNameRoute = '/cranny';
+  static const crannyName = '/cranny';
 
   static const spkNameRoute = 'spk';
   static const spkName = 'spk';
+
+  static const scanSPKNameRoute = 'scanSPK';
+  static const scanSPKRoute = 'scanSPK';
 
   static const updateFrameNameRoute = 'updateFrame';
   static const updateFrameName = 'updateFrame';
@@ -22,4 +25,7 @@ class RouteNames {
 
   static const assignUnitMerakNameRoute = 'assignUnitMerak';
   static const assignUnitMerakName = 'assignUnitMerak';
+
+  static const modelNameRoute = 'model';
+  static const modelName = 'model';
 }

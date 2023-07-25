@@ -1,7 +1,10 @@
 import 'package:agung_opr/application/assign_unit/view/assign_unit_page.dart';
 import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
+import 'package:agung_opr/application/model/view/model_page.dart';
+import 'package:agung_opr/application/spk/spk.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
+import 'package:agung_opr/application/spk/view/spk_scan.dart';
 import 'package:agung_opr/application/update_frame/view/update_frame_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +34,7 @@ class RouterNotifier extends ChangeNotifier {
     final areWeSigningIn = state.location == RouteNames.signInRoute;
 
     return authState.maybeMap(
-      authenticated: (_) => areWeSigningIn ? RouteNames.defaultNameRoute : null,
+      authenticated: (_) => areWeSigningIn ? RouteNames.crannyName : null,
       orElse: () => areWeSigningIn ? null : RouteNames.signInRoute,
     );
   }
@@ -39,9 +42,9 @@ class RouterNotifier extends ChangeNotifier {
   List<GoRoute> get routes {
     return [
       GoRoute(
-        name: RouteNames.defaultNameRoute,
-        path: RouteNames.defaultRoute,
-        builder: (context, state) => const SplashPage(),
+        name: RouteNames.crannyNameRoute,
+        path: RouteNames.crannyName,
+        builder: (context, state) => const CrannyPage(),
       ),
       GoRoute(
           name: RouteNames.signInNameRoute,
@@ -49,19 +52,27 @@ class RouterNotifier extends ChangeNotifier {
           builder: (context, state) => const SignInPage(),
           routes: [
             GoRoute(
-              name: RouteNames.crannyNameRoute,
-              path: RouteNames.crannyName,
-              builder: (context, state) => CrannyPage(),
-            ),
-            GoRoute(
               name: RouteNames.spkNameRoute,
               path: RouteNames.spkName,
               builder: (context, state) => SPKPage(),
             ),
             GoRoute(
+              name: RouteNames.modelNameRoute,
+              path: RouteNames.modelName,
+              builder: (context, state) => ModelPage(),
+            ),
+            GoRoute(
+              name: RouteNames.scanSPKNameRoute,
+              path: RouteNames.scanSPKRoute,
+              builder: (context, state) => SPKScan(),
+            ),
+            GoRoute(
               name: RouteNames.updateFrameNameRoute,
               path: RouteNames.updateFrameName,
-              builder: (context, state) => UpdateFramePage(),
+              builder: (context, state) {
+                SPK spk = state.extra as SPK;
+                return UpdateFramePage(spk: spk);
+              },
             ),
             GoRoute(
               name: RouteNames.checkSheetLoadingNameRoute,

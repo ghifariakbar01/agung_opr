@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
+import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,22 +28,17 @@ class SignInPage extends HookConsumerWidget {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                  (failure) => AlertHelper.showSnackBar(
-                    context,
-                    message: failure.map(
-                      storage: (_) => 'storage penuh',
-                      server: (value) => value.message ?? 'server error',
-                      noConnection: (_) => 'tidak ada koneksi',
-                    ),
-                  ),
-                  (_) => ref
-                      .read(signInFormNotifierProvider.notifier)
-                      .initializeAndRedirect(
-                        initializeSavedLocations: () => {},
-                        initializeGeofenceList: () => {},
-                        redirect: () async {},
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.map(
+                        storage: (_) => 'storage penuh',
+                        server: (value) => value.message ?? 'server error',
+                        noConnection: (_) => 'tidak ada koneksi',
                       ),
-                )));
+                    ),
+                (_) => ref
+                    .read(authNotifierProvider.notifier)
+                    .checkAndUpdateAuthStatus())));
 
     final isSubmitting = ref.watch(
       signInFormNotifierProvider.select((state) => state.isSubmitting),
@@ -53,20 +52,19 @@ class SignInPage extends HookConsumerWidget {
             child: VButton(
               onPressed: () async {
                 FocusScope.of(context).unfocus();
-                // await ref
-                //     .read(signInFormNotifierProvider.notifier)
-                //     .signInAndRemember(
-                //       signIn: () => ref
-                //           .read(signInFormNotifierProvider.notifier)
-                //           .signInWithUserIdEmailAndPassword(),
-                //       remember: () => ref
-                //           .read(signInFormNotifierProvider.notifier)
-                //           .rememberInfo(),
-                //       clear: () => ref
-                //           .read(signInFormNotifierProvider.notifier)
-                //           .clearInfo(),
-                //     );
-                context.pushNamed(RouteNames.crannyNameRoute);
+                await ref
+                    .read(signInFormNotifierProvider.notifier)
+                    .signInAndRemember(
+                      signIn: () => ref
+                          .read(signInFormNotifierProvider.notifier)
+                          .signInWithUserIdEmailAndPassword(),
+                      remember: () => ref
+                          .read(signInFormNotifierProvider.notifier)
+                          .rememberInfo(),
+                      clear: () => ref
+                          .read(signInFormNotifierProvider.notifier)
+                          .clearInfo(),
+                    );
               },
               label: 'LOGIN',
             )),

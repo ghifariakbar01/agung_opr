@@ -61,12 +61,10 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   }
 
   Future<void> initializeAndRedirect({
-    required Function initializeSavedLocations,
-    required Function initializeGeofenceList,
+    required Function startAutoData,
     required Function redirect,
   }) async {
-    await initializeSavedLocations();
-    await initializeGeofenceList();
+    await startAutoData();
     await redirect();
   }
 

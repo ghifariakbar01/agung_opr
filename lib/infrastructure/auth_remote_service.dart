@@ -21,7 +21,12 @@ class AuthRemoteService {
       if (e.isNoConnectionError || e.isConnectionTimeout) {
         throw NoConnectionException();
       } else if (e.response != null) {
-        throw RestApiException(e.response?.statusCode);
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
       } else {
         rethrow;
       }
@@ -108,7 +113,12 @@ class AuthRemoteService {
       if (e.isNoConnectionError || e.isConnectionTimeout) {
         throw NoConnectionException();
       } else if (e.response != null) {
-        throw RestApiException(e.response?.statusCode);
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
       } else {
         rethrow;
       }

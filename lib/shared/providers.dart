@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../application/auth/auth_notifier.dart';
 import '../application/mode/mode_state.dart';
 import '../application/mode/mode_state_notifier.dart';
-import '../application/routes/route_names.dart';
 import '../application/routes/route_notifier.dart';
 import '../application/sign_in_form/sign_in_form_notifier.dart';
 
@@ -33,7 +32,7 @@ final dioRequestProvider = Provider<Map<String, String>>(
 final routerProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
   return GoRouter(
-    initialLocation: RouteNames.signInNameRoute,
+    redirect: router.redirectLogic,
     refreshListenable: router,
     routes: router.routes,
   );
@@ -77,5 +76,7 @@ final modeNotifierProvider =
     StateNotifierProvider<ModeNotifier, ModeState>((ref) => ModeNotifier());
 
 // Misc
+
+final isOfflineProvider = StateProvider((ref) => false);
 
 final passwordVisibleProvider = StateProvider.autoDispose<bool>((ref) => false);

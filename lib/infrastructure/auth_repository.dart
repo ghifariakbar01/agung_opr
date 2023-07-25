@@ -20,7 +20,7 @@ class AuthRepository {
   final CredentialsStorage _credentialsStorage;
   final AuthRemoteService _remoteService;
 
-  Future<bool> isSignedIn() => getSignedInCredentials()
+  Future<bool> isSignedIn() => getSignedInUser()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<Either<AuthFailure, Unit>> signOut() async {
@@ -106,7 +106,7 @@ class AuthRepository {
     }
   }
 
-  Future<Either<UserFailure, String?>> getSignedInCredentials() async {
+  Future<Either<UserFailure, String?>> getSignedInUser() async {
     try {
       final storedCredentials = await _credentialsStorage.read();
 
