@@ -1,11 +1,20 @@
-import 'package:agung_opr/application/update_frame/view/update_frame_item_form.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
 import 'package:agung_opr/application/widgets/v_button.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'form/form_update_engine.dart';
+import 'form/form_update_frame.dart';
+import 'form/form_update_model.dart';
+import 'form/form_update_reff.dart';
+import 'form/form_update_sppdc.dart';
+
 class UpdateFrameItem extends ConsumerWidget {
-  const UpdateFrameItem();
+  const UpdateFrameItem({required this.index});
+
+  final int index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +35,7 @@ class UpdateFrameItem extends ConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  'UNIT 1',
+                  'UNIT ${index + 1}',
                   style: Themes.customColor(FontWeight.bold, 16, Colors.black),
                 ),
               ),
@@ -37,31 +46,47 @@ class UpdateFrameItem extends ConsumerWidget {
             ),
 
             // Form Item
-            UpdateFrameItemForm('Frame'),
+            FormUpdateFrame(index: index),
 
             SizedBox(
               height: 8,
             ),
 
-            UpdateFrameItemForm('Engine'),
+            FormUpdateEngine(
+              index: index,
+            ),
 
             SizedBox(
               height: 8,
             ),
 
-            UpdateFrameItemForm('Model'),
+            FormUpdateWarna(
+              index: index,
+            ),
 
             SizedBox(
               height: 8,
             ),
 
-            UpdateFrameItemForm('Reff Exp.'),
+            FormUpdateModel(
+              index: index,
+            ),
 
             SizedBox(
               height: 8,
             ),
 
-            UpdateFrameItemForm('SPPDC'),
+            FormUpdateReffEXP(
+              index: index,
+            ),
+
+            SizedBox(
+              height: 8,
+            ),
+
+            FormUpdateSPPDC(
+              index: index,
+            ),
 
             SizedBox(
               height: 8,

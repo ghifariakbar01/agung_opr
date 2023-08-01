@@ -7,8 +7,8 @@ class FrameOfflineNotifier extends StateNotifier<FrameOfflineState> {
 
   final FrameRepository _repository;
 
-  Future<void> checkAndUpdateFrameOFFLINEStatus() async {
-    final isOfffline = await _repository.hasOfflineData();
+  Future<void> checkAndUpdateFrameOFFLINEStatus({required int idSPK}) async {
+    final isOfffline = await _repository.hasOfflineDataIndex(idSPK);
 
     if (isOfffline) {
       state = const FrameOfflineState.hasOfflineStorage();

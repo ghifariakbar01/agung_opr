@@ -70,8 +70,8 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.updateFrameNameRoute,
               path: RouteNames.updateFrameName,
               builder: (context, state) {
-                SPK spk = state.extra as SPK;
-                return UpdateFramePage(spk: spk);
+                int idSPK = state.extra as int;
+                return UpdateFramePage(idSPK: idSPK);
               },
             ),
             GoRoute(

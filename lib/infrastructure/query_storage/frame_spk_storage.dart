@@ -7,7 +7,7 @@ class FrameSPKStorage implements CredentialsStorage {
 
   final FlutterSecureStorage _storage;
 
-  static const _key = 'frame_spk';
+  static const _key = 'update_frame_by_spk';
 
   String? _cachedCredentials;
 

@@ -25,6 +25,8 @@ mixin _$Frame {
   String? get frame => throw _privateConstructorUsedError;
   String? get engine => throw _privateConstructorUsedError;
   String? get warna => throw _privateConstructorUsedError;
+  @JsonKey(name: 'no_reff_expor')
+  String? get noReffExp => throw _privateConstructorUsedError;
   @JsonKey(name: 'id_kend_type')
   int? get idKendType => throw _privateConstructorUsedError;
 
@@ -43,6 +45,7 @@ abstract class $FrameCopyWith<$Res> {
       String? frame,
       String? engine,
       String? warna,
+      @JsonKey(name: 'no_reff_expor') String? noReffExp,
       @JsonKey(name: 'id_kend_type') int? idKendType});
 }
 
@@ -63,6 +66,7 @@ class _$FrameCopyWithImpl<$Res, $Val extends Frame>
     Object? frame = freezed,
     Object? engine = freezed,
     Object? warna = freezed,
+    Object? noReffExp = freezed,
     Object? idKendType = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,6 +85,10 @@ class _$FrameCopyWithImpl<$Res, $Val extends Frame>
       warna: freezed == warna
           ? _value.warna
           : warna // ignore: cast_nullable_to_non_nullable
+              as String?,
+      noReffExp: freezed == noReffExp
+          ? _value.noReffExp
+          : noReffExp // ignore: cast_nullable_to_non_nullable
               as String?,
       idKendType: freezed == idKendType
           ? _value.idKendType
@@ -101,6 +109,7 @@ abstract class _$$_FrameCopyWith<$Res> implements $FrameCopyWith<$Res> {
       String? frame,
       String? engine,
       String? warna,
+      @JsonKey(name: 'no_reff_expor') String? noReffExp,
       @JsonKey(name: 'id_kend_type') int? idKendType});
 }
 
@@ -117,6 +126,7 @@ class __$$_FrameCopyWithImpl<$Res> extends _$FrameCopyWithImpl<$Res, _$_Frame>
     Object? frame = freezed,
     Object? engine = freezed,
     Object? warna = freezed,
+    Object? noReffExp = freezed,
     Object? idKendType = freezed,
   }) {
     return _then(_$_Frame(
@@ -136,6 +146,10 @@ class __$$_FrameCopyWithImpl<$Res> extends _$FrameCopyWithImpl<$Res, _$_Frame>
           ? _value.warna
           : warna // ignore: cast_nullable_to_non_nullable
               as String?,
+      noReffExp: freezed == noReffExp
+          ? _value.noReffExp
+          : noReffExp // ignore: cast_nullable_to_non_nullable
+              as String?,
       idKendType: freezed == idKendType
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
@@ -152,6 +166,7 @@ class _$_Frame implements _Frame {
       required this.frame,
       required this.engine,
       required this.warna,
+      @JsonKey(name: 'no_reff_expor') required this.noReffExp,
       @JsonKey(name: 'id_kend_type') required this.idKendType});
 
   factory _$_Frame.fromJson(Map<String, dynamic> json) =>
@@ -167,12 +182,15 @@ class _$_Frame implements _Frame {
   @override
   final String? warna;
   @override
+  @JsonKey(name: 'no_reff_expor')
+  final String? noReffExp;
+  @override
   @JsonKey(name: 'id_kend_type')
   final int? idKendType;
 
   @override
   String toString() {
-    return 'Frame(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, idKendType: $idKendType)';
+    return 'Frame(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, noReffExp: $noReffExp, idKendType: $idKendType)';
   }
 
   @override
@@ -184,14 +202,16 @@ class _$_Frame implements _Frame {
             (identical(other.frame, frame) || other.frame == frame) &&
             (identical(other.engine, engine) || other.engine == engine) &&
             (identical(other.warna, warna) || other.warna == warna) &&
+            (identical(other.noReffExp, noReffExp) ||
+                other.noReffExp == noReffExp) &&
             (identical(other.idKendType, idKendType) ||
                 other.idKendType == idKendType));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, idUnit, frame, engine, warna, idKendType);
+  int get hashCode => Object.hash(
+      runtimeType, idUnit, frame, engine, warna, noReffExp, idKendType);
 
   @JsonKey(ignore: true)
   @override
@@ -213,6 +233,7 @@ abstract class _Frame implements Frame {
           required final String? frame,
           required final String? engine,
           required final String? warna,
+          @JsonKey(name: 'no_reff_expor') required final String? noReffExp,
           @JsonKey(name: 'id_kend_type') required final int? idKendType}) =
       _$_Frame;
 
@@ -227,6 +248,9 @@ abstract class _Frame implements Frame {
   String? get engine;
   @override
   String? get warna;
+  @override
+  @JsonKey(name: 'no_reff_expor')
+  String? get noReffExp;
   @override
   @JsonKey(name: 'id_kend_type')
   int? get idKendType;

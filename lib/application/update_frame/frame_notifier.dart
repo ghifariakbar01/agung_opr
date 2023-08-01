@@ -21,7 +21,7 @@ class FrameNotifier extends StateNotifier<FrameState> {
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
 
-  Future<void> getModelListOFFLINE({required int idSPK}) async {
+  Future<void> getFrameListOFFLINE({required int idSPK}) async {
     final Either<RemoteFailure, List<Frame>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOFrame: none());

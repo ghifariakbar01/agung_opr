@@ -15,18 +15,18 @@ class FrameRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<Map<int, List<Frame>>> getFrameList({required int idSPK}) async {
+  Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
     try {
       final data = _dioRequestNotifier;
 
-      final Map<int, List<Frame>> frameMap = {
-        idSPK: [],
+      final Map<String, List<Frame>> frameMap = {
+        "$idSPK": [],
       };
 
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_unit, frame, engine, warna, id_kend_type FROM opr_trs_ti_unit WHERE id_unit IN (SELECT id_unit FROM opr_trs_spk_unit WHERE id_spk = $idSPK",
+            "SELECT id_unit, frame, engine, warna, no_reff_expor, id_kend_type FROM opr_trs_ti_unit WHERE id_unit IN (SELECT id_unit FROM opr_trs_spk_unit WHERE id_spk = $idSPK)",
       });
 
       final response = await _dio.post('',
@@ -48,9 +48,11 @@ class FrameRemoteService {
               List<Frame> frameList =
                   (list).map((data) => Frame.fromJson(data)).toList();
 
-              log('list $list');
+              log('LIST FRAME: $list');
 
-              frameMap.update(idSPK, (value) => frameList);
+              frameMap.update('$idSPK', (value) => frameList);
+
+              log('LIST MAP: $frameMap');
 
               return frameMap;
             } catch (e) {

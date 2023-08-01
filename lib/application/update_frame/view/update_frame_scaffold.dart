@@ -5,16 +5,16 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../spk/spk.dart';
+import '../shared/update_frame_providers.dart';
 import 'update_frame_item.dart';
 
 class UpdateFrameScaffold extends ConsumerWidget {
-  const UpdateFrameScaffold({required this.spk});
-
-  final SPK spk;
+  const UpdateFrameScaffold();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final frameList = ref.watch(frameNotifierProvider);
+
     return KeyboardDismissOnTap(
       child: Scaffold(
           appBar: VAppBar('Update Frame Dummy'),
@@ -51,12 +51,11 @@ class UpdateFrameScaffold extends ConsumerWidget {
           drawer: Drawer(),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                UpdateFrameItem(),
-                UpdateFrameItem(),
-                UpdateFrameItem(),
-              ],
+            child: ListView.builder(
+              itemCount: frameList.frameList.length,
+              itemBuilder: (context, index) => UpdateFrameItem(
+                index: index,
+              ),
             ),
           )),
     );

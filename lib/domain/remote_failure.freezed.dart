@@ -20,7 +20,7 @@ mixin _$RemoteFailure {
   TResult when<TResult extends Object?>({
     required TResult Function() storage,
     required TResult Function(int? errorCode, String? message) server,
-    required TResult Function() parse,
+    required TResult Function(String? message) parse,
     required TResult Function() noConnection,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$RemoteFailure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? storage,
     TResult? Function(int? errorCode, String? message)? server,
-    TResult? Function()? parse,
+    TResult? Function(String? message)? parse,
     TResult? Function()? noConnection,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$RemoteFailure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? storage,
     TResult Function(int? errorCode, String? message)? server,
-    TResult Function()? parse,
+    TResult Function(String? message)? parse,
     TResult Function()? noConnection,
     required TResult orElse(),
   }) =>
@@ -125,7 +125,7 @@ class _$_Storage implements _Storage {
   TResult when<TResult extends Object?>({
     required TResult Function() storage,
     required TResult Function(int? errorCode, String? message) server,
-    required TResult Function() parse,
+    required TResult Function(String? message) parse,
     required TResult Function() noConnection,
   }) {
     return storage();
@@ -136,7 +136,7 @@ class _$_Storage implements _Storage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? storage,
     TResult? Function(int? errorCode, String? message)? server,
-    TResult? Function()? parse,
+    TResult? Function(String? message)? parse,
     TResult? Function()? noConnection,
   }) {
     return storage?.call();
@@ -147,7 +147,7 @@ class _$_Storage implements _Storage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? storage,
     TResult Function(int? errorCode, String? message)? server,
-    TResult Function()? parse,
+    TResult Function(String? message)? parse,
     TResult Function()? noConnection,
     required TResult orElse(),
   }) {
@@ -272,7 +272,7 @@ class _$_Server implements _Server {
   TResult when<TResult extends Object?>({
     required TResult Function() storage,
     required TResult Function(int? errorCode, String? message) server,
-    required TResult Function() parse,
+    required TResult Function(String? message) parse,
     required TResult Function() noConnection,
   }) {
     return server(errorCode, message);
@@ -283,7 +283,7 @@ class _$_Server implements _Server {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? storage,
     TResult? Function(int? errorCode, String? message)? server,
-    TResult? Function()? parse,
+    TResult? Function(String? message)? parse,
     TResult? Function()? noConnection,
   }) {
     return server?.call(errorCode, message);
@@ -294,7 +294,7 @@ class _$_Server implements _Server {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? storage,
     TResult Function(int? errorCode, String? message)? server,
-    TResult Function()? parse,
+    TResult Function(String? message)? parse,
     TResult Function()? noConnection,
     required TResult orElse(),
   }) {
@@ -357,6 +357,8 @@ abstract class _Server implements RemoteFailure {
 abstract class _$$_ParseCopyWith<$Res> {
   factory _$$_ParseCopyWith(_$_Parse value, $Res Function(_$_Parse) then) =
       __$$_ParseCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? message});
 }
 
 /// @nodoc
@@ -365,36 +367,60 @@ class __$$_ParseCopyWithImpl<$Res>
     implements _$$_ParseCopyWith<$Res> {
   __$$_ParseCopyWithImpl(_$_Parse _value, $Res Function(_$_Parse) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_$_Parse(
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_Parse implements _Parse {
-  const _$_Parse();
+  const _$_Parse({this.message});
+
+  @override
+  final String? message;
 
   @override
   String toString() {
-    return 'RemoteFailure.parse()';
+    return 'RemoteFailure.parse(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Parse);
+        (other.runtimeType == runtimeType &&
+            other is _$_Parse &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ParseCopyWith<_$_Parse> get copyWith =>
+      __$$_ParseCopyWithImpl<_$_Parse>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() storage,
     required TResult Function(int? errorCode, String? message) server,
-    required TResult Function() parse,
+    required TResult Function(String? message) parse,
     required TResult Function() noConnection,
   }) {
-    return parse();
+    return parse(message);
   }
 
   @override
@@ -402,10 +428,10 @@ class _$_Parse implements _Parse {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? storage,
     TResult? Function(int? errorCode, String? message)? server,
-    TResult? Function()? parse,
+    TResult? Function(String? message)? parse,
     TResult? Function()? noConnection,
   }) {
-    return parse?.call();
+    return parse?.call(message);
   }
 
   @override
@@ -413,12 +439,12 @@ class _$_Parse implements _Parse {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? storage,
     TResult Function(int? errorCode, String? message)? server,
-    TResult Function()? parse,
+    TResult Function(String? message)? parse,
     TResult Function()? noConnection,
     required TResult orElse(),
   }) {
     if (parse != null) {
-      return parse();
+      return parse(message);
     }
     return orElse();
   }
@@ -462,7 +488,12 @@ class _$_Parse implements _Parse {
 }
 
 abstract class _Parse implements RemoteFailure {
-  const factory _Parse() = _$_Parse;
+  const factory _Parse({final String? message}) = _$_Parse;
+
+  String? get message;
+  @JsonKey(ignore: true)
+  _$$_ParseCopyWith<_$_Parse> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -505,7 +536,7 @@ class _$_NoConnection implements _NoConnection {
   TResult when<TResult extends Object?>({
     required TResult Function() storage,
     required TResult Function(int? errorCode, String? message) server,
-    required TResult Function() parse,
+    required TResult Function(String? message) parse,
     required TResult Function() noConnection,
   }) {
     return noConnection();
@@ -516,7 +547,7 @@ class _$_NoConnection implements _NoConnection {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? storage,
     TResult? Function(int? errorCode, String? message)? server,
-    TResult? Function()? parse,
+    TResult? Function(String? message)? parse,
     TResult? Function()? noConnection,
   }) {
     return noConnection?.call();
@@ -527,7 +558,7 @@ class _$_NoConnection implements _NoConnection {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? storage,
     TResult Function(int? errorCode, String? message)? server,
-    TResult Function()? parse,
+    TResult Function(String? message)? parse,
     TResult Function()? noConnection,
     required TResult orElse(),
   }) {

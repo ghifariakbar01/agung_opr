@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/spk/view/spk_search.dart';
@@ -128,7 +126,9 @@ class SPKScaffold extends ConsumerWidget {
                     child: TextButton(
                       onPressed: () => modeApp.when(
                         initial: () => {},
-                        updateFrameDummy: () => {},
+                        updateFrameDummy: () => context.pushNamed(
+                            RouteNames.updateFrameNameRoute,
+                            extra: spkList[i].idSpk),
                         checkSheetLoading: () => context
                             .pushNamed(RouteNames.checkSheetLoadingNameRoute),
                         checkSheetUnloading: () => context
