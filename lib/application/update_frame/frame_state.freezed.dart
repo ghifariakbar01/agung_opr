@@ -21,6 +21,8 @@ mixin _$FrameState {
   bool get isProcessing => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<Frame>>> get FOSOFrame =>
       throw _privateConstructorUsedError;
+  Option<Either<LocalFailure, Unit>> get FOSOSaveFrame =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FrameStateCopyWith<FrameState> get copyWith =>
@@ -37,7 +39,8 @@ abstract class $FrameStateCopyWith<$Res> {
       {List<Frame> frameList,
       int selectedId,
       bool isProcessing,
-      Option<Either<RemoteFailure, List<Frame>>> FOSOFrame});
+      Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
+      Option<Either<LocalFailure, Unit>> FOSOSaveFrame});
 }
 
 /// @nodoc
@@ -57,6 +60,7 @@ class _$FrameStateCopyWithImpl<$Res, $Val extends FrameState>
     Object? selectedId = null,
     Object? isProcessing = null,
     Object? FOSOFrame = null,
+    Object? FOSOSaveFrame = null,
   }) {
     return _then(_value.copyWith(
       frameList: null == frameList
@@ -75,6 +79,10 @@ class _$FrameStateCopyWithImpl<$Res, $Val extends FrameState>
           ? _value.FOSOFrame
           : FOSOFrame // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<Frame>>>,
+      FOSOSaveFrame: null == FOSOSaveFrame
+          ? _value.FOSOSaveFrame
+          : FOSOSaveFrame // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, Unit>>,
     ) as $Val);
   }
 }
@@ -91,7 +99,8 @@ abstract class _$$_FrameStateCopyWith<$Res>
       {List<Frame> frameList,
       int selectedId,
       bool isProcessing,
-      Option<Either<RemoteFailure, List<Frame>>> FOSOFrame});
+      Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
+      Option<Either<LocalFailure, Unit>> FOSOSaveFrame});
 }
 
 /// @nodoc
@@ -109,6 +118,7 @@ class __$$_FrameStateCopyWithImpl<$Res>
     Object? selectedId = null,
     Object? isProcessing = null,
     Object? FOSOFrame = null,
+    Object? FOSOSaveFrame = null,
   }) {
     return _then(_$_FrameState(
       frameList: null == frameList
@@ -127,6 +137,10 @@ class __$$_FrameStateCopyWithImpl<$Res>
           ? _value.FOSOFrame
           : FOSOFrame // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<Frame>>>,
+      FOSOSaveFrame: null == FOSOSaveFrame
+          ? _value.FOSOSaveFrame
+          : FOSOSaveFrame // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, Unit>>,
     ));
   }
 }
@@ -138,7 +152,8 @@ class _$_FrameState implements _FrameState {
       {required final List<Frame> frameList,
       required this.selectedId,
       required this.isProcessing,
-      required this.FOSOFrame})
+      required this.FOSOFrame,
+      required this.FOSOSaveFrame})
       : _frameList = frameList;
 
   final List<Frame> _frameList;
@@ -155,10 +170,12 @@ class _$_FrameState implements _FrameState {
   final bool isProcessing;
   @override
   final Option<Either<RemoteFailure, List<Frame>>> FOSOFrame;
+  @override
+  final Option<Either<LocalFailure, Unit>> FOSOSaveFrame;
 
   @override
   String toString() {
-    return 'FrameState(frameList: $frameList, selectedId: $selectedId, isProcessing: $isProcessing, FOSOFrame: $FOSOFrame)';
+    return 'FrameState(frameList: $frameList, selectedId: $selectedId, isProcessing: $isProcessing, FOSOFrame: $FOSOFrame, FOSOSaveFrame: $FOSOSaveFrame)';
   }
 
   @override
@@ -173,7 +190,9 @@ class _$_FrameState implements _FrameState {
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
             (identical(other.FOSOFrame, FOSOFrame) ||
-                other.FOSOFrame == FOSOFrame));
+                other.FOSOFrame == FOSOFrame) &&
+            (identical(other.FOSOSaveFrame, FOSOSaveFrame) ||
+                other.FOSOSaveFrame == FOSOSaveFrame));
   }
 
   @override
@@ -182,7 +201,8 @@ class _$_FrameState implements _FrameState {
       const DeepCollectionEquality().hash(_frameList),
       selectedId,
       isProcessing,
-      FOSOFrame);
+      FOSOFrame,
+      FOSOSaveFrame);
 
   @JsonKey(ignore: true)
   @override
@@ -193,11 +213,12 @@ class _$_FrameState implements _FrameState {
 
 abstract class _FrameState implements FrameState {
   const factory _FrameState(
-      {required final List<Frame> frameList,
-      required final int selectedId,
-      required final bool isProcessing,
-      required final Option<Either<RemoteFailure, List<Frame>>>
-          FOSOFrame}) = _$_FrameState;
+          {required final List<Frame> frameList,
+          required final int selectedId,
+          required final bool isProcessing,
+          required final Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
+          required final Option<Either<LocalFailure, Unit>> FOSOSaveFrame}) =
+      _$_FrameState;
 
   @override
   List<Frame> get frameList;
@@ -207,6 +228,8 @@ abstract class _FrameState implements FrameState {
   bool get isProcessing;
   @override
   Option<Either<RemoteFailure, List<Frame>>> get FOSOFrame;
+  @override
+  Option<Either<LocalFailure, Unit>> get FOSOSaveFrame;
   @override
   @JsonKey(ignore: true)
   _$$_FrameStateCopyWith<_$_FrameState> get copyWith =>

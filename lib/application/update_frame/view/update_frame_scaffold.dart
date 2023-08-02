@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../shared/update_frame_providers.dart';
 import 'update_frame_item.dart';
+import 'update_frame_item_scaffold.dart';
 
 class UpdateFrameScaffold extends ConsumerWidget {
   const UpdateFrameScaffold();
@@ -53,8 +54,8 @@ class UpdateFrameScaffold extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
               itemCount: frameList.frameList.length,
-              itemBuilder: (context, index) => UpdateFrameItem(
-                index: index,
+              itemBuilder: (context, index) => UpdateFrameItemScaffold(
+                index,
               ),
             ),
           )),

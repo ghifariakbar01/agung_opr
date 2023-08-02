@@ -16,7 +16,7 @@ class ModelNotifier extends StateNotifier<ModelState> {
 
     state = state.copyWith(isProcessing: true, FOSOModel: none());
 
-    FOS = await _repository.getModelListOFFLINE(page: page);
+    FOS = await _repository.getModelList(page: page);
 
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
   }

@@ -45,7 +45,7 @@ class FormUpdateWarna extends ConsumerWidget {
               initialValue: warnaStr,
               decoration: Themes.formStyle(warnaStr != ''
                   ? warnaStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan engine'),
+                  : 'Masukkan warna'),
               keyboardType: TextInputType.name,
               onChanged: (value) => ref
                   .read(updateFrameNotifierProvider.notifier)

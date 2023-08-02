@@ -14,6 +14,8 @@ import '../../../infrastructure/credentials_storage.dart';
 import '../../../shared/providers.dart';
 import '../frame_offline_notifier.dart';
 import '../update_frame_notifier.dart';
+import '../update_frame_offline_notifier.dart';
+import '../update_frame_offline_state.dart';
 
 // UPDATE FRAME
 
@@ -32,8 +34,13 @@ final updateFrameRepositoryProvider = Provider((ref) => UpdateFrameRepository(
 
 final updateFrameNotifierProvider =
     StateNotifierProvider<UpdateFrameNotifier, UpdateFrameState>(
-  (ref) => UpdateFrameNotifier(),
+  (ref) => UpdateFrameNotifier(ref.watch(updateFrameRepositoryProvider)),
 );
+
+final updateFrameOfflineNotifierProvider = StateNotifierProvider<
+        UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
+    (ref) =>
+        UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
 
 // FRAME
 

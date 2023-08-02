@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import 'application/spk/shared/spk_providers.dart';
 import 'config/configuration.dart';
 import 'shared/providers.dart';
 import 'style/style.dart';
@@ -40,6 +43,24 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
 
   final authNotifier = ref.read(authNotifierProvider.notifier);
   await authNotifier.checkAndUpdateAuthStatus();
+
+  final spkOfflineOrOnline = ref.watch(spkOfflineNotifierProvider);
+
+  log('spkOfflineOrOnline $spkOfflineOrOnline');
+
+  await spkOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () =>
+        ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
+    orElse: () async {
+      for (int i = 0; i < 5; i++) {
+        ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
+      }
+
+      await ref
+          .read(spkOfflineNotifierProvider.notifier)
+          .checkAndUpdateSPKOFFLINEStatus();
+    },
+  );
 
   return unit;
 });

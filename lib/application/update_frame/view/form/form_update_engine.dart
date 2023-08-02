@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,13 +18,15 @@ class FormUpdateEngine extends ConsumerWidget {
 
     final engineStr = engine.getOrLeave('');
 
+    log('engineStr $engineStr');
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 40,
+            height: 70,
             width: 50,
             child: Center(
               child: Text(
@@ -39,7 +43,7 @@ class FormUpdateEngine extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 50,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: engineStr,

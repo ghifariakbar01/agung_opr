@@ -37,7 +37,9 @@ class _ModelPageState extends ConsumerState<ModelPage> {
             .getModelListOFFLINE(page: 0),
         orElse: () async {
           for (int i = 0; i < 5; i++) {
-            ref.read(modelNotifierProvider.notifier).getModelList(page: i);
+            await ref
+                .read(modelNotifierProvider.notifier)
+                .getModelList(page: i);
           }
 
           await ref

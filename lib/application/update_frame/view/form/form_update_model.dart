@@ -6,6 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/style.dart';
 
+/// [TextEditingController] For displaying value only
+///
+///
 class FormUpdateModel extends ConsumerWidget {
   const FormUpdateModel({required this.index});
 
@@ -13,10 +16,11 @@ class FormUpdateModel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final model = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].idKendType));
+    final frame = ref.watch(updateFrameNotifierProvider);
 
-    final modelStr = model.getOrLeave('');
+    final item = frame.updateFrameList[index];
+
+    final modelStr = item.idKendType.getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,15 +45,10 @@ class FormUpdateModel extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 55,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: modelStr,
-              decoration: Themes.formStyle(modelStr != ''
-                  ? modelStr + ' (ketik untuk ubah teks)'
-                  : 'Pilih model'),
-              keyboardType: TextInputType.name,
-              onTap: () async {
+            child: TextButton(
+              onPressed: () async {
                 final String? id =
                     await context.pushNamed(RouteNames.modelNameRoute);
 
@@ -57,21 +56,33 @@ class FormUpdateModel extends ConsumerWidget {
                   ref
                       .read(updateFrameNotifierProvider.notifier)
                       .changeIdKendType(idKendTypeStr: id, index: index);
+
+                  frame.modelTextController[index].text = id;
                 }
               },
-              onChanged: (value) => {},
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .idKendType
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
-                    ),
-                    (_) => null,
-                  ),
+              child: IgnorePointer(
+                ignoring: true,
+                child: TextFormField(
+                  controller: frame.modelTextController[index],
+                  decoration: Themes.formStyle(modelStr != ''
+                      ? modelStr + ' (ketik untuk ubah teks)'
+                      : 'Pilih model'),
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) => {},
+                  validator: (_) => ref
+                      .read(updateFrameNotifierProvider)
+                      .updateFrameList[index]
+                      .idKendType
+                      .value
+                      .fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'kosong',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+                ),
+              ),
             ),
           ),
         )

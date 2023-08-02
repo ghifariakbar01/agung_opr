@@ -27,6 +27,10 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref
+          .read(updateFrameNotifierProvider.notifier)
+          .changeIdSPK(idSPK: widget.idSPK);
+
       await ref
           .read(frameOfflineNotifierProvider.notifier)
           .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.idSPK);
@@ -87,7 +91,6 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
                     final responseLEN = frameResponse.length;
 
                     /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-
                     ref
                         .read(updateFrameNotifierProvider.notifier)
                         .changeFillEmptyList(

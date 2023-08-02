@@ -16,11 +16,12 @@ class SPKRemoteService {
   Future<List<SPK>> getSPKList({required int page}) async {
     try {
       final data = _dioRequestNotifier;
+      const String dbName = "opr_trs_spk_test";
 
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol FROM opr_trs_spk WHERE dc_sta <> 1 ORDER BY spk_tgl DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol FROM $dbName WHERE dc_sta <> 1 ORDER BY spk_tgl DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

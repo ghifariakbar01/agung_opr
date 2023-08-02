@@ -68,7 +68,10 @@ class ModelScaffold extends ConsumerWidget {
                   IgnorePointer(
                     ignoring: isSearching,
                     child: TextButton(
-                      onPressed: () => context.pop(modelList[i].id),
+                      onPressed: () {
+                        final modelId = modelList[i].id.toString();
+                        context.pop(modelId);
+                      },
                       style: ButtonStyle(
                           padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                       child: ModelItem(

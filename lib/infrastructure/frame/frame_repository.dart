@@ -52,26 +52,75 @@ class FrameRepository {
       getFrameListOFFLINE(idSPK: idSPK)
           .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, Unit>> saveFrameIndexedSPK(
-      {required int idSPK, required Frame newFrame}) async {
+  Future<Either<LocalFailure, Unit>> saveFrameIndexedSPK(
+      {required int idSPK, required int index, required Frame newFrame}) async {
     try {
       final saveThisMap = {
         idSPK.toString(): [newFrame]
       };
 
-      await GETAndADDFrameInMap(newFrame: saveThisMap);
+      debugger(message: 'called');
+
+      await this._GETAndADDFrameInMap(newFrame: saveThisMap, index: index);
 
       return right(unit);
-    } on RestApiException catch (e) {
-      return left(RemoteFailure.server(e.errorCode, e.message));
-    } on NoConnectionException {
-      return left(RemoteFailure.noConnection());
     } on FormatException catch (e) {
-      return left(RemoteFailure.parse(message: e.message));
+      return left(LocalFailure.format(e.message));
     } on JsonUnsupportedObjectError {
-      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+      return left(LocalFailure.format('JsonUnsupportedObjectError'));
     } on PlatformException {
-      return left(RemoteFailure.storage());
+      return left(LocalFailure.storage());
+    }
+  }
+
+  Future<Either<LocalFailure, Map<String, Map<String, String>>>>
+      removeSPKFromMap({required String idSPK}) async {
+    try {
+      final savedStrings = await _storage.read();
+      final isSPKOK = idSPK.isNotEmpty;
+      final isStorageSaved = savedStrings != null;
+
+      if (isSPKOK) {
+        switch (isStorageSaved) {
+          case true:
+            () async {
+              debugger(message: 'CALLED');
+              final parsedResponse =
+                  jsonDecode(savedStrings!) as Map<String, dynamic>;
+
+              final Map<String, List<Frame>> parsedMap =
+                  convertMaptoListMap(map: parsedResponse);
+
+              parsedMap.remove(idSPK);
+
+              final newFrameMap =
+                  convertListFrameToListMap(parsedMap: parsedMap);
+
+              log('STORAGE FRAME UPDATE: ${jsonEncode(newFrameMap)}');
+
+              await _storage.save(jsonEncode(newFrameMap));
+
+              debugger(message: 'called');
+
+              log('STORAGE UPDATE FRAME DELETE: ${jsonEncode(newFrameMap)}');
+
+              return {};
+            }();
+            break;
+          case false:
+            return left(LocalFailure.empty());
+        }
+      }
+
+      return left(LocalFailure.empty());
+    } on RangeError catch (e) {
+      return left(LocalFailure.format(e.message));
+    } on FormatException catch (e) {
+      return left(LocalFailure.format(e.message));
+    } on JsonUnsupportedObjectError {
+      return left(LocalFailure.format('JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
     }
   }
 
@@ -80,7 +129,7 @@ class FrameRepository {
     try {
       final modelMapList = await _remoteService.getFrameList(idSPK: idSPK);
 
-      await GETAndADDFrameInMap(newFrame: modelMapList);
+      await this._GETAndADDFrameInMap(newFrame: modelMapList);
 
       if (modelMapList["$idSPK"] != null) {
         return right(modelMapList["$idSPK"] as List<Frame>);
@@ -101,8 +150,8 @@ class FrameRepository {
   }
 
   // SAVE MAP IN STORAGE
-  Future<void> GETAndADDFrameInMap(
-      {required Map<String, List<Frame>> newFrame}) async {
+  Future<Unit> _GETAndADDFrameInMap(
+      {required Map<String, List<Frame>> newFrame, int? index}) async {
     final savedStrings = await _storage.read();
     final isNewFrameOK = newFrame.values.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -119,14 +168,27 @@ class FrameRepository {
 
             // FIRST, CHECK IF EXISTING KEY EXIST
             final key = newFrame.keys.first;
-            final value = newFrame.values.first;
+            final newValue = newFrame.values.first;
 
             if (parsedMap.containsKey(key)) {
-              parsedMap.update(key, (value) => value);
+              final oldValue = parsedMap[key] ?? [];
+
+              final frame = newValue.first;
+
+              // Map<String, dynamic> OF FRAMES
+              final list = [...oldValue];
+
+              list[index!] = frame;
+
+              debugger(message: 'called');
+
+              parsedMap.update(key, (value) => list);
             }
             // IF EXISTING KEY NULL
             else {
-              parsedMap.addAll({key: value});
+              debugger(message: 'called');
+
+              parsedMap.addAll({key: newValue});
             }
 
             debugger(message: 'called');
@@ -136,10 +198,14 @@ class FrameRepository {
             log('STORAGE FRAME UPDATE: ${jsonEncode(newFrameMap)}');
 
             await _storage.save(jsonEncode(newFrameMap));
+
+            return unit;
           }();
           break;
         case false:
           () async {
+            debugger(message: 'called');
+
             final jsonFrames = convertFrameToListMap(listMap: newFrame);
 
             final newFrameMap = {'${newFrame.keys.first}': jsonFrames};
@@ -147,9 +213,14 @@ class FrameRepository {
             log('STORAGE FRAME SAVE: ${jsonEncode(newFrameMap)}');
 
             await _storage.save(jsonEncode(newFrameMap));
+
+            return unit;
           }();
       }
     }
+
+    throw FormatException(
+        'newFrame is Empty. In frame_repository _GETAndADDFrameInMap');
   }
 
   /// DATA: LIST OF [Frame] FROM STORAGE

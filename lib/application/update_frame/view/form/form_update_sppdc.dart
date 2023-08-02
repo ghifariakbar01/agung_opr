@@ -49,7 +49,6 @@ class FormUpdateSPPDC extends ConsumerWidget {
                   ? sppdcStr + ' (ketik untuk ubah teks)'
                   : 'Masukkan no SPPDC'),
               keyboardType: TextInputType.name,
-              onTap: () => context.pushNamed(RouteNames.modelNameRoute),
               onChanged: (value) => ref
                   .read(updateFrameNotifierProvider.notifier)
                   .changeNoSPPDC(noSPPDCStr: value, index: index),

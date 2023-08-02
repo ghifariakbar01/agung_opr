@@ -24,7 +24,7 @@ class FormUpdateReffEXP extends ConsumerWidget {
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 40,
+            height: 50,
             width: 50,
             child: Center(
               child: Text(
@@ -41,7 +41,7 @@ class FormUpdateReffEXP extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 50,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: noReffStr,
@@ -49,7 +49,6 @@ class FormUpdateReffEXP extends ConsumerWidget {
                   ? noReffStr + ' (ketik untuk ubah teks)'
                   : 'Masukkan no ref'),
               keyboardType: TextInputType.name,
-              onTap: () => context.pushNamed(RouteNames.modelNameRoute),
               onChanged: (value) => ref
                   .read(updateFrameNotifierProvider.notifier)
                   .changeNoReffEXP(noReffStr: value, index: index),
