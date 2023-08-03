@@ -27,7 +27,7 @@ class ModelRemoteService {
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
       log('data ${jsonEncode(data)}');
-      log('response $response');
+      // log('response $response');
 
       final items = response.data?[0];
 
@@ -42,7 +42,7 @@ class ModelRemoteService {
               List<Model> modelList =
                   (list).map((data) => Model.fromJson(data)).toList();
 
-              log('list $list');
+              // log('list $list');
 
               return modelList;
             } catch (e) {

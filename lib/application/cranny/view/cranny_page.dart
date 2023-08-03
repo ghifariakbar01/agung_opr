@@ -1,8 +1,8 @@
-import 'dart:developer';
-
-import 'package:agung_opr/application/cranny/view/cranny_scaffold.dart';
+import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/application/update_frame/update_frame_offline_state.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -102,30 +102,32 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                       asset: Assets.iconCrossed,
                     ),
                   ),
-              (userParsed) => ref
-                  .read(userNotifierProvider.notifier)
-                  .onUserParsed(
-                    user: userParsed,
-                    initializeDioRequest: () =>
-                        ref.read(dioRequestProvider).addAll({
-                      "username": "${userParsed.nama}",
-                      "password": "${userParsed.password}",
-                    }),
-                    initializeAndCheckData: () => getAndSaveAllData(),
-                    initializeAutoData: () => ref
-                        .read(autoDataNotifierProvider.notifier)
-                        .startTimerAutoData(
-                            getAndSaveDataOffline: () => getAndSaveAllData()),
-                    checkAndUpdateStatus: () => ref
-                        .read(authNotifierProvider.notifier)
-                        .checkAndUpdateAuthStatus(),
-                  ));
+              (userParsed) =>
+                  ref.read(userNotifierProvider.notifier).onUserParsed(
+                        user: userParsed,
+                        initializeDioRequest: () =>
+                            ref.read(dioRequestProvider).addAll({
+                          "username": "${userParsed.nama}",
+                          "password": "${userParsed.password}",
+                        }),
+                        initializeAndCheckData: () => getAndSaveAllData(),
+                        initializeAutoData: () => ref
+                            .read(autoDataTimerNotifierProvider.notifier)
+                            .startTimer(10,
+                                onTimerRanOut: () => ref
+                                    .read(autoDataUpdateFrameNotifierProvider
+                                        .notifier)
+                                    .getSavedQueryFromRepository()),
+                        checkAndUpdateStatus: () => ref
+                            .read(authNotifierProvider.notifier)
+                            .checkAndUpdateAuthStatus(),
+                      ));
         }),
       ),
     );
 
     return Stack(
-      children: [CrannyScaffold(), LoadingOverlay(isLoading: false)],
+      children: [CrannyMiddle(), LoadingOverlay(isLoading: false)],
     );
   }
 }

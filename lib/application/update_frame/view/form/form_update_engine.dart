@@ -33,6 +33,7 @@ class FormUpdateEngine extends ConsumerWidget {
                 'Engine',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -43,7 +44,7 @@ class FormUpdateEngine extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 50,
+            height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: engineStr,

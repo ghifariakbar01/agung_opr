@@ -11,20 +11,20 @@ part 'update_frame_state.freezed.dart';
 class UpdateFrameState with _$UpdateFrameState {
   const factory UpdateFrameState({
     required int idSPK,
+    required int index,
     required bool isProcessing,
-    required List<bool> showErrorMessages,
 
     /// Hack for model value to change after tapping model
     required List<TextEditingController> modelTextController,
     required List<UpdateFrameStateSingle> updateFrameList,
-    required Option<Either<LocalFailure, Unit>> FOSOUpdateFrame,
+    required List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame,
   }) = _UpdateFrameState;
 
   factory UpdateFrameState.initial() => UpdateFrameState(
       idSPK: 0,
+      index: 0,
       isProcessing: false,
-      showErrorMessages: [],
       modelTextController: [],
       updateFrameList: [],
-      FOSOUpdateFrame: none());
+      FOSOUpdateFrame: []);
 }

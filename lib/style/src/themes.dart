@@ -122,6 +122,11 @@ mixin Themes {
       contentPadding: const EdgeInsets.all(16),
       border: InputBorder.none,
       hintStyle: Themes.greyHint(FontWeight.normal, 16),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red, width: 1.0),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      errorStyle: TextStyle(fontSize: 12.0, color: Colors.red),
       hintText: hintText,
       suffixIcon: icon ?? null,
     );

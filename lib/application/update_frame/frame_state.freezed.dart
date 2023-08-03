@@ -20,8 +20,8 @@ mixin _$FrameState {
   int get selectedId => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<Frame>>> get FOSOFrame =>
-      throw _privateConstructorUsedError;
-  Option<Either<LocalFailure, Unit>> get FOSOSaveFrame =>
+      throw _privateConstructorUsedError; // PREVENT REBUILD : update_frame_item_middle.dart
+  List<Option<Either<LocalFailure, Unit>>> get FOSOSaveFrame =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,7 +40,7 @@ abstract class $FrameStateCopyWith<$Res> {
       int selectedId,
       bool isProcessing,
       Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
-      Option<Either<LocalFailure, Unit>> FOSOSaveFrame});
+      List<Option<Either<LocalFailure, Unit>>> FOSOSaveFrame});
 }
 
 /// @nodoc
@@ -82,7 +82,7 @@ class _$FrameStateCopyWithImpl<$Res, $Val extends FrameState>
       FOSOSaveFrame: null == FOSOSaveFrame
           ? _value.FOSOSaveFrame
           : FOSOSaveFrame // ignore: cast_nullable_to_non_nullable
-              as Option<Either<LocalFailure, Unit>>,
+              as List<Option<Either<LocalFailure, Unit>>>,
     ) as $Val);
   }
 }
@@ -100,7 +100,7 @@ abstract class _$$_FrameStateCopyWith<$Res>
       int selectedId,
       bool isProcessing,
       Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
-      Option<Either<LocalFailure, Unit>> FOSOSaveFrame});
+      List<Option<Either<LocalFailure, Unit>>> FOSOSaveFrame});
 }
 
 /// @nodoc
@@ -138,9 +138,9 @@ class __$$_FrameStateCopyWithImpl<$Res>
           : FOSOFrame // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<Frame>>>,
       FOSOSaveFrame: null == FOSOSaveFrame
-          ? _value.FOSOSaveFrame
+          ? _value._FOSOSaveFrame
           : FOSOSaveFrame // ignore: cast_nullable_to_non_nullable
-              as Option<Either<LocalFailure, Unit>>,
+              as List<Option<Either<LocalFailure, Unit>>>,
     ));
   }
 }
@@ -153,8 +153,9 @@ class _$_FrameState implements _FrameState {
       required this.selectedId,
       required this.isProcessing,
       required this.FOSOFrame,
-      required this.FOSOSaveFrame})
-      : _frameList = frameList;
+      required final List<Option<Either<LocalFailure, Unit>>> FOSOSaveFrame})
+      : _frameList = frameList,
+        _FOSOSaveFrame = FOSOSaveFrame;
 
   final List<Frame> _frameList;
   @override
@@ -170,8 +171,15 @@ class _$_FrameState implements _FrameState {
   final bool isProcessing;
   @override
   final Option<Either<RemoteFailure, List<Frame>>> FOSOFrame;
+// PREVENT REBUILD : update_frame_item_middle.dart
+  final List<Option<Either<LocalFailure, Unit>>> _FOSOSaveFrame;
+// PREVENT REBUILD : update_frame_item_middle.dart
   @override
-  final Option<Either<LocalFailure, Unit>> FOSOSaveFrame;
+  List<Option<Either<LocalFailure, Unit>>> get FOSOSaveFrame {
+    if (_FOSOSaveFrame is EqualUnmodifiableListView) return _FOSOSaveFrame;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_FOSOSaveFrame);
+  }
 
   @override
   String toString() {
@@ -191,8 +199,8 @@ class _$_FrameState implements _FrameState {
                 other.isProcessing == isProcessing) &&
             (identical(other.FOSOFrame, FOSOFrame) ||
                 other.FOSOFrame == FOSOFrame) &&
-            (identical(other.FOSOSaveFrame, FOSOSaveFrame) ||
-                other.FOSOSaveFrame == FOSOSaveFrame));
+            const DeepCollectionEquality()
+                .equals(other._FOSOSaveFrame, _FOSOSaveFrame));
   }
 
   @override
@@ -202,7 +210,7 @@ class _$_FrameState implements _FrameState {
       selectedId,
       isProcessing,
       FOSOFrame,
-      FOSOSaveFrame);
+      const DeepCollectionEquality().hash(_FOSOSaveFrame));
 
   @JsonKey(ignore: true)
   @override
@@ -213,12 +221,12 @@ class _$_FrameState implements _FrameState {
 
 abstract class _FrameState implements FrameState {
   const factory _FrameState(
-          {required final List<Frame> frameList,
-          required final int selectedId,
-          required final bool isProcessing,
-          required final Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
-          required final Option<Either<LocalFailure, Unit>> FOSOSaveFrame}) =
-      _$_FrameState;
+      {required final List<Frame> frameList,
+      required final int selectedId,
+      required final bool isProcessing,
+      required final Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
+      required final List<Option<Either<LocalFailure, Unit>>>
+          FOSOSaveFrame}) = _$_FrameState;
 
   @override
   List<Frame> get frameList;
@@ -228,8 +236,8 @@ abstract class _FrameState implements FrameState {
   bool get isProcessing;
   @override
   Option<Either<RemoteFailure, List<Frame>>> get FOSOFrame;
-  @override
-  Option<Either<LocalFailure, Unit>> get FOSOSaveFrame;
+  @override // PREVENT REBUILD : update_frame_item_middle.dart
+  List<Option<Either<LocalFailure, Unit>>> get FOSOSaveFrame;
   @override
   @JsonKey(ignore: true)
   _$$_FrameStateCopyWith<_$_FrameState> get copyWith =>

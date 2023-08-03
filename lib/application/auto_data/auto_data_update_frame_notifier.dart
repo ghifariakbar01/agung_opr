@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/infrastructure/frame/frame_repository.dart';
@@ -23,6 +25,21 @@ class AutoDataUpdateFrameNotifier
   // 4. If query success after executed, clear query from UpdateFrameRepository
   // 5. Clear Frame from FrameRepository from saved idSPK
 
+  bool isMapEmpty(Map<String, Map<String, String>> map) {
+    final list = map.entries.toList();
+    if (map.isEmpty) {
+      return true;
+    }
+
+    bool isEmpty = false;
+
+    for (final item in list) {
+      item.value.isNotEmpty ? isEmpty = false : isEmpty = true;
+    }
+
+    return isEmpty;
+  }
+
   void changeSavedQuery(
       {required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery}) {
     state = state.copyWith(idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery);
@@ -31,7 +48,8 @@ class AutoDataUpdateFrameNotifier
   Future<void> getSavedQueryFromRepository() async {
     Either<LocalFailure, Map<String, Map<String, String>>>? FOS;
 
-    state = state.copyWith(isGetting: true, FOSOSPKAutoDataUpdateFrame: none());
+    state = state.copyWith(
+        isGetting: true, FOSOSPKAutoDataGetSavedUpdateFrame: none());
 
     FOS = await _updateFrameRepository.getUpdateQueryListSPKOFFLINE();
 
@@ -56,7 +74,8 @@ class AutoDataUpdateFrameNotifier
   Future<void> clearSavedFrameFromRepository({required String idSPK}) async {
     Either<LocalFailure, Map<String, Map<String, String>>>? FOS;
 
-    state = state.copyWith(isGetting: true, FOSOSPKAutoDataUpdateFrame: none());
+    state = state.copyWith(
+        isGetting: true, FOSOSPKAutoDataGetSavedUpdateFrame: none());
 
     FOS = await _frameRepository.removeSPKFromMap(idSPK: idSPK);
 

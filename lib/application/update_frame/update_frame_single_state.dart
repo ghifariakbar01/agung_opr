@@ -5,14 +5,16 @@ part 'update_frame_single_state.freezed.dart';
 
 @freezed
 class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
-  const factory UpdateFrameStateSingle(
-      {required IDUnit idUnit,
-      required FrameUnit frame,
-      required EngineUnit engine,
-      required WarnaUnit warna,
-      required NoReffEXP noReff,
-      required SPPDC sppdc,
-      required IDKendType idKendType}) = _UpdateFrameStateSingle;
+  const factory UpdateFrameStateSingle({
+    required IDUnit idUnit,
+    required FrameUnit frame,
+    required EngineUnit engine,
+    required WarnaUnit warna,
+    required NoReffEXP noReff,
+    required SPPDC sppdc,
+    required IDKendType idKendType,
+    required bool isShowError,
+  }) = _UpdateFrameStateSingle;
 
   factory UpdateFrameStateSingle.initial() => UpdateFrameStateSingle(
       idUnit: IDUnit(''),
@@ -21,5 +23,6 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
       warna: WarnaUnit(''),
       noReff: NoReffEXP(''),
       sppdc: SPPDC(''),
-      idKendType: IDKendType(''));
+      idKendType: IDKendType(''),
+      isShowError: false);
 }

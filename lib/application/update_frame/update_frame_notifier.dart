@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
@@ -11,7 +13,9 @@ import 'frame.dart';
 import 'update_frame_single_state.dart';
 
 class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
-  UpdateFrameNotifier(this._repository) : super(UpdateFrameState.initial());
+  UpdateFrameNotifier(
+    this._repository,
+  ) : super(UpdateFrameState.initial());
 
   final UpdateFrameRepository _repository;
 
@@ -22,8 +26,12 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     final item = state.updateFrameList[index];
 
-    if (isValid) {
-      state = state.copyWith(isProcessing: true, FOSOUpdateFrame: none());
+    if (isValid(index)) {
+      state = state.copyWith(isProcessing: true);
+
+      this.changeFOSOUpdateFrame(index: index, FOS: none());
+
+      debugger(message: 'called');
 
       FOS = await _repository.updateFrameSPK(
         idSPK: state.idSPK.toString(),
@@ -36,33 +44,50 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
         sppdc: item.sppdc,
       );
 
-      state =
-          state.copyWith(isProcessing: false, FOSOUpdateFrame: optionOf(FOS));
+      state = state.copyWith(isProcessing: false);
+
+      this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+    } else {
+      this.changeShowErrorMessage(index: index, isShowError: true);
+
+      state = state.copyWith(isProcessing: false);
+
+      this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
     }
+  }
 
-    changeShowErrorMessage(index: index, showErrorMessage: true);
-
-    state = state.copyWith(
-      isProcessing: false,
-      FOSOUpdateFrame: optionOf(FOS),
-    );
+  void changeIndex({required int index}) {
+    state = state.copyWith(index: index);
   }
 
   void changeIdSPK({required int idSPK}) {
     state = state.copyWith(idSPK: idSPK);
   }
 
-  void changeShowErrorMessage(
-      {required bool showErrorMessage, required int index}) {
-    final list = [...state.showErrorMessages]; // Create a copy of the list
+  void changeFOSOUpdateFrame(
+      {required Option<Either<LocalFailure, Unit>> FOS, required int index}) {
+    final list = [...state.FOSOUpdateFrame]; // Create a copy of the list
 
-    final bool updatedElement = showErrorMessage;
+    final Option<Either<LocalFailure, Unit>> updatedElement = FOS;
 
     // Update the element at the given index
     list[index] = updatedElement;
 
     // Update the state with the new list
-    state = state.copyWith(showErrorMessages: list);
+    state = state.copyWith(FOSOUpdateFrame: list);
+  }
+
+  void changeShowErrorMessage({required bool isShowError, required int index}) {
+    final list = [...state.updateFrameList]; // Create a copy of the list
+
+    final UpdateFrameStateSingle updatedElement =
+        list.elementAt(index).copyWith(isShowError: isShowError);
+
+    // Update the element at the given index
+    list[index] = updatedElement;
+
+    // Update the state with the new list
+    state = state.copyWith(updateFrameList: list);
   }
 
   void changeFillEmptyList({required int length, required List<Frame> frame}) {
@@ -78,7 +103,12 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
               engine: EngineUnit(frame[index].engine ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
               sppdc: SPPDC(''),
+              isShowError: false,
             ));
+
+    state = state.copyWith(
+      updateFrameList: generateList,
+    );
 
     final generateListModelTextController = List.generate(
         length,
@@ -87,13 +117,20 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
                 ? frame[index].idKendType.toString()
                 : ''));
 
-    final generateListShowErrorMessage =
-        List.generate(length, (index) => false);
+    state = state.copyWith(
+      modelTextController: generateListModelTextController,
+    );
+
+    Either<LocalFailure, Unit>? initial;
+
+    final generateListFOSOUpdateFrame =
+        List.generate(length, (index) => optionOf(initial));
+
+    debugger(message: 'called');
 
     state = state.copyWith(
-        modelTextController: [...generateListModelTextController],
-        updateFrameList: [...generateList],
-        showErrorMessages: generateListShowErrorMessage);
+      FOSOUpdateFrame: generateListFOSOUpdateFrame,
+    );
   }
 
   void changeIdUnit({required String idUnitStr, required int index}) {
@@ -187,26 +224,20 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(updateFrameList: list);
   }
 
-  bool get isValid {
-    final values = [state.updateFrameList];
+  bool isValid(int index) {
+    final frame = state.updateFrameList[index];
 
-    for (final frame in values) {
-      for (final frameItem in frame) {
-        // HERE
-        final values = [
-          frameItem.engine,
-          frameItem.frame,
-          frameItem.idKendType,
-          frameItem.idUnit,
-          frameItem.noReff,
-          // frameItem.sppdc,
-          frameItem.warna,
-        ];
+    // HERE
+    final values = [
+      frame.engine,
+      frame.frame,
+      frame.idKendType,
+      frame.idUnit,
+      frame.noReff,
+      // frame.sppdc,
+      frame.warna,
+    ];
 
-        return Validator.validate(values);
-      }
-    }
-
-    return false;
+    return Validator.validate(values);
   }
 }

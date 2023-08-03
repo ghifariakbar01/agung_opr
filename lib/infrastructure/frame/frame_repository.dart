@@ -61,7 +61,10 @@ class FrameRepository {
 
       debugger(message: 'called');
 
-      await this._GETAndADDFrameInMap(newFrame: saveThisMap, index: index);
+      log('SAVE FRAME INDEXED MAP: ${saveThisMap}');
+
+      await this
+          ._GETAndADDFrameInMap(newFrame: saveThisMap, indexIdUnit: index);
 
       return right(unit);
     } on FormatException catch (e) {
@@ -151,7 +154,7 @@ class FrameRepository {
 
   // SAVE MAP IN STORAGE
   Future<Unit> _GETAndADDFrameInMap(
-      {required Map<String, List<Frame>> newFrame, int? index}) async {
+      {required Map<String, List<Frame>> newFrame, int? indexIdUnit}) async {
     final savedStrings = await _storage.read();
     final isNewFrameOK = newFrame.values.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -170,7 +173,7 @@ class FrameRepository {
             final key = newFrame.keys.first;
             final newValue = newFrame.values.first;
 
-            if (parsedMap.containsKey(key)) {
+            if (parsedMap.containsKey(key) && indexIdUnit != null) {
               final oldValue = parsedMap[key] ?? [];
 
               final frame = newValue.first;
@@ -178,11 +181,24 @@ class FrameRepository {
               // Map<String, dynamic> OF FRAMES
               final list = [...oldValue];
 
-              list[index!] = frame;
+              list[indexIdUnit] = frame;
 
               debugger(message: 'called');
 
+              log('STORAGE FRAME UPDATE: $list');
+
               parsedMap.update(key, (value) => list);
+            }
+            // IF EXISTING KEY EXIST, BUT NOT UPDATE SPECIFIC FRAME,
+            // PARAM IS FRAME AS WHOLE
+            else if (parsedMap.containsKey(key) && indexIdUnit == null) {
+              final frameList = newValue;
+
+              debugger(message: 'called');
+
+              log('STORAGE FRAME GET: $frameList');
+
+              parsedMap.update(key, (value) => frameList);
             }
             // IF EXISTING KEY NULL
             else {
@@ -217,10 +233,12 @@ class FrameRepository {
             return unit;
           }();
       }
+    } else {
+      throw FormatException(
+          'newFrame is Empty. In frame_repository _GETAndADDFrameInMap');
     }
 
-    throw FormatException(
-        'newFrame is Empty. In frame_repository _GETAndADDFrameInMap');
+    return unit;
   }
 
   /// DATA: LIST OF [Frame] FROM STORAGE
@@ -231,7 +249,7 @@ class FrameRepository {
     try {
       final frameStorage = await _storage.read();
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       log('FRAME STORAGE: $frameStorage');
 

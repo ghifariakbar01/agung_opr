@@ -24,6 +24,7 @@ mixin _$ModeState {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$ModeState {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,6 +46,7 @@ mixin _$ModeState {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +58,7 @@ mixin _$ModeState {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +69,7 @@ mixin _$ModeState {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +80,7 @@ mixin _$ModeState {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -140,6 +146,7 @@ class _$_Initial implements _Initial {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return initial();
   }
@@ -153,6 +160,7 @@ class _$_Initial implements _Initial {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return initial?.call();
   }
@@ -166,6 +174,7 @@ class _$_Initial implements _Initial {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -183,6 +192,7 @@ class _$_Initial implements _Initial {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return initial(this);
   }
@@ -196,6 +206,7 @@ class _$_Initial implements _Initial {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return initial?.call(this);
   }
@@ -209,6 +220,7 @@ class _$_Initial implements _Initial {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -266,6 +278,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return updateFrameDummy();
   }
@@ -279,6 +292,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return updateFrameDummy?.call();
   }
@@ -292,6 +306,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (updateFrameDummy != null) {
@@ -309,6 +324,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return updateFrameDummy(this);
   }
@@ -322,6 +338,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return updateFrameDummy?.call(this);
   }
@@ -335,6 +352,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (updateFrameDummy != null) {
@@ -392,6 +410,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return checkSheetLoading();
   }
@@ -405,6 +424,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return checkSheetLoading?.call();
   }
@@ -418,6 +438,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetLoading != null) {
@@ -435,6 +456,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return checkSheetLoading(this);
   }
@@ -448,6 +470,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return checkSheetLoading?.call(this);
   }
@@ -461,6 +484,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetLoading != null) {
@@ -518,6 +542,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return checkSheetUnloading();
   }
@@ -531,6 +556,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return checkSheetUnloading?.call();
   }
@@ -544,6 +570,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetUnloading != null) {
@@ -561,6 +588,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return checkSheetUnloading(this);
   }
@@ -574,6 +602,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return checkSheetUnloading?.call(this);
   }
@@ -587,6 +616,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetUnloading != null) {
@@ -644,6 +674,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return checkSheetGateMerak();
   }
@@ -657,6 +688,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return checkSheetGateMerak?.call();
   }
@@ -670,6 +702,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetGateMerak != null) {
@@ -687,6 +720,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return checkSheetGateMerak(this);
   }
@@ -700,6 +734,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return checkSheetGateMerak?.call(this);
   }
@@ -713,6 +748,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (checkSheetGateMerak != null) {
@@ -770,6 +806,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
     required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
   }) {
     return assignUnitMerak();
   }
@@ -783,6 +820,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
     TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
   }) {
     return assignUnitMerak?.call();
   }
@@ -796,6 +834,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
     TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (assignUnitMerak != null) {
@@ -813,6 +852,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
     required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
   }) {
     return assignUnitMerak(this);
   }
@@ -826,6 +866,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
   }) {
     return assignUnitMerak?.call(this);
   }
@@ -839,6 +880,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
     TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
     if (assignUnitMerak != null) {
@@ -850,4 +892,136 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
 
 abstract class _AssignUnitMerak implements ModeState {
   const factory _AssignUnitMerak() = _$_AssignUnitMerak;
+}
+
+/// @nodoc
+abstract class _$$_DataUpdateQueryCopyWith<$Res> {
+  factory _$$_DataUpdateQueryCopyWith(
+          _$_DataUpdateQuery value, $Res Function(_$_DataUpdateQuery) then) =
+      __$$_DataUpdateQueryCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_DataUpdateQueryCopyWithImpl<$Res>
+    extends _$ModeStateCopyWithImpl<$Res, _$_DataUpdateQuery>
+    implements _$$_DataUpdateQueryCopyWith<$Res> {
+  __$$_DataUpdateQueryCopyWithImpl(
+      _$_DataUpdateQuery _value, $Res Function(_$_DataUpdateQuery) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$_DataUpdateQuery implements _DataUpdateQuery {
+  const _$_DataUpdateQuery();
+
+  @override
+  String toString() {
+    return 'ModeState.dataUpdateQuery()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_DataUpdateQuery);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetLoading,
+    required TResult Function() checkSheetUnloading,
+    required TResult Function() checkSheetGateMerak,
+    required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
+  }) {
+    return dataUpdateQuery();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetLoading,
+    TResult? Function()? checkSheetUnloading,
+    TResult? Function()? checkSheetGateMerak,
+    TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
+  }) {
+    return dataUpdateQuery?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetLoading,
+    TResult Function()? checkSheetUnloading,
+    TResult Function()? checkSheetGateMerak,
+    TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (dataUpdateQuery != null) {
+      return dataUpdateQuery();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
+    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
+    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
+    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+  }) {
+    return dataUpdateQuery(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+  }) {
+    return dataUpdateQuery?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (dataUpdateQuery != null) {
+      return dataUpdateQuery(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DataUpdateQuery implements ModeState {
+  const factory _DataUpdateQuery() = _$_DataUpdateQuery;
 }

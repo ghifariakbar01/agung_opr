@@ -28,4 +28,7 @@ class RouteNames {
 
   static const modelNameRoute = 'model';
   static const modelName = 'model';
+
+  static const dataUpdateQueryNameRoute = 'dataUpdateQuery';
+  static const dataUpdateQueryName = 'dataUpdateQuery';
 }

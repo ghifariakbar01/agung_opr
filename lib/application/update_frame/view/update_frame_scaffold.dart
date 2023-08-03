@@ -51,14 +51,20 @@ class UpdateFrameScaffold extends ConsumerWidget {
           ),
           drawer: Drawer(),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: frameList.frameList.length,
-              itemBuilder: (context, index) => UpdateFrameItemScaffold(
-                index,
-              ),
-            ),
-          )),
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (int index = 0;
+                        index < frameList.frameList.length;
+                        index++) ...[
+                      UpdateFrameItemScaffold(
+                        index,
+                      ),
+                    ]
+                  ],
+                ),
+              ))),
     );
   }
 }

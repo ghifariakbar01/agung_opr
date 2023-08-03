@@ -28,7 +28,7 @@ class SPKRemoteService {
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
       log('data ${jsonEncode(data)}');
-      log('response $response');
+      // log('response $response');
 
       final items = response.data?[0];
 
@@ -43,7 +43,7 @@ class SPKRemoteService {
               List<SPK> spkList =
                   (list).map((data) => SPK.fromJson(data)).toList();
 
-              log('list $list');
+              // log('list $list');
 
               return spkList;
             } catch (e) {

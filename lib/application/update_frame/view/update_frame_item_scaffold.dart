@@ -1,16 +1,12 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../constants/assets.dart';
 import '../../widgets/alert_helper.dart';
-import '../../widgets/v_dialogs.dart';
 import '../shared/update_frame_providers.dart';
-import 'update_frame_item.dart';
 import 'update_frame_item_middle.dart';
 
 class UpdateFrameItemScaffold extends ConsumerWidget {
@@ -22,7 +18,7 @@ class UpdateFrameItemScaffold extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<Option<Either<LocalFailure, Unit>>>(
         updateFrameNotifierProvider.select(
-          (state) => state.FOSOUpdateFrame,
+          (state) => state.FOSOUpdateFrame[index],
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
@@ -36,23 +32,20 @@ class UpdateFrameItemScaffold extends ConsumerWidget {
                             orElse: () => '',
                           ),
                         ), (_) async {
-                  final idSPK = ref.read(updateFrameNotifierProvider
-                      .select((value) => value.idSPK));
-
-                  final frame = ref.watch(updateFrameNotifierProvider
-                      .select((value) => value.updateFrameList[index]));
+                  final updateFrameProvider =
+                      ref.read(updateFrameNotifierProvider);
 
                   debugger(message: 'called');
+
+                  log('INDEX: $index');
 
                   await ref
                       .read(frameNotifierProvider.notifier)
                       .saveFrameIndexedSPK(
-                          idSPK: idSPK, index: index, newFrame: frame);
+                          idSPK: updateFrameProvider.idSPK,
+                          index: index,
+                          newFrame: updateFrameProvider.updateFrameList[index]);
                 })));
-
-    final isLoading = ref.watch(updateFrameNotifierProvider
-            .select((value) => value.isProcessing)) ||
-        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
       children: [

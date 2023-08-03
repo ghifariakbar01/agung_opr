@@ -39,7 +39,7 @@ class FormUpdateFrame extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 50,
+            height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: frameStr,

@@ -56,13 +56,14 @@ class SPKScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
-          'SPK List (${modeApp.when(
+          'SPK List (${modeApp.maybeWhen(
             initial: () {},
             updateFrameDummy: () => 'Update Frame Dummy',
             checkSheetLoading: () => 'CS Loading',
             checkSheetUnloading: () => 'CS Unloading',
             checkSheetGateMerak: () => 'CS Gate Merak',
             assignUnitMerak: () => 'Assign Unit Merak',
+            orElse: () {},
           )})',
         ),
         body: Padding(
@@ -125,19 +126,20 @@ class SPKScaffold extends ConsumerWidget {
                     ignoring: isSearching,
                     child: TextButton(
                       onPressed: () => modeApp.when(
-                        initial: () => {},
-                        updateFrameDummy: () => context.pushNamed(
-                            RouteNames.updateFrameNameRoute,
-                            extra: spkList[i].idSpk),
-                        checkSheetLoading: () => context
-                            .pushNamed(RouteNames.checkSheetLoadingNameRoute),
-                        checkSheetUnloading: () => context
-                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        checkSheetGateMerak: () => context
-                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        assignUnitMerak: () => context
-                            .pushNamed(RouteNames.assignUnitMerakNameRoute),
-                      ),
+                          initial: () => {},
+                          updateFrameDummy: () => context.pushNamed(
+                              RouteNames.updateFrameNameRoute,
+                              extra: spkList[i].idSpk),
+                          checkSheetLoading: () => context
+                              .pushNamed(RouteNames.checkSheetLoadingNameRoute),
+                          checkSheetUnloading: () => context.pushNamed(
+                              RouteNames.checkSheetUnloadingNameRoute),
+                          checkSheetGateMerak: () => context.pushNamed(
+                              RouteNames.checkSheetUnloadingNameRoute),
+                          assignUnitMerak: () => context
+                              .pushNamed(RouteNames.assignUnitMerakNameRoute),
+                          dataUpdateQuery: () => context
+                              .pushNamed(RouteNames.dataUpdateQueryNameRoute)),
                       style: ButtonStyle(
                           padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                       child: SPKItem(

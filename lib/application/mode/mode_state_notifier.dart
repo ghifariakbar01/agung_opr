@@ -10,7 +10,8 @@ class ModeNotifier extends StateNotifier<ModeState> {
     'CHECKSHEET CCR LOADING': ModeState.checkSheetLoading(),
     'CHECKSHEET CCR UNLOADING': ModeState.checkSheetUnloading(),
     'CHECKSHEET GATE MERAK': ModeState.checkSheetGateMerak(),
-    'ASSIGN UNIT MERAK': ModeState.assignUnitMerak()
+    'ASSIGN UNIT MERAK': ModeState.assignUnitMerak(),
+    'DATA AKAN DIUPDATE': ModeState.dataUpdateQuery()
   };
 
   void changeModeAplikasi(String modeKey) {

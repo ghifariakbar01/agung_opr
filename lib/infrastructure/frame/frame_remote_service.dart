@@ -16,6 +16,8 @@ class FrameRemoteService {
   final Map<String, String> _dioRequestNotifier;
 
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
+    const String dbName = 'opr_trs_ti_unit_test';
+
     try {
       final data = _dioRequestNotifier;
 
@@ -26,7 +28,7 @@ class FrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_unit, frame, engine, warna, no_reff_expor, id_kend_type FROM opr_trs_ti_unit WHERE id_unit IN (SELECT id_unit FROM opr_trs_spk_unit WHERE id_spk = $idSPK)",
+            "SELECT id_unit, frame, engine, warna, no_reff_expor, id_kend_type FROM $dbName WHERE id_unit IN (SELECT id_unit FROM opr_trs_spk_unit WHERE id_spk = $idSPK)",
       });
 
       final response = await _dio.post('',

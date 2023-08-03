@@ -90,6 +90,10 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
 
                     final responseLEN = frameResponse.length;
 
+                    ref
+                        .read(frameNotifierProvider.notifier)
+                        .changeFillEmptyFOSOSaveFrameList(length: responseLEN);
+
                     /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
                     ref
                         .read(updateFrameNotifierProvider.notifier)

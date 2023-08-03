@@ -14,6 +14,7 @@ import '../../shared/providers.dart';
 
 import '../../splash_page.dart';
 import '../auth/auth_notifier.dart';
+import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
 import 'route_names.dart';
@@ -85,9 +86,9 @@ class RouterNotifier extends ChangeNotifier {
               builder: (context, state) => CheckSheetUnloadingPage(),
             ),
             GoRoute(
-              name: RouteNames.assignUnitMerakName,
-              path: RouteNames.assignUnitMerakNameRoute,
-              builder: (context, state) => AssignUnitPage(),
+              name: RouteNames.dataUpdateQueryName,
+              path: RouteNames.dataUpdateQueryNameRoute,
+              builder: (context, state) => DataUpdateQueryPage(),
             ),
           ]),
     ];

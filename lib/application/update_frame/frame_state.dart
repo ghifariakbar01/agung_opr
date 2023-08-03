@@ -14,13 +14,15 @@ class FrameState with _$FrameState {
     required int selectedId,
     required bool isProcessing,
     required Option<Either<RemoteFailure, List<Frame>>> FOSOFrame,
-    required Option<Either<LocalFailure, Unit>> FOSOSaveFrame,
+    // PREVENT REBUILD : update_frame_item_middle.dart
+    required List<Option<Either<LocalFailure, Unit>>> FOSOSaveFrame,
   }) = _FrameState;
 
   factory FrameState.initial() => FrameState(
-      frameList: [],
-      selectedId: 0,
-      isProcessing: false,
-      FOSOFrame: none(),
-      FOSOSaveFrame: none());
+        frameList: [],
+        selectedId: 0,
+        isProcessing: false,
+        FOSOFrame: none(),
+        FOSOSaveFrame: [],
+      );
 }

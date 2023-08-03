@@ -17,15 +17,15 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UpdateFrameState {
   int get idSPK => throw _privateConstructorUsedError;
+  int get index => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
-  List<bool> get showErrorMessages => throw _privateConstructorUsedError;
 
   /// Hack for model value to change after tapping model
   List<TextEditingController> get modelTextController =>
       throw _privateConstructorUsedError;
   List<UpdateFrameStateSingle> get updateFrameList =>
       throw _privateConstructorUsedError;
-  Option<Either<LocalFailure, Unit>> get FOSOUpdateFrame =>
+  List<Option<Either<LocalFailure, Unit>>> get FOSOUpdateFrame =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -41,11 +41,11 @@ abstract class $UpdateFrameStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int idSPK,
+      int index,
       bool isProcessing,
-      List<bool> showErrorMessages,
       List<TextEditingController> modelTextController,
       List<UpdateFrameStateSingle> updateFrameList,
-      Option<Either<LocalFailure, Unit>> FOSOUpdateFrame});
+      List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame});
 }
 
 /// @nodoc
@@ -62,8 +62,8 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
   @override
   $Res call({
     Object? idSPK = null,
+    Object? index = null,
     Object? isProcessing = null,
-    Object? showErrorMessages = null,
     Object? modelTextController = null,
     Object? updateFrameList = null,
     Object? FOSOUpdateFrame = null,
@@ -73,14 +73,14 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
           ? _value.idSPK
           : idSPK // ignore: cast_nullable_to_non_nullable
               as int,
+      index: null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
-      showErrorMessages: null == showErrorMessages
-          ? _value.showErrorMessages
-          : showErrorMessages // ignore: cast_nullable_to_non_nullable
-              as List<bool>,
       modelTextController: null == modelTextController
           ? _value.modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
@@ -92,7 +92,7 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
       FOSOUpdateFrame: null == FOSOUpdateFrame
           ? _value.FOSOUpdateFrame
           : FOSOUpdateFrame // ignore: cast_nullable_to_non_nullable
-              as Option<Either<LocalFailure, Unit>>,
+              as List<Option<Either<LocalFailure, Unit>>>,
     ) as $Val);
   }
 }
@@ -107,11 +107,11 @@ abstract class _$$_UpdateFrameStateCopyWith<$Res>
   @useResult
   $Res call(
       {int idSPK,
+      int index,
       bool isProcessing,
-      List<bool> showErrorMessages,
       List<TextEditingController> modelTextController,
       List<UpdateFrameStateSingle> updateFrameList,
-      Option<Either<LocalFailure, Unit>> FOSOUpdateFrame});
+      List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame});
 }
 
 /// @nodoc
@@ -126,8 +126,8 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? idSPK = null,
+    Object? index = null,
     Object? isProcessing = null,
-    Object? showErrorMessages = null,
     Object? modelTextController = null,
     Object? updateFrameList = null,
     Object? FOSOUpdateFrame = null,
@@ -137,14 +137,14 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
           ? _value.idSPK
           : idSPK // ignore: cast_nullable_to_non_nullable
               as int,
+      index: null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
-      showErrorMessages: null == showErrorMessages
-          ? _value._showErrorMessages
-          : showErrorMessages // ignore: cast_nullable_to_non_nullable
-              as List<bool>,
       modelTextController: null == modelTextController
           ? _value._modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
@@ -154,9 +154,9 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
           : updateFrameList // ignore: cast_nullable_to_non_nullable
               as List<UpdateFrameStateSingle>,
       FOSOUpdateFrame: null == FOSOUpdateFrame
-          ? _value.FOSOUpdateFrame
+          ? _value._FOSOUpdateFrame
           : FOSOUpdateFrame // ignore: cast_nullable_to_non_nullable
-              as Option<Either<LocalFailure, Unit>>,
+              as List<Option<Either<LocalFailure, Unit>>>,
     ));
   }
 }
@@ -166,27 +166,21 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
 class _$_UpdateFrameState implements _UpdateFrameState {
   const _$_UpdateFrameState(
       {required this.idSPK,
+      required this.index,
       required this.isProcessing,
-      required final List<bool> showErrorMessages,
       required final List<TextEditingController> modelTextController,
       required final List<UpdateFrameStateSingle> updateFrameList,
-      required this.FOSOUpdateFrame})
-      : _showErrorMessages = showErrorMessages,
-        _modelTextController = modelTextController,
-        _updateFrameList = updateFrameList;
+      required final List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame})
+      : _modelTextController = modelTextController,
+        _updateFrameList = updateFrameList,
+        _FOSOUpdateFrame = FOSOUpdateFrame;
 
   @override
   final int idSPK;
   @override
-  final bool isProcessing;
-  final List<bool> _showErrorMessages;
+  final int index;
   @override
-  List<bool> get showErrorMessages {
-    if (_showErrorMessages is EqualUnmodifiableListView)
-      return _showErrorMessages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_showErrorMessages);
-  }
+  final bool isProcessing;
 
   /// Hack for model value to change after tapping model
   final List<TextEditingController> _modelTextController;
@@ -208,12 +202,17 @@ class _$_UpdateFrameState implements _UpdateFrameState {
     return EqualUnmodifiableListView(_updateFrameList);
   }
 
+  final List<Option<Either<LocalFailure, Unit>>> _FOSOUpdateFrame;
   @override
-  final Option<Either<LocalFailure, Unit>> FOSOUpdateFrame;
+  List<Option<Either<LocalFailure, Unit>>> get FOSOUpdateFrame {
+    if (_FOSOUpdateFrame is EqualUnmodifiableListView) return _FOSOUpdateFrame;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_FOSOUpdateFrame);
+  }
 
   @override
   String toString() {
-    return 'UpdateFrameState(idSPK: $idSPK, isProcessing: $isProcessing, showErrorMessages: $showErrorMessages, modelTextController: $modelTextController, updateFrameList: $updateFrameList, FOSOUpdateFrame: $FOSOUpdateFrame)';
+    return 'UpdateFrameState(idSPK: $idSPK, index: $index, isProcessing: $isProcessing, modelTextController: $modelTextController, updateFrameList: $updateFrameList, FOSOUpdateFrame: $FOSOUpdateFrame)';
   }
 
   @override
@@ -222,27 +221,26 @@ class _$_UpdateFrameState implements _UpdateFrameState {
         (other.runtimeType == runtimeType &&
             other is _$_UpdateFrameState &&
             (identical(other.idSPK, idSPK) || other.idSPK == idSPK) &&
+            (identical(other.index, index) || other.index == index) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
-            const DeepCollectionEquality()
-                .equals(other._showErrorMessages, _showErrorMessages) &&
             const DeepCollectionEquality()
                 .equals(other._modelTextController, _modelTextController) &&
             const DeepCollectionEquality()
                 .equals(other._updateFrameList, _updateFrameList) &&
-            (identical(other.FOSOUpdateFrame, FOSOUpdateFrame) ||
-                other.FOSOUpdateFrame == FOSOUpdateFrame));
+            const DeepCollectionEquality()
+                .equals(other._FOSOUpdateFrame, _FOSOUpdateFrame));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       idSPK,
+      index,
       isProcessing,
-      const DeepCollectionEquality().hash(_showErrorMessages),
       const DeepCollectionEquality().hash(_modelTextController),
       const DeepCollectionEquality().hash(_updateFrameList),
-      FOSOUpdateFrame);
+      const DeepCollectionEquality().hash(_FOSOUpdateFrame));
 
   @JsonKey(ignore: true)
   @override
@@ -253,20 +251,20 @@ class _$_UpdateFrameState implements _UpdateFrameState {
 
 abstract class _UpdateFrameState implements UpdateFrameState {
   const factory _UpdateFrameState(
-          {required final int idSPK,
-          required final bool isProcessing,
-          required final List<bool> showErrorMessages,
-          required final List<TextEditingController> modelTextController,
-          required final List<UpdateFrameStateSingle> updateFrameList,
-          required final Option<Either<LocalFailure, Unit>> FOSOUpdateFrame}) =
-      _$_UpdateFrameState;
+      {required final int idSPK,
+      required final int index,
+      required final bool isProcessing,
+      required final List<TextEditingController> modelTextController,
+      required final List<UpdateFrameStateSingle> updateFrameList,
+      required final List<Option<Either<LocalFailure, Unit>>>
+          FOSOUpdateFrame}) = _$_UpdateFrameState;
 
   @override
   int get idSPK;
   @override
-  bool get isProcessing;
+  int get index;
   @override
-  List<bool> get showErrorMessages;
+  bool get isProcessing;
   @override
 
   /// Hack for model value to change after tapping model
@@ -274,7 +272,7 @@ abstract class _UpdateFrameState implements UpdateFrameState {
   @override
   List<UpdateFrameStateSingle> get updateFrameList;
   @override
-  Option<Either<LocalFailure, Unit>> get FOSOUpdateFrame;
+  List<Option<Either<LocalFailure, Unit>>> get FOSOUpdateFrame;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateFrameStateCopyWith<_$_UpdateFrameState> get copyWith =>

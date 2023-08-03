@@ -20,10 +20,13 @@ class UpdateFrameItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final updateForm = ref.watch(updateFrameNotifierProvider);
+    final showErrorMessage = ref.watch(updateFrameNotifierProvider
+        .select((value) => value.updateFrameList[index].isShowError));
+
+    log('showErrorMessage INDEX $index : ${index == 1 ? showErrorMessage : ''}');
 
     return Form(
-      autovalidateMode: updateForm.showErrorMessages[index]
+      autovalidateMode: showErrorMessage
           ? AutovalidateMode.always
           : AutovalidateMode.disabled,
       child: Padding(
@@ -31,12 +34,12 @@ class UpdateFrameItem extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(width: 2, color: Palette.primaryColor)),
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(8),
           child: Column(
             children: [
               // Header
               Container(
-                height: 40,
+                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Palette.yellow,
@@ -110,9 +113,16 @@ class UpdateFrameItem extends ConsumerWidget {
                       width: 230,
                       child: VButton(
                           label: 'SIMPAN',
-                          onPressed: () => ref
-                              .read(updateFrameNotifierProvider.notifier)
-                              .updateFrame(index: index)))
+                          onPressed: () async {
+                            await ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .updateFrame(index: index);
+
+                            await ref
+                                .read(
+                                    updateFrameOfflineNotifierProvider.notifier)
+                                .CUUpdateFrameOFFLINEStatus();
+                          }))
                 ],
               )
             ],

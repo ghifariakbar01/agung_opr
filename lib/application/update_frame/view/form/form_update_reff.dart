@@ -24,13 +24,14 @@ class FormUpdateReffEXP extends ConsumerWidget {
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 50,
+            height: 70,
             width: 50,
             child: Center(
               child: Text(
                 'No. Reff Exp',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -41,7 +42,7 @@ class FormUpdateReffEXP extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 50,
+            height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: noReffStr,

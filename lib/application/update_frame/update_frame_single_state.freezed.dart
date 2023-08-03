@@ -23,6 +23,7 @@ mixin _$UpdateFrameStateSingle {
   NoReffEXP get noReff => throw _privateConstructorUsedError;
   SPPDC get sppdc => throw _privateConstructorUsedError;
   IDKendType get idKendType => throw _privateConstructorUsedError;
+  bool get isShowError => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateFrameStateSingleCopyWith<UpdateFrameStateSingle> get copyWith =>
@@ -42,7 +43,8 @@ abstract class $UpdateFrameStateSingleCopyWith<$Res> {
       WarnaUnit warna,
       NoReffEXP noReff,
       SPPDC sppdc,
-      IDKendType idKendType});
+      IDKendType idKendType,
+      bool isShowError});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
     Object? noReff = null,
     Object? sppdc = null,
     Object? idKendType = null,
+    Object? isShowError = null,
   }) {
     return _then(_value.copyWith(
       idUnit: null == idUnit
@@ -96,6 +99,10 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
+      isShowError: null == isShowError
+          ? _value.isShowError
+          : isShowError // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -115,7 +122,8 @@ abstract class _$$_UpdateFrameStateSingleCopyWith<$Res>
       WarnaUnit warna,
       NoReffEXP noReff,
       SPPDC sppdc,
-      IDKendType idKendType});
+      IDKendType idKendType,
+      bool isShowError});
 }
 
 /// @nodoc
@@ -137,6 +145,7 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
     Object? noReff = null,
     Object? sppdc = null,
     Object? idKendType = null,
+    Object? isShowError = null,
   }) {
     return _then(_$_UpdateFrameStateSingle(
       idUnit: null == idUnit
@@ -167,6 +176,10 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
+      isShowError: null == isShowError
+          ? _value.isShowError
+          : isShowError // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -181,7 +194,8 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
       required this.warna,
       required this.noReff,
       required this.sppdc,
-      required this.idKendType});
+      required this.idKendType,
+      required this.isShowError});
 
   @override
   final IDUnit idUnit;
@@ -197,10 +211,12 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
   final SPPDC sppdc;
   @override
   final IDKendType idKendType;
+  @override
+  final bool isShowError;
 
   @override
   String toString() {
-    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, noReff: $noReff, sppdc: $sppdc, idKendType: $idKendType)';
+    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, noReff: $noReff, sppdc: $sppdc, idKendType: $idKendType, isShowError: $isShowError)';
   }
 
   @override
@@ -215,12 +231,14 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
             (identical(other.noReff, noReff) || other.noReff == noReff) &&
             (identical(other.sppdc, sppdc) || other.sppdc == sppdc) &&
             (identical(other.idKendType, idKendType) ||
-                other.idKendType == idKendType));
+                other.idKendType == idKendType) &&
+            (identical(other.isShowError, isShowError) ||
+                other.isShowError == isShowError));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, idUnit, frame, engine, warna, noReff, sppdc, idKendType);
+  int get hashCode => Object.hash(runtimeType, idUnit, frame, engine, warna,
+      noReff, sppdc, idKendType, isShowError);
 
   @JsonKey(ignore: true)
   @override
@@ -238,7 +256,8 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
       required final WarnaUnit warna,
       required final NoReffEXP noReff,
       required final SPPDC sppdc,
-      required final IDKendType idKendType}) = _$_UpdateFrameStateSingle;
+      required final IDKendType idKendType,
+      required final bool isShowError}) = _$_UpdateFrameStateSingle;
 
   @override
   IDUnit get idUnit;
@@ -254,6 +273,8 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
   SPPDC get sppdc;
   @override
   IDKendType get idKendType;
+  @override
+  bool get isShowError;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateFrameStateSingleCopyWith<_$_UpdateFrameStateSingle> get copyWith =>

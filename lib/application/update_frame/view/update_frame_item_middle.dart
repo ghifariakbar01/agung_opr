@@ -18,7 +18,7 @@ class UpdateFrameItemMiddle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<Option<Either<LocalFailure, Unit>>>(
         frameNotifierProvider.select(
-          (state) => state.FOSOSaveFrame,
+          (state) => state.FOSOSaveFrame[index],
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},

@@ -29,7 +29,9 @@ class FrameNotifier extends StateNotifier<FrameState> {
       required UpdateFrameStateSingle newFrame}) async {
     final Either<LocalFailure, Unit> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOSaveFrame: none());
+    state = state.copyWith(isProcessing: true);
+
+    this._changeFOSOSaveFrame(index: index, FOS: none());
 
     final idUnitStr = newFrame.idUnit.getOrCrash();
     final idUnitInt = int.parse(idUnitStr);
@@ -51,7 +53,9 @@ class FrameNotifier extends StateNotifier<FrameState> {
     FOS = await _repository.saveFrameIndexedSPK(
         idSPK: idSPK, index: index, newFrame: frame);
 
-    state = state.copyWith(isProcessing: false, FOSOSaveFrame: optionOf(FOS));
+    state = state.copyWith(isProcessing: false);
+
+    this._changeFOSOSaveFrame(index: index, FOS: optionOf(FOS));
   }
 
   Future<void> getFrameListOFFLINE({required int idSPK}) async {
@@ -66,5 +70,26 @@ class FrameNotifier extends StateNotifier<FrameState> {
 
   void changeFrameList(List<Frame> frameList) {
     state = state.copyWith(frameList: [...frameList]);
+  }
+
+  void changeFillEmptyFOSOSaveFrameList({required int length}) {
+    Either<LocalFailure, Unit>? FOS;
+
+    final generateList = List.generate(length, (index) => optionOf(FOS));
+
+    state = state.copyWith(FOSOSaveFrame: generateList);
+  }
+
+  void _changeFOSOSaveFrame(
+      {required Option<Either<LocalFailure, Unit>> FOS, required int index}) {
+    final list = [...state.FOSOSaveFrame]; // Create a copy of the list
+
+    final Option<Either<LocalFailure, Unit>> updatedElement = FOS;
+
+    // Update the element at the given index
+    list[index] = updatedElement;
+
+    // Update the state with the new list
+    state = state.copyWith(FOSOSaveFrame: list);
   }
 }

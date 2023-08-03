@@ -53,26 +53,21 @@ class UpdateFrameRepository {
       final savedStrings = await _storage.read();
       final isStorageSaved = savedStrings != null;
 
-      switch (isStorageSaved) {
-        case true:
-          () async {
-            debugger(message: 'CALLED');
-            final parsedResponse =
-                jsonDecode(savedStrings!) as Map<String, dynamic>;
+      if (isStorageSaved) {
+        final parsedResponse =
+            jsonDecode(savedStrings!) as Map<String, dynamic>;
 
-            return right(convertToNestedMap(parsedResponse));
-          }();
-          break;
-        case false:
-          () async {
-            debugger(message: 'CALLED');
+        final responseDynamic = convertToNestedMap(parsedResponse);
 
-            return right({});
-          }();
+        final responseString = convertDynamicToString(responseDynamic);
+
+        return right(responseString);
+      } else {
+        debugger(message: 'CALLED');
+        log('isStorageSaved: NOT OK');
+
+        return right({});
       }
-      debugger(message: 'CALLED');
-
-      return right({});
     } on FormatException catch (e) {
       return left(LocalFailure.format(e.toString()));
     } on PlatformException {
@@ -91,6 +86,9 @@ class UpdateFrameRepository {
         queryMap.values.forEach((mapOfTIUnitQuery) {
           mapOfTIUnitQuery.values.forEach((query) async {
             // RUN QUERY
+            log('QUERY: ${query.runtimeType}');
+            debugger(message: 'called');
+
             await _remoteService.updateFrameByQuery(query: query);
 
             // DELETE SAVED QUERY
@@ -145,11 +143,13 @@ class UpdateFrameRepository {
             }();
             break;
           case false:
-            return throw LocalFailure.empty();
+            throw LocalFailure.empty();
         }
+      } else {
+        throw LocalFailure.empty();
       }
 
-      throw LocalFailure.empty();
+      return unit;
     } on RangeError catch (e) {
       throw RangeError(e);
     } on FormatException catch (e) {
@@ -200,7 +200,7 @@ class UpdateFrameRepository {
         idSPK: {idUnitStr: command}
       };
 
-      await GETAndADDFrameSPKInMap(newFrameMap: frameSaveMap);
+      await this._GETAndADDFrameSPKInMap(newFrameMap: frameSaveMap);
 
       return right(unit);
     } on FormatException catch (e) {
@@ -213,7 +213,7 @@ class UpdateFrameRepository {
   }
 
   // IF FRAME UPDATE LIST HAS SAVED DATA IN _storage
-  Future<Either<LocalFailure, Unit>> GETAndADDFrameSPKInMap(
+  Future<Either<LocalFailure, Unit>> _GETAndADDFrameSPKInMap(
       {required Map<String, Map<String, String>> newFrameMap}) async {
     try {
       final savedStrings = await _storage.read();
@@ -279,6 +279,10 @@ class UpdateFrameRepository {
 
       return left(LocalFailure.empty());
     } on FormatException catch (e) {
+      debugger(message: 'called');
+
+      log('ERROR UPDATE FRAME $e');
+
       return left(LocalFailure.format(e.message));
     } on JsonUnsupportedObjectError {
       return left(LocalFailure.format('JsonUnsupportedObjectError'));
@@ -303,14 +307,45 @@ class UpdateFrameRepository {
     }
   }
 
-  Map<String, Map<String, dynamic>> convertToNestedMap(
+  Map<String, Map<String, String>> convertToNestedMap(
       Map<String, dynamic> map) {
-    Map<String, Map<String, dynamic>> nestedMap = {};
+    Map<String, Map<String, String>> nestedMap = {};
+    // 1. map IS
+    // {159103: {715723: UPDATE opr_trs_ti_unit_test SET frame = 'MK2NCXPANPJ001185', engine = 'BANDA', warna = 'warna coklat', no_reff_expor = 'asdfasdf', id_kend_type = '591' WHERE id_unit = 715723}}
 
-    map.forEach((key, value) {
-      nestedMap[key] = {key: value};
+    map.entries.forEach((element) {
+      final response = element.value as Map<String, dynamic>;
+
+      final frameList = response.entries;
+
+      final Map<String, String> frameMap = {};
+
+      frameList.forEach((element) {
+        frameMap.addAll({element.key: element.value});
+      });
+
+      nestedMap.addAll({element.key: frameMap});
     });
 
     return nestedMap;
+  }
+
+  Map<String, Map<String, String>> convertDynamicToString(
+      Map<String, Map<String, dynamic>> map) {
+    Map<String, Map<String, String>> newMap = {};
+
+    map.forEach((outerKey, innerMap) {
+      Map<String, String> newInnerMap = {};
+      innerMap.forEach((innerKey, value) {
+        if (value is String) {
+          newInnerMap[innerKey] = value;
+        } else {
+          newInnerMap[innerKey] = value.toString();
+        }
+      });
+      newMap[outerKey] = newInnerMap;
+    });
+
+    return newMap;
   }
 }

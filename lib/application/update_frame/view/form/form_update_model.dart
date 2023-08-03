@@ -28,13 +28,14 @@ class FormUpdateModel extends ConsumerWidget {
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 40,
+            height: 70,
             width: 50,
             child: Center(
               child: Text(
                 'Model',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -45,7 +46,7 @@ class FormUpdateModel extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 55,
+            height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextButton(
               onPressed: () async {
@@ -60,6 +61,8 @@ class FormUpdateModel extends ConsumerWidget {
                   frame.modelTextController[index].text = id;
                 }
               },
+              style: ButtonStyle(
+                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(

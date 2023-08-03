@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../../widgets/v_bottomnav.dart';
 import 'cranny_item.dart';
@@ -16,28 +20,52 @@ final List<String> labels = [
   'ASSIGN UNIT MERAK',
 ];
 
-class CrannyScaffold extends ConsumerWidget {
+class CrannyScaffold extends ConsumerStatefulWidget {
   const CrannyScaffold();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CrannyScaffold> createState() => _CrannyScaffoldState();
+}
+
+class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
+  @override
+  Widget build(BuildContext context) {
+    final updateFrameOfflineOrOnline =
+        ref.watch(updateFrameOfflineNotifierProvider);
+
     return Scaffold(
       appBar: VAppBar(
         'CCR Cranny',
       ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-              itemCount: labels.length,
-              itemBuilder: (context, index) => TextButton(
-                  onPressed: () async {
-                    ref
-                        .read(modeNotifierProvider.notifier)
-                        .changeModeAplikasi(labels[index]);
+          child: ListView(
+            children: [
+              for (final label in labels) ...[
+                TextButton(
+                    onPressed: () async {
+                      ref
+                          .read(modeNotifierProvider.notifier)
+                          .changeModeAplikasi(label);
 
-                    await context.pushNamed(RouteNames.spkNameRoute);
-                  },
-                  child: CrannyItem(label: labels[index])))),
+                      await context.pushNamed(RouteNames.spkNameRoute);
+                    },
+                    child: CrannyItem(label: label))
+              ],
+              updateFrameOfflineOrOnline.maybeWhen(
+                  hasOfflineStorage: () => TextButton(
+                      onPressed: () async {
+                        ref
+                            .read(modeNotifierProvider.notifier)
+                            .changeModeAplikasi('DATA AKAN DIUPDATE');
+
+                        await context
+                            .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                      },
+                      child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
+                  orElse: () => Container())
+            ],
+          )),
       drawer: Drawer(),
       bottomNavigationBar: VBottomNav(),
     );

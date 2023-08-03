@@ -24,13 +24,14 @@ class FormUpdateSPPDC extends ConsumerWidget {
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 40,
+            height: 70,
             width: 50,
             child: Center(
               child: Text(
                 'SPPDC',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -41,7 +42,7 @@ class FormUpdateSPPDC extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               initialValue: sppdcStr,
