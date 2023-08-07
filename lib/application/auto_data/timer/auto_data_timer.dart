@@ -22,7 +22,7 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
       } else {
         _resetTimer();
         await onTimerRanOut();
-        startTimer(10, onTimerRanOut: onTimerRanOut);
+        startTimer(30, onTimerRanOut: onTimerRanOut);
       }
     });
   }

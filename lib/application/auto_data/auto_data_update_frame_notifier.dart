@@ -34,8 +34,15 @@ class AutoDataUpdateFrameNotifier
     bool isEmpty = false;
 
     for (final item in list) {
-      item.value.isNotEmpty ? isEmpty = false : isEmpty = true;
+      if (item.value.isNotEmpty) {
+        log('ITEM VALUE: ${item.value}');
+        isEmpty = false;
+      } else {
+        isEmpty = true;
+      }
     }
+
+    log('list is $list');
 
     return isEmpty;
   }
