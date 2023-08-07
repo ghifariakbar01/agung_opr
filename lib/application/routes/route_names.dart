@@ -17,6 +17,9 @@ class RouteNames {
   static const updateFrameNameRoute = 'updateFrame';
   static const updateFrameName = 'updateFrame';
 
+  static const checkSheetUnitNameRoute = 'checkSheetUnit';
+  static const checkSheetUnitName = 'checkSheetUnit';
+
   static const checkSheetLoadingNameRoute = 'checkSheetLoading';
   static const checkSheetLoadingName = 'checkSheetLoading';
 
@@ -28,6 +31,9 @@ class RouteNames {
 
   static const modelNameRoute = 'model';
   static const modelName = 'model';
+
+  static const supirNameRoute = 'supir';
+  static const supirName = 'supir';
 
   static const dataUpdateQueryNameRoute = 'dataUpdateQuery';
   static const dataUpdateQueryName = 'dataUpdateQuery';
