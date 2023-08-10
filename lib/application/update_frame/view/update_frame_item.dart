@@ -38,8 +38,6 @@ class UpdateFrameItem extends ConsumerWidget {
 
     final idUnitStr = idUnit.getOrLeave('');
 
-    log('showErrorMessage INDEX $index : ${index == 1 ? showErrorMessage : ''}');
-
     return Form(
       autovalidateMode: showErrorMessage
           ? AutovalidateMode.always

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
@@ -143,9 +144,11 @@ class UpdateCSUFrameRepository {
 
   Future<Either<RemoteFailure, List<CSUItems>>> getCSUItems() async {
     try {
+      debugger(message: 'called');
+
       final listCSUItems = await _remoteService.getCSUItems();
 
-      await this._SAVECSUItems(csuItemsParam: listCSUItems);
+      // await this._SAVECSUItems(csuItemsParam: listCSUItems);
 
       return right(listCSUItems);
     } on RestApiException catch (e) {
@@ -161,12 +164,94 @@ class UpdateCSUFrameRepository {
     }
   }
 
-  // SAVE CSU FRAME TRIPS IN STORAGE
+  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      getCSUJenisItems() async {
+    try {
+      debugger(message: 'called');
+
+      final listCSUJenisItems = await _remoteService.getCSUJenisItems();
+
+      // await this._SAVECSUJenisItems(csuJenisItemsParam: listCSUJenisItems);
+
+      return right(listCSUJenisItems);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      getCSUPenyebabItems() async {
+    try {
+      debugger(message: 'called');
+
+      final listCsuPenyebabItemsParam =
+          await _remoteService.getCSUPenyebabItems();
+
+      // await this._SAVECSUPenyebabItems(
+      //     csuPenyebabItemsParam: listCsuPenyebabItemsParam);
+
+      return right(listCsuPenyebabItemsParam);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  // SAVE CSU ITEMS IN STORAGE
   Future<Unit> _SAVECSUItems({required List<CSUItems> csuItemsParam}) async {
     final isNewFrameOK = csuItemsParam.isNotEmpty;
 
     if (isNewFrameOK) {
       final json = listCSUItemsToJsonSavable(csuItemsParam);
+
+      await _storage.save(json);
+    } else {
+      throw FormatException(
+          'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
+    }
+
+    return unit;
+  }
+
+  // SAVE CSU JENIS ITEM IN STORAGE
+  Future<Unit> _SAVECSUJenisItems(
+      {required List<CSUJenisPenyebabItem> csuJenisItemsParam}) async {
+    final isNewFrameOK = csuJenisItemsParam.isNotEmpty;
+
+    if (isNewFrameOK) {
+      final json = listCSUJenisPenyebabItemToJsonSavable(csuJenisItemsParam);
+
+      await _storage.save(json);
+    } else {
+      throw FormatException(
+          'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
+    }
+
+    return unit;
+  }
+
+  // SAVE CSU PENYEBAB ITEM IN STORAGE
+  Future<Unit> _SAVECSUPenyebabItems(
+      {required List<CSUJenisPenyebabItem> csuPenyebabItemsParam}) async {
+    final isNewFrameOK = csuPenyebabItemsParam.isNotEmpty;
+
+    if (isNewFrameOK) {
+      final json = listCSUJenisPenyebabItemToJsonSavable(csuPenyebabItemsParam);
 
       await _storage.save(json);
     } else {

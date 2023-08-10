@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_form_state.dart';
+import 'package:agung_opr/application/update_csu/state/update_csu_ng_state.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -52,19 +54,58 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   Future<void> getCSUItems() async {
     Either<RemoteFailure, List<CSUItems>>? FOS;
 
-    if (isValid()) {
-      state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
+    state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
 
-      debugger(message: 'called');
+    debugger(message: 'called');
 
-      FOS = await _repository.getCSUItems();
+    FOS = await _repository.getCSUItems();
 
-      state = state.copyWith(
-          isProcessing: false, FOSOUpdateCSUItems: optionOf(FOS));
-    } else {
-      state = state.copyWith(
-          isProcessing: false, FOSOUpdateCSUItems: optionOf(FOS));
-    }
+    state =
+        state.copyWith(isProcessing: false, FOSOUpdateCSUItems: optionOf(FOS));
+  }
+
+  Future<void> getCSUJenisItems() async {
+    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
+
+    debugger(message: 'called');
+
+    FOS = await _repository.getCSUJenisItems();
+
+    state = state.copyWith(
+        isProcessing: false, FOSOUpdateCSUJenisItems: optionOf(FOS));
+  }
+
+  Future<void> getCSUPenyebabItems() async {
+    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
+
+    state =
+        state.copyWith(isProcessing: true, FOSOUpdateCSUPenyebabItems: none());
+
+    debugger(message: 'called');
+
+    FOS = await _repository.getCSUPenyebabItems();
+
+    state = state.copyWith(
+        isProcessing: false, FOSOUpdateCSUPenyebabItems: optionOf(FOS));
+  }
+
+  void changeCSUPenyebabItems(List<CSUJenisPenyebabItem> csuPenyebabItems) {
+    state = state.copyWith(
+      csuPenyebabItems: [
+        CSUJenisPenyebabItem.initialPenyebab(),
+        ...csuPenyebabItems
+      ],
+      FOSOUpdateCSUItems: none(),
+    );
+  }
+
+  void changeCSUJenisItems(List<CSUJenisPenyebabItem> csuJenisItems) {
+    state = state.copyWith(
+      csuJenisItems: [CSUJenisPenyebabItem.initial(), ...csuJenisItems],
+      FOSOUpdateCSUJenisItems: none(),
+    );
   }
 
   void changeIsNG({required bool isNG, required int index}) {
@@ -76,6 +117,36 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     // Update the state with the new list
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(isNG: list));
+  }
+
+  void changeNGJenis({required int id, required int index}) {
+    final list = [
+      ...state.updateFrameList.ngStates
+    ]; // Create a copy of the list
+
+    final elementAt = list.elementAt(index).copyWith(idJenis: id);
+
+    // Update the element at the given index
+    list[index] = elementAt;
+
+    // Update the state with the new list
+    state = state.copyWith(
+        updateFrameList: state.updateFrameList.copyWith(ngStates: list));
+  }
+
+  void changeNGPenyebab({required int id, required int index}) {
+    final list = [
+      ...state.updateFrameList.ngStates
+    ]; // Create a copy of the list
+
+    final elementAt = list.elementAt(index).copyWith(idPenyebab: id);
+
+    // Update the element at the given index
+    list[index] = elementAt;
+
+    // Update the state with the new list
+    state = state.copyWith(
+        updateFrameList: state.updateFrameList.copyWith(ngStates: list));
   }
 
   void changeCSUItems(List<CSUItems> csuItems) {
@@ -90,6 +161,13 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(isNG: generateIsNG));
+
+    final generateNGStates =
+        List.generate(length, (index) => UpdateCSUNGState.initial());
+
+    state = state.copyWith(
+        updateFrameList:
+            state.updateFrameList.copyWith(ngStates: generateNGStates));
 
     debugger(message: 'called');
   }

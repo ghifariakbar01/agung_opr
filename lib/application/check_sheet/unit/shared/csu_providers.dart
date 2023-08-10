@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../infrastructure/cache_storage/csu_frame_storage.dart';
-import '../../../../infrastructure/cache_storage/csu_trips_frame_storage.dart';
+import '../../../../infrastructure/cache_storage/csu/csu_frame_storage.dart';
+import '../../../../infrastructure/cache_storage/csu/csu_trips_frame_storage.dart';
 import '../../../../infrastructure/cache_storage/update_csu_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
@@ -30,7 +30,7 @@ final csuFrameStorage = Provider<CredentialsStorage>(
 );
 
 final csuFrameTripsStorage = Provider<CredentialsStorage>(
-  (ref) => CSUFTripsrameStorage(ref.watch(flutterSecureStorageProvider)),
+  (ref) => CSUFTripsFrameStorage(ref.watch(flutterSecureStorageProvider)),
 );
 
 final csuFrameRemoteServiceProvider = Provider(

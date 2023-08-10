@@ -19,8 +19,6 @@ class FormUpdateEngine extends ConsumerWidget {
 
     final engineStr = engine.getOrLeave('');
 
-    log('engineStr $engineStr');
-
     final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(

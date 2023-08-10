@@ -19,14 +19,22 @@ mixin _$UpdateCSUState {
   int get idUnit => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
 
-  /// Hack for form value to change after tapping form
+  ///
   UpdateCSUFrameStateSingle get updateFrameList =>
       throw _privateConstructorUsedError;
   List<CSUItems> get csuItems => throw _privateConstructorUsedError;
+  List<CSUJenisPenyebabItem> get csuJenisItems =>
+      throw _privateConstructorUsedError;
+  List<CSUJenisPenyebabItem> get csuPenyebabItems =>
+      throw _privateConstructorUsedError; //
   Option<Either<LocalFailure, Unit>> get FOSOUpdateCSU =>
       throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<CSUItems>>> get FOSOUpdateCSUItems =>
       throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      get FOSOUpdateCSUJenisItems => throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      get FOSOUpdateCSUPenyebabItems => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateCSUStateCopyWith<UpdateCSUState> get copyWith =>
@@ -44,8 +52,14 @@ abstract class $UpdateCSUStateCopyWith<$Res> {
       bool isProcessing,
       UpdateCSUFrameStateSingle updateFrameList,
       List<CSUItems> csuItems,
+      List<CSUJenisPenyebabItem> csuJenisItems,
+      List<CSUJenisPenyebabItem> csuPenyebabItems,
       Option<Either<LocalFailure, Unit>> FOSOUpdateCSU,
-      Option<Either<RemoteFailure, List<CSUItems>>> FOSOUpdateCSUItems});
+      Option<Either<RemoteFailure, List<CSUItems>>> FOSOUpdateCSUItems,
+      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUJenisItems,
+      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUPenyebabItems});
 
   $UpdateCSUFrameStateSingleCopyWith<$Res> get updateFrameList;
 }
@@ -67,8 +81,12 @@ class _$UpdateCSUStateCopyWithImpl<$Res, $Val extends UpdateCSUState>
     Object? isProcessing = null,
     Object? updateFrameList = null,
     Object? csuItems = null,
+    Object? csuJenisItems = null,
+    Object? csuPenyebabItems = null,
     Object? FOSOUpdateCSU = null,
     Object? FOSOUpdateCSUItems = null,
+    Object? FOSOUpdateCSUJenisItems = null,
+    Object? FOSOUpdateCSUPenyebabItems = null,
   }) {
     return _then(_value.copyWith(
       idUnit: null == idUnit
@@ -87,6 +105,14 @@ class _$UpdateCSUStateCopyWithImpl<$Res, $Val extends UpdateCSUState>
           ? _value.csuItems
           : csuItems // ignore: cast_nullable_to_non_nullable
               as List<CSUItems>,
+      csuJenisItems: null == csuJenisItems
+          ? _value.csuJenisItems
+          : csuJenisItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUJenisPenyebabItem>,
+      csuPenyebabItems: null == csuPenyebabItems
+          ? _value.csuPenyebabItems
+          : csuPenyebabItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUJenisPenyebabItem>,
       FOSOUpdateCSU: null == FOSOUpdateCSU
           ? _value.FOSOUpdateCSU
           : FOSOUpdateCSU // ignore: cast_nullable_to_non_nullable
@@ -95,6 +121,14 @@ class _$UpdateCSUStateCopyWithImpl<$Res, $Val extends UpdateCSUState>
           ? _value.FOSOUpdateCSUItems
           : FOSOUpdateCSUItems // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUItems>>>,
+      FOSOUpdateCSUJenisItems: null == FOSOUpdateCSUJenisItems
+          ? _value.FOSOUpdateCSUJenisItems
+          : FOSOUpdateCSUJenisItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
+      FOSOUpdateCSUPenyebabItems: null == FOSOUpdateCSUPenyebabItems
+          ? _value.FOSOUpdateCSUPenyebabItems
+          : FOSOUpdateCSUPenyebabItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
     ) as $Val);
   }
 
@@ -121,8 +155,14 @@ abstract class _$$_UpdateCSUStateCopyWith<$Res>
       bool isProcessing,
       UpdateCSUFrameStateSingle updateFrameList,
       List<CSUItems> csuItems,
+      List<CSUJenisPenyebabItem> csuJenisItems,
+      List<CSUJenisPenyebabItem> csuPenyebabItems,
       Option<Either<LocalFailure, Unit>> FOSOUpdateCSU,
-      Option<Either<RemoteFailure, List<CSUItems>>> FOSOUpdateCSUItems});
+      Option<Either<RemoteFailure, List<CSUItems>>> FOSOUpdateCSUItems,
+      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUJenisItems,
+      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUPenyebabItems});
 
   @override
   $UpdateCSUFrameStateSingleCopyWith<$Res> get updateFrameList;
@@ -143,8 +183,12 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
     Object? isProcessing = null,
     Object? updateFrameList = null,
     Object? csuItems = null,
+    Object? csuJenisItems = null,
+    Object? csuPenyebabItems = null,
     Object? FOSOUpdateCSU = null,
     Object? FOSOUpdateCSUItems = null,
+    Object? FOSOUpdateCSUJenisItems = null,
+    Object? FOSOUpdateCSUPenyebabItems = null,
   }) {
     return _then(_$_UpdateCSUState(
       idUnit: null == idUnit
@@ -163,6 +207,14 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
           ? _value._csuItems
           : csuItems // ignore: cast_nullable_to_non_nullable
               as List<CSUItems>,
+      csuJenisItems: null == csuJenisItems
+          ? _value._csuJenisItems
+          : csuJenisItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUJenisPenyebabItem>,
+      csuPenyebabItems: null == csuPenyebabItems
+          ? _value._csuPenyebabItems
+          : csuPenyebabItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUJenisPenyebabItem>,
       FOSOUpdateCSU: null == FOSOUpdateCSU
           ? _value.FOSOUpdateCSU
           : FOSOUpdateCSU // ignore: cast_nullable_to_non_nullable
@@ -171,6 +223,14 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
           ? _value.FOSOUpdateCSUItems
           : FOSOUpdateCSUItems // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUItems>>>,
+      FOSOUpdateCSUJenisItems: null == FOSOUpdateCSUJenisItems
+          ? _value.FOSOUpdateCSUJenisItems
+          : FOSOUpdateCSUJenisItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
+      FOSOUpdateCSUPenyebabItems: null == FOSOUpdateCSUPenyebabItems
+          ? _value.FOSOUpdateCSUPenyebabItems
+          : FOSOUpdateCSUPenyebabItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
     ));
   }
 }
@@ -183,16 +243,22 @@ class _$_UpdateCSUState implements _UpdateCSUState {
       required this.isProcessing,
       required this.updateFrameList,
       required final List<CSUItems> csuItems,
+      required final List<CSUJenisPenyebabItem> csuJenisItems,
+      required final List<CSUJenisPenyebabItem> csuPenyebabItems,
       required this.FOSOUpdateCSU,
-      required this.FOSOUpdateCSUItems})
-      : _csuItems = csuItems;
+      required this.FOSOUpdateCSUItems,
+      required this.FOSOUpdateCSUJenisItems,
+      required this.FOSOUpdateCSUPenyebabItems})
+      : _csuItems = csuItems,
+        _csuJenisItems = csuJenisItems,
+        _csuPenyebabItems = csuPenyebabItems;
 
   @override
   final int idUnit;
   @override
   final bool isProcessing;
 
-  /// Hack for form value to change after tapping form
+  ///
   @override
   final UpdateCSUFrameStateSingle updateFrameList;
   final List<CSUItems> _csuItems;
@@ -203,14 +269,38 @@ class _$_UpdateCSUState implements _UpdateCSUState {
     return EqualUnmodifiableListView(_csuItems);
   }
 
+  final List<CSUJenisPenyebabItem> _csuJenisItems;
+  @override
+  List<CSUJenisPenyebabItem> get csuJenisItems {
+    if (_csuJenisItems is EqualUnmodifiableListView) return _csuJenisItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_csuJenisItems);
+  }
+
+  final List<CSUJenisPenyebabItem> _csuPenyebabItems;
+  @override
+  List<CSUJenisPenyebabItem> get csuPenyebabItems {
+    if (_csuPenyebabItems is EqualUnmodifiableListView)
+      return _csuPenyebabItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_csuPenyebabItems);
+  }
+
+//
   @override
   final Option<Either<LocalFailure, Unit>> FOSOUpdateCSU;
   @override
   final Option<Either<RemoteFailure, List<CSUItems>>> FOSOUpdateCSUItems;
+  @override
+  final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      FOSOUpdateCSUJenisItems;
+  @override
+  final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      FOSOUpdateCSUPenyebabItems;
 
   @override
   String toString() {
-    return 'UpdateCSUState(idUnit: $idUnit, isProcessing: $isProcessing, updateFrameList: $updateFrameList, csuItems: $csuItems, FOSOUpdateCSU: $FOSOUpdateCSU, FOSOUpdateCSUItems: $FOSOUpdateCSUItems)';
+    return 'UpdateCSUState(idUnit: $idUnit, isProcessing: $isProcessing, updateFrameList: $updateFrameList, csuItems: $csuItems, csuJenisItems: $csuJenisItems, csuPenyebabItems: $csuPenyebabItems, FOSOUpdateCSU: $FOSOUpdateCSU, FOSOUpdateCSUItems: $FOSOUpdateCSUItems, FOSOUpdateCSUJenisItems: $FOSOUpdateCSUJenisItems, FOSOUpdateCSUPenyebabItems: $FOSOUpdateCSUPenyebabItems)';
   }
 
   @override
@@ -224,10 +314,21 @@ class _$_UpdateCSUState implements _UpdateCSUState {
             (identical(other.updateFrameList, updateFrameList) ||
                 other.updateFrameList == updateFrameList) &&
             const DeepCollectionEquality().equals(other._csuItems, _csuItems) &&
+            const DeepCollectionEquality()
+                .equals(other._csuJenisItems, _csuJenisItems) &&
+            const DeepCollectionEquality()
+                .equals(other._csuPenyebabItems, _csuPenyebabItems) &&
             (identical(other.FOSOUpdateCSU, FOSOUpdateCSU) ||
                 other.FOSOUpdateCSU == FOSOUpdateCSU) &&
             (identical(other.FOSOUpdateCSUItems, FOSOUpdateCSUItems) ||
-                other.FOSOUpdateCSUItems == FOSOUpdateCSUItems));
+                other.FOSOUpdateCSUItems == FOSOUpdateCSUItems) &&
+            (identical(
+                    other.FOSOUpdateCSUJenisItems, FOSOUpdateCSUJenisItems) ||
+                other.FOSOUpdateCSUJenisItems == FOSOUpdateCSUJenisItems) &&
+            (identical(other.FOSOUpdateCSUPenyebabItems,
+                    FOSOUpdateCSUPenyebabItems) ||
+                other.FOSOUpdateCSUPenyebabItems ==
+                    FOSOUpdateCSUPenyebabItems));
   }
 
   @override
@@ -237,8 +338,12 @@ class _$_UpdateCSUState implements _UpdateCSUState {
       isProcessing,
       updateFrameList,
       const DeepCollectionEquality().hash(_csuItems),
+      const DeepCollectionEquality().hash(_csuJenisItems),
+      const DeepCollectionEquality().hash(_csuPenyebabItems),
       FOSOUpdateCSU,
-      FOSOUpdateCSUItems);
+      FOSOUpdateCSUItems,
+      FOSOUpdateCSUJenisItems,
+      FOSOUpdateCSUPenyebabItems);
 
   @JsonKey(ignore: true)
   @override
@@ -253,9 +358,15 @@ abstract class _UpdateCSUState implements UpdateCSUState {
       required final bool isProcessing,
       required final UpdateCSUFrameStateSingle updateFrameList,
       required final List<CSUItems> csuItems,
+      required final List<CSUJenisPenyebabItem> csuJenisItems,
+      required final List<CSUJenisPenyebabItem> csuPenyebabItems,
       required final Option<Either<LocalFailure, Unit>> FOSOUpdateCSU,
       required final Option<Either<RemoteFailure, List<CSUItems>>>
-          FOSOUpdateCSUItems}) = _$_UpdateCSUState;
+          FOSOUpdateCSUItems,
+      required final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUJenisItems,
+      required final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+          FOSOUpdateCSUPenyebabItems}) = _$_UpdateCSUState;
 
   @override
   int get idUnit;
@@ -263,14 +374,24 @@ abstract class _UpdateCSUState implements UpdateCSUState {
   bool get isProcessing;
   @override
 
-  /// Hack for form value to change after tapping form
+  ///
   UpdateCSUFrameStateSingle get updateFrameList;
   @override
   List<CSUItems> get csuItems;
   @override
+  List<CSUJenisPenyebabItem> get csuJenisItems;
+  @override
+  List<CSUJenisPenyebabItem> get csuPenyebabItems;
+  @override //
   Option<Either<LocalFailure, Unit>> get FOSOUpdateCSU;
   @override
   Option<Either<RemoteFailure, List<CSUItems>>> get FOSOUpdateCSUItems;
+  @override
+  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      get FOSOUpdateCSUJenisItems;
+  @override
+  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      get FOSOUpdateCSUPenyebabItems;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateCSUStateCopyWith<_$_UpdateCSUState> get copyWith =>

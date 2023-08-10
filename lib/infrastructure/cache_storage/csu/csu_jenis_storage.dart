@@ -1,13 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../credentials_storage.dart';
+import '../../credentials_storage.dart';
 
-class CSUFTripsrameStorage implements CredentialsStorage {
-  CSUFTripsrameStorage(this._storage);
+class CSUJenisStorage implements CredentialsStorage {
+  CSUJenisStorage(this._storage);
 
   final FlutterSecureStorage _storage;
 
-  static const _key = 'csu_frame_trips_storage';
+  static const _key = 'csu_jenis_storage';
 
   String? _cachedCredentials;
 

@@ -1,7 +1,11 @@
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 import 'package:agung_opr/style/style.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'csu_item_ok_or_ng.dart';
 
 class CheckSheetUnitItemForm extends ConsumerWidget {
   const CheckSheetUnitItemForm({
@@ -14,106 +18,112 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final ngState = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.ngStates[index]));
+
     final isNG = ref.watch(updateCSUFrameNotifierProvider
         .select((value) => value.updateFrameList.isNG[index]));
+
+    final jenis = ref.watch(
+        updateCSUFrameNotifierProvider.select((value) => value.csuJenisItems));
+
+    final penyebab = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.csuPenyebabItems));
 
     return Column(
       children: [
         // First Height Part
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    instruction,
-                    style:
-                        Themes.customColor(FontWeight.normal, 14, Colors.black),
-                  )),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Flexible(
-              flex: 0,
-              child: Container(
-                width: 80,
-                height: 35,
-                child: Row(
-                  children: [
-                    // OK Box
-                    InkWell(
-                      onTap: () => ref
-                          .read(updateCSUFrameNotifierProvider.notifier)
-                          .changeIsNG(isNG: false, index: index),
-                      child: Ink(
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: isNG ? Colors.white : Palette.primaryColor,
-                            border: Border.all(
-                                color: Palette.primaryColor, width: 1)),
-                        child: Center(
-                          child: Text(
-                            'OK',
-                            style: Themes.customColor(FontWeight.bold, 14,
-                                isNG ? Palette.primaryColor : Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
+        CSUItemOKOrNG(instruction, index),
 
-                    // NG Box
-                    InkWell(
-                      onTap: () => ref
-                          .read(updateCSUFrameNotifierProvider.notifier)
-                          .changeIsNG(isNG: true, index: index),
-                      child: Ink(
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: isNG ? Palette.red : Colors.white,
-                            border: Border.all(color: Palette.red, width: 1)),
-                        child: Center(
-                          child: Text(
-                            'NG',
-                            style: Themes.customColor(FontWeight.bold, 14,
-                                isNG ? Colors.white : Palette.red),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
+        SizedBox(
+          height: 4,
         ),
 
-        // Second Height Part
+        // JENIS NG
         Visibility(
           visible: isNG,
           child: SizedBox(
-            height: 35,
-            width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              decoration: Themes.formStyleSquared('Jenis Defect'),
-            ),
-          ),
+              height: 35,
+              width: MediaQuery.of(context).size.width,
+              child: DropdownButton<CSUJenisPenyebabItem>(
+                value: jenis.firstWhere(
+                  (element) => element.id == ngState.idJenis,
+                  orElse: () => CSUJenisPenyebabItem.initial(),
+                ),
+                elevation: 16,
+                underline: Container(),
+                onChanged: (CSUJenisPenyebabItem? value) {
+                  // This is called when the user selects an item.
+                  if (value != null)
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeNGJenis(id: value.id, index: index);
+                },
+                items: jenis.map<DropdownMenuItem<CSUJenisPenyebabItem>>(
+                    (CSUJenisPenyebabItem value) {
+                  return DropdownMenuItem<CSUJenisPenyebabItem>(
+                    value: value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Palette.primaryColor, width: 2),
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: EdgeInsets.all(4),
+                      child: Text(
+                        '${value.id}. ${value.ind} (${value.eng})',
+                        style: Themes.customColor(
+                            FontWeight.normal, 14, Colors.black),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              )),
         ),
 
         SizedBox(
           height: 4,
         ),
 
+        // PENYEBAB NG
         Visibility(
           visible: isNG,
           child: SizedBox(
-            height: 35,
-            width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              decoration: Themes.formStyleSquared('Penyebab Defect'),
-            ),
-          ),
-        )
+              height: 35,
+              width: MediaQuery.of(context).size.width,
+              child: DropdownButton<CSUJenisPenyebabItem>(
+                value: penyebab.firstWhere(
+                  (element) => element.id == ngState.idPenyebab,
+                  orElse: () => CSUJenisPenyebabItem.initialPenyebab(),
+                ),
+                elevation: 16,
+                underline: Container(),
+                onChanged: (CSUJenisPenyebabItem? value) {
+                  // This is called when the user selects an item.
+                  if (value != null)
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeNGPenyebab(id: value.id, index: index);
+                },
+                items: penyebab.map<DropdownMenuItem<CSUJenisPenyebabItem>>(
+                    (CSUJenisPenyebabItem value) {
+                  return DropdownMenuItem<CSUJenisPenyebabItem>(
+                    value: value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Palette.primaryColor, width: 2),
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: EdgeInsets.all(4),
+                      child: Text(
+                        '${value.id}. ${value.ind} (${value.eng})',
+                        style: Themes.customColor(
+                            FontWeight.normal, 14, Colors.black),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              )),
+        ),
       ],
     );
   }
