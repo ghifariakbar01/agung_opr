@@ -4,6 +4,7 @@ import 'package:agung_opr/application/update_frame/shared/update_frame_providers
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 
 class FormUpdateEngine extends ConsumerWidget {
@@ -19,6 +20,8 @@ class FormUpdateEngine extends ConsumerWidget {
     final engineStr = engine.getOrLeave('');
 
     log('engineStr $engineStr');
+
+    final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,27 +49,31 @@ class FormUpdateEngine extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: engineStr,
-              decoration: Themes.formStyle(engineStr != ''
-                  ? engineStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan engine'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeEngine(engineStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .engine
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
+            child: IgnorePointer(
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: TextFormField(
+                initialValue: engineStr,
+                decoration: Themes.formStyle(engineStr != ''
+                    ? engineStr + ' (ketik untuk ubah teks)'
+                    : 'Masukkan engine'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeEngine(engineStr: value, index: index),
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .engine
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
                     ),
-                    (_) => null,
-                  ),
+              ),
             ),
           ),
         )

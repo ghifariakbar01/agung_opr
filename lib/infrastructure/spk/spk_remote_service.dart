@@ -21,7 +21,7 @@ class SPKRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol FROM $dbName WHERE dc_sta <> 1 ORDER BY spk_tgl DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol FROM $dbName WHERE dc_sta = 1 AND tiba_sta = 0 AND kmbl_sta = 0 ORDER BY spk_tgl DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

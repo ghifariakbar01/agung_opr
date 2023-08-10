@@ -2,6 +2,7 @@ import 'package:agung_opr/application/update_frame/shared/update_frame_providers
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 
 class FormUpdateWarna extends ConsumerWidget {
@@ -15,6 +16,8 @@ class FormUpdateWarna extends ConsumerWidget {
         .select((value) => value.updateFrameList[index].warna));
 
     final warnaStr = warna.getOrLeave('');
+
+    final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,27 +45,31 @@ class FormUpdateWarna extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: warnaStr,
-              decoration: Themes.formStyle(warnaStr != ''
-                  ? warnaStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan warna'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeWarna(warnaStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .warna
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
+            child: IgnorePointer(
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: TextFormField(
+                initialValue: warnaStr,
+                decoration: Themes.formStyle(warnaStr != ''
+                    ? warnaStr + ' (ketik untuk ubah teks)'
+                    : 'Masukkan warna'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeWarna(warnaStr: value, index: index),
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .warna
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
                     ),
-                    (_) => null,
-                  ),
+              ),
             ),
           ),
         )

@@ -1,15 +1,20 @@
-import 'package:agung_opr/application/check_sheet/unit/csu_result_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../infrastructure/cache_storage/csu_frame_storage.dart';
 import '../../../../infrastructure/cache_storage/csu_trips_frame_storage.dart';
+import '../../../../infrastructure/cache_storage/update_csu_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
 import '../../../../infrastructure/csu/csu_repository.dart';
+import '../../../../infrastructure/update_csu/update_csu_remote_service.dart';
+import '../../../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../../../shared/providers.dart';
+import '../../../update_csu/state/update_csu_state.dart';
+import '../../../update_csu/update_csu_notifier.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../update_frame/update_frame_notifier.dart';
 import '../../../update_frame/update_frame_state.dart';
+import '../csu_result_notifier.dart';
 import '../state/csu_result_state.dart';
 
 // import '../../../infrastructure/cache_storage/update_frame_storage.dart';
@@ -41,6 +46,32 @@ final csuFrameRepositoryProvider = Provider((ref) => CSUFrameRepository(
 final csuFrameNotifierProvider =
     StateNotifierProvider<CSUFrameResultNotifier, CSUResultState>(
   (ref) => CSUFrameResultNotifier(ref.watch(csuFrameRepositoryProvider)),
+);
+
+// final updateFrameOfflineNotifierProvider = StateNotifierProvider<
+//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
+//     (ref) =>
+//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+
+///  UPDATE CSU
+/// [UpdateCSUStorage], [UpdateCSUFrameRemoteService], [UpdateCSUFrameRepository], [UpdateCSUNotifier]
+
+final updateCSUFrameStorage = Provider<CredentialsStorage>(
+  (ref) => UpdateCSUStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
+final updateCSUFrameRemoteServiceProvider = Provider(
+  (ref) => UpdateCSUFrameRemoteService(
+      ref.watch(dioProvider), ref.watch(dioRequestProvider)),
+);
+
+final updateCSUFrameRepositoryProvider = Provider((ref) =>
+    UpdateCSUFrameRepository(ref.watch(updateCSUFrameRemoteServiceProvider),
+        ref.watch(updateFrameStorage)));
+
+final updateCSUFrameNotifierProvider =
+    StateNotifierProvider<UpdateCSUNotifier, UpdateCSUState>(
+  (ref) => UpdateCSUNotifier(ref.watch(updateCSUFrameRepositoryProvider)),
 );
 
 // final updateFrameOfflineNotifierProvider = StateNotifierProvider<

@@ -171,3 +171,82 @@ class IDKendType extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 }
+
+/// UPDATE [CSU], ALL ONLY VERIFY FOR [validateStringNotEmpty]
+///
+class Gate extends ValueObject<String> {
+  factory Gate(String input) {
+    return Gate._(validateStringNotEmpty(input));
+  }
+
+  const Gate._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Deck extends ValueObject<String> {
+  factory Deck(String input) {
+    return Deck._(validateStringNotEmpty(input));
+  }
+
+  const Deck._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Supir1 extends ValueObject<String> {
+  factory Supir1(String input) {
+    return Supir1._(validateStringNotEmpty(input));
+  }
+
+  const Supir1._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Supir2 extends ValueObject<String> {
+  factory Supir2(String input) {
+    return Supir2._(validateStringNotEmpty(input));
+  }
+
+  const Supir2._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class SupirSDR extends ValueObject<String> {
+  factory SupirSDR(String input) {
+    return SupirSDR._(validateStringNotEmpty(input));
+  }
+
+  const SupirSDR._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class TglTerima extends ValueObject<String> {
+  factory TglTerima(String input) {
+    return TglTerima._(validateStringNotEmpty(input));
+  }
+
+  const TglTerima._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class TglKirim extends ValueObject<String> {
+  factory TglKirim(String input) {
+    return TglKirim._(validateStringNotEmpty(input));
+  }
+
+  const TglKirim._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}

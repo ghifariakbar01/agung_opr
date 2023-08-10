@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 
 class FormUpdateSPPDC extends ConsumerWidget {
@@ -17,6 +18,8 @@ class FormUpdateSPPDC extends ConsumerWidget {
         .select((value) => value.updateFrameList[index].sppdc));
 
     final sppdcStr = sppdc.getOrLeave('');
+
+    final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,27 +47,31 @@ class FormUpdateSPPDC extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: sppdcStr,
-              decoration: Themes.formStyle(sppdcStr != ''
-                  ? sppdcStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan no SPPDC'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeNoSPPDC(noSPPDCStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .sppdc
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
+            child: IgnorePointer(
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: TextFormField(
+                initialValue: sppdcStr,
+                decoration: Themes.formStyle(sppdcStr != ''
+                    ? sppdcStr + ' (ketik untuk ubah teks)'
+                    : 'Masukkan no SPPDC'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeNoSPPDC(noSPPDCStr: value, index: index),
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .sppdc
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
                     ),
-                    (_) => null,
-                  ),
+              ),
             ),
           ),
         )

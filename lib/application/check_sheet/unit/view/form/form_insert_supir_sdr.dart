@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../shared/providers.dart';
-import '../../../../style/style.dart';
+import '../../../../../style/style.dart';
 
 /// [TextEditingController] For displaying value only
 ///
 ///
-class FormUpdateModel extends ConsumerWidget {
-  const FormUpdateModel({required this.index});
+class FormInsertSupirSdr extends ConsumerWidget {
+  const FormInsertSupirSdr({required this.index});
 
   final int index;
 
@@ -23,8 +22,6 @@ class FormUpdateModel extends ConsumerWidget {
 
     final modelStr = item.idKendType.getOrLeave('');
 
-    final modeApp = ref.watch(modeNotifierProvider);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -32,10 +29,10 @@ class FormUpdateModel extends ConsumerWidget {
           flex: 0,
           child: SizedBox(
             height: 70,
-            width: 50,
+            width: 65,
             child: Center(
               child: Text(
-                'Model',
+                'SUPIR SDR',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
                 textAlign: TextAlign.center,
@@ -53,20 +50,16 @@ class FormUpdateModel extends ConsumerWidget {
             width: MediaQuery.of(context).size.width,
             child: TextButton(
               onPressed: () async {
-                await modeApp.maybeWhen(
-                    checkSheetUnit: () {},
-                    orElse: () async {
-                      final String? id =
-                          await context.pushNamed(RouteNames.modelNameRoute);
+                final String? id =
+                    await context.pushNamed(RouteNames.modelNameRoute);
 
-                      if (id != null) {
-                        ref
-                            .read(updateFrameNotifierProvider.notifier)
-                            .changeIdKendType(idKendTypeStr: id, index: index);
+                if (id != null) {
+                  ref
+                      .read(updateFrameNotifierProvider.notifier)
+                      .changeIdKendType(idKendTypeStr: id, index: index);
 
-                        frame.modelTextController[index].text = id;
-                      }
-                    });
+                  frame.modelTextController[index].text = id;
+                }
               },
               style: ButtonStyle(
                   padding: MaterialStatePropertyAll(EdgeInsets.zero)),

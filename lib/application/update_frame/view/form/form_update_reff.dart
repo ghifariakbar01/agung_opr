@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 
 class FormUpdateReffEXP extends ConsumerWidget {
@@ -17,6 +18,8 @@ class FormUpdateReffEXP extends ConsumerWidget {
         .select((value) => value.updateFrameList[index].noReff));
 
     final noReffStr = noReff.getOrLeave('');
+
+    final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,27 +47,31 @@ class FormUpdateReffEXP extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: noReffStr,
-              decoration: Themes.formStyle(noReffStr != ''
-                  ? noReffStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan no ref'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeNoReffEXP(noReffStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .noReff
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
+            child: IgnorePointer(
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: TextFormField(
+                initialValue: noReffStr,
+                decoration: Themes.formStyle(noReffStr != ''
+                    ? noReffStr + ' (ketik untuk ubah teks)'
+                    : 'Masukkan no ref'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeNoReffEXP(noReffStr: value, index: index),
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .noReff
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
                     ),
-                    (_) => null,
-                  ),
+              ),
             ),
           ),
         )

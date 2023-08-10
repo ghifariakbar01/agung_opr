@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/widgets/v_appbar.dart';
 import 'package:agung_opr/application/widgets/v_button.dart';
 import 'package:agung_opr/style/style.dart';
@@ -67,7 +68,10 @@ class CSUResultScaffold extends ConsumerWidget {
                         child: Column(
                           children: [
                             VButton(label: 'PILIH GATE', onPressed: () {}),
-                            VButton(label: 'BUAT CHECKSHEET', onPressed: () {}),
+                            VButton(
+                                label: 'BUAT CHECKSHEET',
+                                onPressed: () => context
+                                    .pushNamed(RouteNames.CSUNewNameRoute)),
                           ],
                         )),
 

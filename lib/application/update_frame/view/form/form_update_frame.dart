@@ -2,6 +2,7 @@ import 'package:agung_opr/application/update_frame/shared/update_frame_providers
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 
 class FormUpdateFrame extends ConsumerWidget {
@@ -15,6 +16,8 @@ class FormUpdateFrame extends ConsumerWidget {
         .select((value) => value.updateFrameList[index].frame));
 
     final frameStr = frame.getOrLeave('');
+
+    final modeApp = ref.watch(modeNotifierProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,27 +44,31 @@ class FormUpdateFrame extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: frameStr,
-              decoration: Themes.formStyle(frameStr != ''
-                  ? frameStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan frame'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeFrame(frameStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .frame
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
+            child: IgnorePointer(
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: TextFormField(
+                initialValue: frameStr,
+                decoration: Themes.formStyle(frameStr != ''
+                    ? frameStr + ' (ketik untuk ubah teks)'
+                    : 'Masukkan frame'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeFrame(frameStr: value, index: index),
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .frame
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
                     ),
-                    (_) => null,
-                  ),
+              ),
             ),
           ),
         )

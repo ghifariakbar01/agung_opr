@@ -18,7 +18,6 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       if (state.durationInSeconds > 0) {
         state = state.copyWith(durationInSeconds: state.durationInSeconds - 1);
-        log('DURATION: ${state.durationInSeconds}');
       } else {
         _resetTimer();
         await onTimerRanOut();
