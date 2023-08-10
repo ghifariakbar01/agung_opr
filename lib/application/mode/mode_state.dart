@@ -6,6 +6,7 @@ part 'mode_state.freezed.dart';
 class ModeState with _$ModeState {
   const factory ModeState.initial() = _Initial;
   const factory ModeState.updateFrameDummy() = _UpdateFrameDummy;
+  const factory ModeState.checkSheetUnit() = _CheckSheetUnit;
   const factory ModeState.checkSheetLoading() = _CheckSheetLoading;
   const factory ModeState.checkSheetUnloading() = _CheckSheetUnloading;
   const factory ModeState.checkSheetGateMerak() = _CheckSheetGateMerak;

@@ -50,16 +50,24 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                           orElse: () => ''),
                     ),
                 (idSPKMapidTIUnitMapQuery) => ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .isMapEmpty(idSPKMapidTIUnitMapQuery) &&
-                        ref.read(autoDataTimerNotifierProvider
-                            .select((value) => value.isRunning))
-                    ? () {}
-                    : ref
                         .read(autoDataUpdateFrameNotifierProvider.notifier)
-                        .runSavedQueryFromRepository(
-                            idSPKMapidTIUnitMapQuery:
-                                idSPKMapidTIUnitMapQuery))));
+                        .isMapEmpty(idSPKMapidTIUnitMapQuery)
+                    ? () {}
+                    : ref.read(autoDataTimerNotifierProvider
+                            .select((value) => value.isRunning == false))
+                        ? () {
+                            debugger(message: 'called');
+
+                            log('isMapEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isMapEmpty(idSPKMapidTIUnitMapQuery)}');
+                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
+                            ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .runSavedQueryFromRepository(
+                                    idSPKMapidTIUnitMapQuery:
+                                        idSPKMapidTIUnitMapQuery);
+                          }()
+                        : () {})));
 
     ref.listen<Option<Either<RemoteFailure, Unit>>>(
         autoDataUpdateFrameNotifierProvider.select(

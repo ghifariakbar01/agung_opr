@@ -6,13 +6,15 @@ part 'frame.g.dart';
 
 @freezed
 class Frame with _$Frame {
-  const factory Frame(
-      {@JsonKey(name: 'id_unit') required int idUnit,
-      required String? frame,
-      required String? engine,
-      required String? warna,
-      @JsonKey(name: 'no_reff_expor') required String? noReffExp,
-      @JsonKey(name: 'id_kend_type') required int? idKendType}) = _Frame;
+  const factory Frame({
+    @JsonKey(name: 'id_unit') required int idUnit,
+    required String? frame,
+    required String? engine,
+    required String? warna,
+    @JsonKey(name: 'no_reff_expor') required String? noReffExp,
+    @JsonKey(name: 'id_kend_type') required int? idKendType,
+    required String? custnm,
+  }) = _Frame;
 
   factory Frame.initial() => Frame(
       idUnit: 0,
@@ -20,7 +22,8 @@ class Frame with _$Frame {
       engine: '',
       warna: '',
       noReffExp: '',
-      idKendType: 0);
+      idKendType: 0,
+      custnm: '');
 
   factory Frame.fromJson(Map<String, Object?> json) => _$FrameFromJson(json);
 }

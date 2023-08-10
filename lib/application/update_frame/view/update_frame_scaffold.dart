@@ -5,8 +5,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/providers.dart';
 import '../shared/update_frame_providers.dart';
-import 'update_frame_item.dart';
 import 'update_frame_item_scaffold.dart';
 
 class UpdateFrameScaffold extends ConsumerWidget {
@@ -14,11 +14,18 @@ class UpdateFrameScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final modeApp = ref.watch(modeNotifierProvider);
     final frameList = ref.watch(frameNotifierProvider);
 
     return KeyboardDismissOnTap(
       child: Scaffold(
-          appBar: VAppBar('Update Frame Dummy'),
+          appBar: VAppBar(
+            '${modeApp.maybeWhen(
+              updateFrameDummy: () => 'Update Frame Dummy',
+              checkSheetUnit: () => 'Check Sheet Unit',
+              orElse: () {},
+            )}',
+          ),
           bottomNavigationBar: Container(
             height: 63,
             width: MediaQuery.of(context).size.width,

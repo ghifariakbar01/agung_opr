@@ -14,6 +14,7 @@ import 'cranny_item.dart';
 
 final List<String> labels = [
   'UPDATE FRAME DUMMY',
+  'CHECKSHEET UNIT',
   'CHECKSHEET CCR LOADING',
   'CHECKSHEET CCR UNLOADING',
   'CHECKSHEET GATE MERAK',

@@ -9,16 +9,34 @@ import '../../widgets/alert_helper.dart';
 import '../shared/update_frame_providers.dart';
 import 'update_frame_item_middle.dart';
 
-class UpdateFrameItemScaffold extends ConsumerWidget {
+class UpdateFrameItemScaffold extends ConsumerStatefulWidget {
   const UpdateFrameItemScaffold(this.index);
 
   final int index;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UpdateFrameItemScaffold> createState() =>
+      _UpdateFrameItemScaffoldState();
+}
+
+class _UpdateFrameItemScaffoldState
+    extends ConsumerState<UpdateFrameItemScaffold> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(updateFrameNotifierProvider.notifier)
+          .changeIndex(index: widget.index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen<Option<Either<LocalFailure, Unit>>>(
         updateFrameNotifierProvider.select(
-          (state) => state.FOSOUpdateFrame[index],
+          (state) => state.FOSOUpdateFrame[widget.index],
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
@@ -37,19 +55,20 @@ class UpdateFrameItemScaffold extends ConsumerWidget {
 
                   debugger(message: 'called');
 
-                  log('INDEX: $index');
+                  log('INDEX: ${widget.index}');
 
                   await ref
                       .read(frameNotifierProvider.notifier)
                       .saveFrameIndexedSPK(
                           idSPK: updateFrameProvider.idSPK,
-                          index: index,
-                          newFrame: updateFrameProvider.updateFrameList[index]);
+                          index: widget.index,
+                          newFrame: updateFrameProvider
+                              .updateFrameList[widget.index]);
                 })));
 
     return Stack(
       children: [
-        UpdateFrameItemMiddle(index),
+        UpdateFrameItemMiddle(widget.index),
         // LoadingOverlay(isLoading: isLoading)
       ],
     );

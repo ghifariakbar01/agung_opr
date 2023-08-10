@@ -92,7 +92,8 @@ class UpdateFrameRemoteService {
             engine: engine,
             warna: warna,
             idKendType: idKendType,
-            noReffExp: noReffExp);
+            noReffExp: noReffExp,
+            custnm: '');
 
         return response;
       } else {

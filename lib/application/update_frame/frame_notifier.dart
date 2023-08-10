@@ -43,12 +43,14 @@ class FrameNotifier extends StateNotifier<FrameState> {
     final noReffStr = newFrame.noReff.getOrCrash();
 
     final frame = Frame(
-        idUnit: idUnitInt,
-        frame: frameStr,
-        engine: engineStr,
-        warna: warnaStr,
-        noReffExp: noReffStr,
-        idKendType: idKendTypeInt);
+      idUnit: idUnitInt,
+      frame: frameStr,
+      engine: engineStr,
+      warna: warnaStr,
+      noReffExp: noReffStr,
+      idKendType: idKendTypeInt,
+      custnm: '',
+    );
 
     FOS = await _repository.saveFrameIndexedSPK(
         idSPK: idSPK, index: index, newFrame: frame);

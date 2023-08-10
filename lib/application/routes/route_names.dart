@@ -20,6 +20,12 @@ class RouteNames {
   static const checkSheetUnitNameRoute = 'checkSheetUnit';
   static const checkSheetUnitName = 'checkSheetUnit';
 
+  static const CSUListNameRoute = 'CSUList';
+  static const CSUListName = 'CSUList';
+
+  static const CSUNewNameRoute = 'CSUNew';
+  static const CSUNewName = 'CSUNew';
+
   static const checkSheetLoadingNameRoute = 'checkSheetLoading';
   static const checkSheetLoadingName = 'checkSheetLoading';
 

@@ -63,7 +63,7 @@ class UpdateFrameRepository {
 
         return right(responseString);
       } else {
-        debugger(message: 'CALLED');
+        // debugger(message: 'CALLED');
         log('isStorageSaved: NOT OK');
 
         return right({});
@@ -87,7 +87,6 @@ class UpdateFrameRepository {
           mapOfTIUnitQuery.values.forEach((query) async {
             // RUN QUERY
             log('QUERY: ${query.runtimeType}');
-            debugger(message: 'called');
 
             await _remoteService.updateFrameByQuery(query: query);
 

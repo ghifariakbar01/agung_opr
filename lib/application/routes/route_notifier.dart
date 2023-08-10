@@ -16,6 +16,7 @@ import '../../splash_page.dart';
 import '../auth/auth_notifier.dart';
 import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
+import '../check_sheet/unit/view/csu_result_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
 import 'route_names.dart';
 
@@ -75,6 +76,10 @@ class RouterNotifier extends ChangeNotifier {
                 return UpdateFramePage(idSPK: idSPK);
               },
             ),
+            GoRoute(
+                name: RouteNames.CSUListNameRoute,
+                path: RouteNames.CSUListName,
+                builder: (context, state) => CSUResultPage()),
             GoRoute(
               name: RouteNames.checkSheetLoadingNameRoute,
               path: RouteNames.checkSheetLoadingName,

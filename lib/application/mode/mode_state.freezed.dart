@@ -20,6 +20,7 @@ mixin _$ModeState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -31,6 +32,7 @@ mixin _$ModeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -42,6 +44,7 @@ mixin _$ModeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -54,6 +57,7 @@ mixin _$ModeState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -65,6 +69,7 @@ mixin _$ModeState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -76,6 +81,7 @@ mixin _$ModeState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -142,6 +148,7 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -156,6 +163,7 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -170,6 +178,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -188,6 +197,7 @@ class _$_Initial implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -202,6 +212,7 @@ class _$_Initial implements _Initial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -216,6 +227,7 @@ class _$_Initial implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -274,6 +286,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -288,6 +301,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -302,6 +316,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -320,6 +335,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -334,6 +350,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -348,6 +365,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -364,6 +382,144 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
 
 abstract class _UpdateFrameDummy implements ModeState {
   const factory _UpdateFrameDummy() = _$_UpdateFrameDummy;
+}
+
+/// @nodoc
+abstract class _$$_CheckSheetUnitCopyWith<$Res> {
+  factory _$$_CheckSheetUnitCopyWith(
+          _$_CheckSheetUnit value, $Res Function(_$_CheckSheetUnit) then) =
+      __$$_CheckSheetUnitCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_CheckSheetUnitCopyWithImpl<$Res>
+    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetUnit>
+    implements _$$_CheckSheetUnitCopyWith<$Res> {
+  __$$_CheckSheetUnitCopyWithImpl(
+      _$_CheckSheetUnit _value, $Res Function(_$_CheckSheetUnit) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$_CheckSheetUnit implements _CheckSheetUnit {
+  const _$_CheckSheetUnit();
+
+  @override
+  String toString() {
+    return 'ModeState.checkSheetUnit()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_CheckSheetUnit);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetLoading,
+    required TResult Function() checkSheetUnloading,
+    required TResult Function() checkSheetGateMerak,
+    required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
+  }) {
+    return checkSheetUnit();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetLoading,
+    TResult? Function()? checkSheetUnloading,
+    TResult? Function()? checkSheetGateMerak,
+    TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
+  }) {
+    return checkSheetUnit?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetLoading,
+    TResult Function()? checkSheetUnloading,
+    TResult Function()? checkSheetGateMerak,
+    TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (checkSheetUnit != null) {
+      return checkSheetUnit();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
+    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
+    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
+    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+  }) {
+    return checkSheetUnit(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+  }) {
+    return checkSheetUnit?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (checkSheetUnit != null) {
+      return checkSheetUnit(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CheckSheetUnit implements ModeState {
+  const factory _CheckSheetUnit() = _$_CheckSheetUnit;
 }
 
 /// @nodoc
@@ -406,6 +562,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -420,6 +577,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -434,6 +592,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -452,6 +611,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -466,6 +626,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -480,6 +641,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -538,6 +700,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -552,6 +715,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -566,6 +730,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -584,6 +749,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -598,6 +764,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -612,6 +779,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -670,6 +838,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -684,6 +853,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -698,6 +868,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -716,6 +887,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -730,6 +902,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -744,6 +917,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -802,6 +976,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -816,6 +991,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -830,6 +1006,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -848,6 +1025,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -862,6 +1040,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -876,6 +1055,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -934,6 +1114,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetGateMerak,
@@ -948,6 +1129,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetGateMerak,
@@ -962,6 +1144,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetGateMerak,
@@ -980,6 +1163,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
@@ -994,6 +1178,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
@@ -1008,6 +1193,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,

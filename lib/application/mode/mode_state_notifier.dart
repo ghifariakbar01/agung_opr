@@ -7,6 +7,7 @@ class ModeNotifier extends StateNotifier<ModeState> {
 
   final Map<String, ModeState> labelsMode = {
     'UPDATE FRAME DUMMY': ModeState.updateFrameDummy(),
+    'CHECKSHEET UNIT': ModeState.checkSheetUnit(),
     'CHECKSHEET CCR LOADING': ModeState.checkSheetLoading(),
     'CHECKSHEET CCR UNLOADING': ModeState.checkSheetUnloading(),
     'CHECKSHEET GATE MERAK': ModeState.checkSheetGateMerak(),
