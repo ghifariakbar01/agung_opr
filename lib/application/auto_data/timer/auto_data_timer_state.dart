@@ -10,5 +10,5 @@ class AutoDataTimerState with _$AutoDataTimerState {
       required bool isRunning}) = _AutoDataTimerState;
 
   factory AutoDataTimerState.initial() =>
-      AutoDataTimerState(durationInSeconds: 120, isRunning: false);
+      AutoDataTimerState(durationInSeconds: 10, isRunning: false);
 }

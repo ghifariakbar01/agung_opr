@@ -10,8 +10,11 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
 
   AutoDataTimerStateNotifier() : super(AutoDataTimerState.initial());
 
-  Future<void> startTimer(int duration,
-      {required Future<void> Function() onTimerRanOut}) async {
+  Future<void> startTimer(
+    int duration, {
+    required Future<void> Function() getSavedUpdateFrame,
+    required Future<void> Function() getSavedUpdateCSUFrame,
+  }) async {
     state = state.copyWith(durationInSeconds: duration, isRunning: true);
 
     _timer?.cancel();
@@ -20,8 +23,14 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
         state = state.copyWith(durationInSeconds: state.durationInSeconds - 1);
       } else {
         _resetTimer();
-        await onTimerRanOut();
-        startTimer(120, onTimerRanOut: onTimerRanOut);
+        //
+
+        await getSavedUpdateFrame();
+        await getSavedUpdateCSUFrame();
+        //
+        await startTimer(10,
+            getSavedUpdateFrame: getSavedUpdateFrame,
+            getSavedUpdateCSUFrame: getSavedUpdateCSUFrame);
       }
     });
   }

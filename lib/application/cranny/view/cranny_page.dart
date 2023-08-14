@@ -1,18 +1,23 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
-import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
-import 'package:agung_opr/application/update_frame/update_frame_offline_state.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
+import '../../../domain/local_failure.dart';
 import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
+import '../../check_sheet/unit/shared/csu_providers.dart';
+import '../../check_sheet/unit/state/csu_id_query.dart';
+import '../../update_frame/shared/update_frame_providers.dart';
+import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
 
 /// [SPK] Initialization
@@ -103,29 +108,46 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                       asset: Assets.iconCrossed,
                     ),
                   ),
-              (userParsed) =>
-                  ref.read(userNotifierProvider.notifier).onUserParsed(
-                        user: userParsed,
-                        initializeDioRequest: () =>
-                            ref.read(dioRequestProvider).addAll({
-                          "username": "${userParsed.nama}",
-                          "password": "${userParsed.password}",
-                        }),
-                        initializeAndCheckData: () => getAndSaveAllData(),
-                        initializeAutoData: () => ref
-                            .read(autoDataTimerNotifierProvider.notifier)
-                            .startTimer(120,
-                                onTimerRanOut: () => ref
-                                    .read(autoDataUpdateFrameNotifierProvider
-                                        .notifier)
-                                    .getSavedQueryFromRepository()),
-                        checkAndUpdateStatus: () => ref
-                            .read(authNotifierProvider.notifier)
-                            .checkAndUpdateAuthStatus(),
-                      ));
+              (userParsed) => ref
+                  .read(userNotifierProvider.notifier)
+                  .onUserParsed(
+                    user: userParsed,
+                    initializeDioRequest: () =>
+                        ref.read(dioRequestProvider).addAll({
+                      "username": "${userParsed.nama}",
+                      "password": "${userParsed.password}",
+                    }),
+                    initializeAndCheckData: () => getAndSaveAllData(),
+                    initializeAutoData: () => ref
+                        .read(autoDataTimerNotifierProvider.notifier)
+                        .startTimer(10, getSavedUpdateFrame: () async {
+                      await ref
+                          .read(autoDataUpdateFrameNotifierProvider.notifier)
+                          .getSavedQueryFromRepository();
+
+                      await ref
+                          .read(updateFrameOfflineNotifierProvider.notifier)
+                          .CUUpdateFrameOFFLINEStatus();
+                    }, getSavedUpdateCSUFrame: () async {
+                      await ref
+                          .read(autoDataUpdateFrameNotifierProvider.notifier)
+                          .getSavedCSUQueryFromRepository();
+
+                      await ref
+                          .read(updateCSUFrameOfflineNotifierProvider.notifier)
+                          .CUUpdateCSUFrameOFFLINEStatus();
+                    }),
+                    checkAndUpdateStatus: () => ref
+                        .read(authNotifierProvider.notifier)
+                        .checkAndUpdateAuthStatus(),
+                  ));
         }),
       ),
     );
+
+    // final isSubmitting = ref.watch(
+    //   autoDataUpdateFrameNotifierProvider.select((state) => state.isGetting),
+    // );
 
     return Stack(
       children: [

@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../check_sheet/unit/shared/csu_providers.dart';
+import '../../update_frame/shared/update_frame_providers.dart';
 
 class DataUpdateLinearProgress extends ConsumerWidget {
   const DataUpdateLinearProgress();
@@ -11,13 +16,31 @@ class DataUpdateLinearProgress extends ConsumerWidget {
     final time = ref.watch(autoDataTimerNotifierProvider
         .select((value) => value.durationInSeconds));
 
-    return SizedBox(
-      height: 15,
-      width: MediaQuery.of(context).size.width,
-      child: LinearProgressIndicator(
-        color: Palette.secondaryColor,
-        value: double.parse((time / 120).toString()),
-        semanticsLabel: 'Linear progress indicator',
+    final updateFrameOfflineOrOnline =
+        ref.watch(updateFrameOfflineNotifierProvider);
+
+    final updateCSUFrameOfflineOrOnline =
+        ref.watch(updateCSUFrameOfflineNotifierProvider);
+
+    final hasQueryData = updateFrameOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => true,
+          orElse: () => false,
+        ) ||
+        updateCSUFrameOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => true,
+          orElse: () => false,
+        );
+
+    return Visibility(
+      visible: hasQueryData,
+      child: SizedBox(
+        height: 15,
+        width: MediaQuery.of(context).size.width,
+        child: LinearProgressIndicator(
+          color: Palette.secondaryColor,
+          value: double.parse((time / 10).toString()),
+          semanticsLabel: 'Linear progress indicator',
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
 import 'spk_scaffold.dart';
@@ -95,7 +96,11 @@ class _SPKPageState extends ConsumerState<SPKPage> {
         ref.watch(spkNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
-      children: [SPKScaffold(), LoadingOverlay(isLoading: isLoading)],
+      children: [
+        SPKScaffold(),
+        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        LoadingOverlay(isLoading: isLoading)
+      ],
     );
   }
 }

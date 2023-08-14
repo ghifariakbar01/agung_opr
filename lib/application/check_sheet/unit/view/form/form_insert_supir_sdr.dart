@@ -53,7 +53,7 @@ class FormInsertSupirSdr extends ConsumerWidget {
               decoration: Themes.formStyle(sdrStr != ''
                   ? sdrStr + ' (ketik untuk ubah teks)'
                   : 'Masukkan Supir SDR'),
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.number,
               onChanged: (value) => ref
                   .read(updateCSUFrameNotifierProvider.notifier)
                   .changeSupirSDR(value),

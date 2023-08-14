@@ -44,7 +44,7 @@ class GateRepository {
 
   Future<Either<RemoteFailure, List<CSUMSTGate>>> getCSUGates() async {
     try {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final listCSUMSTGate = await _remoteService.getCSUGates();
 

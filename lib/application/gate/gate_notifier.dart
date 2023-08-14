@@ -20,7 +20,7 @@ class GateNotifier extends StateNotifier<CSUGateState> {
 
     state = state.copyWith(isProcessing: true, FOSOGate: none());
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     FOS = await _repository.getCSUGates();
 

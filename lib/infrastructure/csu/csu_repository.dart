@@ -185,7 +185,7 @@ class CSUFrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            debugger(message: 'CALLED');
+            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<UnitCSUTrips> parsedListCSUSPK =
@@ -242,7 +242,7 @@ class CSUFrameRepository {
               log('STORAGE CSU RESULT TRIP UPDATE ID-UNIT N/A: ${listCSUResultTripsToJson(list)}');
             }
 
-            debugger(message: 'called');
+            // debugger(message: 'called');
 
             return unit;
           }();

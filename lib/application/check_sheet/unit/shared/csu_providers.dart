@@ -1,3 +1,5 @@
+import 'package:agung_opr/application/update_csu/state/update_csu_frame_offline_state.dart';
+import 'package:agung_opr/application/update_csu/update_csu_offline_notifier.dart';
 import 'package:agung_opr/infrastructure/cache_storage/csu/csu_penyebab_storage.dart';
 import 'package:agung_opr/infrastructure/csu/csu_jenis_penyebab_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -84,10 +86,10 @@ final updateCSUFrameNotifierProvider =
   (ref) => UpdateCSUNotifier(ref.watch(updateCSUFrameRepositoryProvider)),
 );
 
-// final updateFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
-//     (ref) =>
-//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
+        UpdateCSUFrameOfflineNotifier, UpdateCSUFrameOfflineState>(
+    (ref) => UpdateCSUFrameOfflineNotifier(
+        ref.watch(updateCSUFrameRepositoryProvider)));
 
 // CSU ITEMS
 final csuItemsStorage = Provider<CredentialsStorage>(

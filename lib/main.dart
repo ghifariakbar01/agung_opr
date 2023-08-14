@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:agung_opr/application/auth/auth_notifier.dart';
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -87,6 +88,23 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
       hasOfflineStorage: () => ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedQueryFromRepository(),
+      orElse: () {},
+    );
+
+    // UPDATE CSU FRAME DATA ONLINE / OFFLINE
+    await ref
+        .read(updateCSUFrameOfflineNotifierProvider.notifier)
+        .CUUpdateCSUFrameOFFLINEStatus();
+
+    final updateCSUrameOfflineOrOnline =
+        ref.watch(updateCSUFrameOfflineNotifierProvider);
+
+    log('updateCSUrameOfflineOrOnline $updateCSUrameOfflineOrOnline');
+
+    await updateCSUrameOfflineOrOnline.maybeWhen(
+      hasOfflineStorage: () => ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedCSUQueryFromRepository(),
       orElse: () {},
     );
 

@@ -55,7 +55,7 @@ class CSUItemsRepository {
 
   Future<Either<RemoteFailure, List<CSUItems>>> getCSUItems() async {
     try {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final listCSUItems = await _remoteService.getCSUItems();
 
@@ -82,47 +82,47 @@ class CSUItemsRepository {
     try {
       final csuItemStorage = await _storage.read();
 
-      // debugger(message: 'called');
+      debugger(message: 'called');
 
       log('CSU ITEM STORAGE: $csuItemStorage');
 
       // HAS MAP
       if (csuItemStorage != null) {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         final responsMap =
             jsonDecode(csuItemStorage) as List<Map<String, dynamic>>;
 
         final List<CSUItems> response = listCSUItemsFromJson(responsMap);
 
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         log('CSU STORAGE RESPONSE: $response');
 
         if (response.isNotEmpty) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return right(response);
         } else {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.parse(message: error.message));
     }
@@ -152,7 +152,7 @@ class CSUItemsRepository {
         return left(LocalFailure.empty());
       }
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return right(storedCredentials);
     } on FormatException {

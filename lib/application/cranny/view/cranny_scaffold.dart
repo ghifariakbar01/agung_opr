@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -34,6 +35,9 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
     final updateFrameOfflineOrOnline =
         ref.watch(updateFrameOfflineNotifierProvider);
 
+    final updateCSUFrameOfflineOrOnline =
+        ref.watch(updateCSUFrameOfflineNotifierProvider);
+
     return Scaffold(
       appBar: VAppBar(
         'CCR Cranny',
@@ -53,18 +57,34 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     },
                     child: CrannyItem(label: label))
               ],
+              // Frame
               updateFrameOfflineOrOnline.maybeWhen(
-                  hasOfflineStorage: () => TextButton(
-                      onPressed: () async {
-                        ref
-                            .read(modeNotifierProvider.notifier)
-                            .changeModeAplikasi('DATA AKAN DIUPDATE');
+                hasOfflineStorage: () => TextButton(
+                    onPressed: () async {
+                      ref
+                          .read(modeNotifierProvider.notifier)
+                          .changeModeAplikasi('DATA AKAN DIUPDATE');
 
-                        await context
-                            .pushNamed(RouteNames.dataUpdateQueryNameRoute);
-                      },
-                      child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
-                  orElse: () => Container())
+                      await context
+                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                    },
+                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
+                orElse: () => Container(),
+              ),
+              // CSU Items
+              updateCSUFrameOfflineOrOnline.maybeWhen(
+                hasOfflineStorage: () => TextButton(
+                    onPressed: () async {
+                      ref
+                          .read(modeNotifierProvider.notifier)
+                          .changeModeAplikasi('DATA AKAN DIUPDATE');
+
+                      await context
+                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                    },
+                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
+                orElse: () => Container(),
+              )
             ],
           )),
       drawer: Drawer(),

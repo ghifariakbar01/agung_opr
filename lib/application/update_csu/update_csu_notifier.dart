@@ -61,7 +61,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       state = state.copyWith(
           isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final NG = state.updateFrameList.isNG;
 
@@ -72,7 +72,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           // GET NG ITEM, JENIS, PENYEBAB
           final NGItem = state.updateFrameList.ngStates[index];
 
-          final query = _repository.getNotGoodSavableQuery(
+          final query = _repository.getNGSavableQuery(
               idUnit: state.idUnit,
               frameName: state.frameName,
               idCheckSheet: NGItem.idCs,
@@ -151,7 +151,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList:
             state.updateFrameList.copyWith(ngStates: generateNGStates));
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
   }
 
   void changeIdUnit(int idUnit) {

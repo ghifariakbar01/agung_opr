@@ -62,13 +62,15 @@ class UpdateCSUFrameRemoteService {
     }
   }
 
-  Future<int> getIdForIncrement() async {
+  Future<int> getIdForIncrement({required bool isNG}) async {
     try {
       final data = _dioRequestNotifier;
 
+      final dbName = isNG ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_test';
+
       data.addAll({
-        "mode": "INSERT",
-        "command": "SELECT TOP 1 id_cs FROM cs_trs_cs_test ORDER BY id_cs DESC",
+        "mode": "SELECT",
+        "command": "SELECT TOP 1 id_cs FROM $dbName  ORDER BY id_cs DESC",
       });
 
       final response = await _dio.post('',
@@ -81,7 +83,12 @@ class UpdateCSUFrameRemoteService {
 
       if (items['status'] == 'Success') {
         // HERE
-        return items['items']['id_cs'] as int;
+        final item = items['items'] as List<dynamic>;
+        if (item.isNotEmpty) {
+          return item[0]['id_cs'] as int;
+        } else {
+          throw RestApiException(0, 'ID CS EMPTY');
+        }
       } else {
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;
@@ -137,7 +144,7 @@ class UpdateCSUFrameRemoteService {
 
               log('LIST CSUItems: $list');
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               return csuList;
             } catch (e) {
@@ -211,7 +218,7 @@ class UpdateCSUFrameRemoteService {
 
               log('LIST CSUJenisPenyebabItem: $list');
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               return csuList;
             } catch (e) {
@@ -285,7 +292,7 @@ class UpdateCSUFrameRemoteService {
 
               log('LIST CSUJenisPenyebabItem: $list');
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               return csuList;
             } catch (e) {

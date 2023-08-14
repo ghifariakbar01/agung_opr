@@ -126,7 +126,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     final generateListFOSOUpdateFrame =
         List.generate(length, (index) => optionOf(initial));
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     state = state.copyWith(
       FOSOUpdateFrame: generateListFOSOUpdateFrame,

@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
+import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../widgets/alert_helper.dart';
 import '../shared/csu_providers.dart';
 import '../state/csu_result.dart';
@@ -128,7 +129,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
                           ),
                         ), (csuResponseTrips) {
                   /// SET [csuResponseTrips] from GOT csuResultList
-                  debugger(message: 'called');
+                  // debugger(message: 'called');
                   log('FRAME CSU RESPONSE TRIPS: $csuResponseTrips');
                   if (csuResponseTrips != []) {
                     ref
@@ -141,7 +142,11 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
-      children: [CSUResultScaffold(), LoadingOverlay(isLoading: isLoading)],
+      children: [
+        CSUResultScaffold(),
+        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        LoadingOverlay(isLoading: isLoading)
+      ],
     );
   }
 }

@@ -20,7 +20,7 @@ class CSUItemsNotifier extends StateNotifier<CSUItemsState> {
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     FOS = await _repository.getCSUItems();
 

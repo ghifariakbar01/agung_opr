@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
 import '../shared/auto_data_providers.dart';
+import 'data_update_query_csu_item.dart';
 
 class DataUpdateQueryScaffold extends ConsumerWidget {
   const DataUpdateQueryScaffold();
@@ -22,6 +23,12 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
     log('idSPKMapidTIUnitMapQuery ${idSPKMapidTIUnitMapQuery}}');
 
     final list = idSPKMapidTIUnitMapQuery.entries.toList();
+
+    // CSU Items
+    final csuIdQueries = ref.watch(autoDataUpdateFrameNotifierProvider
+        .select((value) => value.csuIdQueries));
+
+    log('csuIdQueries ${csuIdQueries}}');
 
     return Scaffold(
         appBar: VAppBar('Data Akan Diupdate'),
@@ -55,13 +62,30 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
           ),
         ),
         drawer: Drawer(),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (context, index) => DataUpdateQueryItem(
-              idSPK: list[index].key,
-              TIUnitMapQuery: list[index].value,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                for (int index = 0; index < list.length; index++) ...[
+                  DataUpdateQueryItem(
+                    idSPK: list[index].key,
+                    TIUnitMapQuery: list[index].value,
+                  ),
+                ],
+
+                SizedBox(
+                  height: 8,
+                ),
+
+                // CSU Items
+                for (int index = 0; index < csuIdQueries.length; index++) ...[
+                  DataUpdateQueryCSUItem(
+                    idUnit: '${csuIdQueries[index].idUnit}',
+                    query: csuIdQueries[index].query,
+                  ),
+                ],
+              ],
             ),
           ),
         ));

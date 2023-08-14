@@ -294,7 +294,7 @@ class UpdateFrameRepository {
     try {
       final storedCredentials = await _storage.read();
 
-      if (storedCredentials == null) {
+      if (storedCredentials == null || storedCredentials == '{}') {
         return left(LocalFailure.empty());
       }
 

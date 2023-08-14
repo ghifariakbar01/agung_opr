@@ -59,7 +59,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                           ),
                         ), (gateResponse) {
                   /// SET [gateResponse] from GOT gateList
-                  debugger(message: 'called');
+                  // debugger(message: 'called');
                   log('GATE RESPONSE: $gateResponse');
                   if (gateResponse != []) {
                     ref

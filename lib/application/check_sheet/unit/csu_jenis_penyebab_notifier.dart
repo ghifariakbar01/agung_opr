@@ -20,7 +20,7 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     FOS = await _repository.getCSUJenisItems();
 
@@ -34,7 +34,7 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
     state =
         state.copyWith(isProcessing: true, FOSOUpdateCSUPenyebabItems: none());
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     FOS = await _repository.getCSUPenyebabItems();
 

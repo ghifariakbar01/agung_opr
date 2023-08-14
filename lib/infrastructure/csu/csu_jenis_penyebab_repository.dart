@@ -27,7 +27,7 @@ class CSUJenisPenyebabRepository {
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getCSUJenisItems() async {
     try {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final listCSUJenisItems = await _remoteService.getCSUJenisItems();
 
@@ -50,7 +50,7 @@ class CSUJenisPenyebabRepository {
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getCSUPenyebabItems() async {
     try {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final listCsuPenyebabItemsParam =
           await _remoteService.getCSUPenyebabItems();

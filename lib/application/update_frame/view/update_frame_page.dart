@@ -82,7 +82,7 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
                           ),
                         ), (frameResponse) {
                   /// SET [frameResponse] from GOT frameList
-                  debugger(message: 'called');
+                  // debugger(message: 'called');
                   log('FRAME RESPONSE: $frameResponse');
                   if (frameResponse != []) {
                     ref
