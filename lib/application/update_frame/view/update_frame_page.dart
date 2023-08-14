@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../domain/remote_failure.dart';
 import '../../../shared/providers.dart';
+import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../widgets/alert_helper.dart';
 
 class UpdateFramePage extends ConsumerStatefulWidget {
@@ -106,7 +107,11 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
-      children: [UpdateFrameScaffold(), LoadingOverlay(isLoading: isLoading)],
+      children: [
+        UpdateFrameScaffold(),
+        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        LoadingOverlay(isLoading: isLoading)
+      ],
     );
   }
 }

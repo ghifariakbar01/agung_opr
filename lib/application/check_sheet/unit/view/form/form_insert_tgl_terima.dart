@@ -1,8 +1,10 @@
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../style/style.dart';
 
@@ -16,11 +18,13 @@ class FormInsertTglTerima extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame = ref.watch(updateFrameNotifierProvider);
+    final tglTerima = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.tglTerima));
 
-    final item = frame.updateFrameList[index];
+    final tglTerimaTextController = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.tglTerimaTextController));
 
-    final modelStr = item.idKendType.getOrLeave('');
+    final tglTerimaStr = tglTerima.getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,15 +54,21 @@ class FormInsertTglTerima extends ConsumerWidget {
             width: MediaQuery.of(context).size.width,
             child: TextButton(
               onPressed: () async {
-                final String? id =
-                    await context.pushNamed(RouteNames.modelNameRoute);
+                DateTime selectedDate = DateTime.now();
 
-                if (id != null) {
+                final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2015, 8),
+                    lastDate: selectedDate);
+
+                if (picked != null && picked != selectedDate) {
+                  final date = DateFormat('dd/MM/yyyy').format(picked);
                   ref
-                      .read(updateFrameNotifierProvider.notifier)
-                      .changeIdKendType(idKendTypeStr: id, index: index);
+                      .read(updateCSUFrameNotifierProvider.notifier)
+                      .changeTglTerima(date);
 
-                  frame.modelTextController[index].text = id;
+                  tglTerimaTextController.text = date;
                 }
               },
               style: ButtonStyle(
@@ -66,16 +76,16 @@ class FormInsertTglTerima extends ConsumerWidget {
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(
-                  controller: frame.modelTextController[index],
-                  decoration: Themes.formStyle(modelStr != ''
-                      ? modelStr + ' (ketik untuk ubah teks)'
-                      : 'Pilih model'),
+                  controller: tglTerimaTextController,
+                  decoration: Themes.formStyle(tglTerimaStr != ''
+                      ? tglTerimaStr + ' (ketik untuk ubah teks)'
+                      : 'Masukkan tgl terima'),
                   keyboardType: TextInputType.name,
                   onChanged: (value) => {},
                   validator: (_) => ref
-                      .read(updateFrameNotifierProvider)
-                      .updateFrameList[index]
-                      .idKendType
+                      .read(updateCSUFrameNotifierProvider)
+                      .updateFrameList
+                      .tglTerima
                       .value
                       .fold(
                         (f) => f.maybeMap(

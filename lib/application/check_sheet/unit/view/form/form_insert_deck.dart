@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,21 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../style/style.dart';
+
+final deckList = {
+  '',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  'DECK-A',
+  'DECK-B',
+  'DECK-C',
+  'DECK-D',
+  'DECK-F'
+};
 
 /// [TextEditingController] For displaying value only
 ///
@@ -16,11 +32,15 @@ class FormInsertDeck extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame = ref.watch(updateFrameNotifierProvider);
+    final deck = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.deck));
 
-    final item = frame.updateFrameList[index];
+    final deckTextController = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.deckTextController));
 
-    final modelStr = item.idKendType.getOrLeave('');
+    final deckStr = deck.getOrLeave('');
+
+    final width = MediaQuery.of(context).size.width;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,47 +65,37 @@ class FormInsertDeck extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: SizedBox(
-            height: 65,
+          child: Container(
+            height: 50,
             width: MediaQuery.of(context).size.width,
-            child: TextButton(
-              onPressed: () async {
-                final String? id =
-                    await context.pushNamed(RouteNames.modelNameRoute);
-
-                if (id != null) {
-                  ref
-                      .read(updateFrameNotifierProvider.notifier)
-                      .changeIdKendType(idKendTypeStr: id, index: index);
-
-                  frame.modelTextController[index].text = id;
-                }
-              },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: frame.modelTextController[index],
-                  decoration: Themes.formStyle(modelStr != ''
-                      ? modelStr + ' (ketik untuk ubah teks)'
-                      : 'Pilih model'),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) => {},
-                  validator: (_) => ref
-                      .read(updateFrameNotifierProvider)
-                      .updateFrameList[index]
-                      .idKendType
-                      .value
-                      .fold(
-                        (f) => f.maybeMap(
-                          empty: (_) => 'kosong',
-                          orElse: () => null,
-                        ),
-                        (_) => null,
-                      ),
-                ),
+            decoration: BoxDecoration(
+                border: Border.all(color: Palette.primaryColor, width: 2),
+                borderRadius: BorderRadius.circular(12)),
+            padding: EdgeInsets.all(4),
+            child: DropdownButton<String>(
+              value: deckList.firstWhere(
+                (element) => element == deckStr,
+                orElse: () => '',
               ),
+              elevation: 16,
+              underline: Container(),
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                if (value != null)
+                  ref
+                      .read(updateCSUFrameNotifierProvider.notifier)
+                      .changeDeck(value);
+              },
+              items: deckList.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    '${value}',
+                    style:
+                        Themes.customColor(FontWeight.normal, 14, Colors.black),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         )

@@ -5,6 +5,7 @@ import 'package:agung_opr/application/model/view/model_page.dart';
 import 'package:agung_opr/application/spk/spk.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
 import 'package:agung_opr/application/spk/view/spk_scan.dart';
+import 'package:agung_opr/application/supir/view/supir_page.dart';
 import 'package:agung_opr/application/update_frame/view/update_frame_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -63,6 +64,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.modelNameRoute,
               path: RouteNames.modelName,
               builder: (context, state) => ModelPage(),
+            ),
+            GoRoute(
+              name: RouteNames.supirName,
+              path: RouteNames.supirNameRoute,
+              builder: (context, state) => SupirPage(),
             ),
             GoRoute(
               name: RouteNames.scanSPKNameRoute,

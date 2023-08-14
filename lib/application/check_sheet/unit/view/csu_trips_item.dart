@@ -39,14 +39,15 @@ class CSUTripsItem extends ConsumerWidget {
               children: [
                 Text(
                   'TRIP ${index + 1} : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(
+                      FontWeight.bold, 16, Palette.primaryColor),
                 ),
                 Flexible(
                   child: Text(
                     '${trip.costanalis ?? ''}',
                     maxLines: 10,
-                    style:
-                        Themes.customColor(FontWeight.normal, 16, Colors.black),
+                    style: Themes.customColor(
+                        FontWeight.normal, 16, Palette.primaryColor),
                   ),
                 ),
               ],
@@ -55,12 +56,13 @@ class CSUTripsItem extends ConsumerWidget {
               children: [
                 Text(
                   'CUSTOMER : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(
+                      FontWeight.bold, 16, Palette.primaryColor),
                 ),
                 Text(
                   '${trip.custnm ?? ''}',
-                  style:
-                      Themes.customColor(FontWeight.normal, 16, Colors.black),
+                  style: Themes.customColor(
+                      FontWeight.normal, 16, Palette.primaryColor),
                 ),
               ],
             ),

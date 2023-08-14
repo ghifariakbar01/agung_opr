@@ -1,56 +1,301 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
+import 'package:agung_opr/application/user/user_model.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
+import '../../application/check_sheet/unit/state/csu_id_query.dart';
 import '../../domain/local_failure.dart';
+import '../../domain/value_objects_copy.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
 import 'update_csu_remote_service.dart';
 
-/// LIST OF [CSUItems]
-/// [SAVED] MODEL => [
-/* 
-    List<CSUItems> 
-
-   [
-    {
-      "id_item": 1,
-      "nama_ina": "Semua Area",
-      "nama_eng": "All Area",
-      "grup": "Exterior"
-    },
-    {
-      "id_item": 1,
-      "nama_ina": "Semua Area",
-      "nama_eng": "All Area",
-      "grup": "Exterior"
-    },
-    {
-      "id_item": 1,
-      "nama_ina": "Semua Area",
-      "nama_eng": "All Area",
-      "grup": "Exterior"
-    }, 
-   ]
-   
-*/
-
 class UpdateCSUFrameRepository {
-  UpdateCSUFrameRepository(this._remoteService, this._storage);
+  UpdateCSUFrameRepository(
+    this._remoteService,
+    this._userModelWithPassword,
+    this._storage,
+  );
 
   final UpdateCSUFrameRemoteService _remoteService;
+  final UserModelWithPassword _userModelWithPassword;
   final CredentialsStorage _storage;
 
-  Future<bool> hasOfflineData() => getCSUItemsOffline()
-      .then((credentials) => credentials.fold((_) => false, (_) => true));
+  // Future<bool> hasOfflineData() => getCSUItemsOffline()
+  //     .then((credentials) => credentials.fold((_) => false, (_) => true));
+  final tgl = DateFormat('yyyy-MM-dd')
+      .parse(DateTime.now().toString())
+      .toString()
+      .substring(0, 10);
 
-  /// FROM [getUpdateQueryListSPKOFFLINE] to [updateFrameByQuery]
+  final cAndUDate = DateTime.now()
+      .toString()
+      .substring(0, DateTime.now().toString().length - 3);
+
+  Future<Either<RemoteFailure, Unit>> getIdIncrementAndGetQueryableCSU(
+      {required List<CSUIDQuery> queryIds}) async {
+    try {
+      final isQueryOK = queryIds.isNotEmpty;
+
+      debugger(message: 'called');
+
+      log('STORAGE GET INCREMENTAL ID_NA QUERY: ${listCSUIDQueryToJsonSavable(queryIds)}');
+
+      if (isQueryOK) {
+        queryIds.forEach((queryId) async {
+          final query = queryId.query;
+          // RUN QUERY
+          log('QUERY: ${query.runtimeType}');
+
+          // GET ID_CS
+          final idCS = await _remoteService.getIdForIncrement() + 1;
+
+          if (query.contains('ID_CS_NA')) {
+            query.replaceAll('ID_CS_NA', '$idCS');
+          }
+        });
+
+        await _storage.save(listCSUIDQueryToJsonSavable(queryIds));
+
+        debugger(message: 'called');
+
+        log('STORAGE GET INCREMENTAL ID QUERY: ${listCSUIDQueryToJsonSavable(queryIds)}');
+      }
+
+      return right(unit);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on RangeError catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  Future<Either<LocalFailure, Unit>> saveCSUQueryNG(
+      {required List<CSUIDQuery> queryIds}) async {
+    try {
+      final savedStrings = await _storage.read();
+      final isQueryOK = queryIds.isNotEmpty;
+      final isStorageSaved = savedStrings != null;
+
+      if (isQueryOK) {
+        switch (isStorageSaved) {
+          case true:
+            () async {
+              debugger(message: 'CALLED');
+              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+
+              final response = listCSUIDQueryFromJson(parsedResponse);
+
+              for (final queryId in queryIds) {
+                final index = response
+                    .indexWhere((element) => element.idUnit == queryId.idUnit);
+
+                if (index == -1) {
+                  final list = [...response, queryId];
+
+                  await _storage.save(listCSUIDQueryToJsonSavable(list));
+
+                  debugger(message: 'called');
+
+                  log('STORAGE UPDATE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+                } else {
+                  final list = [...response];
+
+                  list[index] = CSUIDQuery(
+                      idUnit: queryId.idUnit,
+                      query: response[index].query + ' ' + queryId.query);
+
+                  await _storage.save(listCSUIDQueryToJsonSavable(list));
+
+                  debugger(message: 'called');
+
+                  log('STORAGE UPDATE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+                }
+              }
+            }();
+            break;
+          case false:
+            () async {
+              final list = [...queryIds];
+
+              log('STORAGE SAVE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+
+              await _storage.save(listCSUIDQueryToJsonSavable(list));
+            }();
+        }
+      } else {
+        throw LocalFailure.empty();
+      }
+
+      return right(unit);
+    } on RangeError catch (e) {
+      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
+    } on FormatException catch (e) {
+      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
+    } on JsonUnsupportedObjectError {
+      return left(LocalFailure.format('JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
+    }
+  }
+
+  Future<Either<LocalFailure, Unit>> saveCSUQueryOK(
+      {required CSUIDQuery queryId}) async {
+    try {
+      final savedStrings = await _storage.read();
+      final isQueryOK = queryId.query.isNotEmpty;
+      final isStorageSaved = savedStrings != null;
+
+      if (isQueryOK) {
+        switch (isStorageSaved) {
+          case true:
+            () async {
+              debugger(message: 'CALLED');
+              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+
+              final response = listCSUIDQueryFromJson(parsedResponse);
+
+              final index = response
+                  .indexWhere((element) => element.idUnit == queryId.idUnit);
+
+              if (index == -1) {
+                final list = [...response, queryId];
+
+                await _storage.save(listCSUIDQueryToJsonSavable(list));
+
+                debugger(message: 'called');
+
+                log('STORAGE UPDATE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+              } else {
+                final list = [...response];
+
+                list[index] = queryId;
+
+                await _storage.save(listCSUIDQueryToJsonSavable(list));
+
+                debugger(message: 'called');
+
+                log('STORAGE UPDATE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+              }
+            }();
+            break;
+          case false:
+            () async {
+              final list = [queryId];
+
+              log('STORAGE SAVE CSU QUERY: ${listCSUIDQueryToJsonSavable(list)}');
+
+              await _storage.save(listCSUIDQueryToJsonSavable(list));
+            }();
+        }
+      } else {
+        throw LocalFailure.empty();
+      }
+
+      return right(unit);
+    } on RangeError catch (e) {
+      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
+    } on FormatException catch (e) {
+      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
+    } on JsonUnsupportedObjectError {
+      return left(LocalFailure.format('JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
+    }
+  }
+
+  CSUIDQuery getOKSavableQuery({
+    required int idUnit,
+    required String frameName,
+    required Gate gate,
+    required Deck posisi,
+    required Supir1 supir1,
+    required Supir2 supir2,
+    required SupirSDR supirSDR,
+    required TglKirim tglKirim,
+    required TglTerima tglTerima,
+    String idCS = 'ID_CS_NA',
+    int inOut = 0,
+    int noDefect = 0,
+  }) {
+    const String dbName = 'cs_trs_cs_test';
+
+    final String insert =
+        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, supir1, supir2, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit)';
+
+    final idUser = _userModelWithPassword.idUser;
+    final nameUser = _userModelWithPassword.nama;
+
+    final gateStr = gate.getOrCrash();
+    final deckStr = posisi.getOrCrash();
+    final supir1Str = supir1.getOrCrash();
+    final supir2Str = supir2.getOrLeave('');
+    final supirSDRStr = supirSDR.getOrLeave('');
+    final tglKirimStr = tglKirim.getOrLeave('');
+    final tglTerimaStr = tglTerima.getOrLeave('');
+
+    final csuQuery =
+        " '${gateStr}',  '${deckStr}',  '${supir1Str}', '${supir2Str}', '${noDefect}', '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}' ";
+
+    final requiredQuery =
+        " '${idCS}', '${frameName}', '${inOut}', '${idUser}', '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
+
+    final csuIdQuery = CSUIDQuery(
+        idUnit: idUnit,
+        query: insert + ' VALUES ' + '(${requiredQuery} ${csuQuery})');
+
+    log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
+
+    debugger(message: 'called');
+
+    return csuIdQuery;
+  }
+
+  CSUIDQuery getNotGoodSavableQuery({
+    required int idUnit,
+    required int idCheckSheet,
+    required int idJenisDefect,
+    required int idPenyebabDefect,
+    required String frameName,
+    String idCS = 'ID_CS_NA',
+  }) {
+    const String dbName = 'cs_trs_cs_dtl_test';
+
+    final String insert =
+        'INSERT INTO $dbName (id_cs, frame, c_date, u_date, c_user,  u_user, id_item, id_jns_defect, id_p_defect)';
+
+    final nameUser = _userModelWithPassword.nama;
+
+    final csuQuery =
+        " '${idCheckSheet}',  '${idJenisDefect}',  '${idPenyebabDefect}'";
+
+    final requiredQuery =
+        " '${idCS}', '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
+
+    final csuIdQuery = CSUIDQuery(
+        idUnit: idUnit,
+        query: insert + ' VALUES ' + '(${requiredQuery} ${csuQuery})');
+
+    log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
+
+    debugger(message: 'called');
+
+    return csuIdQuery;
+  }
+
+  /// FROM [getUpdateQueryListSPKOFFLINE] to [updateCSUFrameByQuery]
   ///
   Future<Either<RemoteFailure, Unit>> updateCSUFrameByQuery(
       {required List<CSUIDQuery> queryIds}) async {
@@ -139,179 +384,6 @@ class UpdateCSUFrameRepository {
       throw JsonUnsupportedObjectError(e);
     } on PlatformException {
       throw PlatformException;
-    }
-  }
-
-  Future<Either<RemoteFailure, List<CSUItems>>> getCSUItems() async {
-    try {
-      debugger(message: 'called');
-
-      final listCSUItems = await _remoteService.getCSUItems();
-
-      // await this._SAVECSUItems(csuItemsParam: listCSUItems);
-
-      return right(listCSUItems);
-    } on RestApiException catch (e) {
-      return left(RemoteFailure.server(e.errorCode, e.message));
-    } on NoConnectionException {
-      return left(RemoteFailure.noConnection());
-    } on FormatException catch (e) {
-      return left(RemoteFailure.parse(message: e.message));
-    } on JsonUnsupportedObjectError {
-      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(RemoteFailure.storage());
-    }
-  }
-
-  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      getCSUJenisItems() async {
-    try {
-      debugger(message: 'called');
-
-      final listCSUJenisItems = await _remoteService.getCSUJenisItems();
-
-      // await this._SAVECSUJenisItems(csuJenisItemsParam: listCSUJenisItems);
-
-      return right(listCSUJenisItems);
-    } on RestApiException catch (e) {
-      return left(RemoteFailure.server(e.errorCode, e.message));
-    } on NoConnectionException {
-      return left(RemoteFailure.noConnection());
-    } on FormatException catch (e) {
-      return left(RemoteFailure.parse(message: e.message));
-    } on JsonUnsupportedObjectError {
-      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(RemoteFailure.storage());
-    }
-  }
-
-  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      getCSUPenyebabItems() async {
-    try {
-      debugger(message: 'called');
-
-      final listCsuPenyebabItemsParam =
-          await _remoteService.getCSUPenyebabItems();
-
-      // await this._SAVECSUPenyebabItems(
-      //     csuPenyebabItemsParam: listCsuPenyebabItemsParam);
-
-      return right(listCsuPenyebabItemsParam);
-    } on RestApiException catch (e) {
-      return left(RemoteFailure.server(e.errorCode, e.message));
-    } on NoConnectionException {
-      return left(RemoteFailure.noConnection());
-    } on FormatException catch (e) {
-      return left(RemoteFailure.parse(message: e.message));
-    } on JsonUnsupportedObjectError {
-      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(RemoteFailure.storage());
-    }
-  }
-
-  // SAVE CSU ITEMS IN STORAGE
-  Future<Unit> _SAVECSUItems({required List<CSUItems> csuItemsParam}) async {
-    final isNewFrameOK = csuItemsParam.isNotEmpty;
-
-    if (isNewFrameOK) {
-      final json = listCSUItemsToJsonSavable(csuItemsParam);
-
-      await _storage.save(json);
-    } else {
-      throw FormatException(
-          'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
-    }
-
-    return unit;
-  }
-
-  // SAVE CSU JENIS ITEM IN STORAGE
-  Future<Unit> _SAVECSUJenisItems(
-      {required List<CSUJenisPenyebabItem> csuJenisItemsParam}) async {
-    final isNewFrameOK = csuJenisItemsParam.isNotEmpty;
-
-    if (isNewFrameOK) {
-      final json = listCSUJenisPenyebabItemToJsonSavable(csuJenisItemsParam);
-
-      await _storage.save(json);
-    } else {
-      throw FormatException(
-          'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
-    }
-
-    return unit;
-  }
-
-  // SAVE CSU PENYEBAB ITEM IN STORAGE
-  Future<Unit> _SAVECSUPenyebabItems(
-      {required List<CSUJenisPenyebabItem> csuPenyebabItemsParam}) async {
-    final isNewFrameOK = csuPenyebabItemsParam.isNotEmpty;
-
-    if (isNewFrameOK) {
-      final json = listCSUJenisPenyebabItemToJsonSavable(csuPenyebabItemsParam);
-
-      await _storage.save(json);
-    } else {
-      throw FormatException(
-          'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
-    }
-
-    return unit;
-  }
-
-  /// DATA: [CSUItems] FROM STORAGE
-  ///
-  /// get [CSUItems]
-  Future<Either<RemoteFailure, List<CSUItems>>> getCSUItemsOffline() async {
-    try {
-      final csuItemStorage = await _storage.read();
-
-      // debugger(message: 'called');
-
-      log('CSU ITEM STORAGE: $csuItemStorage');
-
-      // HAS MAP
-      if (csuItemStorage != null) {
-        debugger(message: 'called');
-
-        final responsMap =
-            jsonDecode(csuItemStorage) as List<Map<String, dynamic>>;
-
-        final List<CSUItems> response = listCSUItemsFromJson(responsMap);
-
-        debugger(message: 'called');
-
-        log('CSU STORAGE RESPONSE: $response');
-
-        if (response.isNotEmpty) {
-          debugger(message: 'called');
-
-          return right(response);
-        } else {
-          debugger(message: 'called');
-
-          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
-        }
-      } else {
-        debugger(message: 'called');
-
-        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
-      }
-    } on RestApiException catch (e) {
-      debugger(message: 'called');
-
-      return left(RemoteFailure.server(e.errorCode, e.message));
-    } on NoConnectionException {
-      debugger(message: 'called');
-
-      return left(RemoteFailure.noConnection());
-    } on FormatException catch (error) {
-      debugger(message: 'called');
-
-      return left(RemoteFailure.parse(message: error.message));
     }
   }
 

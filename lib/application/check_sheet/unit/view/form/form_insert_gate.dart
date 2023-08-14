@@ -1,26 +1,79 @@
-import 'package:agung_opr/application/routes/route_names.dart';
-import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'dart:developer';
+
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/gate/csu_mst_gate.dart';
+import 'package:agung_opr/application/gate/providers/gate_providers.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../../domain/remote_failure.dart';
+import '../../../../../shared/providers.dart';
 import '../../../../../style/style.dart';
+import '../../../../widgets/alert_helper.dart';
 
 /// [TextEditingController] For displaying value only
 ///
 ///
-class FormInsertGate extends ConsumerWidget {
+class FormInsertGate extends ConsumerStatefulWidget {
   const FormInsertGate({required this.index});
 
   final int index;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final frame = ref.watch(updateFrameNotifierProvider);
+  ConsumerState<FormInsertGate> createState() => _FormInsertGateState();
+}
 
-    final item = frame.updateFrameList[index];
+class _FormInsertGateState extends ConsumerState<FormInsertGate> {
+  @override
+  void initState() {
+    super.initState();
 
-    final modelStr = item.idKendType.getOrLeave('');
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(gateNotifierProvider.notifier).getGates();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen<Option<Either<RemoteFailure, List<CSUMSTGate>>>>(
+        gateNotifierProvider.select(
+          (state) => state.FOSOGate,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                    (failure) => failure.maybeMap(
+                          noConnection: (value) =>
+                              ref.read(isOfflineProvider.notifier).state = true,
+                          orElse: () => AlertHelper.showSnackBar(
+                            context,
+                            message: failure.maybeMap(
+                              storage: (_) =>
+                                  'Storage penuh. Tidak bisa menyimpan data FRAME',
+                              server: (value) =>
+                                  value.message ?? 'Server Error',
+                              parse: (value) => 'Parse $value',
+                              orElse: () => '',
+                            ),
+                          ),
+                        ), (gateResponse) {
+                  /// SET [gateResponse] from GOT gateList
+                  debugger(message: 'called');
+                  log('GATE RESPONSE: $gateResponse');
+                  if (gateResponse != []) {
+                    ref
+                        .read(gateNotifierProvider.notifier)
+                        .changeGateList(gateResponse);
+                  }
+                })));
+
+    final gates = ref.watch(gateNotifierProvider);
+
+    final gateItem = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.gate));
+
+    final gateStr = gateItem.getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,47 +98,38 @@ class FormInsertGate extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: SizedBox(
-            height: 65,
+          child: Container(
+            height: 50,
             width: MediaQuery.of(context).size.width,
-            child: TextButton(
-              onPressed: () async {
-                final String? id =
-                    await context.pushNamed(RouteNames.modelNameRoute);
-
-                if (id != null) {
-                  ref
-                      .read(updateFrameNotifierProvider.notifier)
-                      .changeIdKendType(idKendTypeStr: id, index: index);
-
-                  frame.modelTextController[index].text = id;
-                }
-              },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: frame.modelTextController[index],
-                  decoration: Themes.formStyle(modelStr != ''
-                      ? modelStr + ' (ketik untuk ubah teks)'
-                      : 'Pilih model'),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) => {},
-                  validator: (_) => ref
-                      .read(updateFrameNotifierProvider)
-                      .updateFrameList[index]
-                      .idKendType
-                      .value
-                      .fold(
-                        (f) => f.maybeMap(
-                          empty: (_) => 'kosong',
-                          orElse: () => null,
-                        ),
-                        (_) => null,
-                      ),
-                ),
+            decoration: BoxDecoration(
+                border: Border.all(color: Palette.primaryColor, width: 2),
+                borderRadius: BorderRadius.circular(12)),
+            padding: EdgeInsets.all(4),
+            child: DropdownButton<CSUMSTGate>(
+              value: gates.gates.firstWhere(
+                (element) => element.id.toString() == gateStr,
+                orElse: () => CSUMSTGate.initial(),
               ),
+              elevation: 16,
+              underline: Container(),
+              onChanged: (CSUMSTGate? value) {
+                // This is called when the user selects an item.
+                if (value != null)
+                  ref
+                      .read(updateCSUFrameNotifierProvider.notifier)
+                      .changeGate(value.id.toString());
+              },
+              items: gates.gates
+                  .map<DropdownMenuItem<CSUMSTGate>>((CSUMSTGate value) {
+                return DropdownMenuItem<CSUMSTGate>(
+                  value: value,
+                  child: Text(
+                    '${value.nama}',
+                    style:
+                        Themes.customColor(FontWeight.normal, 14, Colors.black),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         )

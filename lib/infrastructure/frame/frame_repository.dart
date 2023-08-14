@@ -59,7 +59,7 @@ class FrameRepository {
         idSPK.toString(): [newFrame]
       };
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       log('SAVE FRAME INDEXED MAP: ${saveThisMap}');
 
@@ -87,7 +87,7 @@ class FrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              debugger(message: 'CALLED');
+              // debugger(message: 'CALLED');
               final parsedResponse =
                   jsonDecode(savedStrings!) as Map<String, dynamic>;
 
@@ -103,7 +103,7 @@ class FrameRepository {
 
               await _storage.save(jsonEncode(newFrameMap));
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               log('STORAGE UPDATE FRAME DELETE: ${jsonEncode(newFrameMap)}');
 
@@ -163,7 +163,7 @@ class FrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            debugger(message: 'CALLED');
+            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as Map<String, dynamic>;
 
             final Map<String, List<Frame>> parsedMap =
@@ -183,7 +183,7 @@ class FrameRepository {
 
               list[indexIdUnit] = frame;
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               log('STORAGE FRAME UPDATE: $list');
 
@@ -194,7 +194,7 @@ class FrameRepository {
             else if (parsedMap.containsKey(key) && indexIdUnit == null) {
               final frameList = newValue;
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               log('STORAGE FRAME GET: $frameList');
 
@@ -202,12 +202,12 @@ class FrameRepository {
             }
             // IF EXISTING KEY NULL
             else {
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               parsedMap.addAll({key: newValue});
             }
 
-            debugger(message: 'called');
+            // debugger(message: 'called');
 
             final newFrameMap = convertListFrameToListMap(parsedMap: parsedMap);
 
@@ -220,7 +220,7 @@ class FrameRepository {
           break;
         case false:
           () async {
-            debugger(message: 'called');
+            // debugger(message: 'called');
 
             final jsonFrames = convertFrameToListMap(listMap: newFrame);
 
@@ -255,44 +255,44 @@ class FrameRepository {
 
       // HAS MAP
       if (frameStorage != null) {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         final responsMap = jsonDecode(frameStorage) as Map<String, dynamic>;
 
         final response = convertMaptoListMap(map: responsMap);
 
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         log('FRAME STORAGE RESPONSE: $response');
 
         final key = idSPK.toString();
 
         if (response.containsKey(key)) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           final frames = response[key] ?? [];
 
           return right(frames);
         } else {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.parse(message: error.message));
     }
@@ -306,7 +306,7 @@ class FrameRepository {
         return left(LocalFailure.empty());
       }
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return right(storedCredentials);
     } on FormatException {
@@ -364,7 +364,7 @@ class FrameRepository {
       {required Map<String, List<Frame>> listMap}) {
     final List<Map<String, dynamic>> jsonFrames = [];
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     listMap.values.forEach((element) {
       final json = element as List<Frame>;
@@ -381,7 +381,7 @@ class FrameRepository {
       {required List<Map<String, dynamic>> jsonFrames}) {
     final List<Frame> frame = [];
 
-    debugger(message: 'called');
+    // debugger(message: 'called');
 
     jsonFrames.forEach((element) {
       frame.add(Frame.fromJson(element));

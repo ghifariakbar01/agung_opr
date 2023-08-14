@@ -6,26 +6,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../style/style.dart';
 import '../../../widgets/v_appbar.dart';
 import '../shared/csu_providers.dart';
-import 'form/form_insert_deck.dart';
-import 'form/form_insert_gate.dart';
-import 'form/form_insert_supir1.dart';
-import 'form/form_insert_supir2.dart';
-import 'form/form_insert_supir_sdr.dart';
-import 'form/form_insert_tgl_kirim.dart';
-import 'form/form_insert_tgl_terima.dart';
+import 'form/csu_new_form.dart';
 import 'widget/csu_item_form.dart';
-import 'widget/csu_row_item.dart';
 
 class CSUNewScaffold extends ConsumerWidget {
   const CSUNewScaffold();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame =
-        ref.watch(csuFrameNotifierProvider.select((value) => value.frame));
+    final csuItems = ref
+        .watch(csuItemsFrameNotifierProvider.select((value) => value.csuItems));
 
-    final csuItems = ref.watch(
-        updateCSUFrameNotifierProvider.select((value) => value.csuItems));
+    final isDefect = ref.watch(updateCSUFrameNotifierProvider.select((value) =>
+        value.updateFrameList.isNG.firstWhere(
+            (checkSheet) => checkSheet == true,
+            orElse: () => false)));
 
     return KeyboardDismissOnTap(
         child: Scaffold(
@@ -35,36 +30,7 @@ class CSUNewScaffold extends ConsumerWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // ID UNIT
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                color: Palette.primaryColor, width: 2)),
-                        padding: EdgeInsets.all(4),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
-                              child: CSURowItem(
-                                  label: 'ID UNIT', text: frame.frame ?? ''),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            FormInsertGate(index: 0),
-                            FormInsertDeck(index: 0),
-                            FormInsertSupir1(index: 0),
-                            FormInsertSupir2(index: 0),
-                            FormInsertSupirSdr(
-                              index: 0,
-                            ),
-                            FormInsertTglTerima(index: 0),
-                            FormInsertTglKirim(index: 0),
-                          ],
-                        ),
-                      ),
+                      CSUNewForm(),
 
                       SizedBox(
                         height: 8,
@@ -102,12 +68,16 @@ class CSUNewScaffold extends ConsumerWidget {
                       VButton(
                           label: 'DEFECT',
                           color: Palette.red,
-                          isEnabled: false,
-                          onPressed: () {}),
+                          isEnabled: isDefect,
+                          onPressed: () => ref
+                              .read(updateCSUFrameNotifierProvider.notifier)
+                              .saveQueryNG()),
                       VButton(
                           label: 'NO DEFECT',
-                          isEnabled: false,
-                          onPressed: () {}),
+                          isEnabled: !isDefect,
+                          onPressed: () => ref
+                              .read(updateCSUFrameNotifierProvider.notifier)
+                              .saveQueryOK()),
                     ],
                   ),
                 ))));

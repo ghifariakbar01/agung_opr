@@ -1,21 +1,15 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
-import 'package:agung_opr/application/update_csu/state/update_csu_form_state.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_ng_state.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
-import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
-import 'package:agung_opr/infrastructure/update_frame/update_frame_repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../utils/validator.dart';
-import '../supir/supir.dart';
 
 class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   UpdateCSUNotifier(
@@ -24,88 +18,83 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
   final UpdateCSUFrameRepository _repository;
 
-  Future<void> updateCheckSheet() async {
+  Future<void> saveQueryOK() async {
     Either<LocalFailure, Unit>? FOS;
 
-    final item = state.updateFrameList;
-
     if (isValid()) {
-      state = state.copyWith(isProcessing: true, FOSOUpdateCSU: none());
+      state = state.copyWith(
+          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
       debugger(message: 'called');
 
-      // FOS = await _repository.(
-      //   idSPK: state.idSPK.toString(),
-      //   idUnit: item.idUnit,
-      //   idKendType: item.idKendType,
-      //   engine: item.engine,
-      //   frame: item.frame,
-      //   noReff: item.noReff,
-      //   warna: item.warna,
-      //   sppdc: item.sppdc,
-      // );
+      final stateCSU = state.updateFrameList;
 
-      state = state.copyWith(isProcessing: false, FOSOUpdateCSU: none());
+      final queryId = _repository.getOKSavableQuery(
+          idUnit: state.idUnit,
+          frameName: state.frameName,
+          gate: stateCSU.gate,
+          posisi: stateCSU.deck,
+          supir1: stateCSU.supir1,
+          supir2: stateCSU.supir2,
+          supirSDR: stateCSU.supirSDR,
+          tglKirim: stateCSU.tglKirim,
+          tglTerima: stateCSU.tglTerima);
+
+      FOS = await _repository.saveCSUQueryOK(queryId: queryId);
+
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: false,
+          FOSOUpdateCSU: optionOf(FOS));
     } else {
-      state = state.copyWith(isProcessing: false, FOSOUpdateCSU: optionOf(FOS));
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: true,
+          FOSOUpdateCSU: optionOf(FOS));
     }
   }
 
-  Future<void> getCSUItems() async {
-    Either<RemoteFailure, List<CSUItems>>? FOS;
+  Future<void> saveQueryNG() async {
+    Either<LocalFailure, Unit>? FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
+    if (isValid()) {
+      state = state.copyWith(
+          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
-    debugger(message: 'called');
+      debugger(message: 'called');
 
-    FOS = await _repository.getCSUItems();
+      final NG = state.updateFrameList.isNG;
 
-    state =
-        state.copyWith(isProcessing: false, FOSOUpdateCSUItems: optionOf(FOS));
-  }
+      final List<CSUIDQuery> queryIds = [];
 
-  Future<void> getCSUJenisItems() async {
-    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
+      for (int index = 0; index < state.updateFrameList.isNG.length; index++) {
+        if (NG[index] == true) {
+          // GET NG ITEM, JENIS, PENYEBAB
+          final NGItem = state.updateFrameList.ngStates[index];
 
-    state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
+          final query = _repository.getNotGoodSavableQuery(
+              idUnit: state.idUnit,
+              frameName: state.frameName,
+              idCheckSheet: NGItem.idCs,
+              idJenisDefect: NGItem.idJenis,
+              idPenyebabDefect: NGItem.idPenyebab);
 
-    debugger(message: 'called');
+          queryIds.add(query);
+        }
+      }
 
-    FOS = await _repository.getCSUJenisItems();
+      FOS = await _repository.saveCSUQueryNG(queryIds: queryIds);
 
-    state = state.copyWith(
-        isProcessing: false, FOSOUpdateCSUJenisItems: optionOf(FOS));
-  }
-
-  Future<void> getCSUPenyebabItems() async {
-    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
-
-    state =
-        state.copyWith(isProcessing: true, FOSOUpdateCSUPenyebabItems: none());
-
-    debugger(message: 'called');
-
-    FOS = await _repository.getCSUPenyebabItems();
-
-    state = state.copyWith(
-        isProcessing: false, FOSOUpdateCSUPenyebabItems: optionOf(FOS));
-  }
-
-  void changeCSUPenyebabItems(List<CSUJenisPenyebabItem> csuPenyebabItems) {
-    state = state.copyWith(
-      csuPenyebabItems: [
-        CSUJenisPenyebabItem.initialPenyebab(),
-        ...csuPenyebabItems
-      ],
-      FOSOUpdateCSUItems: none(),
-    );
-  }
-
-  void changeCSUJenisItems(List<CSUJenisPenyebabItem> csuJenisItems) {
-    state = state.copyWith(
-      csuJenisItems: [CSUJenisPenyebabItem.initial(), ...csuJenisItems],
-      FOSOUpdateCSUJenisItems: none(),
-    );
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: false,
+          FOSOUpdateCSU: optionOf(FOS));
+    } else {
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: true,
+          FOSOUpdateCSU: optionOf(FOS));
+    }
   }
 
   void changeIsNG({required bool isNG, required int index}) {
@@ -149,13 +138,6 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(ngStates: list));
   }
 
-  void changeCSUItems(List<CSUItems> csuItems) {
-    state = state.copyWith(
-      csuItems: csuItems,
-      FOSOUpdateCSUItems: none(),
-    );
-  }
-
   void changeFillEmptyList({required int length}) {
     final generateIsNG = List.generate(length, (index) => false);
 
@@ -170,6 +152,20 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             state.updateFrameList.copyWith(ngStates: generateNGStates));
 
     debugger(message: 'called');
+  }
+
+  void changeIdUnit(int idUnit) {
+    state = state.copyWith(
+      idUnit: idUnit,
+      FOSOUpdateCSU: none(),
+    );
+  }
+
+  void changeFrameName(String frameName) {
+    state = state.copyWith(
+      frameName: frameName,
+      FOSOUpdateCSU: none(),
+    );
   }
 
   void changeGate(String gateStr) {
@@ -239,5 +235,37 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     ];
 
     return Validator.validate(values);
+  }
+
+  Future<void> updateCheckSheet() async {
+    Either<LocalFailure, Unit>? FOS;
+
+    final item = state.updateFrameList;
+
+    if (isValid()) {
+      state = state.copyWith(
+          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
+
+      debugger(message: 'called');
+
+      // FOS = await _repository.(
+      //   idSPK: state.idSPK.toString(),
+      //   idUnit: item.idUnit,
+      //   idKendType: item.idKendType,
+      //   engine: item.engine,
+      //   frame: item.frame,
+      //   noReff: item.noReff,
+      //   warna: item.warna,
+      //   sppdc: item.sppdc,
+      // );
+
+      state = state.copyWith(
+          isProcessing: false, showErrorMessages: false, FOSOUpdateCSU: none());
+    } else {
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: true,
+          FOSOUpdateCSU: optionOf(FOS));
+    }
   }
 }

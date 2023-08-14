@@ -1,9 +1,14 @@
+import 'package:agung_opr/infrastructure/cache_storage/csu/csu_penyebab_storage.dart';
+import 'package:agung_opr/infrastructure/csu/csu_jenis_penyebab_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../infrastructure/cache_storage/csu/csu_frame_storage.dart';
+import '../../../../infrastructure/cache_storage/csu/csu_items_storage.dart';
+import '../../../../infrastructure/cache_storage/csu/csu_jenis_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_trips_frame_storage.dart';
-import '../../../../infrastructure/cache_storage/update_csu_storage.dart';
+import '../../../../infrastructure/cache_storage/csu/update_csu_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
+import '../../../../infrastructure/csu/csu_items_repository.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
 import '../../../../infrastructure/csu/csu_repository.dart';
 import '../../../../infrastructure/update_csu/update_csu_remote_service.dart';
@@ -14,7 +19,11 @@ import '../../../update_csu/update_csu_notifier.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../update_frame/update_frame_notifier.dart';
 import '../../../update_frame/update_frame_state.dart';
+import '../csu_item_notifier.dart';
+import '../csu_jenis_penyebab_notifier.dart';
 import '../csu_result_notifier.dart';
+import '../state/csu_items_state.dart';
+import '../state/csu_jenis_penyebab_state.dart';
 import '../state/csu_result_state.dart';
 
 // import '../../../infrastructure/cache_storage/update_frame_storage.dart';
@@ -54,7 +63,6 @@ final csuFrameNotifierProvider =
 //         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
 
 ///  UPDATE CSU
-/// [UpdateCSUStorage], [UpdateCSUFrameRemoteService], [UpdateCSUFrameRepository], [UpdateCSUNotifier]
 
 final updateCSUFrameStorage = Provider<CredentialsStorage>(
   (ref) => UpdateCSUStorage(ref.watch(flutterSecureStorageProvider)),
@@ -66,12 +74,57 @@ final updateCSUFrameRemoteServiceProvider = Provider(
 );
 
 final updateCSUFrameRepositoryProvider = Provider((ref) =>
-    UpdateCSUFrameRepository(ref.watch(updateCSUFrameRemoteServiceProvider),
-        ref.watch(updateFrameStorage)));
+    UpdateCSUFrameRepository(
+        ref.watch(updateCSUFrameRemoteServiceProvider),
+        ref.watch(userNotifierProvider.select((value) => value.user)),
+        ref.watch(updateCSUFrameStorage)));
 
 final updateCSUFrameNotifierProvider =
     StateNotifierProvider<UpdateCSUNotifier, UpdateCSUState>(
   (ref) => UpdateCSUNotifier(ref.watch(updateCSUFrameRepositoryProvider)),
+);
+
+// final updateFrameOfflineNotifierProvider = StateNotifierProvider<
+//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
+//     (ref) =>
+//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+
+// CSU ITEMS
+final csuItemsStorage = Provider<CredentialsStorage>(
+  (ref) => CSUItemsStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
+final csuItemsRepositoryProvider = Provider((ref) => CSUItemsRepository(
+      ref.watch(updateCSUFrameRemoteServiceProvider),
+      ref.watch(csuItemsStorage),
+    ));
+
+final csuItemsFrameNotifierProvider =
+    StateNotifierProvider<CSUItemsNotifier, CSUItemsState>(
+  (ref) => CSUItemsNotifier(ref.watch(csuItemsRepositoryProvider)),
+
+  // final updateFrameOfflineNotifierProvider = StateNotifierProvider<
+//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
+//     (ref) =>
+//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+);
+
+// CSU JENIS PENYEBAB
+final jenisDefectStorage = Provider<CredentialsStorage>(
+  (ref) => CSUJenisStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
+final penyebabDefectStorage = Provider<CredentialsStorage>(
+  (ref) => CSUPenyebabStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
+final jenisPenyebabRepositoryProvider = Provider((ref) =>
+    CSUJenisPenyebabRepository(ref.watch(updateCSUFrameRemoteServiceProvider),
+        ref.watch(jenisDefectStorage), ref.watch(penyebabDefectStorage)));
+
+final jenisPenyebabFrameNotifierProvider =
+    StateNotifierProvider<CSUJenisPenyebabNotifier, CSUJenisPenyebabState>(
+  (ref) => CSUJenisPenyebabNotifier(ref.watch(jenisPenyebabRepositoryProvider)),
 );
 
 // final updateFrameOfflineNotifierProvider = StateNotifierProvider<

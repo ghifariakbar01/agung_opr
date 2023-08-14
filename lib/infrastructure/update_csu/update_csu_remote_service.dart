@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
+
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -16,10 +17,6 @@ class UpdateCSUFrameRemoteService {
 
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
-
-  // INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, supir1, supir2, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit)
-
-  // VALUES (‘$idCS’, ‘$frame’, ‘$inOut’, ‘$idUser’, ‘$cUser’, ‘$uUser’, ‘$tgl’, ‘$cDate’, ‘$uDate’, ‘$idGate’, ‘$posisi’, ‘$supir1’, ‘$supir2’, ‘$noDefect’, ‘$supirSdr’, ‘$tglKirimUnit’, $tglTerimaUnit)
 
   Future<Unit> insertFrameCSUByQuery({
     required String query,
@@ -43,6 +40,48 @@ class UpdateCSUFrameRemoteService {
       if (items['status'] == 'Success') {
         // HERE
         return unit;
+      } else {
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError || e.isConnectionTimeout) {
+        throw NoConnectionException();
+      } else if (e.response != null) {
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<int> getIdForIncrement() async {
+    try {
+      final data = _dioRequestNotifier;
+
+      data.addAll({
+        "mode": "INSERT",
+        "command": "SELECT TOP 1 id_cs FROM cs_trs_cs_test ORDER BY id_cs DESC",
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      log('data ${jsonEncode(data)}');
+      log('response $response');
+
+      final items = response.data?[0];
+
+      if (items['status'] == 'Success') {
+        // HERE
+        return items['items']['id_cs'] as int;
       } else {
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;
@@ -286,5 +325,3 @@ class UpdateCSUFrameRemoteService {
     }
   }
 }
-
-// SELECT id_p_defect AS id, p_def_eng AS eng, p_def_ina AS ind FROM cs_mst_penyebab_defect

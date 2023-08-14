@@ -1,0 +1,137 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:agung_opr/infrastructure/gate/gate_remote_service.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
+
+import '../../application/gate/csu_mst_gate.dart';
+import '../../domain/local_failure.dart';
+import '../../domain/remote_failure.dart';
+import '../credentials_storage.dart';
+import '../exceptions.dart';
+
+/// [SAVED] MODEL => [
+/* 
+    List<CSUMSTGate>
+
+    example:
+    [
+      {
+            "id": 43,
+            "nama": "NT MITSUBISHI MEDAN SATRIA"
+      },
+      {
+            "id": 44,
+            "nama": "ACT MEDAN"
+      },
+      {
+            "id": 45,
+            "nama": "NISSAN PWK"
+      },
+    ]
+    
+*/
+
+class GateRepository {
+  GateRepository(this._remoteService, this._storage);
+
+  final GateRemoteService _remoteService;
+  final CredentialsStorage _storage;
+
+  Future<bool> hasOfflineData() => getGatesOFFLINE()
+      .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  Future<Either<RemoteFailure, List<CSUMSTGate>>> getCSUGates() async {
+    try {
+      debugger(message: 'called');
+
+      final listCSUMSTGate = await _remoteService.getCSUGates();
+
+      // await this._SAVECSUItems(csuItemsParam: listCSUMSTGate);
+
+      return right(listCSUMSTGate);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  /// DATA: [CSUMSTGate] FROM STORAGE
+  ///
+  /// get [CSUMSTGate]
+  Future<Either<RemoteFailure, List<CSUMSTGate>>> getGatesOFFLINE() async {
+    try {
+      final csuItemStorage = await _storage.read();
+
+      // debugger(message: 'called');
+
+      log('CSU ITEM STORAGE: $csuItemStorage');
+
+      // HAS MAP
+      if (csuItemStorage != null) {
+        debugger(message: 'called');
+
+        final responsMap =
+            jsonDecode(csuItemStorage) as List<Map<String, dynamic>>;
+
+        final List<CSUMSTGate> response = listCSUMSTGateFromJson(responsMap);
+
+        debugger(message: 'called');
+
+        log('CSU STORAGE RESPONSE: $response');
+
+        if (response.isNotEmpty) {
+          debugger(message: 'called');
+
+          return right(response);
+        } else {
+          debugger(message: 'called');
+
+          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+        }
+      } else {
+        debugger(message: 'called');
+
+        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+      }
+    } on RestApiException catch (e) {
+      debugger(message: 'called');
+
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      debugger(message: 'called');
+
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (error) {
+      debugger(message: 'called');
+
+      return left(RemoteFailure.parse(message: error.message));
+    }
+  }
+
+  Future<Either<LocalFailure, String?>> getStorageCondition() async {
+    try {
+      final storedCredentials = await _storage.read();
+
+      if (storedCredentials == null) {
+        return left(LocalFailure.empty());
+      }
+
+      debugger(message: 'called');
+
+      return right(storedCredentials);
+    } on FormatException {
+      return left(LocalFailure.format('Error while parsing'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
+    }
+  }
+}

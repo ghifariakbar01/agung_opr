@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 import 'package:agung_opr/style/style.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,10 +25,10 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
     final isNG = ref.watch(updateCSUFrameNotifierProvider
         .select((value) => value.updateFrameList.isNG[index]));
 
-    final jenis = ref.watch(
-        updateCSUFrameNotifierProvider.select((value) => value.csuJenisItems));
+    final jenis = ref.watch(jenisPenyebabFrameNotifierProvider
+        .select((value) => value.csuJenisItems));
 
-    final penyebab = ref.watch(updateCSUFrameNotifierProvider
+    final penyebab = ref.watch(jenisPenyebabFrameNotifierProvider
         .select((value) => value.csuPenyebabItems));
 
     return Column(
@@ -58,6 +59,8 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
                         .changeNGJenis(id: value.id, index: index);
+
+                  log('NG Jenis ID : ${value?.id} INDEX: ${index}');
                 },
                 items: jenis.map<DropdownMenuItem<CSUJenisPenyebabItem>>(
                     (CSUJenisPenyebabItem value) {
@@ -88,7 +91,7 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
         Visibility(
           visible: isNG,
           child: SizedBox(
-              height: 35,
+              height: 65,
               width: MediaQuery.of(context).size.width,
               child: DropdownButton<CSUJenisPenyebabItem>(
                 value: penyebab.firstWhere(
@@ -103,21 +106,36 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
                         .changeNGPenyebab(id: value.id, index: index);
+
+                  log('NG Penyebab ID : ${value?.id} INDEX: ${index}');
                 },
+                itemHeight: 100,
                 items: penyebab.map<DropdownMenuItem<CSUJenisPenyebabItem>>(
                     (CSUJenisPenyebabItem value) {
                   return DropdownMenuItem<CSUJenisPenyebabItem>(
                     value: value,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Palette.primaryColor, width: 2),
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: EdgeInsets.all(4),
-                      child: Text(
-                        '${value.id}. ${value.ind} (${value.eng})',
-                        style: Themes.customColor(
-                            FontWeight.normal, 14, Colors.black),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Container(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width - 52,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Palette.primaryColor, width: 2),
+                            borderRadius: BorderRadius.circular(12)),
+                        padding: EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                '${value.id}. ${value.ind} (${value.eng})',
+                                maxLines: 10,
+                                style: Themes.customColor(
+                                    FontWeight.normal, 14, Colors.black),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

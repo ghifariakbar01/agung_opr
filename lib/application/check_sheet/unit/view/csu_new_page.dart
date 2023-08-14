@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
-import '../../../update_frame/frame.dart';
+import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../widgets/alert_helper.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
@@ -27,16 +27,29 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final index =
+          ref.read(updateFrameNotifierProvider.select((value) => value.index));
+      final frame = ref.read(
+          frameNotifierProvider.select((value) => value.frameList[index]));
+
       debugger(message: 'called');
 
-      await ref.read(updateCSUFrameNotifierProvider.notifier).getCSUItems();
+      ref
+          .read(updateCSUFrameNotifierProvider.notifier)
+          .changeIdUnit(frame.idUnit);
+
+      ref
+          .read(updateCSUFrameNotifierProvider.notifier)
+          .changeFrameName(frame.frame ?? '');
+
+      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen<Option<Either<RemoteFailure, List<CSUItems>>>>(
-        updateCSUFrameNotifierProvider.select(
+        csuItemsFrameNotifierProvider.select(
           (state) => state.FOSOUpdateCSUItems,
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
@@ -62,7 +75,7 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                   log('CSU RESPONSE: $CSUResponse');
                   if (CSUResponse != []) {
                     ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .read(csuItemsFrameNotifierProvider.notifier)
                         .changeCSUItems(CSUResponse);
 
                     final responseLEN = CSUResponse.length;
@@ -73,13 +86,13 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                         .changeFillEmptyList(length: responseLEN);
 
                     await ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .getCSUJenisItems();
                   }
                 })));
 
     ref.listen<Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>>(
-        updateCSUFrameNotifierProvider.select(
+        jenisPenyebabFrameNotifierProvider.select(
           (state) => state.FOSOUpdateCSUJenisItems,
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
@@ -105,17 +118,17 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                   log('CSU RESPONSE: $CSUJenisResponse');
                   if (CSUJenisResponse != []) {
                     ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .changeCSUJenisItems(CSUJenisResponse);
 
                     await ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .getCSUPenyebabItems();
                   }
                 })));
 
     ref.listen<Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>>(
-        updateCSUFrameNotifierProvider.select(
+        jenisPenyebabFrameNotifierProvider.select(
           (state) => state.FOSOUpdateCSUPenyebabItems,
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
@@ -141,7 +154,7 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                   log('CSU RESPONSE: $CSUPenyebabResponse');
                   if (CSUPenyebabResponse != []) {
                     ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .changeCSUPenyebabItems(CSUPenyebabResponse);
                   }
                 })));

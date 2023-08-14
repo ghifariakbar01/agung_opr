@@ -12,6 +12,7 @@ import '../../../constants/assets.dart';
 import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
+import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../widgets/v_dialogs.dart';
 
 /// [SPK] Initialization
@@ -113,7 +114,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                         initializeAndCheckData: () => getAndSaveAllData(),
                         initializeAutoData: () => ref
                             .read(autoDataTimerNotifierProvider.notifier)
-                            .startTimer(10,
+                            .startTimer(120,
                                 onTimerRanOut: () => ref
                                     .read(autoDataUpdateFrameNotifierProvider
                                         .notifier)
@@ -127,7 +128,11 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
     );
 
     return Stack(
-      children: [CrannyMiddle(), LoadingOverlay(isLoading: false)],
+      children: [
+        CrannyMiddle(),
+        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        LoadingOverlay(isLoading: false),
+      ],
     );
   }
 }

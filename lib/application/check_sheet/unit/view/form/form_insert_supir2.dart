@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,13 @@ class FormInsertSupir1 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame = ref.watch(updateFrameNotifierProvider);
+    final supir1 = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.supir1));
 
-    final item = frame.updateFrameList[index];
+    final supir1TextController = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.supir1TextController));
 
-    final modelStr = item.idKendType.getOrLeave('');
+    final supir1Str = supir1.getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,14 +54,14 @@ class FormInsertSupir1 extends ConsumerWidget {
             child: TextButton(
               onPressed: () async {
                 final String? id =
-                    await context.pushNamed(RouteNames.modelNameRoute);
+                    await context.pushNamed(RouteNames.supirNameRoute);
 
                 if (id != null) {
                   ref
-                      .read(updateFrameNotifierProvider.notifier)
-                      .changeIdKendType(idKendTypeStr: id, index: index);
+                      .read(updateCSUFrameNotifierProvider.notifier)
+                      .changeSupir1(id);
 
-                  frame.modelTextController[index].text = id;
+                  supir1TextController.text = id;
                 }
               },
               style: ButtonStyle(
@@ -66,16 +69,16 @@ class FormInsertSupir1 extends ConsumerWidget {
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(
-                  controller: frame.modelTextController[index],
-                  decoration: Themes.formStyle(modelStr != ''
-                      ? modelStr + ' (ketik untuk ubah teks)'
-                      : 'Pilih model'),
+                  controller: supir1TextController,
+                  decoration: Themes.formStyle(supir1Str != ''
+                      ? supir1Str + ' (ketik untuk ubah teks)'
+                      : 'Pilih Supir 1'),
                   keyboardType: TextInputType.name,
                   onChanged: (value) => {},
                   validator: (_) => ref
-                      .read(updateFrameNotifierProvider)
-                      .updateFrameList[index]
-                      .idKendType
+                      .read(updateCSUFrameNotifierProvider)
+                      .updateFrameList
+                      .supir1
                       .value
                       .fold(
                         (f) => f.maybeMap(
