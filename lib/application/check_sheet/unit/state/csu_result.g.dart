@@ -13,6 +13,7 @@ _$_CSUResult _$$_CSUResultFromJson(Map<String, dynamic> json) => _$_CSUResult(
       inOut: json['inOut'] as bool?,
       isDefect: json['isDefect'] as int?,
       updatedAt: json['updatedAt'] as String?,
+      updatedBy: json['updatedBy'] as String?,
     );
 
 Map<String, dynamic> _$$_CSUResultToJson(_$_CSUResult instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$$_CSUResultToJson(_$_CSUResult instance) =>
       'inOut': instance.inOut,
       'isDefect': instance.isDefect,
       'updatedAt': instance.updatedAt,
+      'updatedBy': instance.updatedBy,
     };

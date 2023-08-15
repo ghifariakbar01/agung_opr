@@ -77,48 +77,55 @@ class SPKScaffold extends ConsumerWidget {
                     Flexible(flex: 5, child: SPKSearch()),
                     Flexible(
                         flex: 1,
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                IconButton(
-                                    iconSize: 45,
-                                    onPressed: () async {
-                                      String? noSPK = await context.pushNamed(
-                                          RouteNames.scanSPKNameRoute);
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Column(
+                            children: [
+                              Flexible(
+                                flex: 0,
+                                child: Text(
+                                  'NO.SPK',
+                                  textAlign: TextAlign.center,
+                                  style: Themes.customColor(
+                                      FontWeight.bold, 9, Colors.black),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: InkWell(
+                                  onTap: () async {
+                                    String? noSPK = await context
+                                        .pushNamed(RouteNames.scanSPKNameRoute);
 
-                                      if (noSPK != null) {
-                                        final noSPKSearch = ref
-                                            .read(spkSearchNotifierProvider
-                                                .notifier)
-                                            .extractNumbers(noSPK);
+                                    if (noSPK != null) {
+                                      final noSPKSearch = ref
+                                          .read(spkSearchNotifierProvider
+                                              .notifier)
+                                          .extractNumbers(noSPK);
 
-                                        ref
-                                            .read(spkSearchNotifierProvider
-                                                .notifier)
-                                            .changeSearchText(noSPKSearch);
+                                      ref
+                                          .read(spkSearchNotifierProvider
+                                              .notifier)
+                                          .changeSearchText(noSPKSearch);
 
-                                        await ref
-                                            .read(spkNotifierProvider.notifier)
-                                            .searchSPKListOFFLINE(
-                                                search: noSPKSearch);
-                                      }
-                                    },
-                                    icon: Icon(
+                                      await ref
+                                          .read(spkNotifierProvider.notifier)
+                                          .searchSPKListOFFLINE(
+                                              search: noSPKSearch);
+                                    }
+                                  },
+                                  child: Ink(
+                                    child: Icon(
                                       Icons.qr_code_2,
+                                      size: 40,
                                       color: Colors.black,
-                                    )),
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Text(
-                                    'NO.SPK',
-                                    style: Themes.customColor(
-                                        FontWeight.bold, 10, Colors.black),
+                                    ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ))
                   ],
                 ),

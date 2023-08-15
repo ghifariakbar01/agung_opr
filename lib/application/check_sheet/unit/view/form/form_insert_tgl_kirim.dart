@@ -63,7 +63,7 @@ class FormInsertTglKirim extends ConsumerWidget {
                     lastDate: selectedDate);
 
                 if (picked != null && picked != selectedDate) {
-                  final date = DateFormat('dd/MM/yyyy').format(picked);
+                  final date = DateFormat('yyyy-MM-dd').format(picked);
                   ref
                       .read(updateCSUFrameNotifierProvider.notifier)
                       .changeTglKirim(date);

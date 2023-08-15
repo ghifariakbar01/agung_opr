@@ -5,6 +5,7 @@ import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../constants/constants.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 
@@ -38,7 +39,8 @@ class DataUpdateLinearProgress extends ConsumerWidget {
         width: MediaQuery.of(context).size.width,
         child: LinearProgressIndicator(
           color: Palette.secondaryColor,
-          value: double.parse((time / 10).toString()),
+          value: double.parse(
+              (time / Constants.dataIntervalTimerInSeconds).toString()),
           semanticsLabel: 'Linear progress indicator',
         ),
       ),

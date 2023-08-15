@@ -4,6 +4,7 @@ import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
+import 'package:agung_opr/constants/constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,8 +25,6 @@ import '../../widgets/v_dialogs.dart';
 /// [USER] Initialization
 /// [MODEL] Initialization
 ///
-
-const dataIntervalTimerInSeconds = 120;
 
 class CrannyPage extends ConsumerStatefulWidget {
   const CrannyPage();
@@ -129,7 +128,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     initializeAndCheckData: () => getAndSaveAllData(),
                     initializeAutoData: () => ref
                         .read(autoDataTimerNotifierProvider.notifier)
-                        .startTimer(dataIntervalTimerInSeconds,
+                        .startTimer(Constants.dataIntervalTimerInSeconds,
                             getSavedUpdateFrame: () async {
                       await ref
                           .read(autoDataUpdateFrameNotifierProvider.notifier)

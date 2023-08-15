@@ -91,7 +91,7 @@ class CSUResultItem extends ConsumerWidget {
                   style: Themes.customColor(FontWeight.bold, 16, Colors.black),
                 ),
                 Text(
-                  '${CSU.updatedAt}',
+                  '${CSU.updatedAt} BY ${CSU.updatedBy}',
                   style:
                       Themes.customColor(FontWeight.normal, 16, Colors.black),
                 ),

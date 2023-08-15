@@ -28,7 +28,7 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_cs AS id, frame, $dbGate.nama AS gate, inout AS inOut, no_defect AS isDefect, $dbName.u_date as updatedAt FROM $dbName INNER JOIN $dbGate ON $dbName.id_gate = $dbGate.id_gate WHERE frame = '$frameName'",
+            "SELECT id_cs AS id, frame, $dbGate.nama AS gate, inout AS inOut, no_defect AS isDefect, $dbName.u_date as updatedAt, $dbName.u_user as updatedBy FROM $dbName INNER JOIN $dbGate ON $dbName.id_gate = $dbGate.id_gate WHERE frame = '$frameName'",
       });
 
       final response = await _dio.post('',

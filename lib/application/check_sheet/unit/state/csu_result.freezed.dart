@@ -26,6 +26,7 @@ mixin _$CSUResult {
   bool? get inOut => throw _privateConstructorUsedError;
   int? get isDefect => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
+  String? get updatedBy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,8 @@ abstract class $CSUResultCopyWith<$Res> {
       String? gate,
       bool? inOut,
       int? isDefect,
-      String? updatedAt});
+      String? updatedAt,
+      String? updatedBy});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
     Object? inOut = freezed,
     Object? isDefect = freezed,
     Object? updatedAt = freezed,
+    Object? updatedBy = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -92,6 +95,10 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      updatedBy: freezed == updatedBy
+          ? _value.updatedBy
+          : updatedBy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -109,7 +116,8 @@ abstract class _$$_CSUResultCopyWith<$Res> implements $CSUResultCopyWith<$Res> {
       String? gate,
       bool? inOut,
       int? isDefect,
-      String? updatedAt});
+      String? updatedAt,
+      String? updatedBy});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$_CSUResultCopyWithImpl<$Res>
     Object? inOut = freezed,
     Object? isDefect = freezed,
     Object? updatedAt = freezed,
+    Object? updatedBy = freezed,
   }) {
     return _then(_$_CSUResult(
       id: null == id
@@ -155,6 +164,10 @@ class __$$_CSUResultCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      updatedBy: freezed == updatedBy
+          ? _value.updatedBy
+          : updatedBy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -168,7 +181,8 @@ class _$_CSUResult implements _CSUResult {
       required this.gate,
       required this.inOut,
       required this.isDefect,
-      required this.updatedAt});
+      required this.updatedAt,
+      required this.updatedBy});
 
   factory _$_CSUResult.fromJson(Map<String, dynamic> json) =>
       _$$_CSUResultFromJson(json);
@@ -185,10 +199,12 @@ class _$_CSUResult implements _CSUResult {
   final int? isDefect;
   @override
   final String? updatedAt;
+  @override
+  final String? updatedBy;
 
   @override
   String toString() {
-    return 'CSUResult(id: $id, frame: $frame, gate: $gate, inOut: $inOut, isDefect: $isDefect, updatedAt: $updatedAt)';
+    return 'CSUResult(id: $id, frame: $frame, gate: $gate, inOut: $inOut, isDefect: $isDefect, updatedAt: $updatedAt, updatedBy: $updatedBy)';
   }
 
   @override
@@ -203,13 +219,15 @@ class _$_CSUResult implements _CSUResult {
             (identical(other.isDefect, isDefect) ||
                 other.isDefect == isDefect) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.updatedBy, updatedBy) ||
+                other.updatedBy == updatedBy));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, frame, gate, inOut, isDefect, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, frame, gate, inOut, isDefect, updatedAt, updatedBy);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +250,8 @@ abstract class _CSUResult implements CSUResult {
       required final String? gate,
       required final bool? inOut,
       required final int? isDefect,
-      required final String? updatedAt}) = _$_CSUResult;
+      required final String? updatedAt,
+      required final String? updatedBy}) = _$_CSUResult;
 
   factory _CSUResult.fromJson(Map<String, dynamic> json) =
       _$_CSUResult.fromJson;
@@ -249,6 +268,8 @@ abstract class _CSUResult implements CSUResult {
   int? get isDefect;
   @override
   String? get updatedAt;
+  @override
+  String? get updatedBy;
   @override
   @JsonKey(ignore: true)
   _$$_CSUResultCopyWith<_$_CSUResult> get copyWith =>

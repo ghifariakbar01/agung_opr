@@ -8,9 +8,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../shared/providers.dart';
 import 'csu_result_item.dart';
-import 'csu_trips_item.dart';
 import 'widget/csu_result_info.dart';
 
 class CSUResultScaffold extends ConsumerWidget {
@@ -65,15 +63,10 @@ class CSUResultScaffold extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                                 width: 2, color: Palette.primaryColor)),
-                        child: Column(
-                          children: [
-                            VButton(label: 'PILIH GATE', onPressed: () {}),
-                            VButton(
-                                label: 'BUAT CHECKSHEET',
-                                onPressed: () => context
-                                    .pushNamed(RouteNames.CSUNewNameRoute)),
-                          ],
-                        )),
+                        child: VButton(
+                            label: 'BUAT CHECKSHEET',
+                            onPressed: () =>
+                                context.pushNamed(RouteNames.CSUNewNameRoute))),
 
                     for (int index = 0;
                         index < csuResultList.length;

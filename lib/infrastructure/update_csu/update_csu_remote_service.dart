@@ -62,55 +62,6 @@ class UpdateCSUFrameRemoteService {
     }
   }
 
-  Future<int> getIdForIncrement({required bool isNG}) async {
-    try {
-      final data = _dioRequestNotifier;
-
-      final dbName = isNG ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_test';
-
-      data.addAll({
-        "mode": "SELECT",
-        "command": "SELECT TOP 1 id_cs FROM $dbName  ORDER BY id_cs DESC",
-      });
-
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      log('response $response');
-
-      final items = response.data?[0];
-
-      if (items['status'] == 'Success') {
-        // HERE
-        final item = items['items'] as List<dynamic>;
-        if (item.isNotEmpty) {
-          return item[0]['id_cs'] as int;
-        } else {
-          throw RestApiException(0, 'ID CS EMPTY');
-        }
-      } else {
-        final message = items['error'] as String?;
-        final errorNum = items['errornum'] as int?;
-
-        throw RestApiException(errorNum, message);
-      }
-    } on DioError catch (e) {
-      if (e.isNoConnectionError || e.isConnectionTimeout) {
-        throw NoConnectionException();
-      } else if (e.response != null) {
-        final items = e.response?.data?[0];
-
-        final message = items['error'] as String?;
-        final errorNum = items['errornum'] as int?;
-
-        throw RestApiException(errorNum, message);
-      } else {
-        rethrow;
-      }
-    }
-  }
-
   Future<List<CSUItems>> getCSUItems() async {
     const String dbName = 'cs_mst_item';
 

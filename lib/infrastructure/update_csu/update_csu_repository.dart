@@ -61,17 +61,11 @@ class UpdateCSUFrameRepository {
           await Future.delayed(Duration(seconds: 2));
 
           // GET ID_CS
-          final idCS = await _remoteService.getIdForIncrement(isNG: isNG) + 1;
-
           debugger(message: 'called');
 
-          String queryWithId = query.replaceFirst("'ID_CS_NA'", '$idCS');
+          log('STORAGE UPDATE CSU QUERY: $query');
 
-          log('STORAGE UPDATE CSU ID CS $idCS');
-
-          log('STORAGE UPDATE CSU QUERY: $queryWithId');
-
-          await _remoteService.insertFrameCSUByQuery(query: queryWithId);
+          await _remoteService.insertFrameCSUByQuery(query: query);
 
           debugger(message: 'called');
 
@@ -257,7 +251,7 @@ class UpdateCSUFrameRepository {
         " ${gateInt},  '${deckStr}',  '${supir1Str}', '${supir2Str}', ${noDefect}, ${supirSDRInt}, '${tglKirimStr}', '${tglTerimaStr}' ";
 
     final requiredQuery =
-        " ${idCS}, '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
+        " 'SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName', '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
 
     final csuIdQuery = CSUIDQuery(
         idUnit: idUnit,
@@ -289,7 +283,7 @@ class UpdateCSUFrameRepository {
         " ${idCheckSheet},  ${idJenisDefect},  ${idPenyebabDefect}";
 
     final requiredQuery =
-        " '${idCS}', '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
+        " 'SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName', '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
 
     final csuIdQuery = CSUIDQuery(
         idUnit: idUnit,
