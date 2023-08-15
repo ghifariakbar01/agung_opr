@@ -24,11 +24,10 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
       } else {
         _resetTimer();
         //
-
         await getSavedUpdateFrame();
         await getSavedUpdateCSUFrame();
         //
-        await startTimer(10,
+        await startTimer(duration,
             getSavedUpdateFrame: getSavedUpdateFrame,
             getSavedUpdateCSUFrame: getSavedUpdateCSUFrame);
       }

@@ -36,29 +36,33 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
       final String frameName = frame.frame ?? '';
       final int frameId = frame.idUnit;
 
-      // await ref
-      //     .read(frameOfflineNotifierProvider.notifier)
-      //     .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.idSPK);
+      // TRIPS STORAGE
+      await ref
+          .read(csuTripsOfflineNotifierProvider.notifier)
+          .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
 
-      // final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
+      final tripsOfflineOrOnline = ref.watch(csuTripsOfflineNotifierProvider);
 
-      // log('frameOfflineOrOnline $frameOfflineOrOnline');
+      log('tripsOfflineOrOnline $tripsOfflineOrOnline');
 
-      // await frameOfflineOrOnline.maybeWhen(
-      //   hasOfflineStorage: () => ref
-      //       .read(frameNotifierProvider.notifier)
-      //       .getFrameListOFFLINE(idSPK: widget.idSPK),
-      //   orElse: () async {
-      //     await ref
-      //         .read(frameNotifierProvider.notifier)
-      //         .getFrameList(idSPK: widget.idSPK);
+      await tripsOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(csuFrameNotifierProvider.notifier)
+            .getCSUTripsByFrameIdOFFLINE(idUnit: frameId),
+        orElse: () async {
+          await ref
+              .read(csuFrameNotifierProvider.notifier)
+              .getCSUTripsByFrameId(idUnit: frameId, frameName: frameName);
 
-      //     await ref
-      //         .read(frameOfflineNotifierProvider.notifier)
-      //         .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.idSPK);
-      //   },
-      // );
+          await ref
+              .read(csuTripsOfflineNotifierProvider.notifier)
+              .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
+        },
+      );
 
+      // CSU ITEMS STORAGE
+
+      //
       ref.read(csuFrameNotifierProvider.notifier).changeFrame(frame);
       ref.read(csuFrameNotifierProvider.notifier).changeFrameName(frameName);
 
@@ -97,7 +101,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
                           ),
                         ), (csuResponse) {
                   /// SET [csuResponse] from GOT csuResultList
-                  debugger(message: 'called');
+                  // debugger(message: 'called');
                   log('FRAME CSU RESPONSE: $csuResponse');
                   if (csuResponse != []) {
                     ref

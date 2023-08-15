@@ -124,7 +124,7 @@ class CSUFrameRepository {
           .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<bool> hasOfflineTripsDataIndex(int idUnit) =>
-      getSPKCSUFrameTripsOFFLINE(idUnit: idUnit)
+      getCSUFrameTripsOFFLINE(idUnit: idUnit)
           .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<Either<RemoteFailure, List<CSUResult>>> getCSUByFrameName(
@@ -189,7 +189,7 @@ class CSUFrameRepository {
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<UnitCSUTrips> parsedListCSUSPK =
-                listCSUResultTripsFromJson(parsed);
+                UnitCSUTrips.listCSUResultTripsFromJson(parsed);
 
             final idUnit = newCSUTrips.idUnit;
 
@@ -212,10 +212,11 @@ class CSUFrameRepository {
 
                 list[indexIdUnit] = element;
 
-                log('STORAGE CSU RESULT TRIP UPDATE: ${listCSUResultTripsToJson(list)}');
+                log('STORAGE CSU RESULT TRIP UPDATE: ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
 
                 // SAVE LIST
-                await _storageTrips.save(listCSUResultTripsToJson(list));
+                await _storageTrips
+                    .save(UnitCSUTrips.listCSUResultTripsToJson(list));
               }
 
               // [FRAME-NAME] NEW
@@ -224,9 +225,10 @@ class CSUFrameRepository {
 
                 final list = [...parsedListCSUSPK, element];
 
-                await _storageTrips.save(listCSUResultTripsToJson(list));
+                await _storageTrips
+                    .save(UnitCSUTrips.listCSUResultTripsToJson(list));
 
-                log('STORAGE CSU RESULT TRIP UPDATE W/O ID-UNIT : ${listCSUResultTripsToJson(list)}');
+                log('STORAGE CSU RESULT TRIP UPDATE W/O ID-UNIT : ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
               }
             }
             // THEN, HANDLE WHERE [ID-UNIT] NOT EXIST,
@@ -237,9 +239,10 @@ class CSUFrameRepository {
               final list = [...parsedListCSUSPK, element];
 
               // SAVE LIST
-              await _storageTrips.save(listCSUResultTripsToJson(list));
+              await _storageTrips
+                  .save(UnitCSUTrips.listCSUResultTripsToJson(list));
 
-              log('STORAGE CSU RESULT TRIP UPDATE ID-UNIT N/A: ${listCSUResultTripsToJson(list)}');
+              log('STORAGE CSU RESULT TRIP UPDATE ID-UNIT N/A: ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
             }
 
             // debugger(message: 'called');
@@ -249,21 +252,19 @@ class CSUFrameRepository {
           break;
         case false:
           () async {
-            debugger(message: 'called');
+            // debugger(message: 'called');
 
             // SAVE LIST
-            await _storageTrips.save(listCSUResultTripsToJson([newCSUTrips]));
+            await _storageTrips
+                .save(UnitCSUTrips.listCSUResultTripsToJson([newCSUTrips]));
 
-            log('STORAGE CSU RESULT TRIP UPDATE NEW: ${listCSUResultTripsToJson([
+            log('STORAGE CSU RESULT TRIP UPDATE NEW: ${UnitCSUTrips.listCSUResultTripsToJson([
                   newCSUTrips
                 ])}');
 
             return unit;
           }();
       }
-    } else {
-      throw FormatException(
-          'new CSU RESULT TRIP is Empty. In csu_repository _GETAndADDFrameInMap');
     }
 
     return unit;
@@ -360,9 +361,6 @@ class CSUFrameRepository {
             return unit;
           }();
       }
-    } else {
-      throw FormatException(
-          'new CSU RESULT TRIP is Empty. . In csu_repository _GETAndADDFrameInMap');
     }
 
     return unit;
@@ -429,8 +427,8 @@ class CSUFrameRepository {
 
   /// DATA: [UnitCSUTrips] FROM STORAGE
   ///
-  /// process [idUnit] and get [UnitCSUTrips]
-  Future<Either<RemoteFailure, UnitCSUTrips>> getSPKCSUFrameTripsOFFLINE(
+  /// process [idUnit] and get LIST OF [CSUTrips] FROM [UnitCSUTrips]
+  Future<Either<RemoteFailure, List<CSUTrips>>> getCSUFrameTripsOFFLINE(
       {required int idUnit}) async {
     try {
       final frameStorage = await _storageTrips.read();
@@ -441,14 +439,14 @@ class CSUFrameRepository {
 
       // HAS MAP
       if (frameStorage != null) {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<UnitCSUTrips> response =
-            listCSUResultTripsFromJson(responsMap);
+            UnitCSUTrips.listCSUResultTripsFromJson(responsMap);
 
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         log('FRAME TRIPS STORAGE RESPONSE: $response');
 
@@ -457,29 +455,34 @@ class CSUFrameRepository {
             response.firstWhereOrNull((element) => element.idUnit == idUnit);
 
         if (key != null) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
+          final csuResults = key.csuResult;
 
-          return right(key);
+          if (csuResults.isNotEmpty) {
+            return right(csuResults);
+          } else {
+            return right([]);
+          }
         } else {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.parse(message: error.message));
     }

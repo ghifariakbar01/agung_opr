@@ -26,10 +26,6 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //
-    });
   }
 
   @override
@@ -41,32 +37,44 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (idSPKMapidTIUnitMapQuery) => ref
-                        .read(autoDataUpdateFrameNotifierProvider.notifier)
-                        .isMapEmpty(idSPKMapidTIUnitMapQuery)
-                    ? () {}
-                    : ref.read(autoDataTimerNotifierProvider
-                            .select((value) => value.isRunning == false))
-                        ? () {
-                            debugger(message: 'called');
+                    (failure) => AlertHelper.showSnackBar(
+                          context,
+                          message: failure.maybeMap(
+                              storage: (_) => 'storage penuh',
+                              format: (error) => 'Error Format: $error',
+                              orElse: () => ''),
+                        ), (idSPKMapidTIUnitMapQuery) {
+                  ref
+                          .read(autoDataUpdateFrameNotifierProvider.notifier)
+                          .isMapEmpty(idSPKMapidTIUnitMapQuery)
+                      ? () {
+                          log('MAP IS EMPTY');
+                        }
+                      : ref.read(autoDataTimerNotifierProvider
+                              .select((value) => value.isRunning == false))
+                          ? () async {
+                              ref
+                                  .read(autoDataUpdateFrameNotifierProvider
+                                      .notifier)
+                                  .changeSavedQuery(
+                                      idSPKMapidTIUnitMapQuery:
+                                          idSPKMapidTIUnitMapQuery);
 
-                            log('isMapEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isMapEmpty(idSPKMapidTIUnitMapQuery)}');
-                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                            ref
-                                .read(autoDataUpdateFrameNotifierProvider
-                                    .notifier)
-                                .runSavedQueryFromRepository(
-                                    idSPKMapidTIUnitMapQuery:
-                                        idSPKMapidTIUnitMapQuery);
-                          }()
-                        : () {})));
+                              debugger(message: 'called');
+
+                              log('isMapEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isMapEmpty(idSPKMapidTIUnitMapQuery)}');
+                              log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
+                              await ref
+                                  .read(autoDataUpdateFrameNotifierProvider
+                                      .notifier)
+                                  .runSavedQueryFromRepository(
+                                      idSPKMapidTIUnitMapQuery:
+                                          idSPKMapidTIUnitMapQuery);
+                            }()
+                          : () {
+                              log('MAP IS NOT EMPTY');
+                            }();
+                })));
 
     // CSU Items
     ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
@@ -87,16 +95,21 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                         .read(autoDataUpdateFrameNotifierProvider.notifier)
                         .isCSUQueryEmpty()
                     ? () {
-                        debugger(message: 'called');
+                        // debugger(message: 'called');
                       }
                     : ref.read(autoDataTimerNotifierProvider
                             .select((value) => value.isRunning == false))
-                        ? () {
+                        ? () async {
+                            ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .changeSavedCSUQuery(csuIdQueries: queryIds);
+
                             debugger(message: 'called');
 
                             log('isCSUQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSUQueryEmpty()}');
                             log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                            ref
+                            await ref
                                 .read(autoDataUpdateFrameNotifierProvider
                                     .notifier)
                                 .runSavedCSUQueryFromRepository(

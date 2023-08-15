@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/state/csu_trips_offline_state.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_frame_offline_state.dart';
 import 'package:agung_opr/application/update_csu/update_csu_offline_notifier.dart';
 import 'package:agung_opr/infrastructure/cache_storage/csu/csu_penyebab_storage.dart';
@@ -21,6 +22,7 @@ import '../../../update_csu/update_csu_notifier.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../update_frame/update_frame_notifier.dart';
 import '../../../update_frame/update_frame_state.dart';
+import '../../csu_trips_offline_notifier.dart';
 import '../csu_item_notifier.dart';
 import '../csu_jenis_penyebab_notifier.dart';
 import '../csu_result_notifier.dart';
@@ -36,12 +38,9 @@ import '../state/csu_result_state.dart';
 // import '../update_frame_offline_notifier.dart';
 // import '../update_frame_offline_state.dart';
 
+/// CSU RESULT ON FRAME
 final csuFrameStorage = Provider<CredentialsStorage>(
   (ref) => CSUFrameStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final csuFrameTripsStorage = Provider<CredentialsStorage>(
-  (ref) => CSUFTripsFrameStorage(ref.watch(flutterSecureStorageProvider)),
 );
 
 final csuFrameRemoteServiceProvider = Provider(
@@ -59,13 +58,12 @@ final csuFrameNotifierProvider =
   (ref) => CSUFrameResultNotifier(ref.watch(csuFrameRepositoryProvider)),
 );
 
-// final updateFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
-//     (ref) =>
-//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+// final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
+//         UpdateCSUFrameOfflineNotifier, UpdateCSUFrameOfflineState>(
+//     (ref) => UpdateCSUFrameOfflineNotifier(
+//         ref.watch(updateCSUFrameRepositoryProvider)));
 
 ///  UPDATE CSU
-
 final updateCSUFrameStorage = Provider<CredentialsStorage>(
   (ref) => UpdateCSUStorage(ref.watch(flutterSecureStorageProvider)),
 );
@@ -90,6 +88,16 @@ final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
         UpdateCSUFrameOfflineNotifier, UpdateCSUFrameOfflineState>(
     (ref) => UpdateCSUFrameOfflineNotifier(
         ref.watch(updateCSUFrameRepositoryProvider)));
+
+// TRIPS
+final csuFrameTripsStorage = Provider<CredentialsStorage>(
+  (ref) => CSUFTripsFrameStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
+final csuTripsOfflineNotifierProvider =
+    StateNotifierProvider<CSUTripsOfflineNotifier, CSUTripsOfflineState>(
+        (ref) =>
+            CSUTripsOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
 
 // CSU ITEMS
 final csuItemsStorage = Provider<CredentialsStorage>(

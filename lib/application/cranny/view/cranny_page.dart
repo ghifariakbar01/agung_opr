@@ -25,6 +25,8 @@ import '../../widgets/v_dialogs.dart';
 /// [MODEL] Initialization
 ///
 
+const dataIntervalTimerInSeconds = 120;
+
 class CrannyPage extends ConsumerStatefulWidget {
   const CrannyPage();
 
@@ -71,6 +73,13 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
     Future<void> getAndSaveAllData() async {
       await spkFunction();
       await modelFunction();
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedQueryFromRepository();
+
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedCSUQueryFromRepository();
     }
 
     ref.listen<Option<Either<UserFailure, String?>>>(
@@ -120,7 +129,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     initializeAndCheckData: () => getAndSaveAllData(),
                     initializeAutoData: () => ref
                         .read(autoDataTimerNotifierProvider.notifier)
-                        .startTimer(10, getSavedUpdateFrame: () async {
+                        .startTimer(dataIntervalTimerInSeconds,
+                            getSavedUpdateFrame: () async {
                       await ref
                           .read(autoDataUpdateFrameNotifierProvider.notifier)
                           .getSavedQueryFromRepository();
@@ -144,6 +154,44 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
         }),
       ),
     );
+
+    ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOSPKAutoDataLocalUpdateFrame,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                          storage: (_) => 'storage penuh',
+                          format: (error) => 'Error Format: $error',
+                          orElse: () => ''),
+                    ),
+                (idSPKMapidTIUnitMapQuery) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedQuery(
+                        idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery))));
+
+    // CSU
+    ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                          storage: (_) => 'storage penuh',
+                          format: (error) => 'Error Format: $error',
+                          orElse: () => ''),
+                    ),
+                (csuIdQueries) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedCSUQuery(csuIdQueries: csuIdQueries))));
 
     // final isSubmitting = ref.watch(
     //   autoDataUpdateFrameNotifierProvider.select((state) => state.isGetting),

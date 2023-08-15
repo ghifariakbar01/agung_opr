@@ -17,5 +17,5 @@ _$_UnitCSUTrips _$$_UnitCSUTripsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_UnitCSUTripsToJson(_$_UnitCSUTrips instance) =>
     <String, dynamic>{
       'idUnit': instance.idUnit,
-      'csuResult': listToJson(instance.csuResult),
+      'csuResult': UnitCSUTrips.listToJson(instance.csuResult),
     };

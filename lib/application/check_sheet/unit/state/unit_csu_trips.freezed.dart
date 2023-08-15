@@ -21,7 +21,7 @@ UnitCSUTrips _$UnitCSUTripsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UnitCSUTrips {
   int get idUnit => throw _privateConstructorUsedError;
-  @JsonKey(toJson: listToJson)
+  @JsonKey(toJson: UnitCSUTrips.listToJson)
   List<CSUTrips> get csuResult => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +37,8 @@ abstract class $UnitCSUTripsCopyWith<$Res> {
       _$UnitCSUTripsCopyWithImpl<$Res, UnitCSUTrips>;
   @useResult
   $Res call(
-      {int idUnit, @JsonKey(toJson: listToJson) List<CSUTrips> csuResult});
+      {int idUnit,
+      @JsonKey(toJson: UnitCSUTrips.listToJson) List<CSUTrips> csuResult});
 }
 
 /// @nodoc
@@ -78,7 +79,8 @@ abstract class _$$_UnitCSUTripsCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int idUnit, @JsonKey(toJson: listToJson) List<CSUTrips> csuResult});
+      {int idUnit,
+      @JsonKey(toJson: UnitCSUTrips.listToJson) List<CSUTrips> csuResult});
 }
 
 /// @nodoc
@@ -113,7 +115,8 @@ class __$$_UnitCSUTripsCopyWithImpl<$Res>
 class _$_UnitCSUTrips implements _UnitCSUTrips {
   const _$_UnitCSUTrips(
       {required this.idUnit,
-      @JsonKey(toJson: listToJson) required final List<CSUTrips> csuResult})
+      @JsonKey(toJson: UnitCSUTrips.listToJson)
+      required final List<CSUTrips> csuResult})
       : _csuResult = csuResult;
 
   factory _$_UnitCSUTrips.fromJson(Map<String, dynamic> json) =>
@@ -123,7 +126,7 @@ class _$_UnitCSUTrips implements _UnitCSUTrips {
   final int idUnit;
   final List<CSUTrips> _csuResult;
   @override
-  @JsonKey(toJson: listToJson)
+  @JsonKey(toJson: UnitCSUTrips.listToJson)
   List<CSUTrips> get csuResult {
     if (_csuResult is EqualUnmodifiableListView) return _csuResult;
     // ignore: implicit_dynamic_type
@@ -167,7 +170,7 @@ class _$_UnitCSUTrips implements _UnitCSUTrips {
 abstract class _UnitCSUTrips implements UnitCSUTrips {
   const factory _UnitCSUTrips(
       {required final int idUnit,
-      @JsonKey(toJson: listToJson)
+      @JsonKey(toJson: UnitCSUTrips.listToJson)
       required final List<CSUTrips> csuResult}) = _$_UnitCSUTrips;
 
   factory _UnitCSUTrips.fromJson(Map<String, dynamic> json) =
@@ -176,7 +179,7 @@ abstract class _UnitCSUTrips implements UnitCSUTrips {
   @override
   int get idUnit;
   @override
-  @JsonKey(toJson: listToJson)
+  @JsonKey(toJson: UnitCSUTrips.listToJson)
   List<CSUTrips> get csuResult;
   @override
   @JsonKey(ignore: true)
