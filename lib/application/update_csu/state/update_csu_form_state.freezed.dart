@@ -37,6 +37,7 @@ mixin _$UpdateCSUFrameStateSingle {
       throw _privateConstructorUsedError;
   TextEditingController get tglKirimTextController =>
       throw _privateConstructorUsedError;
+  bool get inOut => throw _privateConstructorUsedError;
   bool get isShowError => throw _privateConstructorUsedError;
   List<bool> get isNG => throw _privateConstructorUsedError;
   List<UpdateCSUNGState> get ngStates => throw _privateConstructorUsedError;
@@ -67,6 +68,7 @@ abstract class $UpdateCSUFrameStateSingleCopyWith<$Res> {
       TextEditingController supirSDRTextController,
       TextEditingController tglTerimaTextController,
       TextEditingController tglKirimTextController,
+      bool inOut,
       bool isShowError,
       List<bool> isNG,
       List<UpdateCSUNGState> ngStates});
@@ -100,6 +102,7 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
     Object? supirSDRTextController = null,
     Object? tglTerimaTextController = null,
     Object? tglKirimTextController = null,
+    Object? inOut = null,
     Object? isShowError = null,
     Object? isNG = null,
     Object? ngStates = null,
@@ -161,6 +164,10 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
           ? _value.tglKirimTextController
           : tglKirimTextController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      inOut: null == inOut
+          ? _value.inOut
+          : inOut // ignore: cast_nullable_to_non_nullable
+              as bool,
       isShowError: null == isShowError
           ? _value.isShowError
           : isShowError // ignore: cast_nullable_to_non_nullable
@@ -201,6 +208,7 @@ abstract class _$$_UpdateCSUFrameStateSingleCopyWith<$Res>
       TextEditingController supirSDRTextController,
       TextEditingController tglTerimaTextController,
       TextEditingController tglKirimTextController,
+      bool inOut,
       bool isShowError,
       List<bool> isNG,
       List<UpdateCSUNGState> ngStates});
@@ -233,6 +241,7 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
     Object? supirSDRTextController = null,
     Object? tglTerimaTextController = null,
     Object? tglKirimTextController = null,
+    Object? inOut = null,
     Object? isShowError = null,
     Object? isNG = null,
     Object? ngStates = null,
@@ -294,6 +303,10 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
           ? _value.tglKirimTextController
           : tglKirimTextController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      inOut: null == inOut
+          ? _value.inOut
+          : inOut // ignore: cast_nullable_to_non_nullable
+              as bool,
       isShowError: null == isShowError
           ? _value.isShowError
           : isShowError // ignore: cast_nullable_to_non_nullable
@@ -328,6 +341,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
       required this.supirSDRTextController,
       required this.tglTerimaTextController,
       required this.tglKirimTextController,
+      required this.inOut,
       required this.isShowError,
       required final List<bool> isNG,
       required final List<UpdateCSUNGState> ngStates})
@@ -363,6 +377,8 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
   @override
   final TextEditingController tglKirimTextController;
   @override
+  final bool inOut;
+  @override
   final bool isShowError;
   final List<bool> _isNG;
   @override
@@ -382,7 +398,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
 
   @override
   String toString() {
-    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, supirSDRTextController: $supirSDRTextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, isShowError: $isShowError, isNG: $isNG, ngStates: $ngStates)';
+    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, supirSDRTextController: $supirSDRTextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, inOut: $inOut, isShowError: $isShowError, isNG: $isNG, ngStates: $ngStates)';
   }
 
   @override
@@ -415,6 +431,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
                 other.tglTerimaTextController == tglTerimaTextController) &&
             (identical(other.tglKirimTextController, tglKirimTextController) ||
                 other.tglKirimTextController == tglKirimTextController) &&
+            (identical(other.inOut, inOut) || other.inOut == inOut) &&
             (identical(other.isShowError, isShowError) ||
                 other.isShowError == isShowError) &&
             const DeepCollectionEquality().equals(other._isNG, _isNG) &&
@@ -438,6 +455,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
       supirSDRTextController,
       tglTerimaTextController,
       tglKirimTextController,
+      inOut,
       isShowError,
       const DeepCollectionEquality().hash(_isNG),
       const DeepCollectionEquality().hash(_ngStates));
@@ -466,6 +484,7 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
           required final TextEditingController supirSDRTextController,
           required final TextEditingController tglTerimaTextController,
           required final TextEditingController tglKirimTextController,
+          required final bool inOut,
           required final bool isShowError,
           required final List<bool> isNG,
           required final List<UpdateCSUNGState> ngStates}) =
@@ -499,6 +518,8 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
   TextEditingController get tglTerimaTextController;
   @override
   TextEditingController get tglKirimTextController;
+  @override
+  bool get inOut;
   @override
   bool get isShowError;
   @override

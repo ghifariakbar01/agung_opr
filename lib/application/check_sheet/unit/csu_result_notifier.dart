@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
 import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -21,6 +22,16 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
     FOS = await _repository.getCSUByFrameName(frameName: frameName);
 
     state = state.copyWith(isProcessing: false, FOSOCSUResult: optionOf(FOS));
+  }
+
+  Future<void> getCSUNGByIdCS({required int idCS}) async {
+    final Either<RemoteFailure, List<CSUNGResult>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOCSUNGResult: none());
+
+    FOS = await _repository.getCSUNGByIdCS(idCS: idCS);
+
+    state = state.copyWith(isProcessing: false, FOSOCSUNGResult: optionOf(FOS));
   }
 
   Future<void> getCSUTripsByFrameId(
@@ -51,8 +62,14 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
     state = state.copyWith(csuResultList: [...csuResultList]);
   }
 
+  void changeCSUNGResultList(List<CSUNGResult> csuNGResultList) {
+    state = state.copyWith(csuNGResultList: [...csuNGResultList]);
+  }
+
   void changeCSUTripsResultList(List<CSUTrips> csuTripsResultList) {
-    state = state.copyWith(csuTripsResultList: [...csuTripsResultList]);
+    if (csuTripsResultList.isNotEmpty) {
+      state = state.copyWith(csuTripsResultList: [...csuTripsResultList]);
+    }
   }
 
   void changeFrame(Frame frame) {

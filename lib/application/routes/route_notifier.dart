@@ -94,7 +94,10 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
                 name: RouteNames.CSUNewNameRoute,
                 path: RouteNames.CSUNewName,
-                builder: (context, state) => CSUNewPage()),
+                builder: (context, state) {
+                  int idCS = state.extra as int;
+                  return CSUNewPage(idCS: idCS);
+                }),
             GoRoute(
               name: RouteNames.checkSheetLoadingNameRoute,
               path: RouteNames.checkSheetLoadingName,

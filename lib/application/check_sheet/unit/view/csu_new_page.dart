@@ -10,19 +10,18 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../constants/assets.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
-import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../widgets/alert_helper.dart';
-import '../../../widgets/v_dialogs.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
-  const CSUNewPage();
+  const CSUNewPage({this.idCS = -1});
 
   @override
   ConsumerState<CSUNewPage> createState() => _CSUNewPageState();
+
+  final int idCS;
 }
 
 class _CSUNewPageState extends ConsumerState<CSUNewPage> {
@@ -90,6 +89,19 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .getCSUJenisItems();
+
+                    if (widget.idCS != -1) {
+                      await ref
+                          .read(csuFrameNotifierProvider.notifier)
+                          .getCSUNGByIdCS(idCS: widget.idCS);
+                    }
+
+                    final NGItems = ref.read(csuFrameNotifierProvider
+                        .select((value) => value.csuNGResultList));
+
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeFillNG(csuNGResult: NGItems);
                   }
                 })));
 

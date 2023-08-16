@@ -80,7 +80,7 @@ class SupirScaffold extends ConsumerWidget {
                 ]
               ],
             )),
-        drawer: Drawer(),
+        // drawer: Drawer(),
         bottomNavigationBar: Container(
           height: 63,
           width: MediaQuery.of(context).size.width,

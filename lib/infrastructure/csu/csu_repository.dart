@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
@@ -150,6 +151,29 @@ class CSUFrameRepository {
     }
   }
 
+  Future<Either<RemoteFailure, List<CSUNGResult>>> getCSUNGByIdCS(
+      {required int idCS}) async {
+    try {
+      final listFrameNameCSUNGResult =
+          await _remoteService.getCSUNGByIdCS(idCS: idCS);
+
+      // await this._GETAndREPLACECsuInList(
+      //     frameName: frameName, newCSU: listFrameNameCSUNGResult);
+
+      return right(listFrameNameCSUNGResult);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
   Future<Either<RemoteFailure, List<CSUTrips>>> getCSUFrameTripsByName(
       {required int idUnit, required String frameName}) async {
     try {
@@ -281,7 +305,7 @@ class CSUFrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            debugger(message: 'CALLED');
+            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<FrameNameCSUResult> parsedListCSUSPK =
@@ -339,7 +363,7 @@ class CSUFrameRepository {
               log('STORAGE CSU SPK UPDATE ID-SPK N/A: ${listFrameNameCSUResultToJson(list)}');
             }
 
-            debugger(message: 'called');
+            // debugger(message: 'called');
 
             return unit;
           }();

@@ -25,7 +25,7 @@ class CheckSheetUnloadingScaffold extends ConsumerWidget {
                       child: VButton(label: 'SIMPAN & BACK', onPressed: () {})),
                 ],
               )),
-          drawer: Drawer(),
+          // drawer: Drawer(),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView(

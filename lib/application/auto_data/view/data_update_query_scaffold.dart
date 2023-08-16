@@ -61,7 +61,7 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
             ),
           ),
         ),
-        drawer: Drawer(),
+        // drawer: Drawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

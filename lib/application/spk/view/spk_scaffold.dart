@@ -141,16 +141,21 @@ class SPKScaffold extends ConsumerWidget {
                         checkSheetUnit: () => context.pushNamed(
                             RouteNames.updateFrameNameRoute,
                             extra: spkList[i].idSpk),
-                        checkSheetLoading: () => context
-                            .pushNamed(RouteNames.checkSheetLoadingNameRoute),
-                        checkSheetUnloading: () => context
-                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        checkSheetGateMerak: () => context
-                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        assignUnitMerak: () => context
-                            .pushNamed(RouteNames.assignUnitMerakNameRoute),
-                        dataUpdateQuery: () => context
-                            .pushNamed(RouteNames.dataUpdateQueryNameRoute),
+                        // checkSheetLoading: () => context
+                        //     .pushNamed(RouteNames.checkSheetLoadingNameRoute),
+                        // checkSheetUnloading: () => context
+                        //     .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
+                        // checkSheetGateMerak: () => context
+                        //     .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
+                        // assignUnitMerak: () => context
+                        //     .pushNamed(RouteNames.assignUnitMerakNameRoute),
+                        // dataUpdateQuery: () => context
+                        //     .pushNamed(RouteNames.dataUpdateQueryNameRoute),
+                        checkSheetLoading: () => {},
+                        checkSheetUnloading: () => {},
+                        checkSheetGateMerak: () => {},
+                        assignUnitMerak: () => {},
+                        dataUpdateQuery: () => {},
                       ),
                       style: ButtonStyle(
                           padding: MaterialStatePropertyAll(EdgeInsets.zero)),
@@ -165,7 +170,7 @@ class SPKScaffold extends ConsumerWidget {
                 ]
               ],
             )),
-        drawer: Drawer(),
+        // drawer: Drawer(),
         bottomNavigationBar: Container(
           height: 63,
           width: MediaQuery.of(context).size.width,

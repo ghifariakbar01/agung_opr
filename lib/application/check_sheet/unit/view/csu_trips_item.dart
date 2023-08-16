@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,8 +13,18 @@ class CSUTripsItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final trip = ref.watch(csuFrameNotifierProvider
-        .select((value) => value.csuTripsResultList[index]));
+    final isLoading = ref
+        .watch(csuFrameNotifierProvider.select((value) => value.isProcessing));
+
+    log('INDEX $index');
+
+    final trip = ref.watch(csuFrameNotifierProvider.select((value) =>
+        value.csuTripsResultList.isEmpty ||
+                value.csuTripsResultList.length < index
+            ? CSUTrips.initial()
+            : value.csuTripsResultList[index]));
+
+    if (isLoading) return Container();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

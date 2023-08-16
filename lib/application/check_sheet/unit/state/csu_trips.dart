@@ -26,4 +26,6 @@ class CSUTrips with _$CSUTrips {
 
   factory CSUTrips.fromJson(Map<String, Object?> json) =>
       _$CSUTripsFromJson(json);
+
+  factory CSUTrips.initial() => CSUTrips(costanalis: '', custnm: '');
 }

@@ -16,10 +16,6 @@ import 'cranny_item.dart';
 final List<String> labels = [
   'UPDATE FRAME DUMMY',
   'CHECKSHEET UNIT',
-  'CHECKSHEET CCR LOADING',
-  'CHECKSHEET CCR UNLOADING',
-  'CHECKSHEET GATE MERAK',
-  'ASSIGN UNIT MERAK',
 ];
 
 class CrannyScaffold extends ConsumerStatefulWidget {
@@ -38,24 +34,30 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
     final updateCSUFrameOfflineOrOnline =
         ref.watch(updateCSUFrameOfflineNotifierProvider);
 
+    final current = ref.watch(index);
+
     return Scaffold(
       appBar: VAppBar(
-        'CCR Cranny',
+        'Aplikasi OPR CCR',
       ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
               for (final label in labels) ...[
-                TextButton(
-                    onPressed: () async {
-                      ref
-                          .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi(label);
+                if (current == 1 && label == 'CHECKSHEET UNIT') ...[
+                  Container()
+                ] else ...[
+                  TextButton(
+                      onPressed: () async {
+                        ref
+                            .read(modeNotifierProvider.notifier)
+                            .changeModeAplikasi(label);
 
-                      await context.pushNamed(RouteNames.spkNameRoute);
-                    },
-                    child: CrannyItem(label: label))
+                        await context.pushNamed(RouteNames.spkNameRoute);
+                      },
+                      child: CrannyItem(label: label))
+                ]
               ],
               // Frame
               updateFrameOfflineOrOnline.maybeWhen(
@@ -87,7 +89,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
               )
             ],
           )),
-      drawer: Drawer(),
+      // drawer: Drawer(),
       bottomNavigationBar: VBottomNav(),
     );
   }

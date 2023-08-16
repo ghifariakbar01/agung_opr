@@ -19,9 +19,12 @@ mixin _$CSUResultState {
   bool get isProcessing => throw _privateConstructorUsedError;
   Frame get frame => throw _privateConstructorUsedError; //
   List<CSUResult> get csuResultList => throw _privateConstructorUsedError;
+  List<CSUNGResult> get csuNGResultList => throw _privateConstructorUsedError;
   List<CSUTrips> get csuTripsResultList =>
       throw _privateConstructorUsedError; //
   Option<Either<RemoteFailure, List<CSUResult>>> get FOSOCSUResult =>
+      throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, List<CSUNGResult>>> get FOSOCSUNGResult =>
       throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<CSUTrips>>> get FOSOCSUTripsResult =>
       throw _privateConstructorUsedError;
@@ -41,8 +44,10 @@ abstract class $CSUResultStateCopyWith<$Res> {
       {bool isProcessing,
       Frame frame,
       List<CSUResult> csuResultList,
+      List<CSUNGResult> csuNGResultList,
       List<CSUTrips> csuTripsResultList,
       Option<Either<RemoteFailure, List<CSUResult>>> FOSOCSUResult,
+      Option<Either<RemoteFailure, List<CSUNGResult>>> FOSOCSUNGResult,
       Option<Either<RemoteFailure, List<CSUTrips>>> FOSOCSUTripsResult});
 
   $FrameCopyWith<$Res> get frame;
@@ -64,8 +69,10 @@ class _$CSUResultStateCopyWithImpl<$Res, $Val extends CSUResultState>
     Object? isProcessing = null,
     Object? frame = null,
     Object? csuResultList = null,
+    Object? csuNGResultList = null,
     Object? csuTripsResultList = null,
     Object? FOSOCSUResult = null,
+    Object? FOSOCSUNGResult = null,
     Object? FOSOCSUTripsResult = null,
   }) {
     return _then(_value.copyWith(
@@ -81,6 +88,10 @@ class _$CSUResultStateCopyWithImpl<$Res, $Val extends CSUResultState>
           ? _value.csuResultList
           : csuResultList // ignore: cast_nullable_to_non_nullable
               as List<CSUResult>,
+      csuNGResultList: null == csuNGResultList
+          ? _value.csuNGResultList
+          : csuNGResultList // ignore: cast_nullable_to_non_nullable
+              as List<CSUNGResult>,
       csuTripsResultList: null == csuTripsResultList
           ? _value.csuTripsResultList
           : csuTripsResultList // ignore: cast_nullable_to_non_nullable
@@ -89,6 +100,10 @@ class _$CSUResultStateCopyWithImpl<$Res, $Val extends CSUResultState>
           ? _value.FOSOCSUResult
           : FOSOCSUResult // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUResult>>>,
+      FOSOCSUNGResult: null == FOSOCSUNGResult
+          ? _value.FOSOCSUNGResult
+          : FOSOCSUNGResult // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUNGResult>>>,
       FOSOCSUTripsResult: null == FOSOCSUTripsResult
           ? _value.FOSOCSUTripsResult
           : FOSOCSUTripsResult // ignore: cast_nullable_to_non_nullable
@@ -117,8 +132,10 @@ abstract class _$$_CSUResultStateCopyWith<$Res>
       {bool isProcessing,
       Frame frame,
       List<CSUResult> csuResultList,
+      List<CSUNGResult> csuNGResultList,
       List<CSUTrips> csuTripsResultList,
       Option<Either<RemoteFailure, List<CSUResult>>> FOSOCSUResult,
+      Option<Either<RemoteFailure, List<CSUNGResult>>> FOSOCSUNGResult,
       Option<Either<RemoteFailure, List<CSUTrips>>> FOSOCSUTripsResult});
 
   @override
@@ -139,8 +156,10 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
     Object? isProcessing = null,
     Object? frame = null,
     Object? csuResultList = null,
+    Object? csuNGResultList = null,
     Object? csuTripsResultList = null,
     Object? FOSOCSUResult = null,
+    Object? FOSOCSUNGResult = null,
     Object? FOSOCSUTripsResult = null,
   }) {
     return _then(_$_CSUResultState(
@@ -156,6 +175,10 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
           ? _value._csuResultList
           : csuResultList // ignore: cast_nullable_to_non_nullable
               as List<CSUResult>,
+      csuNGResultList: null == csuNGResultList
+          ? _value._csuNGResultList
+          : csuNGResultList // ignore: cast_nullable_to_non_nullable
+              as List<CSUNGResult>,
       csuTripsResultList: null == csuTripsResultList
           ? _value._csuTripsResultList
           : csuTripsResultList // ignore: cast_nullable_to_non_nullable
@@ -164,6 +187,10 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
           ? _value.FOSOCSUResult
           : FOSOCSUResult // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUResult>>>,
+      FOSOCSUNGResult: null == FOSOCSUNGResult
+          ? _value.FOSOCSUNGResult
+          : FOSOCSUNGResult // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUNGResult>>>,
       FOSOCSUTripsResult: null == FOSOCSUTripsResult
           ? _value.FOSOCSUTripsResult
           : FOSOCSUTripsResult // ignore: cast_nullable_to_non_nullable
@@ -179,10 +206,13 @@ class _$_CSUResultState implements _CSUResultState {
       {required this.isProcessing,
       required this.frame,
       required final List<CSUResult> csuResultList,
+      required final List<CSUNGResult> csuNGResultList,
       required final List<CSUTrips> csuTripsResultList,
       required this.FOSOCSUResult,
+      required this.FOSOCSUNGResult,
       required this.FOSOCSUTripsResult})
       : _csuResultList = csuResultList,
+        _csuNGResultList = csuNGResultList,
         _csuTripsResultList = csuTripsResultList;
 
   @override
@@ -199,6 +229,14 @@ class _$_CSUResultState implements _CSUResultState {
     return EqualUnmodifiableListView(_csuResultList);
   }
 
+  final List<CSUNGResult> _csuNGResultList;
+  @override
+  List<CSUNGResult> get csuNGResultList {
+    if (_csuNGResultList is EqualUnmodifiableListView) return _csuNGResultList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_csuNGResultList);
+  }
+
   final List<CSUTrips> _csuTripsResultList;
   @override
   List<CSUTrips> get csuTripsResultList {
@@ -212,11 +250,13 @@ class _$_CSUResultState implements _CSUResultState {
   @override
   final Option<Either<RemoteFailure, List<CSUResult>>> FOSOCSUResult;
   @override
+  final Option<Either<RemoteFailure, List<CSUNGResult>>> FOSOCSUNGResult;
+  @override
   final Option<Either<RemoteFailure, List<CSUTrips>>> FOSOCSUTripsResult;
 
   @override
   String toString() {
-    return 'CSUResultState(isProcessing: $isProcessing, frame: $frame, csuResultList: $csuResultList, csuTripsResultList: $csuTripsResultList, FOSOCSUResult: $FOSOCSUResult, FOSOCSUTripsResult: $FOSOCSUTripsResult)';
+    return 'CSUResultState(isProcessing: $isProcessing, frame: $frame, csuResultList: $csuResultList, csuNGResultList: $csuNGResultList, csuTripsResultList: $csuTripsResultList, FOSOCSUResult: $FOSOCSUResult, FOSOCSUNGResult: $FOSOCSUNGResult, FOSOCSUTripsResult: $FOSOCSUTripsResult)';
   }
 
   @override
@@ -230,9 +270,13 @@ class _$_CSUResultState implements _CSUResultState {
             const DeepCollectionEquality()
                 .equals(other._csuResultList, _csuResultList) &&
             const DeepCollectionEquality()
+                .equals(other._csuNGResultList, _csuNGResultList) &&
+            const DeepCollectionEquality()
                 .equals(other._csuTripsResultList, _csuTripsResultList) &&
             (identical(other.FOSOCSUResult, FOSOCSUResult) ||
                 other.FOSOCSUResult == FOSOCSUResult) &&
+            (identical(other.FOSOCSUNGResult, FOSOCSUNGResult) ||
+                other.FOSOCSUNGResult == FOSOCSUNGResult) &&
             (identical(other.FOSOCSUTripsResult, FOSOCSUTripsResult) ||
                 other.FOSOCSUTripsResult == FOSOCSUTripsResult));
   }
@@ -243,8 +287,10 @@ class _$_CSUResultState implements _CSUResultState {
       isProcessing,
       frame,
       const DeepCollectionEquality().hash(_csuResultList),
+      const DeepCollectionEquality().hash(_csuNGResultList),
       const DeepCollectionEquality().hash(_csuTripsResultList),
       FOSOCSUResult,
+      FOSOCSUNGResult,
       FOSOCSUTripsResult);
 
   @JsonKey(ignore: true)
@@ -259,9 +305,12 @@ abstract class _CSUResultState implements CSUResultState {
       {required final bool isProcessing,
       required final Frame frame,
       required final List<CSUResult> csuResultList,
+      required final List<CSUNGResult> csuNGResultList,
       required final List<CSUTrips> csuTripsResultList,
       required final Option<Either<RemoteFailure, List<CSUResult>>>
           FOSOCSUResult,
+      required final Option<Either<RemoteFailure, List<CSUNGResult>>>
+          FOSOCSUNGResult,
       required final Option<Either<RemoteFailure, List<CSUTrips>>>
           FOSOCSUTripsResult}) = _$_CSUResultState;
 
@@ -272,9 +321,13 @@ abstract class _CSUResultState implements CSUResultState {
   @override //
   List<CSUResult> get csuResultList;
   @override
+  List<CSUNGResult> get csuNGResultList;
+  @override
   List<CSUTrips> get csuTripsResultList;
   @override //
   Option<Either<RemoteFailure, List<CSUResult>>> get FOSOCSUResult;
+  @override
+  Option<Either<RemoteFailure, List<CSUNGResult>>> get FOSOCSUNGResult;
   @override
   Option<Either<RemoteFailure, List<CSUTrips>>> get FOSOCSUTripsResult;
   @override

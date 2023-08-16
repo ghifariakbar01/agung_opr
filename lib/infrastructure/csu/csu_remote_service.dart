@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
+import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:agung_opr/infrastructure/exceptions.dart';
@@ -20,7 +21,7 @@ class CSUFrameRemoteService {
 
   Future<List<CSUResult>> getCSUByFrameName({required String frameName}) async {
     const String dbName = 'cs_trs_cs_test';
-    const String dbGate = 'cs_mst_gate';
+    const String dbCSDtl = 'cs_trs_cs_dtl_test';
 
     try {
       final data = _dioRequestNotifier;
@@ -28,7 +29,7 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_cs AS id, frame, $dbGate.nama AS gate, inout AS inOut, no_defect AS isDefect, $dbName.u_date as updatedAt, $dbName.u_user as updatedBy FROM $dbName INNER JOIN $dbGate ON $dbName.id_gate = $dbGate.id_gate WHERE frame = '$frameName'",
+            "select *, (select count(id_item) from $dbCSDtl where id_cs = $dbName.id_cs) as defectAmount, (select nama from cs_mst_gate where id_gate = $dbName.id_gate) as gate from $dbName where frame like '$frameName' ORDER BY u_date DESC",
       });
 
       final response = await _dio.post('',
@@ -50,13 +51,85 @@ class CSUFrameRemoteService {
               List<CSUResult> csuList =
                   (list).map((data) => CSUResult.fromJson(data)).toList();
 
-              log('LIST CSU: $list');
+              log('LIST CSU: $csuList');
 
               return csuList;
             } catch (e) {
               log('list error $e');
 
-              throw FormatException('error while iterating list model');
+              throw FormatException(
+                  'error while iterating list getCSUByFrameName');
+            }
+          } else {
+            log('list empty');
+
+            return [];
+          }
+        } else {
+          log('list empty');
+
+          return [];
+        }
+      } else {
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError || e.isConnectionTimeout) {
+        throw NoConnectionException();
+      } else if (e.response != null) {
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<List<CSUNGResult>> getCSUNGByIdCS({required int idCS}) async {
+    const String dbName = 'cs_trs_cs_dtl_test';
+
+    try {
+      final data = _dioRequestNotifier;
+
+      data.addAll({
+        "mode": "SELECT",
+        "command":
+            "SELECT id_cs, id_item AS idItem, id_jns_defect AS idJenis, id_p_defect AS idPenyebab FROM $dbName WHERE id_cs = '$idCS'",
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      log('data ${jsonEncode(data)}');
+      log('response $response');
+
+      final items = response.data?[0];
+
+      if (items['status'] == 'Success') {
+        final listExist = items['items'] != null && items['items'] is List;
+
+        if (listExist) {
+          final list = items['items'] as List<dynamic>;
+
+          if (list.isNotEmpty) {
+            try {
+              List<CSUNGResult> csuList =
+                  (list).map((data) => CSUNGResult.fromJson(data)).toList();
+
+              log('LIST CSU NG: $list');
+
+              return csuList;
+            } catch (e) {
+              log('list error $e');
+
+              throw FormatException('error while iterating list CSU NG');
             }
           } else {
             log('list empty');

@@ -9,6 +9,7 @@ part 'update_csu_state.freezed.dart';
 @freezed
 class UpdateCSUState with _$UpdateCSUState {
   const factory UpdateCSUState({
+    required int idCS,
     required int idUnit,
     required bool isProcessing,
     required bool showErrorMessages,
@@ -18,6 +19,7 @@ class UpdateCSUState with _$UpdateCSUState {
   }) = _UpdateCSUState;
 
   factory UpdateCSUState.initial() => UpdateCSUState(
+        idCS: 0,
         idUnit: 0,
         isProcessing: false,
         showErrorMessages: false,

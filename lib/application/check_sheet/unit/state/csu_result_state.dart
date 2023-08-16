@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,9 +16,11 @@ class CSUResultState with _$CSUResultState {
     required Frame frame,
     //
     required List<CSUResult> csuResultList,
+    required List<CSUNGResult> csuNGResultList,
     required List<CSUTrips> csuTripsResultList,
     //
     required Option<Either<RemoteFailure, List<CSUResult>>> FOSOCSUResult,
+    required Option<Either<RemoteFailure, List<CSUNGResult>>> FOSOCSUNGResult,
     required Option<Either<RemoteFailure, List<CSUTrips>>> FOSOCSUTripsResult,
   }) = _CSUResultState;
 
@@ -25,7 +28,9 @@ class CSUResultState with _$CSUResultState {
       isProcessing: false,
       frame: Frame.initial(),
       csuResultList: [],
+      csuNGResultList: [],
       csuTripsResultList: [],
       FOSOCSUResult: none(),
+      FOSOCSUNGResult: none(),
       FOSOCSUTripsResult: none());
 }

@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateCSUState {
+  int get idCS => throw _privateConstructorUsedError;
   int get idUnit => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   bool get showErrorMessages => throw _privateConstructorUsedError;
@@ -37,7 +38,8 @@ abstract class $UpdateCSUStateCopyWith<$Res> {
       _$UpdateCSUStateCopyWithImpl<$Res, UpdateCSUState>;
   @useResult
   $Res call(
-      {int idUnit,
+      {int idCS,
+      int idUnit,
       bool isProcessing,
       bool showErrorMessages,
       String frameName,
@@ -60,6 +62,7 @@ class _$UpdateCSUStateCopyWithImpl<$Res, $Val extends UpdateCSUState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? idCS = null,
     Object? idUnit = null,
     Object? isProcessing = null,
     Object? showErrorMessages = null,
@@ -68,6 +71,10 @@ class _$UpdateCSUStateCopyWithImpl<$Res, $Val extends UpdateCSUState>
     Object? FOSOUpdateCSU = null,
   }) {
     return _then(_value.copyWith(
+      idCS: null == idCS
+          ? _value.idCS
+          : idCS // ignore: cast_nullable_to_non_nullable
+              as int,
       idUnit: null == idUnit
           ? _value.idUnit
           : idUnit // ignore: cast_nullable_to_non_nullable
@@ -114,7 +121,8 @@ abstract class _$$_UpdateCSUStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int idUnit,
+      {int idCS,
+      int idUnit,
       bool isProcessing,
       bool showErrorMessages,
       String frameName,
@@ -136,6 +144,7 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? idCS = null,
     Object? idUnit = null,
     Object? isProcessing = null,
     Object? showErrorMessages = null,
@@ -144,6 +153,10 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
     Object? FOSOUpdateCSU = null,
   }) {
     return _then(_$_UpdateCSUState(
+      idCS: null == idCS
+          ? _value.idCS
+          : idCS // ignore: cast_nullable_to_non_nullable
+              as int,
       idUnit: null == idUnit
           ? _value.idUnit
           : idUnit // ignore: cast_nullable_to_non_nullable
@@ -176,13 +189,16 @@ class __$$_UpdateCSUStateCopyWithImpl<$Res>
 
 class _$_UpdateCSUState implements _UpdateCSUState {
   const _$_UpdateCSUState(
-      {required this.idUnit,
+      {required this.idCS,
+      required this.idUnit,
       required this.isProcessing,
       required this.showErrorMessages,
       required this.frameName,
       required this.updateFrameList,
       required this.FOSOUpdateCSU});
 
+  @override
+  final int idCS;
   @override
   final int idUnit;
   @override
@@ -198,7 +214,7 @@ class _$_UpdateCSUState implements _UpdateCSUState {
 
   @override
   String toString() {
-    return 'UpdateCSUState(idUnit: $idUnit, isProcessing: $isProcessing, showErrorMessages: $showErrorMessages, frameName: $frameName, updateFrameList: $updateFrameList, FOSOUpdateCSU: $FOSOUpdateCSU)';
+    return 'UpdateCSUState(idCS: $idCS, idUnit: $idUnit, isProcessing: $isProcessing, showErrorMessages: $showErrorMessages, frameName: $frameName, updateFrameList: $updateFrameList, FOSOUpdateCSU: $FOSOUpdateCSU)';
   }
 
   @override
@@ -206,6 +222,7 @@ class _$_UpdateCSUState implements _UpdateCSUState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UpdateCSUState &&
+            (identical(other.idCS, idCS) || other.idCS == idCS) &&
             (identical(other.idUnit, idUnit) || other.idUnit == idUnit) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
@@ -220,7 +237,7 @@ class _$_UpdateCSUState implements _UpdateCSUState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, idUnit, isProcessing,
+  int get hashCode => Object.hash(runtimeType, idCS, idUnit, isProcessing,
       showErrorMessages, frameName, updateFrameList, FOSOUpdateCSU);
 
   @JsonKey(ignore: true)
@@ -232,7 +249,8 @@ class _$_UpdateCSUState implements _UpdateCSUState {
 
 abstract class _UpdateCSUState implements UpdateCSUState {
   const factory _UpdateCSUState(
-          {required final int idUnit,
+          {required final int idCS,
+          required final int idUnit,
           required final bool isProcessing,
           required final bool showErrorMessages,
           required final String frameName,
@@ -240,6 +258,8 @@ abstract class _UpdateCSUState implements UpdateCSUState {
           required final Option<Either<LocalFailure, Unit>> FOSOUpdateCSU}) =
       _$_UpdateCSUState;
 
+  @override
+  int get idCS;
   @override
   int get idUnit;
   @override

@@ -31,7 +31,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
       this.changeFOSOUpdateFrame(index: index, FOS: none());
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       FOS = await _repository.updateFrameSPK(
         idSPK: state.idSPK.toString(),

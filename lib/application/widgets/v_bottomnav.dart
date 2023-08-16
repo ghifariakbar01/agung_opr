@@ -3,15 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class VBottomNav extends StatelessWidget {
+final index = StateProvider((ref) => 0);
+
+class VBottomNav extends ConsumerWidget {
   const VBottomNav({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final current = ref.watch(index);
+
     return SizedBox(
       height: 63,
       child: BottomNavigationBar(
+        onTap: (value) => ref.read(index.notifier).state = value,
+        currentIndex: current,
         items: bottomNavItems,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Palette.greySecondary,

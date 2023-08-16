@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/widgets/v_appbar.dart';
@@ -26,7 +28,7 @@ class CSUResultScaffold extends ConsumerWidget {
       child: Scaffold(
           appBar: VAppBar('Check Sheet Unit'),
           bottomNavigationBar: VBottomNav(),
-          drawer: Drawer(),
+          // drawer: Drawer(),
           body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
@@ -65,15 +67,47 @@ class CSUResultScaffold extends ConsumerWidget {
                                 width: 2, color: Palette.primaryColor)),
                         child: VButton(
                             label: 'BUAT CHECKSHEET',
-                            onPressed: () =>
-                                context.pushNamed(RouteNames.CSUNewNameRoute))),
+                            onPressed: () {
+                              ref
+                                  .read(updateCSUFrameNotifierProvider.notifier)
+                                  .changeFillInitial();
 
-                    for (int index = 0;
-                        index < csuResultList.length;
-                        index++) ...[
-                      CSUResultItem(
-                        index: index,
-                      ),
+                              // PASS -1 AS EMPTY
+                              context.pushNamed(RouteNames.CSUNewNameRoute,
+                                  extra: -1);
+                            })),
+
+                    SizedBox(
+                      height: 8,
+                    ),
+
+                    if (csuResultList.isNotEmpty) ...[
+                      for (int index = 0;
+                          index < csuResultList.length;
+                          index++) ...[
+                        AbsorbPointer(
+                          absorbing: index != 0,
+                          child: TextButton(
+                            onPressed: () async {
+                              final csuItem = csuResultList[index];
+
+                              ref
+                                  .read(updateCSUFrameNotifierProvider.notifier)
+                                  .changeFillWithValue(csuResult: csuItem);
+
+                              await context.pushNamed(
+                                  RouteNames.CSUNewNameRoute,
+                                  extra: csuItem.id);
+                            },
+                            style: ButtonStyle(
+                                padding:
+                                    MaterialStatePropertyAll(EdgeInsets.zero)),
+                            child: CSUResultItem(
+                              index: index,
+                            ),
+                          ),
+                        ),
+                      ]
                     ]
                   ],
                 ),
@@ -82,18 +116,22 @@ class CSUResultScaffold extends ConsumerWidget {
   }
 }
 
-class VBottomNav extends StatelessWidget {
+class VBottomNav extends ConsumerWidget {
   const VBottomNav({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: 63,
       width: MediaQuery.of(context).size.width,
       color: Palette.greySecondary,
       child: TextButton(
         style: ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-        onPressed: () => context.pop(),
+        onPressed: () {
+          ref.read(csuFrameNotifierProvider.notifier).changeCSUResultList([]);
+
+          context.pop();
+        },
         child: Row(
           children: [
             SizedBox(
