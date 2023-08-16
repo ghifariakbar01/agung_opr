@@ -12,7 +12,6 @@ part 'csu_result_state.freezed.dart';
 class CSUResultState with _$CSUResultState {
   const factory CSUResultState({
     required bool isProcessing,
-    required String frameName,
     required Frame frame,
     //
     required List<CSUResult> csuResultList,
@@ -24,7 +23,6 @@ class CSUResultState with _$CSUResultState {
 
   factory CSUResultState.initial() => CSUResultState(
       isProcessing: false,
-      frameName: '',
       frame: Frame.initial(),
       csuResultList: [],
       csuTripsResultList: [],

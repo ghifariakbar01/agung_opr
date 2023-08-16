@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
@@ -28,15 +26,8 @@ class UpdateFrameItem extends ConsumerWidget {
     final showErrorMessage = ref.watch(updateFrameNotifierProvider
         .select((value) => value.updateFrameList[index].isShowError));
 
-    final frame = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].frame));
-
-    final frameStr = frame.getOrLeave('');
-
-    final idUnit = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].idUnit));
-
-    final idUnitStr = idUnit.getOrLeave('');
+    final frame = ref
+        .watch(frameNotifierProvider.select((value) => value.frameList[index]));
 
     return Form(
       autovalidateMode: showErrorMessage
@@ -139,10 +130,9 @@ class UpdateFrameItem extends ConsumerWidget {
                             }),
                         checkSheetUnit: () => VButton(
                             label: 'CSU',
-                            onPressed: () {
-                              context.pushNamed(RouteNames.CSUListNameRoute,
-                                  extra: {'nama': frameStr, 'id': idUnitStr});
-                            }),
+                            onPressed: () => context.pushNamed(
+                                RouteNames.CSUListNameRoute,
+                                extra: frame)),
                         orElse: () => null,
                       ))
                 ],

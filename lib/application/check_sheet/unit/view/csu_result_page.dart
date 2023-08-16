@@ -10,16 +10,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
+import '../../../update_frame/frame.dart';
 import '../../../widgets/alert_helper.dart';
 import '../shared/csu_providers.dart';
 import '../state/csu_result.dart';
 import 'csu_result_scaffold.dart';
 
 class CSUResultPage extends ConsumerStatefulWidget {
-  const CSUResultPage();
+  const CSUResultPage({required this.frame});
 
   @override
   ConsumerState<CSUResultPage> createState() => _CSUResultPageState();
+
+  final Frame frame;
 }
 
 class _CSUResultPageState extends ConsumerState<CSUResultPage> {
@@ -28,13 +31,25 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final index =
-          ref.read(updateFrameNotifierProvider.select((value) => value.index));
-      final frame = ref.read(
-          frameNotifierProvider.select((value) => value.frameList[index]));
+      final frame = widget.frame;
 
-      final String frameName = frame.frame ?? '';
+      // CSU ITEMS STORAGE
+      final String frameName = frame.frame ?? '-';
       final int frameId = frame.idUnit;
+
+      log('frameName $frameName');
+
+      ref.read(csuFrameNotifierProvider.notifier).changeFrame(frame);
+
+      await ref
+          .read(csuFrameNotifierProvider.notifier)
+          .getCSUByFrameName(frameName: frameName);
+
+      await ref
+          .read(csuFrameNotifierProvider.notifier)
+          .getCSUTripsByFrameId(idUnit: frameId, frameName: frameName);
+
+      //
 
       // TRIPS STORAGE
       await ref
@@ -59,20 +74,6 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
               .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
         },
       );
-
-      // CSU ITEMS STORAGE
-
-      //
-      ref.read(csuFrameNotifierProvider.notifier).changeFrame(frame);
-      ref.read(csuFrameNotifierProvider.notifier).changeFrameName(frameName);
-
-      await ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUByFrameName(frameName: frameName);
-
-      await ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUTripsByFrameId(idUnit: frameId, frameName: frameName);
     });
   }
 

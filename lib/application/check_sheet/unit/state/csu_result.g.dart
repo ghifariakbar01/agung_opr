@@ -8,8 +8,9 @@ part of 'csu_result.dart';
 
 _$_CSUResult _$$_CSUResultFromJson(Map<String, dynamic> json) => _$_CSUResult(
       id: json['id'] as int,
-      frame: json['frame'] as String?,
+      defectAmount: json['defectAmount'] as int?,
       gate: json['gate'] as String?,
+      frame: json['frame'] as String?,
       inOut: json['inOut'] as bool?,
       isDefect: json['isDefect'] as int?,
       updatedAt: json['updatedAt'] as String?,
@@ -19,8 +20,9 @@ _$_CSUResult _$$_CSUResultFromJson(Map<String, dynamic> json) => _$_CSUResult(
 Map<String, dynamic> _$$_CSUResultToJson(_$_CSUResult instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'frame': instance.frame,
+      'defectAmount': instance.defectAmount,
       'gate': instance.gate,
+      'frame': instance.frame,
       'inOut': instance.inOut,
       'isDefect': instance.isDefect,
       'updatedAt': instance.updatedAt,

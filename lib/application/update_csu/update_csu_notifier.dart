@@ -39,8 +39,15 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           supirSDR: stateCSU.supirSDR,
           tglKirim: stateCSU.tglKirim,
           tglTerima: stateCSU.tglTerima);
+      // NG
+      final NG = state.updateFrameList.isNG;
 
-      FOS = await _repository.saveCSUQueryOK(queryId: queryId);
+      final isNG = NG.firstWhere(
+        (element) => element == true,
+        orElse: () => false,
+      );
+
+      FOS = await _repository.saveCSUQueryOK(queryId: queryId, isNG: isNG);
 
       state = state.copyWith(
           isProcessing: false,
@@ -65,25 +72,20 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
       final NG = state.updateFrameList.isNG;
 
-      final List<CSUIDQuery> queryIds = [];
+      final List<UpdateCSUNGState> queryNgs = [];
 
       for (int index = 0; index < state.updateFrameList.isNG.length; index++) {
         if (NG[index] == true) {
           // GET NG ITEM, JENIS, PENYEBAB
           final NGItem = state.updateFrameList.ngStates[index];
-
-          final query = _repository.getNGSavableQuery(
-              idUnit: state.idUnit,
-              frameName: state.frameName,
-              idCheckSheet: NGItem.idCs,
-              idJenisDefect: NGItem.idJenis,
-              idPenyebabDefect: NGItem.idPenyebab);
-
-          queryIds.add(query);
+          queryNgs.add(NGItem);
         }
       }
 
-      FOS = await _repository.saveCSUQueryNG(queryIds: queryIds);
+      final queryId = _repository.getNGSavableQuery(
+          idUnit: state.idUnit, frameName: state.frameName, ngStates: queryNgs);
+
+      FOS = await _repository.saveCSUQueryNG(queryId: queryId);
 
       state = state.copyWith(
           isProcessing: false,
@@ -106,6 +108,21 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     // Update the state with the new list
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(isNG: list));
+  }
+
+  void changeNGId({required int id, required int index}) {
+    final list = [
+      ...state.updateFrameList.ngStates
+    ]; // Create a copy of the list
+
+    final elementAt = list.elementAt(index).copyWith(idCs: id);
+
+    // Update the element at the given index
+    list[index] = elementAt;
+
+    // Update the state with the new list
+    state = state.copyWith(
+        updateFrameList: state.updateFrameList.copyWith(ngStates: list));
   }
 
   void changeNGJenis({required int id, required int index}) {

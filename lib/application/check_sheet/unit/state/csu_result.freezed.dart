@@ -21,8 +21,9 @@ CSUResult _$CSUResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CSUResult {
   int get id => throw _privateConstructorUsedError;
-  String? get frame => throw _privateConstructorUsedError;
+  int? get defectAmount => throw _privateConstructorUsedError;
   String? get gate => throw _privateConstructorUsedError;
+  String? get frame => throw _privateConstructorUsedError;
   bool? get inOut => throw _privateConstructorUsedError;
   int? get isDefect => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
@@ -41,8 +42,9 @@ abstract class $CSUResultCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String? frame,
+      int? defectAmount,
       String? gate,
+      String? frame,
       bool? inOut,
       int? isDefect,
       String? updatedAt,
@@ -63,8 +65,9 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
   @override
   $Res call({
     Object? id = null,
-    Object? frame = freezed,
+    Object? defectAmount = freezed,
     Object? gate = freezed,
+    Object? frame = freezed,
     Object? inOut = freezed,
     Object? isDefect = freezed,
     Object? updatedAt = freezed,
@@ -75,13 +78,17 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      frame: freezed == frame
-          ? _value.frame
-          : frame // ignore: cast_nullable_to_non_nullable
-              as String?,
+      defectAmount: freezed == defectAmount
+          ? _value.defectAmount
+          : defectAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
       gate: freezed == gate
           ? _value.gate
           : gate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      frame: freezed == frame
+          ? _value.frame
+          : frame // ignore: cast_nullable_to_non_nullable
               as String?,
       inOut: freezed == inOut
           ? _value.inOut
@@ -112,8 +119,9 @@ abstract class _$$_CSUResultCopyWith<$Res> implements $CSUResultCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String? frame,
+      int? defectAmount,
       String? gate,
+      String? frame,
       bool? inOut,
       int? isDefect,
       String? updatedAt,
@@ -132,8 +140,9 @@ class __$$_CSUResultCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? frame = freezed,
+    Object? defectAmount = freezed,
     Object? gate = freezed,
+    Object? frame = freezed,
     Object? inOut = freezed,
     Object? isDefect = freezed,
     Object? updatedAt = freezed,
@@ -144,13 +153,17 @@ class __$$_CSUResultCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      frame: freezed == frame
-          ? _value.frame
-          : frame // ignore: cast_nullable_to_non_nullable
-              as String?,
+      defectAmount: freezed == defectAmount
+          ? _value.defectAmount
+          : defectAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
       gate: freezed == gate
           ? _value.gate
           : gate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      frame: freezed == frame
+          ? _value.frame
+          : frame // ignore: cast_nullable_to_non_nullable
               as String?,
       inOut: freezed == inOut
           ? _value.inOut
@@ -177,8 +190,9 @@ class __$$_CSUResultCopyWithImpl<$Res>
 class _$_CSUResult implements _CSUResult {
   const _$_CSUResult(
       {required this.id,
-      required this.frame,
+      required this.defectAmount,
       required this.gate,
+      required this.frame,
       required this.inOut,
       required this.isDefect,
       required this.updatedAt,
@@ -190,9 +204,11 @@ class _$_CSUResult implements _CSUResult {
   @override
   final int id;
   @override
-  final String? frame;
+  final int? defectAmount;
   @override
   final String? gate;
+  @override
+  final String? frame;
   @override
   final bool? inOut;
   @override
@@ -204,7 +220,7 @@ class _$_CSUResult implements _CSUResult {
 
   @override
   String toString() {
-    return 'CSUResult(id: $id, frame: $frame, gate: $gate, inOut: $inOut, isDefect: $isDefect, updatedAt: $updatedAt, updatedBy: $updatedBy)';
+    return 'CSUResult(id: $id, defectAmount: $defectAmount, gate: $gate, frame: $frame, inOut: $inOut, isDefect: $isDefect, updatedAt: $updatedAt, updatedBy: $updatedBy)';
   }
 
   @override
@@ -213,8 +229,10 @@ class _$_CSUResult implements _CSUResult {
         (other.runtimeType == runtimeType &&
             other is _$_CSUResult &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.frame, frame) || other.frame == frame) &&
+            (identical(other.defectAmount, defectAmount) ||
+                other.defectAmount == defectAmount) &&
             (identical(other.gate, gate) || other.gate == gate) &&
+            (identical(other.frame, frame) || other.frame == frame) &&
             (identical(other.inOut, inOut) || other.inOut == inOut) &&
             (identical(other.isDefect, isDefect) ||
                 other.isDefect == isDefect) &&
@@ -226,8 +244,8 @@ class _$_CSUResult implements _CSUResult {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, frame, gate, inOut, isDefect, updatedAt, updatedBy);
+  int get hashCode => Object.hash(runtimeType, id, defectAmount, gate, frame,
+      inOut, isDefect, updatedAt, updatedBy);
 
   @JsonKey(ignore: true)
   @override
@@ -246,8 +264,9 @@ class _$_CSUResult implements _CSUResult {
 abstract class _CSUResult implements CSUResult {
   const factory _CSUResult(
       {required final int id,
-      required final String? frame,
+      required final int? defectAmount,
       required final String? gate,
+      required final String? frame,
       required final bool? inOut,
       required final int? isDefect,
       required final String? updatedAt,
@@ -259,9 +278,11 @@ abstract class _CSUResult implements CSUResult {
   @override
   int get id;
   @override
-  String? get frame;
+  int? get defectAmount;
   @override
   String? get gate;
+  @override
+  String? get frame;
   @override
   bool? get inOut;
   @override

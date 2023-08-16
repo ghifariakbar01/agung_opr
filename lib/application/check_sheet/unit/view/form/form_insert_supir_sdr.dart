@@ -1,26 +1,28 @@
-import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
-import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../style/style.dart';
+import '../../shared/csu_providers.dart';
 
 /// [TextEditingController] For displaying value only
 ///
 ///
-class FormInsertSupirSdr extends ConsumerWidget {
-  const FormInsertSupirSdr({required this.index});
+class FormInsertSupirSDR extends ConsumerWidget {
+  const FormInsertSupirSDR({required this.index});
 
   final int index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sdr = ref.watch(updateCSUFrameNotifierProvider
+    final supirSDR = ref.watch(updateCSUFrameNotifierProvider
         .select((value) => value.updateFrameList.supirSDR));
 
-    final sdrStr = sdr.getOrLeave('');
+    final supirSDRTextController = ref.watch(updateCSUFrameNotifierProvider
+        .select((value) => value.updateFrameList.supirSDRTextController));
+
+    final supirSDRStr = supirSDR.getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,27 +50,44 @@ class FormInsertSupirSdr extends ConsumerWidget {
           child: SizedBox(
             height: 65,
             width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              initialValue: sdrStr,
-              decoration: Themes.formStyle(sdrStr != ''
-                  ? sdrStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan Supir SDR'),
-              keyboardType: TextInputType.number,
-              onChanged: (value) => ref
-                  .read(updateCSUFrameNotifierProvider.notifier)
-                  .changeSupirSDR(value),
-              validator: (_) => ref
-                  .read(updateCSUFrameNotifierProvider)
-                  .updateFrameList
-                  .supirSDR
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
-                    ),
-                    (_) => null,
-                  ),
+            child: TextButton(
+              onPressed: () async {
+                final String? id =
+                    await context.pushNamed(RouteNames.supirNameRoute);
+
+                if (id != null) {
+                  ref
+                      .read(updateCSUFrameNotifierProvider.notifier)
+                      .changeSupirSDR(id);
+
+                  supirSDRTextController.text = id;
+                }
+              },
+              style: ButtonStyle(
+                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              child: IgnorePointer(
+                ignoring: true,
+                child: TextFormField(
+                  controller: supirSDRTextController,
+                  decoration: Themes.formStyle(supirSDRStr != ''
+                      ? supirSDRStr + ' (ketik untuk ubah teks)'
+                      : 'Pilih Supir SDR'),
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) => {},
+                  validator: (_) => ref
+                      .read(updateCSUFrameNotifierProvider)
+                      .updateFrameList
+                      .supir2
+                      .value
+                      .fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'kosong',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+                ),
+              ),
             ),
           ),
         )

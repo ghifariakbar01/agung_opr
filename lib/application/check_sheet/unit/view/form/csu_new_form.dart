@@ -46,7 +46,7 @@ class CSUNewForm extends ConsumerWidget {
             FormInsertDeck(index: 0),
             FormInsertSupir1(index: 0),
             FormInsertSupir2(index: 0),
-            FormInsertSupirSdr(
+            FormInsertSupirSDR(
               index: 0,
             ),
             FormInsertTglTerima(index: 0),

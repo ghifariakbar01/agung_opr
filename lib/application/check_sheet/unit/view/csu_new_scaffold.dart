@@ -57,6 +57,7 @@ class CSUNewScaffold extends ConsumerWidget {
                                 index < csuItems.length;
                                 index++) ...[
                               CheckSheetUnitItemForm(
+                                  id: csuItems[index].id,
                                   index: index,
                                   instruction:
                                       '${csuItems[index].id}. ${csuItems[index].ind} (${csuItems[index].eng})')
@@ -69,9 +70,15 @@ class CSUNewScaffold extends ConsumerWidget {
                           label: 'DEFECT',
                           color: Palette.red,
                           isEnabled: isDefect,
-                          onPressed: () => ref
-                              .read(updateCSUFrameNotifierProvider.notifier)
-                              .saveQueryNG()),
+                          onPressed: () async {
+                            await ref
+                                .read(updateCSUFrameNotifierProvider.notifier)
+                                .saveQueryNG();
+
+                            await ref
+                                .read(updateCSUFrameNotifierProvider.notifier)
+                                .saveQueryOK();
+                          }),
                       VButton(
                           label: 'NO DEFECT',
                           isEnabled: !isDefect,

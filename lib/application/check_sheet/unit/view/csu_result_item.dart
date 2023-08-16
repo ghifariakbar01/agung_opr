@@ -35,7 +35,7 @@ class CSUResultItem extends ConsumerWidget {
             // Header
             Text(
               '${CSU.frame}',
-              style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+              style: Themes.customColor(FontWeight.bold, 12, Colors.black),
             ),
 
             SizedBox(
@@ -46,12 +46,12 @@ class CSUResultItem extends ConsumerWidget {
               children: [
                 Text(
                   'GATE : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(FontWeight.bold, 12, Colors.black),
                 ),
                 Text(
                   '${CSU.gate}',
                   style:
-                      Themes.customColor(FontWeight.normal, 16, Colors.black),
+                      Themes.customColor(FontWeight.normal, 12, Colors.black),
                 ),
               ],
             ),
@@ -60,12 +60,12 @@ class CSUResultItem extends ConsumerWidget {
               children: [
                 Text(
                   'IN/OUT : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(FontWeight.bold, 12, Colors.black),
                 ),
                 Text(
                   '${CSU.inOut == 0 ? 'Keluar' : 'Masuk'}',
                   style:
-                      Themes.customColor(FontWeight.normal, 16, Colors.black),
+                      Themes.customColor(FontWeight.normal, 12, Colors.black),
                 ),
               ],
             ),
@@ -74,26 +74,43 @@ class CSUResultItem extends ConsumerWidget {
               children: [
                 Text(
                   'DEFECT : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(FontWeight.bold, 12, Colors.black),
                 ),
                 Text(
                   '${CSU.isDefect == 1 ? 'Defect' : 'No Defect'}',
                   style:
-                      Themes.customColor(FontWeight.normal, 16, Colors.black),
+                      Themes.customColor(FontWeight.normal, 12, Colors.black),
                 ),
               ],
             ),
+
+            if (CSU.isDefect == 1) ...[
+              Row(
+                children: [
+                  Text(
+                    'JUMLAH DEFECT : ',
+                    style:
+                        Themes.customColor(FontWeight.bold, 12, Colors.black),
+                  ),
+                  Text(
+                    '${CSU.defectAmount}',
+                    style:
+                        Themes.customColor(FontWeight.normal, 12, Colors.black),
+                  ),
+                ],
+              ),
+            ],
 
             Row(
               children: [
                 Text(
                   'UPDATED AT : ',
-                  style: Themes.customColor(FontWeight.bold, 16, Colors.black),
+                  style: Themes.customColor(FontWeight.bold, 12, Colors.black),
                 ),
                 Text(
                   '${CSU.updatedAt} BY ${CSU.updatedBy}',
                   style:
-                      Themes.customColor(FontWeight.normal, 16, Colors.black),
+                      Themes.customColor(FontWeight.normal, 12, Colors.black),
                 ),
               ],
             ),

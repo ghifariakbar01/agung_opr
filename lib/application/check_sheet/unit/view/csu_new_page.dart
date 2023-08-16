@@ -31,10 +31,8 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final index =
-          ref.read(updateFrameNotifierProvider.select((value) => value.index));
-      final frame = ref.read(
-          frameNotifierProvider.select((value) => value.frameList[index]));
+      final frame =
+          ref.read(csuFrameNotifierProvider.select((value) => value.frame));
 
       // debugger(message: 'called');
 
@@ -170,31 +168,20 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.map(
-                            storage: (_) =>
-                                'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
-                            empty: (_) => 'Data kosong',
-                            format: (error) => 'Error format. $error',
-                          ),
-                        ), (_) async {
-                  // debugger(message: 'called');
-                  await ref
-                      .read(updateCSUFrameOfflineNotifierProvider.notifier)
-                      .CUUpdateCSUFrameOFFLINEStatus();
-
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (_) => VSimpleDialog(
-                      label: 'Sukses',
-                      labelDescription:
-                          'Sukses menyimpan CSU. Akan diupload di batch berikutnya.',
-                      asset: Assets.iconChecked,
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.map(
+                        storage: (_) =>
+                            'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
+                        empty: (_) => 'Data kosong',
+                        format: (error) => 'Error format. $error',
+                      ),
                     ),
-                  );
-                })));
+                (_) =>
+                    // debugger(message: 'called');
+                    ref
+                        .read(updateCSUFrameOfflineNotifierProvider.notifier)
+                        .CUUpdateCSUFrameOFFLINEStatus())));
 
     // await ref
     //     .read(updateFrameOfflineNotifierProvider

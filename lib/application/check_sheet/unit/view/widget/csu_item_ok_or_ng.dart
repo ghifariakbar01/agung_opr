@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -5,8 +7,13 @@ import '../../../../../style/style.dart';
 import '../../shared/csu_providers.dart';
 
 class CSUItemOKOrNG extends ConsumerWidget {
-  const CSUItemOKOrNG(this.instruction, this.index);
+  const CSUItemOKOrNG(
+    this.id,
+    this.index,
+    this.instruction,
+  );
 
+  final int id;
   final int index;
   final String instruction;
 
@@ -58,9 +65,17 @@ class CSUItemOKOrNG extends ConsumerWidget {
 
                 // NG Box
                 InkWell(
-                  onTap: () => ref
-                      .read(updateCSUFrameNotifierProvider.notifier)
-                      .changeIsNG(isNG: true, index: index),
+                  onTap: () {
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeNGId(id: id, index: index);
+
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeIsNG(isNG: true, index: index);
+
+                    log('NG ID : ${id} INDEX: ${index}');
+                  },
                   child: Ink(
                     width: 40,
                     decoration: BoxDecoration(

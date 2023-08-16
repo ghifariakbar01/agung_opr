@@ -23,6 +23,8 @@ class CSUIDQuery with _$CSUIDQuery {
   factory CSUIDQuery.fromJson(Map<String, Object?> json) =>
       _$CSUIDQueryFromJson(json);
 
+  factory CSUIDQuery.initial() => CSUIDQuery(idUnit: 0, query: '');
+
   static List<Map<String, dynamic>> listToJsonCSUIDQuery(List<CSUResult> list) {
     return list.map((item) => item.toJson()).toList();
   }

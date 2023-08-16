@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CSUResultState {
   bool get isProcessing => throw _privateConstructorUsedError;
-  String get frameName => throw _privateConstructorUsedError;
   Frame get frame => throw _privateConstructorUsedError; //
   List<CSUResult> get csuResultList => throw _privateConstructorUsedError;
   List<CSUTrips> get csuTripsResultList =>
@@ -40,7 +39,6 @@ abstract class $CSUResultStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isProcessing,
-      String frameName,
       Frame frame,
       List<CSUResult> csuResultList,
       List<CSUTrips> csuTripsResultList,
@@ -64,7 +62,6 @@ class _$CSUResultStateCopyWithImpl<$Res, $Val extends CSUResultState>
   @override
   $Res call({
     Object? isProcessing = null,
-    Object? frameName = null,
     Object? frame = null,
     Object? csuResultList = null,
     Object? csuTripsResultList = null,
@@ -76,10 +73,6 @@ class _$CSUResultStateCopyWithImpl<$Res, $Val extends CSUResultState>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
-      frameName: null == frameName
-          ? _value.frameName
-          : frameName // ignore: cast_nullable_to_non_nullable
-              as String,
       frame: null == frame
           ? _value.frame
           : frame // ignore: cast_nullable_to_non_nullable
@@ -122,7 +115,6 @@ abstract class _$$_CSUResultStateCopyWith<$Res>
   @useResult
   $Res call(
       {bool isProcessing,
-      String frameName,
       Frame frame,
       List<CSUResult> csuResultList,
       List<CSUTrips> csuTripsResultList,
@@ -145,7 +137,6 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isProcessing = null,
-    Object? frameName = null,
     Object? frame = null,
     Object? csuResultList = null,
     Object? csuTripsResultList = null,
@@ -157,10 +148,6 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
-      frameName: null == frameName
-          ? _value.frameName
-          : frameName // ignore: cast_nullable_to_non_nullable
-              as String,
       frame: null == frame
           ? _value.frame
           : frame // ignore: cast_nullable_to_non_nullable
@@ -190,7 +177,6 @@ class __$$_CSUResultStateCopyWithImpl<$Res>
 class _$_CSUResultState implements _CSUResultState {
   const _$_CSUResultState(
       {required this.isProcessing,
-      required this.frameName,
       required this.frame,
       required final List<CSUResult> csuResultList,
       required final List<CSUTrips> csuTripsResultList,
@@ -201,8 +187,6 @@ class _$_CSUResultState implements _CSUResultState {
 
   @override
   final bool isProcessing;
-  @override
-  final String frameName;
   @override
   final Frame frame;
 //
@@ -232,7 +216,7 @@ class _$_CSUResultState implements _CSUResultState {
 
   @override
   String toString() {
-    return 'CSUResultState(isProcessing: $isProcessing, frameName: $frameName, frame: $frame, csuResultList: $csuResultList, csuTripsResultList: $csuTripsResultList, FOSOCSUResult: $FOSOCSUResult, FOSOCSUTripsResult: $FOSOCSUTripsResult)';
+    return 'CSUResultState(isProcessing: $isProcessing, frame: $frame, csuResultList: $csuResultList, csuTripsResultList: $csuTripsResultList, FOSOCSUResult: $FOSOCSUResult, FOSOCSUTripsResult: $FOSOCSUTripsResult)';
   }
 
   @override
@@ -242,8 +226,6 @@ class _$_CSUResultState implements _CSUResultState {
             other is _$_CSUResultState &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
-            (identical(other.frameName, frameName) ||
-                other.frameName == frameName) &&
             (identical(other.frame, frame) || other.frame == frame) &&
             const DeepCollectionEquality()
                 .equals(other._csuResultList, _csuResultList) &&
@@ -259,7 +241,6 @@ class _$_CSUResultState implements _CSUResultState {
   int get hashCode => Object.hash(
       runtimeType,
       isProcessing,
-      frameName,
       frame,
       const DeepCollectionEquality().hash(_csuResultList),
       const DeepCollectionEquality().hash(_csuTripsResultList),
@@ -276,7 +257,6 @@ class _$_CSUResultState implements _CSUResultState {
 abstract class _CSUResultState implements CSUResultState {
   const factory _CSUResultState(
       {required final bool isProcessing,
-      required final String frameName,
       required final Frame frame,
       required final List<CSUResult> csuResultList,
       required final List<CSUTrips> csuTripsResultList,
@@ -287,8 +267,6 @@ abstract class _CSUResultState implements CSUResultState {
 
   @override
   bool get isProcessing;
-  @override
-  String get frameName;
   @override
   Frame get frame;
   @override //

@@ -20,6 +20,7 @@ import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../check_sheet/unit/view/csu_new_page.dart';
 import '../check_sheet/unit/view/csu_result_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
+import '../update_frame/frame.dart';
 import 'route_names.dart';
 
 class RouterNotifier extends ChangeNotifier {
@@ -86,7 +87,10 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
                 name: RouteNames.CSUListNameRoute,
                 path: RouteNames.CSUListName,
-                builder: (context, state) => CSUResultPage()),
+                builder: (context, state) {
+                  Frame item = state.extra as Frame;
+                  return CSUResultPage(frame: item);
+                }),
             GoRoute(
                 name: RouteNames.CSUNewNameRoute,
                 path: RouteNames.CSUNewName,

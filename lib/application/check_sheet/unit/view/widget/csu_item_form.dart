@@ -10,10 +10,13 @@ import 'csu_item_ok_or_ng.dart';
 
 class CheckSheetUnitItemForm extends ConsumerWidget {
   const CheckSheetUnitItemForm({
+    required this.id,
     required this.index,
     required this.instruction,
   });
 
+  // add id, in case id != index
+  final int id;
   final int index;
   final String instruction;
 
@@ -34,7 +37,11 @@ class CheckSheetUnitItemForm extends ConsumerWidget {
     return Column(
       children: [
         // First Height Part
-        CSUItemOKOrNG(instruction, index),
+        CSUItemOKOrNG(
+          id,
+          index,
+          instruction,
+        ),
 
         SizedBox(
           height: 4,

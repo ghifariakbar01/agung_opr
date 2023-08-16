@@ -128,9 +128,13 @@ class UpdateFrameRepository {
 
               final parsedMap = convertToNestedMap(parsedResponse);
 
-              parsedMap.values.forEach((mapTIUnitQuery) {
-                mapTIUnitQuery.removeWhere((key, value) => value == query);
-              });
+              parsedMap.removeWhere((key, value) =>
+                  value.values.firstWhere((element) => element == query) ==
+                  query);
+
+              log('parsedMap $parsedMap');
+
+              debugger(message: 'called');
 
               await _storage.save(jsonEncode(parsedMap));
 
@@ -294,7 +298,9 @@ class UpdateFrameRepository {
     try {
       final storedCredentials = await _storage.read();
 
-      if (storedCredentials == null || storedCredentials == '{}') {
+      if (storedCredentials == null ||
+          storedCredentials == '{}' ||
+          storedCredentials == '[]') {
         return left(LocalFailure.empty());
       }
 

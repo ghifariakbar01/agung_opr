@@ -1,10 +1,13 @@
-//  "id": 119886,
-//  "frame": "DUMMY 324",
-//  "gate": "TAM CCY CIBITUNG",
-//  "inOut": false,
-//  "isDefect": 0,
-//  "updatedAt": "2019-10-09 09:39:34",
-//  "updatedBy": "chaidir"
+// {
+//    "id": 206514,
+//    "defectAmount": 2,
+//    "gate": "ACT MERAK",
+//    "frame": "MHKAB1BC7PJ010871",
+//    "inOut": false,
+//    "isDefect": 0,
+//    "updatedAt": "2023-08-16 11:04:43",
+//    "updatedBy": "Ghifar"
+// }
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,8 +19,9 @@ part 'csu_result.g.dart';
 class CSUResult with _$CSUResult {
   const factory CSUResult({
     required int id,
-    required String? frame,
+    required int? defectAmount,
     required String? gate,
+    required String? frame,
     required bool? inOut,
     required int? isDefect,
     required String? updatedAt,

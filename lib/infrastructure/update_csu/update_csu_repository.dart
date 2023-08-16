@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:agung_opr/application/update_csu/state/update_csu_ng_state.dart';
 import 'package:agung_opr/application/user/user_model.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
@@ -54,10 +55,6 @@ class UpdateCSUFrameRepository {
           log('INDEX $i');
 
           // RUN QUERY
-          final isNG = query.contains('cs_trs_cs_dtl');
-
-          log('isNG $isNG');
-
           await Future.delayed(Duration(seconds: 2));
 
           // GET ID_CS
@@ -91,60 +88,6 @@ class UpdateCSUFrameRepository {
   }
 
   Future<Either<LocalFailure, Unit>> saveCSUQueryNG(
-      {required List<CSUIDQuery> queryIds}) async {
-    try {
-      final savedStrings = await _storage.read();
-      final isQueryOK = queryIds.isNotEmpty;
-      final isStorageSaved = savedStrings != null;
-
-      if (isQueryOK) {
-        switch (isStorageSaved) {
-          case true:
-            () async {
-              // debugger(message: 'CALLED');
-              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
-
-              final response =
-                  CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
-
-              for (final queryId in queryIds) {
-                final list = [...response, queryId];
-
-                await _storage
-                    .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
-
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-              }
-            }();
-            break;
-          case false:
-            () async {
-              final list = [...queryIds];
-
-              log('STORAGE SAVE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-
-              await _storage.save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
-            }();
-        }
-      } else {
-        throw LocalFailure.empty();
-      }
-
-      return right(unit);
-    } on RangeError catch (e) {
-      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
-    } on FormatException catch (e) {
-      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
-    } on JsonUnsupportedObjectError {
-      return left(LocalFailure.format('JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(LocalFailure.storage());
-    }
-  }
-
-  Future<Either<LocalFailure, Unit>> saveCSUQueryOK(
       {required CSUIDQuery queryId}) async {
     try {
       final savedStrings = await _storage.read();
@@ -174,6 +117,7 @@ class UpdateCSUFrameRepository {
 
                 log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
               } else {
+                // if not NG, replace list
                 final list = [...response];
 
                 list[index] = queryId;
@@ -184,6 +128,87 @@ class UpdateCSUFrameRepository {
                 // debugger(message: 'called');
 
                 log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+              }
+            }();
+            break;
+          case false:
+            () async {
+              final list = [queryId];
+
+              log('STORAGE SAVE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+
+              await _storage.save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+            }();
+        }
+      } else {
+        throw LocalFailure.empty();
+      }
+
+      return right(unit);
+    } on RangeError catch (e) {
+      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
+    } on FormatException catch (e) {
+      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
+    } on JsonUnsupportedObjectError {
+      return left(LocalFailure.format('JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
+    }
+  }
+
+  Future<Either<LocalFailure, Unit>> saveCSUQueryOK(
+      {required CSUIDQuery queryId, bool isNG = false}) async {
+    try {
+      final savedStrings = await _storage.read();
+      final isQueryOK = queryId.query.isNotEmpty;
+      final isStorageSaved = savedStrings != null;
+
+      if (isQueryOK) {
+        switch (isStorageSaved) {
+          case true:
+            () async {
+              // debugger(message: 'CALLED');
+              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+
+              final response =
+                  CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
+
+              final index = response
+                  .indexWhere((element) => element.idUnit == queryId.idUnit);
+
+              if (index == -1) {
+                final list = [...response, queryId];
+
+                await _storage
+                    .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+
+                // debugger(message: 'called');
+
+                log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+              } else {
+                if (!isNG) {
+                  // if not NG, replace list
+                  final list = [...response];
+
+                  list[index] = queryId;
+
+                  await _storage
+                      .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+
+                  // debugger(message: 'called');
+
+                  log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+                } else {
+                  // if NG, coancenate
+                  final list = [...response, queryId];
+
+                  await _storage
+                      .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+
+                  // debugger(message: 'called');
+
+                  log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+                }
               }
             }();
             break;
@@ -242,16 +267,15 @@ class UpdateCSUFrameRepository {
     final supir2Str = supir2.getOrLeave('');
 
     final supirSDRStr = supirSDR.getOrLeave('');
-    final supirSDRInt = int.parse(supirSDRStr);
 
     final tglKirimStr = tglKirim.getOrLeave('');
     final tglTerimaStr = tglTerima.getOrLeave('');
 
     final csuQuery =
-        " ${gateInt},  '${deckStr}',  '${supir1Str}', '${supir2Str}', ${noDefect}, ${supirSDRInt}, '${tglKirimStr}', '${tglTerimaStr}' ";
+        " ${gateInt},  '${deckStr}',  '${supir1Str}', '${supir2Str}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}' ";
 
     final requiredQuery =
-        " 'SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName', '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
+        " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName), '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
 
     final csuIdQuery = CSUIDQuery(
         idUnit: idUnit,
@@ -266,32 +290,56 @@ class UpdateCSUFrameRepository {
 
   CSUIDQuery getNGSavableQuery({
     required int idUnit,
-    required int idCheckSheet,
-    required int idJenisDefect,
-    required int idPenyebabDefect,
     required String frameName,
+    required List<UpdateCSUNGState> ngStates,
     String idCS = 'ID_CS_NA',
   }) {
     const String dbName = 'cs_trs_cs_dtl_test';
+    const String dbNameCS = 'cs_trs_cs_test';
 
     final String insert =
         'INSERT INTO $dbName (id_cs, frame, c_date, u_date, c_user,  u_user, id_item, id_jns_defect, id_p_defect)';
 
     final nameUser = _userModelWithPassword.nama;
 
-    final csuQuery =
-        " ${idCheckSheet},  ${idJenisDefect},  ${idPenyebabDefect}";
-
     final requiredQuery =
-        " 'SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName', '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
+        " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbNameCS), '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
 
-    final csuIdQuery = CSUIDQuery(
-        idUnit: idUnit,
-        query: insert + ' VALUES ' + '(${requiredQuery} ${csuQuery})');
+    List<int> idCheckSheet = [];
+    List<int> idJenisDefect = [];
+    List<int> idPenyebabDefect = [];
+
+    if (ngStates.isNotEmpty) {
+      for (final NG in ngStates) {
+        idCheckSheet.add(NG.idCs);
+        idJenisDefect.add(NG.idJenis);
+        idPenyebabDefect.add(NG.idPenyebab);
+      }
+    }
+
+    // CONVERT TO MAP, TO ADD ALL STRING
+    Map<int, String> queryMap = {};
+
+    for (int i = 0; i < idCheckSheet.length; i++) {
+      final csuQueryIndex =
+          " ${idCheckSheet[i]},  ${idJenisDefect[i]},  ${idPenyebabDefect[i]}";
+
+      final queryIndex =
+          insert + ' VALUES ' + ' (${requiredQuery} ${csuQueryIndex}) ';
+
+      queryMap.addAll({idCheckSheet[i]: queryIndex});
+    }
+
+    // GET QUERY STRING
+    final String queryString =
+        queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
+
+    final CSUIDQuery csuIdQuery =
+        CSUIDQuery(idUnit: idUnit, query: queryString);
 
     log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
 
-    // debugger(message: 'called');
+    debugger(message: 'called');
 
     return csuIdQuery;
   }

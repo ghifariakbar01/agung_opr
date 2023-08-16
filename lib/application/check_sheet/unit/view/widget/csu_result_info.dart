@@ -49,11 +49,13 @@ class CSUResultInfo extends ConsumerWidget {
           ),
 
           // Trips
-          for (int index = 0; index < csuResultTripList.length; index++) ...[
-            CSUTripsItem(
-              index: index,
-            )
-          ],
+          if (csuResultTripList.isNotEmpty) ...[
+            for (int index = 0; index < csuResultTripList.length; index++) ...[
+              CSUTripsItem(
+                index: index,
+              )
+            ],
+          ]
         ],
       ),
     );

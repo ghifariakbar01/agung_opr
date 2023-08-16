@@ -31,6 +31,8 @@ mixin _$UpdateCSUFrameStateSingle {
       throw _privateConstructorUsedError;
   TextEditingController get supir2TextController =>
       throw _privateConstructorUsedError;
+  TextEditingController get supirSDRTextController =>
+      throw _privateConstructorUsedError;
   TextEditingController get tglTerimaTextController =>
       throw _privateConstructorUsedError;
   TextEditingController get tglKirimTextController =>
@@ -62,6 +64,7 @@ abstract class $UpdateCSUFrameStateSingleCopyWith<$Res> {
       TextEditingController deckTextController,
       TextEditingController supir1TextController,
       TextEditingController supir2TextController,
+      TextEditingController supirSDRTextController,
       TextEditingController tglTerimaTextController,
       TextEditingController tglKirimTextController,
       bool isShowError,
@@ -94,6 +97,7 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
     Object? deckTextController = null,
     Object? supir1TextController = null,
     Object? supir2TextController = null,
+    Object? supirSDRTextController = null,
     Object? tglTerimaTextController = null,
     Object? tglKirimTextController = null,
     Object? isShowError = null,
@@ -145,6 +149,10 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
           ? _value.supir2TextController
           : supir2TextController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      supirSDRTextController: null == supirSDRTextController
+          ? _value.supirSDRTextController
+          : supirSDRTextController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       tglTerimaTextController: null == tglTerimaTextController
           ? _value.tglTerimaTextController
           : tglTerimaTextController // ignore: cast_nullable_to_non_nullable
@@ -190,6 +198,7 @@ abstract class _$$_UpdateCSUFrameStateSingleCopyWith<$Res>
       TextEditingController deckTextController,
       TextEditingController supir1TextController,
       TextEditingController supir2TextController,
+      TextEditingController supirSDRTextController,
       TextEditingController tglTerimaTextController,
       TextEditingController tglKirimTextController,
       bool isShowError,
@@ -221,6 +230,7 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
     Object? deckTextController = null,
     Object? supir1TextController = null,
     Object? supir2TextController = null,
+    Object? supirSDRTextController = null,
     Object? tglTerimaTextController = null,
     Object? tglKirimTextController = null,
     Object? isShowError = null,
@@ -272,6 +282,10 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
           ? _value.supir2TextController
           : supir2TextController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      supirSDRTextController: null == supirSDRTextController
+          ? _value.supirSDRTextController
+          : supirSDRTextController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       tglTerimaTextController: null == tglTerimaTextController
           ? _value.tglTerimaTextController
           : tglTerimaTextController // ignore: cast_nullable_to_non_nullable
@@ -311,6 +325,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
       required this.deckTextController,
       required this.supir1TextController,
       required this.supir2TextController,
+      required this.supirSDRTextController,
       required this.tglTerimaTextController,
       required this.tglKirimTextController,
       required this.isShowError,
@@ -342,6 +357,8 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
   @override
   final TextEditingController supir2TextController;
   @override
+  final TextEditingController supirSDRTextController;
+  @override
   final TextEditingController tglTerimaTextController;
   @override
   final TextEditingController tglKirimTextController;
@@ -365,7 +382,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
 
   @override
   String toString() {
-    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, isShowError: $isShowError, isNG: $isNG, ngStates: $ngStates)';
+    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, supirSDRTextController: $supirSDRTextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, isShowError: $isShowError, isNG: $isNG, ngStates: $ngStates)';
   }
 
   @override
@@ -391,6 +408,8 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
                 other.supir1TextController == supir1TextController) &&
             (identical(other.supir2TextController, supir2TextController) ||
                 other.supir2TextController == supir2TextController) &&
+            (identical(other.supirSDRTextController, supirSDRTextController) ||
+                other.supirSDRTextController == supirSDRTextController) &&
             (identical(
                     other.tglTerimaTextController, tglTerimaTextController) ||
                 other.tglTerimaTextController == tglTerimaTextController) &&
@@ -416,6 +435,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
       deckTextController,
       supir1TextController,
       supir2TextController,
+      supirSDRTextController,
       tglTerimaTextController,
       tglKirimTextController,
       isShowError,
@@ -443,6 +463,7 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
           required final TextEditingController deckTextController,
           required final TextEditingController supir1TextController,
           required final TextEditingController supir2TextController,
+          required final TextEditingController supirSDRTextController,
           required final TextEditingController tglTerimaTextController,
           required final TextEditingController tglKirimTextController,
           required final bool isShowError,
@@ -472,6 +493,8 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
   TextEditingController get supir1TextController;
   @override
   TextEditingController get supir2TextController;
+  @override
+  TextEditingController get supirSDRTextController;
   @override
   TextEditingController get tglTerimaTextController;
   @override
