@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
@@ -7,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../shared/providers.dart';
 import 'form/form_update_engine.dart';
 import 'form/form_update_frame.dart';
 import 'form/form_update_model.dart';
@@ -21,13 +22,17 @@ class UpdateFrameItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final modeApp = ref.watch(modeNotifierProvider);
+    // log('INDEX UPDATE FRAME $index');
 
-    final showErrorMessage = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].isShowError));
+    final showErrorMessage = ref.watch(updateFrameNotifierProvider.select(
+        (value) => value.updateFrameList.length < index
+            ? false
+            : value.updateFrameList[index].isShowError));
 
-    final frame = ref
-        .watch(frameNotifierProvider.select((value) => value.frameList[index]));
+    final frame = ref.watch(frameNotifierProvider.select((value) =>
+        value.frameList.length < index || value.frameList.isEmpty
+            ? []
+            : value.frameList[index]));
 
     return Form(
       autovalidateMode: showErrorMessage
@@ -112,29 +117,38 @@ class UpdateFrameItem extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(
+                  // CSU
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
                       height: 65,
-                      width: 230,
-                      child: modeApp.maybeWhen(
-                        updateFrameDummy: () => VButton(
-                            label: 'SIMPAN',
-                            onPressed: () async {
-                              await ref
-                                  .read(updateFrameNotifierProvider.notifier)
-                                  .updateFrame(index: index);
+                      child: VButton(
+                          label: 'CSU',
+                          onPressed: () => context.pushNamed(
+                              RouteNames.CSUListNameRoute,
+                              extra: frame)),
+                    ),
+                  ),
 
-                              await ref
-                                  .read(updateFrameOfflineNotifierProvider
-                                      .notifier)
-                                  .CUUpdateFrameOFFLINEStatus();
-                            }),
-                        checkSheetUnit: () => VButton(
-                            label: 'CSU',
-                            onPressed: () => context.pushNamed(
-                                RouteNames.CSUListNameRoute,
-                                extra: frame)),
-                        orElse: () => null,
-                      ))
+                  // Update Frame
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 65,
+                      child: VButton(
+                          label: 'SIMPAN',
+                          onPressed: () async {
+                            await ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .updateFrame(index: index);
+
+                            await ref
+                                .read(
+                                    updateFrameOfflineNotifierProvider.notifier)
+                                .CUUpdateFrameOFFLINEStatus();
+                          }),
+                    ),
+                  ),
                 ],
               )
             ],

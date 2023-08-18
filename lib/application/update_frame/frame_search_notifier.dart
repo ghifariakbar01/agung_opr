@@ -1,8 +1,8 @@
-import 'package:agung_opr/application/model/model_search_state.dart';
+import 'package:agung_opr/application/update_frame/frame_search_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ModelSearchNotifier extends StateNotifier<ModelSearchState> {
-  ModelSearchNotifier() : super(ModelSearchState.initial());
+class FrameSearchNotifier extends StateNotifier<FrameSearchState> {
+  FrameSearchNotifier() : super(FrameSearchState.initial());
 
   void changeIsSearch(bool isSearching) {
     state = state.copyWith(isSearching: isSearching);
@@ -10,11 +10,5 @@ class ModelSearchNotifier extends StateNotifier<ModelSearchState> {
 
   void changeSearchText(String searchText) {
     state = state.copyWith(searchText: searchText);
-  }
-
-  String extractNumbers(String input) {
-    // Regular expression to extract the numbers before and after the hyphen
-    RegExp regex = RegExp(r'\d+(?=-)|(?<=-)\d+');
-    return regex.allMatches(input).map((match) => match.group(0)).join();
   }
 }

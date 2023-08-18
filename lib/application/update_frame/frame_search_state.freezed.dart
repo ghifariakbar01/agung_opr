@@ -15,28 +15,28 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$ModelSearchState {
+mixin _$FrameSearchState {
   bool get isSearching => throw _privateConstructorUsedError;
   String get searchText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ModelSearchStateCopyWith<ModelSearchState> get copyWith =>
+  $FrameSearchStateCopyWith<FrameSearchState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ModelSearchStateCopyWith<$Res> {
-  factory $ModelSearchStateCopyWith(
-          ModelSearchState value, $Res Function(ModelSearchState) then) =
-      _$ModelSearchStateCopyWithImpl<$Res, ModelSearchState>;
+abstract class $FrameSearchStateCopyWith<$Res> {
+  factory $FrameSearchStateCopyWith(
+          FrameSearchState value, $Res Function(FrameSearchState) then) =
+      _$FrameSearchStateCopyWithImpl<$Res, FrameSearchState>;
   @useResult
   $Res call({bool isSearching, String searchText});
 }
 
 /// @nodoc
-class _$ModelSearchStateCopyWithImpl<$Res, $Val extends ModelSearchState>
-    implements $ModelSearchStateCopyWith<$Res> {
-  _$ModelSearchStateCopyWithImpl(this._value, this._then);
+class _$FrameSearchStateCopyWithImpl<$Res, $Val extends FrameSearchState>
+    implements $FrameSearchStateCopyWith<$Res> {
+  _$FrameSearchStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -64,7 +64,7 @@ class _$ModelSearchStateCopyWithImpl<$Res, $Val extends ModelSearchState>
 
 /// @nodoc
 abstract class _$$_SPKSearchStateCopyWith<$Res>
-    implements $ModelSearchStateCopyWith<$Res> {
+    implements $FrameSearchStateCopyWith<$Res> {
   factory _$$_SPKSearchStateCopyWith(
           _$_SPKSearchState value, $Res Function(_$_SPKSearchState) then) =
       __$$_SPKSearchStateCopyWithImpl<$Res>;
@@ -75,7 +75,7 @@ abstract class _$$_SPKSearchStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_SPKSearchStateCopyWithImpl<$Res>
-    extends _$ModelSearchStateCopyWithImpl<$Res, _$_SPKSearchState>
+    extends _$FrameSearchStateCopyWithImpl<$Res, _$_SPKSearchState>
     implements _$$_SPKSearchStateCopyWith<$Res> {
   __$$_SPKSearchStateCopyWithImpl(
       _$_SPKSearchState _value, $Res Function(_$_SPKSearchState) _then)
@@ -113,7 +113,7 @@ class _$_SPKSearchState implements _SPKSearchState {
 
   @override
   String toString() {
-    return 'ModelSearchState(isSearching: $isSearching, searchText: $searchText)';
+    return 'FrameSearchState(isSearching: $isSearching, searchText: $searchText)';
   }
 
   @override
@@ -137,7 +137,7 @@ class _$_SPKSearchState implements _SPKSearchState {
       __$$_SPKSearchStateCopyWithImpl<_$_SPKSearchState>(this, _$identity);
 }
 
-abstract class _SPKSearchState implements ModelSearchState {
+abstract class _SPKSearchState implements FrameSearchState {
   const factory _SPKSearchState(
       {required final bool isSearching,
       required final String searchText}) = _$_SPKSearchState;

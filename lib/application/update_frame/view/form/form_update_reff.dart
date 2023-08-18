@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,8 +15,10 @@ class FormUpdateReffEXP extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final noReff = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].noReff));
+    final noReff = ref.watch(updateFrameNotifierProvider.select((value) =>
+        value.updateFrameList.length < index
+            ? NoReffEXP('')
+            : value.updateFrameList[index].noReff));
 
     final noReffStr = noReff.getOrLeave('');
 
@@ -31,7 +34,7 @@ class FormUpdateReffEXP extends ConsumerWidget {
             width: 50,
             child: Center(
               child: Text(
-                'No. Reff Exp',
+                'Tujuan Akhir',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
                 textAlign: TextAlign.center,
@@ -48,8 +51,7 @@ class FormUpdateReffEXP extends ConsumerWidget {
             height: 65,
             width: MediaQuery.of(context).size.width,
             child: IgnorePointer(
-              ignoring: modeApp.maybeWhen(
-                  checkSheetUnit: () => true, orElse: () => false),
+              ignoring: true,
               child: TextFormField(
                 initialValue: noReffStr,
                 decoration: Themes.formStyle(noReffStr != ''

@@ -20,7 +20,7 @@ dependencies:
   google_fonts: ^3.0.1
 
   #* IO
-  mobile_scanner: ^3.3.0
+  flutter_barcode_scanner: ^2.0.0
 
   #* Network
   dio: ^4.0.6
@@ -37,7 +37,7 @@ dependencies:
   logging: ^1.1.0
 
   #* Routing
-  go_router: ^8.0.3
+  go_router: ^10.0.0
 
   #* Persistent storage
   flutter_secure_storage: ^6.0.0

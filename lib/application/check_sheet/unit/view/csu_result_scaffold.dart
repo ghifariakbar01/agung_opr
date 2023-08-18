@@ -67,13 +67,14 @@ class CSUResultScaffold extends ConsumerWidget {
                                 width: 2, color: Palette.primaryColor)),
                         child: VButton(
                             label: 'BUAT CHECKSHEET',
-                            onPressed: () {
+                            onPressed: () async {
                               ref
                                   .read(updateCSUFrameNotifierProvider.notifier)
                                   .changeFillInitial();
 
                               // PASS -1 AS EMPTY
-                              context.pushNamed(RouteNames.CSUNewNameRoute,
+                              await context.pushNamed(
+                                  RouteNames.CSUNewNameRoute,
                                   extra: -1);
                             })),
 

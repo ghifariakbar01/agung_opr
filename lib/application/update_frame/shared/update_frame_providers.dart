@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/update_frame/frame_notifier.dart';
 import 'package:agung_opr/application/update_frame/frame_offline_state.dart';
+import 'package:agung_opr/application/update_frame/frame_search_state.dart';
 import 'package:agung_opr/application/update_frame/frame_state.dart';
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/infrastructure/frame/frame_remote_service.dart';
@@ -13,6 +14,7 @@ import '../../../infrastructure/cache_storage/frame_storage.dart';
 import '../../../infrastructure/credentials_storage.dart';
 import '../../../shared/providers.dart';
 import '../frame_offline_notifier.dart';
+import '../frame_search_notifier.dart';
 import '../update_frame_notifier.dart';
 import '../update_frame_offline_notifier.dart';
 import '../update_frame_offline_state.dart';
@@ -63,3 +65,7 @@ final frameNotifierProvider = StateNotifierProvider<FrameNotifier, FrameState>(
 final frameOfflineNotifierProvider =
     StateNotifierProvider<FrameOfflineNotifier, FrameOfflineState>(
         (ref) => FrameOfflineNotifier(ref.watch(frameRepositoryProvider)));
+
+final frameSearchNotifierProvider =
+    StateNotifierProvider<FrameSearchNotifier, FrameSearchState>(
+        (ref) => FrameSearchNotifier());

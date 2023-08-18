@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/spk/view/spk_search.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
+import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'spk_item.dart';
 
@@ -95,24 +99,27 @@ class SPKScaffold extends ConsumerWidget {
                                 flex: 2,
                                 child: InkWell(
                                   onTap: () async {
-                                    String? noSPK = await context
-                                        .pushNamed(RouteNames.scanSPKNameRoute);
+                                    log('NOSPK SCAN INIT');
+                                    String? noSPK =
+                                        await FlutterBarcodeScanner.scanBarcode(
+                                            "#65B689",
+                                            "Cancel",
+                                            false,
+                                            ScanMode.DEFAULT);
 
-                                    if (noSPK != null) {
-                                      final noSPKSearch = ref
-                                          .read(spkSearchNotifierProvider
-                                              .notifier)
-                                          .extractNumbers(noSPK);
+                                    log('NOSPK SCAN $noSPK');
 
+                                    if (noSPK.isNotEmpty) {
                                       ref
                                           .read(spkSearchNotifierProvider
                                               .notifier)
-                                          .changeSearchText(noSPKSearch);
+                                          .changeSearchText(noSPK);
 
                                       await ref
                                           .read(spkNotifierProvider.notifier)
-                                          .searchSPKListOFFLINE(
-                                              search: noSPKSearch);
+                                          .searchSPKListOFFLINE(search: noSPK);
+
+                                      log('NOSPK SCAN 2 $noSPK');
                                     }
                                   },
                                   child: Ink(
@@ -135,9 +142,31 @@ class SPKScaffold extends ConsumerWidget {
                     child: TextButton(
                       onPressed: () => modeApp.when(
                         initial: () => {},
-                        updateFrameDummy: () => context.pushNamed(
-                            RouteNames.updateFrameNameRoute,
-                            extra: spkList[i].idSpk),
+                        updateFrameDummy: () async {
+                          // INIT BACK 0
+                          ref
+                              .read(frameNotifierProvider.notifier)
+                              .changeFrameList([]);
+
+                          final responseLEN = 0;
+
+                          ref
+                              .read(frameNotifierProvider.notifier)
+                              .changeFillEmptyFOSOSaveFrameList(
+                                  length: responseLEN);
+
+                          /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+                          ref
+                              .read(updateFrameNotifierProvider.notifier)
+                              .changeFillEmptyList(
+                                  length: responseLEN, frame: []);
+
+                          //
+
+                          await context.pushNamed(
+                              RouteNames.updateFrameNameRoute,
+                              extra: spkList[i].idSpk);
+                        },
                         checkSheetUnit: () => context.pushNamed(
                             RouteNames.updateFrameNameRoute,
                             extra: spkList[i].idSpk),

@@ -16,6 +16,8 @@ class UpdateFrameState with _$UpdateFrameState {
 
     /// Hack for model value to change after tapping model
     required List<TextEditingController> modelTextController,
+    required List<TextEditingController> frameTextController,
+    required List<TextEditingController> sppdcTextController,
     required List<UpdateFrameStateSingle> updateFrameList,
     required List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame,
   }) = _UpdateFrameState;
@@ -25,6 +27,8 @@ class UpdateFrameState with _$UpdateFrameState {
       index: 0,
       isProcessing: false,
       modelTextController: [],
+      frameTextController: [],
+      sppdcTextController: [],
       updateFrameList: [],
       FOSOUpdateFrame: []);
 }

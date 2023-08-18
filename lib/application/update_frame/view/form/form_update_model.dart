@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,9 +20,11 @@ class FormUpdateModel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final frame = ref.watch(updateFrameNotifierProvider);
 
-    final item = frame.updateFrameList[index];
+    final item = frame.updateFrameList.length < index
+        ? IDKendType('')
+        : frame.updateFrameList[index].idKendType;
 
-    final modelStr = item.idKendType.getOrLeave('');
+    final modelStr = item.getOrLeave('');
 
     final modeApp = ref.watch(modeNotifierProvider);
 

@@ -99,7 +99,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
               idKendType: IDKendType(frame[index].idKendType != null
                   ? frame[index].idKendType.toString()
                   : ''),
-              noReff: NoReffEXP(frame[index].noReffExp ?? ''),
+              noReff: NoReffEXP(frame[index].custnm ?? ''),
               engine: EngineUnit(frame[index].engine ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
               sppdc: SPPDC(''),
@@ -119,6 +119,17 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     state = state.copyWith(
       modelTextController: generateListModelTextController,
+    );
+
+    final generateListFrameTextController = List.generate(
+        length,
+        (index) => TextEditingController(
+            text: frame[index].frame != null
+                ? frame[index].frame.toString()
+                : ''));
+
+    state = state.copyWith(
+      frameTextController: generateListFrameTextController,
     );
 
     Either<LocalFailure, Unit>? initial;
@@ -233,7 +244,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       frame.frame,
       frame.idKendType,
       frame.idUnit,
-      frame.noReff,
+      // frame.noReff,
       // frame.sppdc,
       frame.warna,
     ];

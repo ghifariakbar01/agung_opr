@@ -1,5 +1,8 @@
+import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
@@ -12,8 +15,16 @@ class FormUpdateFrame extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].frame));
+    final frame = ref.watch(updateFrameNotifierProvider.select((value) =>
+        value.updateFrameList.length < index
+            ? FrameUnit('')
+            : value.updateFrameList[index].frame));
+
+    final frameController = ref.watch(updateFrameNotifierProvider.select(
+        (value) => value.frameTextController.length < index ||
+                value.frameTextController.isEmpty
+            ? TextEditingController()
+            : value.frameTextController[index]));
 
     final frameStr = frame.getOrLeave('');
 
@@ -48,10 +59,31 @@ class FormUpdateFrame extends ConsumerWidget {
               ignoring: modeApp.maybeWhen(
                   checkSheetUnit: () => true, orElse: () => false),
               child: TextFormField(
-                initialValue: frameStr,
-                decoration: Themes.formStyle(frameStr != ''
-                    ? frameStr + ' (ketik untuk ubah teks)'
-                    : 'Masukkan frame'),
+                controller: frameController,
+                decoration: Themes.formStyle(
+                    frameStr != ''
+                        ? frameStr + ' (ketik untuk ubah teks)'
+                        : 'Masukkan frame',
+                    icon: InkWell(
+                        onTap: () async {
+                          String? frame =
+                              await FlutterBarcodeScanner.scanBarcode(
+                                  "#65B689", "Cancel", false, ScanMode.DEFAULT);
+
+                          if (frame.isNotEmpty) {
+                            frameController.text = frame;
+
+                            ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .changeFrame(frameStr: frame, index: index);
+                          }
+                        },
+                        child: Ink(
+                          child: Icon(
+                            Icons.qr_code_2,
+                            color: Colors.black,
+                          ),
+                        ))),
                 keyboardType: TextInputType.name,
                 onChanged: (value) => ref
                     .read(updateFrameNotifierProvider.notifier)

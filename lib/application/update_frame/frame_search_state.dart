@@ -3,11 +3,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'frame_search_state.freezed.dart';
 
 @freezed
-class ModelSearchState with _$ModelSearchState {
-  const factory ModelSearchState(
+class FrameSearchState with _$FrameSearchState {
+  const factory FrameSearchState(
       {required bool isSearching,
       required String searchText}) = _SPKSearchState;
 
-  factory ModelSearchState.initial() =>
-      ModelSearchState(isSearching: false, searchText: '');
+  factory FrameSearchState.initial() =>
+      FrameSearchState(isSearching: false, searchText: '');
 }

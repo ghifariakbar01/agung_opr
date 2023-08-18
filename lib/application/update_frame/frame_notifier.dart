@@ -23,6 +23,17 @@ class FrameNotifier extends StateNotifier<FrameState> {
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
 
+  Future<void> searchFrameListOFFLINE(
+      {required String idSPK, required String frame}) async {
+    final Either<RemoteFailure, List<Frame>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOFrame: none());
+
+    FOS = await _repository.searchFrameListOFFLINE(idSPK: idSPK, search: frame);
+
+    state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
+  }
+
   Future<void> saveFrameIndexedSPK(
       {required int idSPK,
       required int index,

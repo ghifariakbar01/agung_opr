@@ -41,9 +41,18 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
       log('frameOfflineOrOnline $frameOfflineOrOnline');
 
       await frameOfflineOrOnline.maybeWhen(
-        hasOfflineStorage: () => ref
-            .read(frameNotifierProvider.notifier)
-            .getFrameListOFFLINE(idSPK: widget.idSPK),
+        hasOfflineStorage: () async {
+          // ref
+          //   .read(frameNotifierProvider.notifier)
+          //   .getFrameListOFFLINE(idSPK: widget.idSPK);
+          await ref
+              .read(frameNotifierProvider.notifier)
+              .getFrameList(idSPK: widget.idSPK);
+
+          await ref
+              .read(frameOfflineNotifierProvider.notifier)
+              .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.idSPK);
+        },
         orElse: () async {
           await ref
               .read(frameNotifierProvider.notifier)

@@ -23,6 +23,10 @@ mixin _$UpdateFrameState {
   /// Hack for model value to change after tapping model
   List<TextEditingController> get modelTextController =>
       throw _privateConstructorUsedError;
+  List<TextEditingController> get frameTextController =>
+      throw _privateConstructorUsedError;
+  List<TextEditingController> get sppdcTextController =>
+      throw _privateConstructorUsedError;
   List<UpdateFrameStateSingle> get updateFrameList =>
       throw _privateConstructorUsedError;
   List<Option<Either<LocalFailure, Unit>>> get FOSOUpdateFrame =>
@@ -44,6 +48,8 @@ abstract class $UpdateFrameStateCopyWith<$Res> {
       int index,
       bool isProcessing,
       List<TextEditingController> modelTextController,
+      List<TextEditingController> frameTextController,
+      List<TextEditingController> sppdcTextController,
       List<UpdateFrameStateSingle> updateFrameList,
       List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame});
 }
@@ -65,6 +71,8 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
     Object? index = null,
     Object? isProcessing = null,
     Object? modelTextController = null,
+    Object? frameTextController = null,
+    Object? sppdcTextController = null,
     Object? updateFrameList = null,
     Object? FOSOUpdateFrame = null,
   }) {
@@ -84,6 +92,14 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
       modelTextController: null == modelTextController
           ? _value.modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
+      frameTextController: null == frameTextController
+          ? _value.frameTextController
+          : frameTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
+      sppdcTextController: null == sppdcTextController
+          ? _value.sppdcTextController
+          : sppdcTextController // ignore: cast_nullable_to_non_nullable
               as List<TextEditingController>,
       updateFrameList: null == updateFrameList
           ? _value.updateFrameList
@@ -110,6 +126,8 @@ abstract class _$$_UpdateFrameStateCopyWith<$Res>
       int index,
       bool isProcessing,
       List<TextEditingController> modelTextController,
+      List<TextEditingController> frameTextController,
+      List<TextEditingController> sppdcTextController,
       List<UpdateFrameStateSingle> updateFrameList,
       List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame});
 }
@@ -129,6 +147,8 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
     Object? index = null,
     Object? isProcessing = null,
     Object? modelTextController = null,
+    Object? frameTextController = null,
+    Object? sppdcTextController = null,
     Object? updateFrameList = null,
     Object? FOSOUpdateFrame = null,
   }) {
@@ -148,6 +168,14 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
       modelTextController: null == modelTextController
           ? _value._modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
+      frameTextController: null == frameTextController
+          ? _value._frameTextController
+          : frameTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
+      sppdcTextController: null == sppdcTextController
+          ? _value._sppdcTextController
+          : sppdcTextController // ignore: cast_nullable_to_non_nullable
               as List<TextEditingController>,
       updateFrameList: null == updateFrameList
           ? _value._updateFrameList
@@ -169,9 +197,13 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       required this.index,
       required this.isProcessing,
       required final List<TextEditingController> modelTextController,
+      required final List<TextEditingController> frameTextController,
+      required final List<TextEditingController> sppdcTextController,
       required final List<UpdateFrameStateSingle> updateFrameList,
       required final List<Option<Either<LocalFailure, Unit>>> FOSOUpdateFrame})
       : _modelTextController = modelTextController,
+        _frameTextController = frameTextController,
+        _sppdcTextController = sppdcTextController,
         _updateFrameList = updateFrameList,
         _FOSOUpdateFrame = FOSOUpdateFrame;
 
@@ -194,6 +226,24 @@ class _$_UpdateFrameState implements _UpdateFrameState {
     return EqualUnmodifiableListView(_modelTextController);
   }
 
+  final List<TextEditingController> _frameTextController;
+  @override
+  List<TextEditingController> get frameTextController {
+    if (_frameTextController is EqualUnmodifiableListView)
+      return _frameTextController;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_frameTextController);
+  }
+
+  final List<TextEditingController> _sppdcTextController;
+  @override
+  List<TextEditingController> get sppdcTextController {
+    if (_sppdcTextController is EqualUnmodifiableListView)
+      return _sppdcTextController;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sppdcTextController);
+  }
+
   final List<UpdateFrameStateSingle> _updateFrameList;
   @override
   List<UpdateFrameStateSingle> get updateFrameList {
@@ -212,7 +262,7 @@ class _$_UpdateFrameState implements _UpdateFrameState {
 
   @override
   String toString() {
-    return 'UpdateFrameState(idSPK: $idSPK, index: $index, isProcessing: $isProcessing, modelTextController: $modelTextController, updateFrameList: $updateFrameList, FOSOUpdateFrame: $FOSOUpdateFrame)';
+    return 'UpdateFrameState(idSPK: $idSPK, index: $index, isProcessing: $isProcessing, modelTextController: $modelTextController, frameTextController: $frameTextController, sppdcTextController: $sppdcTextController, updateFrameList: $updateFrameList, FOSOUpdateFrame: $FOSOUpdateFrame)';
   }
 
   @override
@@ -227,6 +277,10 @@ class _$_UpdateFrameState implements _UpdateFrameState {
             const DeepCollectionEquality()
                 .equals(other._modelTextController, _modelTextController) &&
             const DeepCollectionEquality()
+                .equals(other._frameTextController, _frameTextController) &&
+            const DeepCollectionEquality()
+                .equals(other._sppdcTextController, _sppdcTextController) &&
+            const DeepCollectionEquality()
                 .equals(other._updateFrameList, _updateFrameList) &&
             const DeepCollectionEquality()
                 .equals(other._FOSOUpdateFrame, _FOSOUpdateFrame));
@@ -239,6 +293,8 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       index,
       isProcessing,
       const DeepCollectionEquality().hash(_modelTextController),
+      const DeepCollectionEquality().hash(_frameTextController),
+      const DeepCollectionEquality().hash(_sppdcTextController),
       const DeepCollectionEquality().hash(_updateFrameList),
       const DeepCollectionEquality().hash(_FOSOUpdateFrame));
 
@@ -255,6 +311,8 @@ abstract class _UpdateFrameState implements UpdateFrameState {
       required final int index,
       required final bool isProcessing,
       required final List<TextEditingController> modelTextController,
+      required final List<TextEditingController> frameTextController,
+      required final List<TextEditingController> sppdcTextController,
       required final List<UpdateFrameStateSingle> updateFrameList,
       required final List<Option<Either<LocalFailure, Unit>>>
           FOSOUpdateFrame}) = _$_UpdateFrameState;
@@ -269,6 +327,10 @@ abstract class _UpdateFrameState implements UpdateFrameState {
 
   /// Hack for model value to change after tapping model
   List<TextEditingController> get modelTextController;
+  @override
+  List<TextEditingController> get frameTextController;
+  @override
+  List<TextEditingController> get sppdcTextController;
   @override
   List<UpdateFrameStateSingle> get updateFrameList;
   @override

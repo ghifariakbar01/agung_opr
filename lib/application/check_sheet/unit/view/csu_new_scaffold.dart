@@ -1,6 +1,8 @@
+import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/widgets/v_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/style.dart';
@@ -78,13 +80,21 @@ class CSUNewScaffold extends ConsumerWidget {
                             await ref
                                 .read(updateCSUFrameNotifierProvider.notifier)
                                 .saveQueryOK();
+
+                            context.pushReplacementNamed(
+                                RouteNames.dataUpdateQueryName);
                           }),
                       VButton(
                           label: 'NO DEFECT',
                           isEnabled: !isDefect,
-                          onPressed: () => ref
-                              .read(updateCSUFrameNotifierProvider.notifier)
-                              .saveQueryOK()),
+                          onPressed: () async {
+                            await ref
+                                .read(updateCSUFrameNotifierProvider.notifier)
+                                .saveQueryOK();
+
+                            context.pushReplacementNamed(
+                                RouteNames.dataUpdateQueryName);
+                          }),
                     ],
                   ),
                 ))));

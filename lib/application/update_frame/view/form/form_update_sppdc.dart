@@ -1,11 +1,10 @@
-import 'package:agung_opr/application/routes/route_names.dart';
-import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
+import '../../shared/update_frame_providers.dart';
 
 class FormUpdateSPPDC extends ConsumerWidget {
   const FormUpdateSPPDC({required this.index});
@@ -14,8 +13,10 @@ class FormUpdateSPPDC extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sppdc = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].sppdc));
+    final sppdc = ref.watch(updateFrameNotifierProvider.select((value) =>
+        value.updateFrameList.length < index
+            ? SPPDC('')
+            : value.updateFrameList[index].sppdc));
 
     final sppdcStr = sppdc.getOrLeave('');
 

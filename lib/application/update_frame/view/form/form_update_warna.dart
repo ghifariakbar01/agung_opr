@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -12,8 +13,10 @@ class FormUpdateWarna extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final warna = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].warna));
+    final warna = ref.watch(updateFrameNotifierProvider.select((value) =>
+        value.updateFrameList.length < index
+            ? WarnaUnit('')
+            : value.updateFrameList[index].warna));
 
     final warnaStr = warna.getOrLeave('');
 

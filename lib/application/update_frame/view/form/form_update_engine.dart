@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -14,8 +15,10 @@ class FormUpdateEngine extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final engine = ref.watch(updateFrameNotifierProvider
-        .select((value) => value.updateFrameList[index].engine));
+    final engine = ref.watch(updateFrameNotifierProvider.select((value) =>
+        value.updateFrameList.length < index
+            ? EngineUnit('')
+            : value.updateFrameList[index].engine));
 
     final engineStr = engine.getOrLeave('');
 

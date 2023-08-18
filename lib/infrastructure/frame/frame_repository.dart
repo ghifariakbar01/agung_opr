@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
@@ -239,6 +240,56 @@ class FrameRepository {
     }
 
     return unit;
+  }
+
+  /// SEARCH BY [NO_SPK] , [NOPOL], [DRIVER]
+  Future<Either<RemoteFailure, List<Frame>>> searchFrameListOFFLINE(
+      {required String idSPK, required String search}) async {
+    try {
+      final savedStrings = await _storage.read();
+      final frameStorage = jsonDecode(savedStrings!) as Map<String, dynamic>;
+      final searchUpperCase = search.toUpperCase();
+
+      log('FRAME STORAGE: $frameStorage');
+
+      // HAS LIST
+      if (frameStorage.isNotEmpty) {
+        final Map<String, List<Frame>> parsedMap =
+            convertMaptoListMap(map: frameStorage);
+
+        // FIRST, CHECK IF EXISTING KEY EXIST
+
+        // List<SPK> spkList =
+
+        //     (response as List).map((data) => SPK.fromJson(data)).toList();
+
+        final frameEntries = parsedMap.entries.firstWhereOrNull(
+          (element) => element.key == idSPK,
+        );
+
+        if (frameEntries != null) {
+          final frameList = frameEntries.value;
+
+          final searchedList = frameList
+              .where((element) => element.frame != null
+                  ? element.frame!.toUpperCase().contains(searchUpperCase)
+                  : element != Frame.initial())
+              .toList();
+
+          return right(searchedList);
+        }
+
+        return right([]);
+      } else {
+        return right([]);
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
+    }
   }
 
   /// DATA: LIST OF [Frame] FROM STORAGE
