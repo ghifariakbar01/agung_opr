@@ -9,7 +9,7 @@ import '../../../../infrastructure/cache_storage/csu/csu_frame_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_items_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_jenis_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_trips_frame_storage.dart';
-import '../../../../infrastructure/cache_storage/csu/update_csu_storage.dart';
+import '../../../../infrastructure/cache_storage/queries/update_csu_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/csu/csu_items_repository.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
