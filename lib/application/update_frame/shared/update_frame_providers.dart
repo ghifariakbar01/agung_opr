@@ -4,12 +4,12 @@ import 'package:agung_opr/application/update_frame/frame_state.dart';
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/infrastructure/frame/frame_remote_service.dart';
 import 'package:agung_opr/infrastructure/frame/frame_repository.dart';
-import 'package:agung_opr/infrastructure/query_storage/frame_spk_storage.dart';
+import 'package:agung_opr/infrastructure/update_frame_storage/frame_spk_storage.dart';
 import 'package:agung_opr/infrastructure/update_frame/update_frame_remote_service.dart';
 import 'package:agung_opr/infrastructure/update_frame/update_frame_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../infrastructure/cache_storage/update_frame_storage.dart';
+import '../../../infrastructure/cache_storage/frame_storage.dart';
 import '../../../infrastructure/credentials_storage.dart';
 import '../../../shared/providers.dart';
 import '../frame_offline_notifier.dart';
