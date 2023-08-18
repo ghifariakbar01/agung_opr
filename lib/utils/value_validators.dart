@@ -73,3 +73,13 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
     return left(ValueFailure.shortPassword(failedValue: input));
   }
 }
+
+// ISENG
+Either<ValueFailure<String>, String> validateJam(String input) {
+  RegExp timePattern = RegExp(r'^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$');
+  if (timePattern.hasMatch(input)) {
+    return right(input);
+  } else {
+    return left(ValueFailure.invalidJam(failedValue: input));
+  }
+}

@@ -250,3 +250,71 @@ class TglKirim extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 }
+
+/// UPDATE [CS], ALL, BUT [JamLoad] ONLY VERIFY FOR [validateStringNotEmpty]
+///
+class IdKRChk extends ValueObject<String> {
+  factory IdKRChk(String input) {
+    return IdKRChk._(validateStringNotEmpty(input));
+  }
+
+  const IdKRChk._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class IdSPK extends ValueObject<String> {
+  factory IdSPK(String input) {
+    return IdSPK._(validateStringNotEmpty(input));
+  }
+
+  const IdSPK._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Nopol extends ValueObject<String> {
+  factory Nopol(String input) {
+    return Nopol._(validateStringNotEmpty(input));
+  }
+
+  const Nopol._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class JamLoad extends ValueObject<String> {
+  factory JamLoad(String input) {
+    return JamLoad._(validateJam(input));
+  }
+
+  const JamLoad._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Status extends ValueObject<String> {
+  factory Status(String input) {
+    return Status._(validateStringNotEmpty(input));
+  }
+
+  const Status._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
+class Tipe extends ValueObject<String> {
+  factory Tipe(String input) {
+    return Tipe._(validateStringNotEmpty(input));
+  }
+
+  const Tipe._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
