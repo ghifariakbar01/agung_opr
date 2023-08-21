@@ -88,7 +88,8 @@ class UpdateFrameRepository {
             // RUN QUERY
             log('QUERY: ${query.runtimeType}');
 
-            await _remoteService.updateFrameByQuery(query: query);
+            await _remoteService.updateFrameByQuery(query: query).onError(
+                (error, stackTrace) => this._removeQueryFromMap(query: query));
 
             // DELETE SAVED QUERY
             await this._removeQueryFromMap(query: query);
@@ -122,7 +123,7 @@ class UpdateFrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              debugger(message: 'CALLED');
+              // debugger(message: 'CALLED');
               final parsedResponse =
                   jsonDecode(savedStrings!) as Map<String, dynamic>;
 
@@ -134,11 +135,11 @@ class UpdateFrameRepository {
 
               log('parsedMap $parsedMap');
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               await _storage.save(jsonEncode(parsedMap));
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               log('STORAGE UPDATE FRAME DELETE: ${jsonEncode(parsedMap)}');
 
@@ -170,7 +171,7 @@ class UpdateFrameRepository {
       required FrameUnit frame,
       required EngineUnit engine,
       required WarnaUnit warna,
-      required NoReffEXP noReff,
+      required CustomerId customerId,
       required SPPDC sppdc,
       required IDKendType idKendType}) async {
     try {
@@ -185,8 +186,11 @@ class UpdateFrameRepository {
       final frameStr = frame.getOrCrash();
       final engineStr = engine.getOrCrash();
       final warnaStr = warna.getOrCrash();
-      final noReffStr = noReff.getOrCrash();
-      // final sppdcStr = sppdc.getOrCrash();
+      //
+      final customerIdStr = customerId.getOrCrash();
+      final customerIdInt = int.parse(customerIdStr);
+
+      final sppdcStr = sppdc.getOrCrash();
 
       // final frameResponse = await _remoteService.updateFrame(
       //     idUnit: idUnitInt,
@@ -197,7 +201,7 @@ class UpdateFrameRepository {
       //     noReffExp: noReffStr);
 
       final command =
-          "UPDATE $dbName SET frame = '$frameStr', engine = '$engineStr', warna = '$warnaStr', no_reff_expor = '$noReffStr', id_kend_type = '$idKendTypeInt' WHERE id_unit = $idUnitInt";
+          "UPDATE $dbName SET frame = '$frameStr', engine = '$engineStr', warna = '$warnaStr', id_cust = $customerIdInt, id_kend_type = '$idKendTypeInt', no_invoice = '$sppdcStr' WHERE id_unit = $idUnitInt";
 
       final frameSaveMap = {
         idSPK: {idUnitStr: command}

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
@@ -17,6 +20,12 @@ class FormUpdateSPPDC extends ConsumerWidget {
         value.updateFrameList.length < index
             ? SPPDC('')
             : value.updateFrameList[index].sppdc));
+
+    final sppdcController = ref.watch(updateFrameNotifierProvider.select(
+        (value) => value.sppdcTextController.length < index ||
+                value.sppdcTextController.isEmpty
+            ? TextEditingController()
+            : value.sppdcTextController[index]));
 
     final sppdcStr = sppdc.getOrLeave('');
 
@@ -52,10 +61,33 @@ class FormUpdateSPPDC extends ConsumerWidget {
               ignoring: modeApp.maybeWhen(
                   checkSheetUnit: () => true, orElse: () => false),
               child: TextFormField(
-                initialValue: sppdcStr,
-                decoration: Themes.formStyle(sppdcStr != ''
-                    ? sppdcStr + ' (ketik untuk ubah teks)'
-                    : 'Masukkan no SPPDC'),
+                controller: sppdcController,
+                decoration: Themes.formStyle(
+                    sppdcStr != ''
+                        ? sppdcStr + ' (ketik untuk ubah teks)'
+                        : 'Masukkan no SPPDC',
+                    icon: InkWell(
+                        onTap: () async {
+                          String? sppdc =
+                              await FlutterBarcodeScanner.scanBarcode(
+                                  "#65B689", "Cancel", false, ScanMode.DEFAULT);
+
+                          log('sppdc $sppdc');
+
+                          if (sppdc.isNotEmpty) {
+                            sppdcController.text = sppdc;
+
+                            ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .changeNoSPPDC(noSPPDCStr: sppdc, index: index);
+                          }
+                        },
+                        child: Ink(
+                          child: Icon(
+                            Icons.qr_code_2,
+                            color: Colors.black,
+                          ),
+                        ))),
                 keyboardType: TextInputType.name,
                 onChanged: (value) => ref
                     .read(updateFrameNotifierProvider.notifier)

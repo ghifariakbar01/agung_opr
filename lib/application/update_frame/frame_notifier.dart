@@ -46,21 +46,27 @@ class FrameNotifier extends StateNotifier<FrameState> {
 
     final idUnitStr = newFrame.idUnit.getOrCrash();
     final idUnitInt = int.parse(idUnitStr);
+    //
     final idKendTypeStr = newFrame.idKendType.getOrCrash();
     final idKendTypeInt = int.parse(idKendTypeStr);
+    //
     final frameStr = newFrame.frame.getOrCrash();
     final engineStr = newFrame.engine.getOrCrash();
     final warnaStr = newFrame.warna.getOrCrash();
-    final noReffStr = newFrame.noReff.getOrCrash();
+    //
+    final customerIdStr = newFrame.customerId.getOrCrash();
+    final customerIdInt = int.parse(customerIdStr);
+    //
+    final sppdcStr = newFrame.sppdc.getOrCrash();
 
     final frame = Frame(
       idUnit: idUnitInt,
       frame: frameStr,
       engine: engineStr,
       warna: warnaStr,
-      noReffExp: noReffStr,
       idKendType: idKendTypeInt,
-      custnm: '',
+      custid: customerIdInt,
+      sppdc: sppdcStr,
     );
 
     FOS = await _repository.saveFrameIndexedSPK(

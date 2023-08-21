@@ -18,7 +18,6 @@ class FrameRemoteService {
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
     const String dbName = 'opr_trs_ti_unit_test';
     const String dbOprTrsSpk = 'opr_trs_spk_unit_test';
-    const String dbSlsMst = 'sls_mst_cust';
 
     try {
       final data = _dioRequestNotifier;
@@ -36,7 +35,8 @@ class FrameRemoteService {
             " T.warna," +
             " T.no_reff_expor," +
             " T.id_kend_type," +
-            " (SELECT nama FROM $dbSlsMst WHERE id_cust = T.id_cust) AS custnm" +
+            " T.no_invoice," +
+            " T.id_cust AS custid" +
             " FROM" +
             " $dbName AS T" +
             " WHERE" +

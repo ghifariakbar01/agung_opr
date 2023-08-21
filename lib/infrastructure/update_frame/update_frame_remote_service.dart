@@ -60,10 +60,12 @@ class UpdateFrameRemoteService {
   Future<Frame> updateFrame({
     required int idUnit,
     required int idKendType,
+    required int custId,
     required String frame,
     required String engine,
     required String warna,
     required String noReffExp,
+    required String sppdc,
   }) async {
     const String dbName = 'opr_trs_ti_unit_test';
 
@@ -87,13 +89,14 @@ class UpdateFrameRemoteService {
       if (items['status'] == 'Success') {
         // HERE
         final response = Frame(
-            idUnit: idUnit,
-            frame: frame,
-            engine: engine,
-            warna: warna,
-            idKendType: idKendType,
-            noReffExp: noReffExp,
-            custnm: '');
+          idUnit: idUnit,
+          frame: frame,
+          engine: engine,
+          warna: warna,
+          idKendType: idKendType,
+          custid: custId,
+          sppdc: sppdc,
+        );
 
         return response;
       } else {

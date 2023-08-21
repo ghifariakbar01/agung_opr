@@ -50,7 +50,7 @@ class ModelRepository {
     try {
       final modelStorage = await _storage.read();
 
-      log('MODEL STORAGE: $modelStorage');
+      // log('MODEL STORAGE: $modelStorage');
 
       // HAS LIST
       if (modelStorage != null) {

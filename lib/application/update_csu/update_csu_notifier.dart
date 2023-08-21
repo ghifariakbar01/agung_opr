@@ -124,7 +124,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       state = state.copyWith(
           isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       final stateCSU = state.updateFrameList;
 

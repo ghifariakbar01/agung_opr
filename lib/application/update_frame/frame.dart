@@ -11,9 +11,9 @@ class Frame with _$Frame {
     required String? frame,
     required String? engine,
     required String? warna,
-    @JsonKey(name: 'no_reff_expor') required String? noReffExp,
     @JsonKey(name: 'id_kend_type') required int? idKendType,
-    required String? custnm,
+    @JsonKey(name: 'no_invoice') required String? sppdc,
+    required int? custid,
   }) = _Frame;
 
   factory Frame.initial() => Frame(
@@ -21,9 +21,9 @@ class Frame with _$Frame {
       frame: '',
       engine: '',
       warna: '',
-      noReffExp: '',
       idKendType: 0,
-      custnm: '');
+      sppdc: '',
+      custid: 0);
 
   factory Frame.fromJson(Map<String, Object?> json) => _$FrameFromJson(json);
 }

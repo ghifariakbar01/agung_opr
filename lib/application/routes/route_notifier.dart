@@ -1,8 +1,7 @@
-import 'package:agung_opr/application/assign_unit/view/assign_unit_page.dart';
 import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
+import 'package:agung_opr/application/customer/view/customer_page.dart';
 import 'package:agung_opr/application/model/view/model_page.dart';
-import 'package:agung_opr/application/spk/spk.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
 import 'package:agung_opr/application/spk/view/spk_scan.dart';
 import 'package:agung_opr/application/supir/view/supir_page.dart';
@@ -13,7 +12,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/providers.dart';
 
-import '../../splash_page.dart';
 import '../auth/auth_notifier.dart';
 import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
@@ -65,6 +63,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.modelNameRoute,
               path: RouteNames.modelName,
               builder: (context, state) => ModelPage(),
+            ),
+            GoRoute(
+              name: RouteNames.customerNameRoute,
+              path: RouteNames.customerName,
+              builder: (context, state) => CustomerPage(),
             ),
             GoRoute(
               name: RouteNames.supirName,

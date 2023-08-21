@@ -60,7 +60,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                       idSPKMapidTIUnitMapQuery:
                                           idSPKMapidTIUnitMapQuery);
 
-                              debugger(message: 'called');
+                              // debugger(message: 'called');
 
                               log('isMapEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isMapEmpty(idSPKMapidTIUnitMapQuery)}');
                               log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
@@ -84,12 +84,17 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.map(
+                            storage: (_) => 'storage penuh',
+                            format: (value) => 'error format $value',
+                            empty: (_) => 'empty'),
+                        asset: Assets.iconCrossed,
+                      ),
                     ),
                 (queryIds) => ref
                         .read(autoDataUpdateFrameNotifierProvider.notifier)
@@ -105,7 +110,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                     .notifier)
                                 .changeSavedCSUQuery(csuIdQueries: queryIds);
 
-                            debugger(message: 'called');
+                            // debugger(message: 'called');
 
                             log('isCSUQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSUQueryEmpty()}');
                             log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
@@ -125,13 +130,19 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.map(
-                            storage: (_) => 'storage penuh',
-                            noConnection: (_) => 'tidak ada koneksi',
-                            parse: (error) => 'error parse $error',
-                            server: (error) => 'error server $error',
+                    (failure) => showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => VSimpleDialog(
+                            label: 'Error',
+                            labelDescription: failure.map(
+                              storage: (_) => 'storage penuh',
+                              noConnection: (_) => 'tidak ada koneksi',
+                              parse: (error) => 'error parse $error',
+                              server: (error) =>
+                                  '${error.errorCode} ${error.message}',
+                            ),
+                            asset: Assets.iconCrossed,
                           ),
                         ), (_) async {
                   await ref

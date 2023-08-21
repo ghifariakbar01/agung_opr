@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
+import 'package:agung_opr/application/customer/shared/customer_providers.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
@@ -63,15 +64,36 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
         await ref.read(modelNotifierProvider.notifier).getModelList(page: i);
       }
 
+      final list = await ref
+          .read(modelNotifierProvider.notifier)
+          .initModelListOFFLINE(limit: 5);
+
+      ref.read(modelNotifierProvider.notifier).replaceModelList(list);
+
       await ref
           .read(modelOfflineNotifierProvider.notifier)
           .checkAndUpdateModelOFFLINEStatus();
+    }
+
+    // CUSTOMER function get and update offline status
+    Future<void> customerFunction() async {
+      // GET [500] LATEST DATA
+      for (int i = 0; i < 5; i++) {
+        await ref
+            .read(customerNotifierProvider.notifier)
+            .getCustomerList(page: i);
+      }
+
+      await ref
+          .read(customerOfflineNotifierProvider.notifier)
+          .checkAndUpdateCustomerOFFLINEStatus();
     }
 
     // GET AND SAVE ALL DATA
     Future<void> getAndSaveAllData() async {
       await spkFunction();
       await modelFunction();
+      await customerFunction();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedQueryFromRepository();

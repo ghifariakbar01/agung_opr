@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:agung_opr/application/customer/customer.dart';
+import 'package:agung_opr/application/customer/shared/customer_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,6 +21,10 @@ class CSUResultInfo extends ConsumerWidget {
     final csuResultTripList = ref.watch(
         csuFrameNotifierProvider.select((value) => value.csuTripsResultList));
 
+    final customerList = ref
+        .watch(customerNotifierProvider.select((value) => value.customerList));
+
+    log('frame.custid ${frame.custid}');
     return // Informasi Unit
         Container(
       decoration: BoxDecoration(
@@ -44,9 +52,17 @@ class CSUResultInfo extends ConsumerWidget {
             ),
           ],
           CSURowItem(
-            label: 'CUSTOMER',
-            text: frame.custnm ?? '',
-          ),
+              label: 'CUSTOMER',
+              text: frame.custid != null
+                  ? customerList
+                      .firstWhere(
+                        (element) => element.id == frame.custid,
+                        orElse: () =>
+                            Customer(id: 0, title: 'TIDAK ADA', nama: '-'),
+                      )
+                      .nama
+                      .toString()
+                  : ''),
 
           // Trips
           if (csuResultTripList.isNotEmpty) ...[

@@ -14,5 +14,8 @@ class Model with _$Model {
       required double? grossweight,
       required double? measurement}) = _Model;
 
+  factory Model.initial() => Model(
+      id: 0, merk: '', nama: '', category: '', grossweight: 0, measurement: 0);
+
   factory Model.fromJson(Map<String, Object?> json) => _$ModelFromJson(json);
 }

@@ -139,12 +139,12 @@ class WarnaUnit extends ValueObject<String> {
   final Either<ValueFailure<String>, String> value;
 }
 
-class NoReffEXP extends ValueObject<String> {
-  factory NoReffEXP(String input) {
-    return NoReffEXP._(validateStringNotEmpty(input));
+class CustomerId extends ValueObject<String> {
+  factory CustomerId(String input) {
+    return CustomerId._(validateStringNotEmpty(input));
   }
 
-  const NoReffEXP._(this.value);
+  const CustomerId._(this.value);
 
   @override
   final Either<ValueFailure<String>, String> value;

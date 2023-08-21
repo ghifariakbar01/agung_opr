@@ -5,8 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../constants/assets.dart';
 import '../../../domain/local_failure.dart';
 import '../../widgets/alert_helper.dart';
+import '../../widgets/v_dialogs.dart';
 import 'data_update_linear_progress.dart';
 import 'data_update_query_scaffold.dart';
 
@@ -42,12 +44,17 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.maybeMap(
+                            storage: (_) => 'storage penuh',
+                            format: (error) => 'Error Format: $error',
+                            orElse: () => ''),
+                        asset: Assets.iconCrossed,
+                      ),
                     ),
                 (idSPKMapidTIUnitMapQuery) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
@@ -62,12 +69,17 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.maybeMap(
+                            storage: (_) => 'storage penuh',
+                            format: (error) => 'Error Format: $error',
+                            orElse: () => ''),
+                        asset: Assets.iconCrossed,
+                      ),
                     ),
                 (csuIdQueries) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)

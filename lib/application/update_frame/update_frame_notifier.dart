@@ -39,8 +39,8 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
         idKendType: item.idKendType,
         engine: item.engine,
         frame: item.frame,
-        noReff: item.noReff,
         warna: item.warna,
+        customerId: item.customerId,
         sppdc: item.sppdc,
       );
 
@@ -99,10 +99,12 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
               idKendType: IDKendType(frame[index].idKendType != null
                   ? frame[index].idKendType.toString()
                   : ''),
-              noReff: NoReffEXP(frame[index].custnm ?? ''),
+              customerId: CustomerId(frame[index].custid != null
+                  ? frame[index].custid.toString()
+                  : ''),
               engine: EngineUnit(frame[index].engine ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
-              sppdc: SPPDC(''),
+              sppdc: SPPDC(frame[index].sppdc ?? ''),
               isShowError: false,
             ));
 
@@ -130,6 +132,28 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     state = state.copyWith(
       frameTextController: generateListFrameTextController,
+    );
+
+    final generateListCustomerTextController = List.generate(
+        length,
+        (index) => TextEditingController(
+            text: frame[index].custid != null
+                ? frame[index].custid.toString()
+                : ''));
+
+    state = state.copyWith(
+      customerTextController: generateListCustomerTextController,
+    );
+
+    final generateListSPPDCTextController = List.generate(
+        length,
+        (index) => TextEditingController(
+            text: frame[index].sppdc != null
+                ? frame[index].sppdc.toString()
+                : ''));
+
+    state = state.copyWith(
+      sppdcTextController: generateListSPPDCTextController,
     );
 
     Either<LocalFailure, Unit>? initial;
@@ -196,11 +220,11 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(updateFrameList: list);
   }
 
-  void changeNoReffEXP({required String noReffStr, required int index}) {
+  void changeCustomerId({required String customerIdStr, required int index}) {
     final list = [...state.updateFrameList]; // Create a copy of the list
 
     final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(noReff: NoReffEXP(noReffStr));
+        list.elementAt(index).copyWith(customerId: CustomerId(customerIdStr));
 
     // Update the element at the given index
     list[index] = updatedElement;
@@ -245,7 +269,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       frame.idKendType,
       frame.idUnit,
       // frame.noReff,
-      // frame.sppdc,
+      frame.sppdc,
       frame.warna,
     ];
 

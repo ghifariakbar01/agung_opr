@@ -50,7 +50,7 @@ class SupirRepository {
     try {
       final supirStorage = await _storage.read();
 
-      log('SUPIR STORAGE: $supirStorage');
+      // log('SUPIR STORAGE: $supirStorage');
 
       // HAS LIST
       if (supirStorage != null) {

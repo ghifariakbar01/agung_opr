@@ -41,6 +41,9 @@ class RouteNames {
   static const supirNameRoute = 'supir';
   static const supirName = 'supir';
 
+  static const customerNameRoute = 'customer';
+  static const customerName = 'customer';
+
   static const dataUpdateQueryNameRoute = 'dataUpdateQuery';
   static const dataUpdateQueryName = 'dataUpdateQuery';
 }

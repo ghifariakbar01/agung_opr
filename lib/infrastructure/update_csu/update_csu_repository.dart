@@ -54,29 +54,39 @@ class UpdateCSUFrameRepository {
 
           log('INDEX $i');
 
-          // RUN QUERY
-          await Future.delayed(Duration(seconds: 2));
-
           // GET ID_CS
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           log('STORAGE UPDATE CSU QUERY: $query');
 
-          await _remoteService.insertFrameCSUByQuery(query: query);
+          try {
+            await _remoteService.insertFrameCSUByQuery(query: query);
+          } on RestApiException catch (e) {
+            debugger(message: 'called');
 
-          debugger(message: 'called');
+            _removeQueryCSUFromSaved(idUnit: idUnit);
 
-          // DELETE SAVED QUERY
-          await this._removeQueryCSUFromSaved(idUnit: idUnit);
+            return left(RemoteFailure.server(e.errorCode, e.message));
+          } on NoConnectionException {
+            debugger(message: 'called');
+
+            _removeQueryCSUFromSaved(idUnit: idUnit);
+
+            return left(RemoteFailure.noConnection());
+          }
+
+          // debugger(message: 'called');
+
+          // // DELETE SAVED QUERY
         }
       }
 
+      debugger(message: 'called');
+
       return right(unit);
-    } on RestApiException catch (e) {
-      return left(RemoteFailure.server(e.errorCode));
-    } on NoConnectionException {
-      return left(RemoteFailure.noConnection());
     } on RangeError catch (e) {
+      debugger(message: 'called');
+
       return left(RemoteFailure.parse(message: e.message));
     } on FormatException catch (e) {
       return left(RemoteFailure.parse(message: e.message));
@@ -239,6 +249,7 @@ class UpdateCSUFrameRepository {
 
   CSUIDQuery getOKSavableQuery({
     required int idUnit,
+    required int inOut,
     required String frameName,
     required Gate gate,
     required Deck posisi,
@@ -248,7 +259,6 @@ class UpdateCSUFrameRepository {
     required TglKirim tglKirim,
     required TglTerima tglTerima,
     String idCS = 'ID_CS_NA',
-    int inOut = 0,
     int noDefect = 0,
   }) {
     const String dbName = 'cs_trs_cs_test';
@@ -372,7 +382,7 @@ class UpdateCSUFrameRepository {
 
                 await _storage.save(jsonEncode(list));
 
-                debugger(message: 'called');
+                // debugger(message: 'called');
 
                 log('STORAGE UPDATE CSU FRAME DELETE: ${jsonEncode(list)}');
 

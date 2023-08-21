@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/model/model.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,6 +13,28 @@ class ModelNotifier extends StateNotifier<ModelState> {
   ModelNotifier(this._repository) : super(ModelState.initial());
 
   final ModelRepository _repository;
+
+  Future<List<Model>> initModelListOFFLINE({required int limit}) async {
+    final List<Model> list = [];
+
+    state = state.copyWith(isProcessing: true);
+
+    for (int i = 0; i < limit; i++) {
+      final Either<RemoteFailure, List<Model>> FOS;
+
+      FOS = await _repository.getModelListOFFLINE(page: i);
+
+      optionOf(FOS).fold(
+          () {},
+          (FOSE) => FOSE.fold(
+              (error) => log('ERROR initModelListOFFLINE: $error'),
+              (response) => list.addAll(response)));
+    }
+
+    state = state.copyWith(isProcessing: false);
+
+    return list;
+  }
 
   Future<void> getModelList({required int page}) async {
     final Either<RemoteFailure, List<Model>> FOS;

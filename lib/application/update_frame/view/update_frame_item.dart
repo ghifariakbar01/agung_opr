@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
@@ -12,7 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'form/form_update_engine.dart';
 import 'form/form_update_frame.dart';
 import 'form/form_update_model.dart';
-import 'form/form_update_reff.dart';
+import 'form/form_update_customer_id.dart';
 import 'form/form_update_sppdc.dart';
 
 class UpdateFrameItem extends ConsumerWidget {
@@ -97,7 +95,7 @@ class UpdateFrameItem extends ConsumerWidget {
                 height: 8,
               ),
 
-              FormUpdateReffEXP(
+              FormUpdateCustomerId(
                 index: index,
               ),
 
@@ -117,19 +115,6 @@ class UpdateFrameItem extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // CSU
-                  Flexible(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 65,
-                      child: VButton(
-                          label: 'CSU',
-                          onPressed: () => context.pushNamed(
-                              RouteNames.CSUListNameRoute,
-                              extra: frame)),
-                    ),
-                  ),
-
                   // Update Frame
                   Flexible(
                     flex: 1,
@@ -147,6 +132,19 @@ class UpdateFrameItem extends ConsumerWidget {
                                     updateFrameOfflineNotifierProvider.notifier)
                                 .CUUpdateFrameOFFLINEStatus();
                           }),
+                    ),
+                  ),
+
+                  // CSU
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 65,
+                      child: VButton(
+                          label: 'CSU',
+                          onPressed: () => context.pushNamed(
+                              RouteNames.CSUListNameRoute,
+                              extra: frame)),
                     ),
                   ),
                 ],
