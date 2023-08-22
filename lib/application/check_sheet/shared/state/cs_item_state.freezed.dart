@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CSItemState _$CSItemStateFromJson(Map<String, dynamic> json) {
+  return _CSItemState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CSItemState {
   int get id => throw _privateConstructorUsedError;
@@ -21,6 +25,7 @@ mixin _$CSItemState {
   String get description => throw _privateConstructorUsedError;
   String get wewenang => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CSItemStateCopyWith<CSItemState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -123,13 +128,16 @@ class __$$_CSItemStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_CSItemState implements _CSItemState {
   const _$_CSItemState(
       {required this.id,
       required this.idList,
       required this.description,
       required this.wewenang});
+
+  factory _$_CSItemState.fromJson(Map<String, dynamic> json) =>
+      _$$_CSItemStateFromJson(json);
 
   @override
   final int id;
@@ -158,6 +166,7 @@ class _$_CSItemState implements _CSItemState {
                 other.wewenang == wewenang));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, idList, description, wewenang);
@@ -167,6 +176,13 @@ class _$_CSItemState implements _CSItemState {
   @pragma('vm:prefer-inline')
   _$$_CSItemStateCopyWith<_$_CSItemState> get copyWith =>
       __$$_CSItemStateCopyWithImpl<_$_CSItemState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CSItemStateToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CSItemState implements CSItemState {
@@ -175,6 +191,9 @@ abstract class _CSItemState implements CSItemState {
       required final int idList,
       required final String description,
       required final String wewenang}) = _$_CSItemState;
+
+  factory _CSItemState.fromJson(Map<String, dynamic> json) =
+      _$_CSItemState.fromJson;
 
   @override
   int get id;

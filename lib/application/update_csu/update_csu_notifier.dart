@@ -339,9 +339,9 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       frame.deck,
       // frame.supir1,
       // frame.supir2,
-      frame.supirSDR,
-      frame.tglTerima,
-      frame.tglKirim,
+      // frame.supirSDR,
+      // frame.tglTerima,
+      // frame.tglKirim,
     ];
 
     return Validator.validate(values);

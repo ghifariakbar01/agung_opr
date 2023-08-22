@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CSJenisState _$CSJenisStateFromJson(Map<String, dynamic> json) {
+  return _CSJenisState.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CSJenisState {
   int get id => throw _privateConstructorUsedError;
   String get nama => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CSJenisStateCopyWith<CSJenisState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -101,9 +106,12 @@ class __$$_CSJenisStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_CSJenisState implements _CSJenisState {
   const _$_CSJenisState({required this.id, required this.nama});
+
+  factory _$_CSJenisState.fromJson(Map<String, dynamic> json) =>
+      _$$_CSJenisStateFromJson(json);
 
   @override
   final int id;
@@ -124,6 +132,7 @@ class _$_CSJenisState implements _CSJenisState {
             (identical(other.nama, nama) || other.nama == nama));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, nama);
 
@@ -132,11 +141,21 @@ class _$_CSJenisState implements _CSJenisState {
   @pragma('vm:prefer-inline')
   _$$_CSJenisStateCopyWith<_$_CSJenisState> get copyWith =>
       __$$_CSJenisStateCopyWithImpl<_$_CSJenisState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CSJenisStateToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CSJenisState implements CSJenisState {
   const factory _CSJenisState(
       {required final int id, required final String nama}) = _$_CSJenisState;
+
+  factory _CSJenisState.fromJson(Map<String, dynamic> json) =
+      _$_CSJenisState.fromJson;
 
   @override
   int get id;
