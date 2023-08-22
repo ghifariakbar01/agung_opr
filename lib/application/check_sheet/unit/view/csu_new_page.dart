@@ -8,11 +8,13 @@ import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
+import '../../../routes/route_names.dart';
 import '../../../widgets/alert_helper.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
@@ -180,20 +182,22 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.map(
-                        storage: (_) =>
-                            'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
-                        empty: (_) => 'Data kosong',
-                        format: (error) => 'Error format. $error',
-                      ),
-                    ),
-                (_) =>
-                    // debugger(message: 'called');
-                    ref
-                        .read(updateCSUFrameOfflineNotifierProvider.notifier)
-                        .CUUpdateCSUFrameOFFLINEStatus())));
+                    (failure) => AlertHelper.showSnackBar(
+                          context,
+                          message: failure.map(
+                            storage: (_) =>
+                                'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
+                            empty: (_) => 'Data kosong',
+                            format: (error) => 'Error format. $error',
+                          ),
+                        ), (_) async {
+                  // debugger(message: 'called');
+                  await ref
+                      .read(updateCSUFrameOfflineNotifierProvider.notifier)
+                      .CUUpdateCSUFrameOFFLINEStatus();
+
+                  context.pushReplacementNamed(RouteNames.dataUpdateQueryName);
+                })));
 
     // await ref
     //     .read(updateFrameOfflineNotifierProvider

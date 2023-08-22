@@ -93,7 +93,7 @@ class AutoDataUpdateFrameNotifier
       {required List<CSUIDQuery> queryIds}) async {
     Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
+    state = state.copyWith(isGetting: true);
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSUFrameRepository.updateCSUByQuery(queryIds: queryIds);
@@ -106,7 +106,7 @@ class AutoDataUpdateFrameNotifier
           idSPKMapidTIUnitMapQuery}) async {
     Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
+    state = state.copyWith(isGetting: true);
 
     FOS = await _updateFrameRepository.updateFrameByQuery(
         queryMap: idSPKMapidTIUnitMapQuery);

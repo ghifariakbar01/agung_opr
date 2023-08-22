@@ -29,15 +29,15 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(
             gate: Gate(''),
             deck: Deck(''),
-            supir1: Supir1(''),
-            supir2: Supir2(''),
+            // supir1: Supir1(''),
+            // supir2: Supir2(''),
             supirSDR: SupirSDR(''),
             tglTerima: TglTerima(''),
             tglKirim: TglKirim(''),
             gateTextController: TextEditingController(),
             deckTextController: TextEditingController(),
-            supir1TextController: TextEditingController(),
-            supir2TextController: TextEditingController(),
+            // supir1TextController: TextEditingController(),
+            // supir2TextController: TextEditingController(),
             supirSDRTextController: TextEditingController(),
             tglTerimaTextController: TextEditingController(),
             tglKirimTextController: TextEditingController(),
@@ -51,23 +51,22 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(
             gate: Gate(csuResult.idGate.toString()),
             deck: Deck(csuResult.posisi ?? ''),
-            supir1: Supir1(csuResult.supir1 ?? ''),
-            supir2: Supir2(csuResult.supir2 ?? ''),
+            // supir1: Supir1(csuResult.supir1 ?? ''),
+            // supir2: Supir2(csuResult.supir2 ?? ''),
             supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
-            tglTerima: TglTerima(csuResult.tglTerima ?? ''),
             tglKirim: TglKirim(csuResult.tglKirim ?? ''),
+            tglTerima: TglTerima(''),
             gateTextController:
                 TextEditingController(text: csuResult.idGate.toString()),
             deckTextController:
                 TextEditingController(text: csuResult.posisi ?? ''),
-            supir1TextController:
-                TextEditingController(text: csuResult.supir1 ?? ''),
-            supir2TextController:
-                TextEditingController(text: csuResult.supir2 ?? ''),
+            // supir1TextController:
+            //     TextEditingController(text: csuResult.supir1 ?? ''),
+            // supir2TextController:
+            //     TextEditingController(text: csuResult.supir2 ?? ''),
             supirSDRTextController:
                 TextEditingController(text: csuResult.supirSDR ?? ''),
-            tglTerimaTextController:
-                TextEditingController(text: csuResult.tglTerima ?? ''),
+            tglTerimaTextController: TextEditingController(),
             tglKirimTextController:
                 TextEditingController(text: csuResult.tglKirim ?? ''),
             inOut: csuResult.inout == false ? true : false));
@@ -114,7 +113,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList:
             state.updateFrameList.copyWith(ngStates: generateNGStates));
 
-    // debugger(message: 'called');
+    // debugger(message
+    //: 'called');
   }
 
   Future<void> saveQueryOK() async {
@@ -141,8 +141,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           frameName: state.frameName,
           gate: stateCSU.gate,
           posisi: stateCSU.deck,
-          supir1: stateCSU.supir1,
-          supir2: stateCSU.supir2,
+          // supir1: stateCSU.supir1,
+          // supir2: stateCSU.supir2,
           supirSDR: stateCSU.supirSDR,
           tglKirim: stateCSU.tglKirim,
           tglTerima: stateCSU.tglTerima,
@@ -337,8 +337,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     final values = [
       frame.gate,
       frame.deck,
-      frame.supir1,
-      frame.supir2,
+      // frame.supir1,
+      // frame.supir2,
       frame.supirSDR,
       frame.tglTerima,
       frame.tglKirim,

@@ -5,8 +5,6 @@ import '../../../../../style/style.dart';
 import '../../shared/csu_providers.dart';
 import '../form/form_insert_deck.dart';
 import '../form/form_insert_gate.dart';
-import '../form/form_insert_supir1.dart';
-import '../form/form_insert_supir2.dart';
 import '../form/form_insert_supir_sdr.dart';
 import '../form/form_insert_tgl_kirim.dart';
 import '../form/form_insert_tgl_terima.dart';
@@ -44,8 +42,6 @@ class CSUNewForm extends ConsumerWidget {
             ),
             FormInsertGate(index: 0),
             FormInsertDeck(index: 0),
-            FormInsertSupir1(index: 0),
-            FormInsertSupir2(index: 0),
             FormInsertSupirSDR(
               index: 0,
             ),
