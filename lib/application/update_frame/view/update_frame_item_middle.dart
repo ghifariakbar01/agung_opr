@@ -38,7 +38,7 @@ class UpdateFrameItemMiddle extends ConsumerWidget {
                       builder: (_) => VSimpleDialog(
                         label: 'Sukses',
                         labelDescription:
-                            'Sukses menyimpan Update Frame. Akan diupload di batch berikutnya.',
+                            'Sukses menyimpan Update Frame. Akan diupload setelah loading.',
                         asset: Assets.iconChecked,
                       ),
                     ))));

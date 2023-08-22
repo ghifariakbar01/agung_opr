@@ -40,7 +40,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
         engine: item.engine,
         frame: item.frame,
         warna: item.warna,
-        customerId: item.customerId,
         sppdc: item.sppdc,
       );
 
@@ -99,9 +98,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
               idKendType: IDKendType(frame[index].idKendType != null
                   ? frame[index].idKendType.toString()
                   : ''),
-              customerId: CustomerId(frame[index].custid != null
-                  ? frame[index].custid.toString()
-                  : ''),
               engine: EngineUnit(frame[index].engine ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
               sppdc: SPPDC(frame[index].sppdc ?? ''),
@@ -132,17 +128,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     state = state.copyWith(
       frameTextController: generateListFrameTextController,
-    );
-
-    final generateListCustomerTextController = List.generate(
-        length,
-        (index) => TextEditingController(
-            text: frame[index].custid != null
-                ? frame[index].custid.toString()
-                : ''));
-
-    state = state.copyWith(
-      customerTextController: generateListCustomerTextController,
     );
 
     final generateListSPPDCTextController = List.generate(
@@ -220,19 +205,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(updateFrameList: list);
   }
 
-  void changeCustomerId({required String customerIdStr, required int index}) {
-    final list = [...state.updateFrameList]; // Create a copy of the list
-
-    final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(customerId: CustomerId(customerIdStr));
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(updateFrameList: list);
-  }
-
   void changeNoSPPDC({required String noSPPDCStr, required int index}) {
     final list = [...state.updateFrameList]; // Create a copy of the list
 
@@ -264,13 +236,13 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     // HERE
     final values = [
-      frame.engine,
+      // frame.engine,
       frame.frame,
       frame.idKendType,
       frame.idUnit,
       // frame.noReff,
       frame.sppdc,
-      frame.warna,
+      // frame.warna,
     ];
 
     return Validator.validate(values);

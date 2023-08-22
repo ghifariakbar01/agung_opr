@@ -35,7 +35,7 @@ class CustomerItem extends StatelessWidget {
                             FontWeight.bold, 14, Palette.primaryColor),
                       ),
                       Text(
-                        'NAMA: ${customer.title ?? ''} ${customer.nama}',
+                        'NAMA: ${customer.nama}',
                         style: Themes.customColor(
                             FontWeight.bold, 12, Palette.primaryColor),
                       ),

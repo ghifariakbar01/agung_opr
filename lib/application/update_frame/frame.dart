@@ -13,7 +13,7 @@ class Frame with _$Frame {
     required String? warna,
     @JsonKey(name: 'id_kend_type') required int? idKendType,
     @JsonKey(name: 'no_invoice') required String? sppdc,
-    required int? custid,
+    required String? custnm,
   }) = _Frame;
 
   factory Frame.initial() => Frame(
@@ -23,7 +23,7 @@ class Frame with _$Frame {
       warna: '',
       idKendType: 0,
       sppdc: '',
-      custid: 0);
+      custnm: '');
 
   factory Frame.fromJson(Map<String, Object?> json) => _$FrameFromJson(json);
 }

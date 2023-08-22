@@ -60,27 +60,29 @@ class ModelScaffold extends ConsumerWidget {
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
+            child: SingleChildScrollView(
               controller: _scrollController,
-              children: [
-                ModelSearch(),
-                for (int i = 0; i < modelList.length; i++) ...[
-                  IgnorePointer(
-                    ignoring: isSearching,
-                    child: TextButton(
-                      onPressed: () {
-                        final modelId = modelList[i].id.toString();
-                        context.pop(modelId);
-                      },
-                      style: ButtonStyle(
-                          padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                      child: ModelItem(
-                        model: modelList[i],
+              child: Column(
+                children: [
+                  ModelSearch(),
+                  for (int i = 0; i < modelList.length; i++) ...[
+                    IgnorePointer(
+                      ignoring: isSearching,
+                      child: TextButton(
+                        onPressed: () {
+                          final modelId = modelList[i].id.toString();
+                          context.pop(modelId);
+                        },
+                        style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                        child: ModelItem(
+                          model: modelList[i],
+                        ),
                       ),
-                    ),
-                  )
-                ]
-              ],
+                    )
+                  ]
+                ],
+              ),
             )),
         // drawer: Drawer(),
         bottomNavigationBar: Container(

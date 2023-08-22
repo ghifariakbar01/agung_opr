@@ -42,6 +42,49 @@ class ModelRepository {
     }
   }
 
+  Future<Either<RemoteFailure, List<Model>>> searchModelList(
+      {required String search}) async {
+    try {
+      final modelList = await _remoteService.searchModelList(search: search);
+
+      await this._add(model: modelList);
+
+      return right(modelList);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  /// ADD [Model] FROM SEARCH
+  ///
+  Future<Unit> _add({required List<Model> model}) async {
+    final modelStorage = await _storage.read();
+
+    if (modelStorage != null) {
+      final response = jsonDecode(modelStorage) as List<dynamic>;
+
+      final responseModel = Model.ModelListFromJson(response);
+
+      if (responseModel.isNotEmpty) {
+        final responseModelTosave =
+            [...responseModel, ...model].toSet().toList();
+
+        final listResponseModelToSave =
+            Model.ModelListToJson(responseModelTosave);
+
+        await _storage.save(listResponseModelToSave);
+      }
+    }
+
+    return unit;
+  }
+
   /// PAGINATE DATA LIST OF [Model] FROM STORAGE
   ///
   /// process [page] and divide LIST OF [Model]

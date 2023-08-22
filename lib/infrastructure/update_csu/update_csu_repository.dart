@@ -40,61 +40,59 @@ class UpdateCSUFrameRepository {
 
   Future<Either<RemoteFailure, Unit>> updateCSUByQuery(
       {required List<CSUIDQuery> queryIds}) async {
-    try {
-      final isQueryOK = queryIds.isNotEmpty;
+    final isQueryOK = queryIds.isNotEmpty;
 
-      // debugger(message: 'called');
+    // debugger(message: 'called');
 
-      log('STORAGE GET INCREMENTAL ID_NA QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(queryIds)}');
+    if (isQueryOK) {
+      for (int i = 0; i < queryIds.length; i++) {
+        final query = queryIds[i].query;
+        final idUnit = queryIds[i].idUnit;
 
-      if (isQueryOK) {
-        for (int i = 0; i < queryIds.length; i++) {
-          final query = queryIds[i].query;
-          final idUnit = queryIds[i].idUnit;
+        log('INDEX $i');
 
-          log('INDEX $i');
+        // GET ID_CS
+        // debugger(message: 'called');
 
-          // GET ID_CS
-          // debugger(message: 'called');
+        log('STORAGE UPDATE CSU QUERY: $query');
 
-          log('STORAGE UPDATE CSU QUERY: $query');
+        try {
+          await _remoteService.insertFrameCSUByQuery(query: query);
 
-          try {
-            await _remoteService.insertFrameCSUByQuery(query: query);
-          } on RestApiException catch (e) {
-            debugger(message: 'called');
+          await _removeQueryCSUFromSaved(idUnit: idUnit);
+        } on RestApiException catch (e) {
+          debugger(message: 'called');
 
-            _removeQueryCSUFromSaved(idUnit: idUnit);
+          _removeQueryCSUFromSaved(idUnit: idUnit);
 
-            return left(RemoteFailure.server(e.errorCode, e.message));
-          } on NoConnectionException {
-            debugger(message: 'called');
+          return left(RemoteFailure.server(e.errorCode, e.message));
+        } on NoConnectionException {
+          debugger(message: 'called');
 
-            _removeQueryCSUFromSaved(idUnit: idUnit);
+          _removeQueryCSUFromSaved(idUnit: idUnit);
 
-            return left(RemoteFailure.noConnection());
-          }
-
-          // debugger(message: 'called');
-
-          // // DELETE SAVED QUERY
+          return left(RemoteFailure.noConnection());
+        } on RangeError catch (e) {
+          debugger(message: 'called');
+          return left(RemoteFailure.parse(message: e.message));
+        } on FormatException catch (e) {
+          return left(RemoteFailure.parse(message: e.message));
+        } on JsonUnsupportedObjectError {
+          return left(
+              RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+        } on PlatformException {
+          return left(RemoteFailure.storage());
         }
+
+        // debugger(message: 'called');
+
+        // // DELETE SAVED QUERY
       }
-
-      debugger(message: 'called');
-
-      return right(unit);
-    } on RangeError catch (e) {
-      debugger(message: 'called');
-
-      return left(RemoteFailure.parse(message: e.message));
-    } on FormatException catch (e) {
-      return left(RemoteFailure.parse(message: e.message));
-    } on JsonUnsupportedObjectError {
-      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(RemoteFailure.storage());
     }
+
+    debugger(message: 'called');
+
+    return right(unit);
   }
 
   Future<Either<LocalFailure, Unit>> saveCSUQueryNG(
@@ -253,8 +251,8 @@ class UpdateCSUFrameRepository {
     required String frameName,
     required Gate gate,
     required Deck posisi,
-    required Supir1 supir1,
-    required Supir2 supir2,
+    // required Supir1 supir1,
+    // required Supir2 supir2,
     required SupirSDR supirSDR,
     required TglKirim tglKirim,
     required TglTerima tglTerima,
@@ -263,8 +261,10 @@ class UpdateCSUFrameRepository {
   }) {
     const String dbName = 'cs_trs_cs_test';
 
+    // supir1, supir2,
+
     final String insert =
-        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, supir1, supir2, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit)';
+        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit)';
 
     final idUser = _userModelWithPassword.idUser;
     final nameUser = _userModelWithPassword.nama;
@@ -273,16 +273,18 @@ class UpdateCSUFrameRepository {
     final gateInt = int.parse(gateStr);
 
     final deckStr = posisi.getOrCrash();
-    final supir1Str = supir1.getOrCrash();
-    final supir2Str = supir2.getOrLeave('');
+    // final supir1Str = supir1.getOrCrash();
+    // final supir2Str = supir2.getOrLeave('');
 
     final supirSDRStr = supirSDR.getOrLeave('');
 
     final tglKirimStr = tglKirim.getOrLeave('');
     final tglTerimaStr = tglTerima.getOrLeave('');
 
+    // '${supir1Str}', '${supir2Str}'
+
     final csuQuery =
-        " ${gateInt},  '${deckStr}',  '${supir1Str}', '${supir2Str}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}' ";
+        " ${gateInt},  '${deckStr}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}' ";
 
     final requiredQuery =
         " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName), '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";

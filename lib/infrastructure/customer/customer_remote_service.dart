@@ -19,7 +19,7 @@ class CustomerRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_cust AS id, title, nama FROM sls_mst_cust WHERE id_cust LIKE '%$search%' OR title LIKE '%$search%' OR nama LIKE '%$search%' ORDER BY id_cust DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT id_kec AS id, nama FROM opr_mst_kec WHERE nama LIKE '%$search%' OR id_kec LIKE '%$search%' ORDER BY id_kec DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',
@@ -88,7 +88,7 @@ class CustomerRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_cust AS id, title, nama FROM sls_mst_cust ORDER BY id_cust ASC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT id_kec AS id, nama FROM opr_mst_kec ORDER BY id_kec DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

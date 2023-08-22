@@ -29,7 +29,7 @@ mixin _$Frame {
   int? get idKendType => throw _privateConstructorUsedError;
   @JsonKey(name: 'no_invoice')
   String? get sppdc => throw _privateConstructorUsedError;
-  int? get custid => throw _privateConstructorUsedError;
+  String? get custnm => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +48,7 @@ abstract class $FrameCopyWith<$Res> {
       String? warna,
       @JsonKey(name: 'id_kend_type') int? idKendType,
       @JsonKey(name: 'no_invoice') String? sppdc,
-      int? custid});
+      String? custnm});
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$FrameCopyWithImpl<$Res, $Val extends Frame>
     Object? warna = freezed,
     Object? idKendType = freezed,
     Object? sppdc = freezed,
-    Object? custid = freezed,
+    Object? custnm = freezed,
   }) {
     return _then(_value.copyWith(
       idUnit: null == idUnit
@@ -97,10 +97,10 @@ class _$FrameCopyWithImpl<$Res, $Val extends Frame>
           ? _value.sppdc
           : sppdc // ignore: cast_nullable_to_non_nullable
               as String?,
-      custid: freezed == custid
-          ? _value.custid
-          : custid // ignore: cast_nullable_to_non_nullable
-              as int?,
+      custnm: freezed == custnm
+          ? _value.custnm
+          : custnm // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -118,7 +118,7 @@ abstract class _$$_FrameCopyWith<$Res> implements $FrameCopyWith<$Res> {
       String? warna,
       @JsonKey(name: 'id_kend_type') int? idKendType,
       @JsonKey(name: 'no_invoice') String? sppdc,
-      int? custid});
+      String? custnm});
 }
 
 /// @nodoc
@@ -136,7 +136,7 @@ class __$$_FrameCopyWithImpl<$Res> extends _$FrameCopyWithImpl<$Res, _$_Frame>
     Object? warna = freezed,
     Object? idKendType = freezed,
     Object? sppdc = freezed,
-    Object? custid = freezed,
+    Object? custnm = freezed,
   }) {
     return _then(_$_Frame(
       idUnit: null == idUnit
@@ -163,10 +163,10 @@ class __$$_FrameCopyWithImpl<$Res> extends _$FrameCopyWithImpl<$Res, _$_Frame>
           ? _value.sppdc
           : sppdc // ignore: cast_nullable_to_non_nullable
               as String?,
-      custid: freezed == custid
-          ? _value.custid
-          : custid // ignore: cast_nullable_to_non_nullable
-              as int?,
+      custnm: freezed == custnm
+          ? _value.custnm
+          : custnm // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -181,7 +181,7 @@ class _$_Frame implements _Frame {
       required this.warna,
       @JsonKey(name: 'id_kend_type') required this.idKendType,
       @JsonKey(name: 'no_invoice') required this.sppdc,
-      required this.custid});
+      required this.custnm});
 
   factory _$_Frame.fromJson(Map<String, dynamic> json) =>
       _$$_FrameFromJson(json);
@@ -202,11 +202,11 @@ class _$_Frame implements _Frame {
   @JsonKey(name: 'no_invoice')
   final String? sppdc;
   @override
-  final int? custid;
+  final String? custnm;
 
   @override
   String toString() {
-    return 'Frame(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, idKendType: $idKendType, sppdc: $sppdc, custid: $custid)';
+    return 'Frame(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, idKendType: $idKendType, sppdc: $sppdc, custnm: $custnm)';
   }
 
   @override
@@ -221,13 +221,13 @@ class _$_Frame implements _Frame {
             (identical(other.idKendType, idKendType) ||
                 other.idKendType == idKendType) &&
             (identical(other.sppdc, sppdc) || other.sppdc == sppdc) &&
-            (identical(other.custid, custid) || other.custid == custid));
+            (identical(other.custnm, custnm) || other.custnm == custnm));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, idUnit, frame, engine, warna, idKendType, sppdc, custid);
+      runtimeType, idUnit, frame, engine, warna, idKendType, sppdc, custnm);
 
   @JsonKey(ignore: true)
   @override
@@ -251,7 +251,7 @@ abstract class _Frame implements Frame {
       required final String? warna,
       @JsonKey(name: 'id_kend_type') required final int? idKendType,
       @JsonKey(name: 'no_invoice') required final String? sppdc,
-      required final int? custid}) = _$_Frame;
+      required final String? custnm}) = _$_Frame;
 
   factory _Frame.fromJson(Map<String, dynamic> json) = _$_Frame.fromJson;
 
@@ -271,7 +271,7 @@ abstract class _Frame implements Frame {
   @JsonKey(name: 'no_invoice')
   String? get sppdc;
   @override
-  int? get custid;
+  String? get custnm;
   @override
   @JsonKey(ignore: true)
   _$$_FrameCopyWith<_$_Frame> get copyWith =>

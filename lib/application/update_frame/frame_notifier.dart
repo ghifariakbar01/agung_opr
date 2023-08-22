@@ -37,6 +37,7 @@ class FrameNotifier extends StateNotifier<FrameState> {
   Future<void> saveFrameIndexedSPK(
       {required int idSPK,
       required int index,
+      required String custnm,
       required UpdateFrameStateSingle newFrame}) async {
     final Either<LocalFailure, Unit> FOS;
 
@@ -44,30 +45,29 @@ class FrameNotifier extends StateNotifier<FrameState> {
 
     this._changeFOSOSaveFrame(index: index, FOS: none());
 
+    //
+    final engineStr = newFrame.engine.getOrLeave('');
+    final warnaStr = newFrame.warna.getOrLeave('');
+    //
+    // MANDATORY
+    final frameStr = newFrame.frame.getOrCrash();
+
     final idUnitStr = newFrame.idUnit.getOrCrash();
     final idUnitInt = int.parse(idUnitStr);
     //
     final idKendTypeStr = newFrame.idKendType.getOrCrash();
     final idKendTypeInt = int.parse(idKendTypeStr);
     //
-    final frameStr = newFrame.frame.getOrCrash();
-    final engineStr = newFrame.engine.getOrCrash();
-    final warnaStr = newFrame.warna.getOrCrash();
-    //
-    final customerIdStr = newFrame.customerId.getOrCrash();
-    final customerIdInt = int.parse(customerIdStr);
-    //
     final sppdcStr = newFrame.sppdc.getOrCrash();
 
     final frame = Frame(
-      idUnit: idUnitInt,
-      frame: frameStr,
-      engine: engineStr,
-      warna: warnaStr,
-      idKendType: idKendTypeInt,
-      custid: customerIdInt,
-      sppdc: sppdcStr,
-    );
+        idUnit: idUnitInt,
+        frame: frameStr,
+        engine: engineStr,
+        warna: warnaStr,
+        idKendType: idKendTypeInt,
+        sppdc: sppdcStr,
+        custnm: custnm);
 
     FOS = await _repository.saveFrameIndexedSPK(
         idSPK: idSPK, index: index, newFrame: frame);

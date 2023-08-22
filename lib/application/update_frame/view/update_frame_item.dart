@@ -95,14 +95,6 @@ class UpdateFrameItem extends ConsumerWidget {
                 height: 8,
               ),
 
-              FormUpdateCustomerId(
-                index: index,
-              ),
-
-              SizedBox(
-                height: 8,
-              ),
-
               FormUpdateSPPDC(
                 index: index,
               ),

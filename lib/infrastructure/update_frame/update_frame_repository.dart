@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agung_opr/domain/remote_failure.dart';
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
@@ -83,18 +84,47 @@ class UpdateFrameRepository {
       final isQueryOK = queryMap.values.isNotEmpty;
 
       if (isQueryOK) {
-        queryMap.values.forEach((mapOfTIUnitQuery) {
-          mapOfTIUnitQuery.values.forEach((query) async {
-            // RUN QUERY
-            log('QUERY: ${query.runtimeType}');
+        for (int j = 0; j < queryMap.values.length; j++) {
+          final mapOfTIUnitQuery = queryMap.values.elementAtOrNull(j);
 
-            await _remoteService.updateFrameByQuery(query: query).onError(
-                (error, stackTrace) => this._removeQueryFromMap(query: query));
+          if (mapOfTIUnitQuery != null) {
+            for (int i = 0; i < mapOfTIUnitQuery.values.length; i++) {
+              final query = mapOfTIUnitQuery.values.elementAtOrNull(i);
 
-            // DELETE SAVED QUERY
-            await this._removeQueryFromMap(query: query);
-          });
-        });
+              if (query != null) {
+                // RUN QUERY
+                log('QUERY: ${query}');
+
+                try {
+                  await _remoteService.updateFrameByQuery(query: query);
+
+                  // DELETE SAVED QUERY
+                  await _removeQueryFromMap(query: query);
+                } on RestApiException catch (e) {
+                  debugger(message: 'called');
+
+                  _removeQueryFromMap(query: query);
+
+                  return left(RemoteFailure.server(e.errorCode, e.message));
+                } on NoConnectionException {
+                  debugger(message: 'called');
+
+                  _removeQueryFromMap(query: query);
+
+                  return left(RemoteFailure.noConnection());
+                } on RangeError catch (e) {
+                  debugger(message: 'called');
+                  return left(RemoteFailure.parse(message: e.message));
+                } on FormatException catch (e) {
+                  return left(RemoteFailure.parse(message: e.message));
+                } on JsonUnsupportedObjectError {
+                  return left(RemoteFailure.parse(
+                      message: 'JsonUnsupportedObjectError'));
+                }
+              }
+            }
+          }
+        }
       }
 
       return right(unit);
@@ -165,32 +195,30 @@ class UpdateFrameRepository {
     }
   }
 
-  Future<Either<LocalFailure, Unit>> updateFrameSPK(
-      {required String idSPK,
-      required IDUnit idUnit,
-      required FrameUnit frame,
-      required EngineUnit engine,
-      required WarnaUnit warna,
-      required CustomerId customerId,
-      required SPPDC sppdc,
-      required IDKendType idKendType}) async {
+  Future<Either<LocalFailure, Unit>> updateFrameSPK({
+    required String idSPK,
+    required IDUnit idUnit,
+    required IDKendType idKendType,
+    required FrameUnit frame,
+    required EngineUnit engine,
+    required WarnaUnit warna,
+    required SPPDC sppdc,
+  }) async {
     try {
       const String dbName = 'opr_trs_ti_unit_test';
 
+      final idKendTypeStr = idKendType.getOrLeave('');
+      final idKendTypeInt =
+          idKendTypeStr.isNotEmpty ? int.parse(idKendTypeStr) : 0;
+
+      final engineStr = engine.getOrLeave('');
+      final warnaStr = warna.getOrLeave('');
+      // MANDATORY
+      final frameStr = frame.getOrCrash();
+      final sppdcStr = sppdc.getOrCrash();
+
       final idUnitStr = idUnit.getOrCrash();
       final idUnitInt = int.parse(idUnitStr);
-
-      final idKendTypeStr = idKendType.getOrCrash();
-      final idKendTypeInt = int.parse(idKendTypeStr);
-
-      final frameStr = frame.getOrCrash();
-      final engineStr = engine.getOrCrash();
-      final warnaStr = warna.getOrCrash();
-      //
-      final customerIdStr = customerId.getOrCrash();
-      final customerIdInt = int.parse(customerIdStr);
-
-      final sppdcStr = sppdc.getOrCrash();
 
       // final frameResponse = await _remoteService.updateFrame(
       //     idUnit: idUnitInt,
@@ -201,11 +229,13 @@ class UpdateFrameRepository {
       //     noReffExp: noReffStr);
 
       final command =
-          "UPDATE $dbName SET frame = '$frameStr', engine = '$engineStr', warna = '$warnaStr', id_cust = $customerIdInt, id_kend_type = '$idKendTypeInt', no_invoice = '$sppdcStr' WHERE id_unit = $idUnitInt";
+          "UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', warna = '$warnaStr', id_kend_type = '$idKendTypeInt' WHERE id_unit = $idUnitInt";
 
       final frameSaveMap = {
         idSPK: {idUnitStr: command}
       };
+
+      debugger(message: 'called');
 
       await this._GETAndADDFrameSPKInMap(newFrameMap: frameSaveMap);
 

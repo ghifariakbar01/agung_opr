@@ -28,25 +28,27 @@ class CustomerScaffold extends ConsumerWidget {
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
-              children: [
-                CustomerSearch(),
-                for (int i = 0; i < customerList.length; i++) ...[
-                  IgnorePointer(
-                    ignoring: isSearching,
-                    child: TextButton(
-                      onPressed: () => ref
-                          .read(customerNotifierProvider.notifier)
-                          .insertCustomer(customer: customerList[i]),
-                      style: ButtonStyle(
-                          padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                      child: CustomerItem(
-                        customer: customerList[i],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CustomerSearch(),
+                  for (int i = 0; i < customerList.length; i++) ...[
+                    IgnorePointer(
+                      ignoring: isSearching,
+                      child: TextButton(
+                        onPressed: () => ref
+                            .read(customerNotifierProvider.notifier)
+                            .insertCustomer(customer: customerList[i]),
+                        style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                        child: CustomerItem(
+                          customer: customerList[i],
+                        ),
                       ),
-                    ),
-                  )
-                ]
-              ],
+                    )
+                  ]
+                ],
+              ),
             )),
         // drawer: Drawer(),
         bottomNavigationBar: Container(

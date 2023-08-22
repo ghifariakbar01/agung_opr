@@ -46,6 +46,16 @@ class ModelNotifier extends StateNotifier<ModelState> {
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
   }
 
+  Future<void> searchModelList({required String search}) async {
+    final Either<RemoteFailure, List<Model>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOModel: none());
+
+    FOS = await _repository.searchModelList(search: search);
+
+    state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
+  }
+
   Future<void> getModelListOFFLINE({required int page}) async {
     final Either<RemoteFailure, List<Model>> FOS;
 

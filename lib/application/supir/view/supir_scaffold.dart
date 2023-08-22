@@ -58,27 +58,29 @@ class SupirScaffold extends ConsumerWidget {
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
+            child: SingleChildScrollView(
               controller: _scrollController,
-              children: [
-                SupirSearch(),
-                for (int i = 0; i < supirList.length; i++) ...[
-                  IgnorePointer(
-                    ignoring: isSearching,
-                    child: TextButton(
-                      onPressed: () {
-                        final supirName = supirList[i].nama.toString();
-                        context.pop(supirName);
-                      },
-                      style: ButtonStyle(
-                          padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                      child: SupirItem(
-                        supir: supirList[i],
+              child: Column(
+                children: [
+                  SupirSearch(),
+                  for (int i = 0; i < supirList.length; i++) ...[
+                    IgnorePointer(
+                      ignoring: isSearching,
+                      child: TextButton(
+                        onPressed: () {
+                          final supirName = supirList[i].nama.toString();
+                          context.pop(supirName);
+                        },
+                        style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                        child: SupirItem(
+                          supir: supirList[i],
+                        ),
                       ),
-                    ),
-                  )
-                ]
-              ],
+                    )
+                  ]
+                ],
+              ),
             )),
         // drawer: Drawer(),
         bottomNavigationBar: Container(

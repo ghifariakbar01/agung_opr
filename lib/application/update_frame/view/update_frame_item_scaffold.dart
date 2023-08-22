@@ -53,6 +53,9 @@ class _UpdateFrameItemScaffoldState
                   final updateFrameProvider =
                       ref.read(updateFrameNotifierProvider);
 
+                  final custnm = ref.read(frameNotifierProvider
+                      .select((value) => value.frameList[widget.index].custnm));
+
                   debugger(message: 'called');
 
                   log('INDEX: ${widget.index}');
@@ -62,6 +65,7 @@ class _UpdateFrameItemScaffoldState
                       .saveFrameIndexedSPK(
                           idSPK: updateFrameProvider.idSPK,
                           index: widget.index,
+                          custnm: custnm ?? '-',
                           newFrame: updateFrameProvider
                               .updateFrameList[widget.index]);
                 })));

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'model.freezed.dart';
@@ -18,4 +20,16 @@ class Model with _$Model {
       id: 0, merk: '', nama: '', category: '', grossweight: 0, measurement: 0);
 
   factory Model.fromJson(Map<String, Object?> json) => _$ModelFromJson(json);
+
+  static List<Model> ModelListFromJson(List<dynamic> jsonList) {
+    return jsonList
+        .map((e) => Model.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static String ModelListToJson(List<Model> resultList) {
+    List<Map<String, dynamic>> jsonList =
+        resultList.map((e) => e.toJson()).toList();
+    return jsonEncode(jsonList);
+  }
 }

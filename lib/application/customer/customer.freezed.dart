@@ -21,7 +21,6 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Customer {
   int get id => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
   String? get nama => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +34,7 @@ abstract class $CustomerCopyWith<$Res> {
   factory $CustomerCopyWith(Customer value, $Res Function(Customer) then) =
       _$CustomerCopyWithImpl<$Res, Customer>;
   @useResult
-  $Res call({int id, String? title, String? nama});
+  $Res call({int id, String? nama});
 }
 
 /// @nodoc
@@ -52,7 +51,6 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
   @override
   $Res call({
     Object? id = null,
-    Object? title = freezed,
     Object? nama = freezed,
   }) {
     return _then(_value.copyWith(
@@ -60,10 +58,6 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
       nama: freezed == nama
           ? _value.nama
           : nama // ignore: cast_nullable_to_non_nullable
@@ -79,7 +73,7 @@ abstract class _$$_CustomerCopyWith<$Res> implements $CustomerCopyWith<$Res> {
       __$$_CustomerCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String? title, String? nama});
+  $Res call({int id, String? nama});
 }
 
 /// @nodoc
@@ -94,7 +88,6 @@ class __$$_CustomerCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? title = freezed,
     Object? nama = freezed,
   }) {
     return _then(_$_Customer(
@@ -102,10 +95,6 @@ class __$$_CustomerCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
       nama: freezed == nama
           ? _value.nama
           : nama // ignore: cast_nullable_to_non_nullable
@@ -117,8 +106,7 @@ class __$$_CustomerCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Customer implements _Customer {
-  const _$_Customer(
-      {required this.id, required this.title, required this.nama});
+  const _$_Customer({required this.id, required this.nama});
 
   factory _$_Customer.fromJson(Map<String, dynamic> json) =>
       _$$_CustomerFromJson(json);
@@ -126,13 +114,11 @@ class _$_Customer implements _Customer {
   @override
   final int id;
   @override
-  final String? title;
-  @override
   final String? nama;
 
   @override
   String toString() {
-    return 'Customer(id: $id, title: $title, nama: $nama)';
+    return 'Customer(id: $id, nama: $nama)';
   }
 
   @override
@@ -141,13 +127,12 @@ class _$_Customer implements _Customer {
         (other.runtimeType == runtimeType &&
             other is _$_Customer &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
             (identical(other.nama, nama) || other.nama == nama));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, nama);
+  int get hashCode => Object.hash(runtimeType, id, nama);
 
   @JsonKey(ignore: true)
   @override
@@ -165,16 +150,12 @@ class _$_Customer implements _Customer {
 
 abstract class _Customer implements Customer {
   const factory _Customer(
-      {required final int id,
-      required final String? title,
-      required final String? nama}) = _$_Customer;
+      {required final int id, required final String? nama}) = _$_Customer;
 
   factory _Customer.fromJson(Map<String, dynamic> json) = _$_Customer.fromJson;
 
   @override
   int get id;
-  @override
-  String? get title;
   @override
   String? get nama;
   @override

@@ -4,6 +4,7 @@ import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/providers.dart';
 import '../../../style/style.dart';
 
 class ModelSearch extends ConsumerWidget {
@@ -47,14 +48,23 @@ class ModelSearch extends ConsumerWidget {
               .read(modelSearchNotifierProvider.notifier)
               .changeIsSearch(false),
           onChanged: (search) => search.isNotEmpty && search.length > 1
-              ? () {
-                  ref
-                      .read(modelNotifierProvider.notifier)
-                      .searchModelListOFFLINE(search: search);
+              ? () async {
+                  final isOnline =
+                      ref.read(isOfflineProvider.notifier).state == false;
 
                   ref
                       .read(modelSearchNotifierProvider.notifier)
                       .changeSearchText('');
+
+                  if (isOnline) {
+                    await ref
+                        .read(modelNotifierProvider.notifier)
+                        .searchModelList(search: search);
+                  } else {
+                    await ref
+                        .read(modelNotifierProvider.notifier)
+                        .searchModelListOFFLINE(search: search);
+                  }
                 }()
               : ref
                   .read(modelNotifierProvider.notifier)

@@ -10,7 +10,6 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
     required FrameUnit frame,
     required EngineUnit engine,
     required WarnaUnit warna,
-    required CustomerId customerId,
     required SPPDC sppdc,
     required IDKendType idKendType,
     required bool isShowError,
@@ -21,7 +20,6 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
       frame: FrameUnit(''),
       engine: EngineUnit(''),
       warna: WarnaUnit(''),
-      customerId: CustomerId(''),
       sppdc: SPPDC(''),
       idKendType: IDKendType(''),
       isShowError: false);

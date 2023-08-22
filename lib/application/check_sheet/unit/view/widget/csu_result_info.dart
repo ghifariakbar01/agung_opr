@@ -21,10 +21,6 @@ class CSUResultInfo extends ConsumerWidget {
     final csuResultTripList = ref.watch(
         csuFrameNotifierProvider.select((value) => value.csuTripsResultList));
 
-    final customerList = ref
-        .watch(customerNotifierProvider.select((value) => value.customerList));
-
-    log('frame.custid ${frame.custid}');
     return // Informasi Unit
         Container(
       decoration: BoxDecoration(
@@ -33,10 +29,10 @@ class CSUResultInfo extends ConsumerWidget {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          CSURowItem(
-            label: 'ID UNIT',
-            text: frame.idUnit.toString(),
-          ),
+          // CSURowItem(
+          //   label: 'ID UNIT',
+          //   text: frame.idUnit.toString(),
+          // ),
           CSURowItem(
             label: 'NO ENGINE',
             text: frame.engine ?? '',
@@ -52,17 +48,9 @@ class CSUResultInfo extends ConsumerWidget {
             ),
           ],
           CSURowItem(
-              label: 'CUSTOMER',
-              text: frame.custid != null
-                  ? customerList
-                      .firstWhere(
-                        (element) => element.id == frame.custid,
-                        orElse: () =>
-                            Customer(id: 0, title: 'TIDAK ADA', nama: '-'),
-                      )
-                      .nama
-                      .toString()
-                  : ''),
+            label: 'CUSTOMER',
+            text: frame.custnm ?? '-',
+          ),
 
           // Trips
           if (csuResultTripList.isNotEmpty) ...[

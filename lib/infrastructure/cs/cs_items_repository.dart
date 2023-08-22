@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis_state.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
+import '../../application/check_sheet/shared/state/cs_item_state.dart';
 import '../../domain/local_failure.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
@@ -14,24 +14,24 @@ import 'cs_remote_service.dart';
 /// [SAVED] MODEL =>
 ///
 /// [
-///   [CSJenisState]
+///   [CSItemState]
 ///
 /// ]
 
-class CSRepository {
-  CSRepository(this._remoteService, this._storage);
+class CSItemsRepository {
+  CSItemsRepository(this._remoteService, this._storage);
 
   final CSRemoteService _remoteService;
   final CredentialsStorage _storage;
 
-  Future<bool> hasOfflineData() => getCSJenisOFFLINE()
+  Future<bool> hasOfflineData() => getCSItemsOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, List<CSJenisState>>> getCSJenis() async {
+  Future<Either<RemoteFailure, List<CSItemState>>> getCSItems() async {
     try {
-      final listCSJenis = await _remoteService.getCSJenis();
+      final listCSJenis = await _remoteService.getCSItems();
 
-      await _storage.save(CSJenisState.CSJenisListToJson(listCSJenis));
+      await _storage.save(CSItemState.CSItemListToJson(listCSJenis));
 
       return right(listCSJenis);
     } on RestApiException catch (e) {
@@ -47,15 +47,15 @@ class CSRepository {
     }
   }
 
-  /// DATA: [CSJenisState] FROM STORAGE
+  /// DATA: [CSItemState] FROM STORAGE
   ///
-  Future<Either<RemoteFailure, List<CSJenisState>>> getCSJenisOFFLINE() async {
+  Future<Either<RemoteFailure, List<CSItemState>>> getCSItemsOFFLINE() async {
     try {
       final frameStorage = await _storage.read();
 
       // debugger(message: 'called');
 
-      log('FRAME STORAGE: $frameStorage');
+      log('CS ITEM STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {
@@ -64,8 +64,8 @@ class CSRepository {
         final responsMap =
             jsonDecode(frameStorage) as List<Map<String, dynamic>>;
 
-        final List<CSJenisState> response =
-            CSJenisState.CSJenisListFromJson(responsMap);
+        final List<CSItemState> response =
+            CSItemState.CSItemListFromJson(responsMap);
 
         debugger(message: 'called');
 

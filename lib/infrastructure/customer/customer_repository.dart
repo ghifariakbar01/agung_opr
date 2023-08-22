@@ -31,7 +31,7 @@ class CustomerRepository {
       final customerList =
           await _remoteService.searchCustomerList(search: search);
 
-      await _storage.save(jsonEncode(customerList));
+      await _add(item: customerList);
 
       return right(customerList);
     } on RestApiException catch (e) {
@@ -43,6 +43,29 @@ class CustomerRepository {
     } on PlatformException {
       return left(RemoteFailure.storage());
     }
+  }
+
+  /// ADD [Customer] FROM SEARCH
+  ///
+  Future<Unit> _add({required List<Customer> item}) async {
+    final itemStorage = await _storage.read();
+
+    if (itemStorage != null) {
+      final response = jsonDecode(itemStorage) as List<dynamic>;
+
+      final responseItem = Customer.CustomerListFromJson(response);
+
+      if (responseItem.isNotEmpty) {
+        final responseItemTosave = [...responseItem, ...item].toSet().toList();
+
+        final listResponseItemToSave =
+            Customer.CustomerListToJson(responseItemTosave);
+
+        await _storage.save(listResponseItemToSave);
+      }
+    }
+
+    return unit;
   }
 
   Future<Either<RemoteFailure, List<Customer>>> getCustomerList(
@@ -175,7 +198,6 @@ class CustomerRepository {
 
         final searchedList = customerList.where((customer) {
           return customer.id.toString() == searchLowerCase ||
-              customer.title?.toLowerCase() == searchLowerCase ||
               customer.nama?.toLowerCase() == searchLowerCase;
         }).toList();
 
