@@ -297,23 +297,23 @@ class JamLoad extends ValueObject<String> {
   final Either<ValueFailure<String>, String> value;
 }
 
-class Status extends ValueObject<String> {
-  factory Status(String input) {
-    return Status._(validateStringNotEmpty(input));
+class Keterangan extends ValueObject<String> {
+  factory Keterangan(String input) {
+    return Keterangan._(validateStringNotEmpty(input));
   }
 
-  const Status._(this.value);
+  const Keterangan._(this.value);
 
   @override
   final Either<ValueFailure<String>, String> value;
 }
 
-class Tipe extends ValueObject<String> {
-  factory Tipe(String input) {
-    return Tipe._(validateStringNotEmpty(input));
+class TglBerangkat extends ValueObject<String> {
+  factory TglBerangkat(String input) {
+    return TglBerangkat._(validateStringNotEmpty(input));
   }
 
-  const Tipe._(this.value);
+  const TglBerangkat._(this.value);
 
   @override
   final Either<ValueFailure<String>, String> value;

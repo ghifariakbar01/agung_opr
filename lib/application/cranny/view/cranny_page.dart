@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
 import 'package:agung_opr/application/customer/shared/customer_providers.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
@@ -25,6 +26,8 @@ import '../../widgets/v_dialogs.dart';
 /// [SPK] Initialization
 /// [USER] Initialization
 /// [MODEL] Initialization
+/// [CSJenis] Initialization
+/// [CSItem] Initialization
 ///
 
 class CrannyPage extends ConsumerStatefulWidget {
@@ -39,12 +42,27 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) async => await ref.read(userNotifierProvider.notifier).getUser());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(userNotifierProvider.notifier).getUser();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // CS function
+    Future<void> CSFunction() async {
+      // GET CS Jenis AND Item
+      await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
+      await ref.read(csItemNotifierProvider.notifier).getCSItems();
+
+      await ref
+          .read(csJenisOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSJenisOFFLINEStatus();
+      await ref
+          .read(csItemOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSItemOFFLINEStatus();
+    }
+
     // SPK function get and update offline status
     Future<void> spkFunction() async {
       // GET [500] LATEST DATA
@@ -91,6 +109,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     // GET AND SAVE ALL DATA
     Future<void> getAndSaveAllData() async {
+      await CSFunction();
       await spkFunction();
       await modelFunction();
       await customerFunction();

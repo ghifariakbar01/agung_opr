@@ -3,12 +3,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/shared/state/cs_item_state.dart';
+import 'package:agung_opr/application/check_sheet/shared/state/cs_item.dart';
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:agung_opr/infrastructure/exceptions.dart';
 import 'package:dio/dio.dart';
 
-import '../../application/check_sheet/shared/state/cs_jenis_state.dart';
+import '../../application/check_sheet/shared/state/cs_jenis.dart';
+import '../../application/check_sheet/shared/state/cs_result.dart';
 
 class CSRemoteService {
   CSRemoteService(this._dio, this._dioRequestNotifier);
@@ -16,7 +17,7 @@ class CSRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<List<CSJenisState>> getCSJenis() async {
+  Future<List<CSResult>> getCSByIDSPK({required int idSPK}) async {
     const String dbName = 'pool_kr_list';
 
     try {
@@ -31,7 +32,7 @@ class CSRemoteService {
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
       log('data ${jsonEncode(data)}');
-      log('response $response');
+      log('response getCSJenis $response');
 
       final items = response.data?[0];
 
@@ -43,12 +44,12 @@ class CSRemoteService {
 
           if (list.isNotEmpty) {
             try {
-              List<CSJenisState> csuList =
-                  (list).map((data) => CSJenisState.fromJson(data)).toList();
+              List<CSResult> csList =
+                  (list).map((data) => CSResult.fromJson(data)).toList();
 
-              log('LIST CS JENIS: $csuList');
+              log('LIST CS JENIS: $csList');
 
-              return csuList;
+              return csList;
             } catch (e) {
               log('list error $e');
 
@@ -86,7 +87,77 @@ class CSRemoteService {
     }
   }
 
-  Future<List<CSItemState>> getCSItems() async {
+  Future<List<CSJenis>> getCSJenis() async {
+    const String dbName = 'pool_kr_list';
+
+    try {
+      final data = _dioRequestNotifier;
+
+      data.addAll({
+        "mode": "SELECT",
+        "command": "SELECT id_list AS id, nama FROM $dbName",
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      log('data ${jsonEncode(data)}');
+      log('response getCSJenis $response');
+
+      final items = response.data?[0];
+
+      if (items['status'] == 'Success') {
+        final listExist = items['items'] != null && items['items'] is List;
+
+        if (listExist) {
+          final list = items['items'] as List<dynamic>;
+
+          if (list.isNotEmpty) {
+            try {
+              List<CSJenis> csList =
+                  (list).map((data) => CSJenis.fromJson(data)).toList();
+
+              log('LIST CS JENIS: $csList');
+
+              return csList;
+            } catch (e) {
+              log('list error $e');
+
+              throw FormatException('error while iterating list getCSJenis');
+            }
+          } else {
+            log('list empty');
+
+            return [];
+          }
+        } else {
+          log('list empty');
+
+          return [];
+        }
+      } else {
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError || e.isConnectionTimeout) {
+        throw NoConnectionException();
+      } else if (e.response != null) {
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<List<CSItem>> getCSItems() async {
     const String dbName = 'pool_kr_list_dtl';
 
     try {
@@ -102,7 +173,7 @@ class CSRemoteService {
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
       log('data ${jsonEncode(data)}');
-      log('response $response');
+      log('response getCSItems $response');
 
       final items = response.data?[0];
 
@@ -114,8 +185,8 @@ class CSRemoteService {
 
           if (list.isNotEmpty) {
             try {
-              List<CSItemState> items =
-                  (list).map((data) => CSItemState.fromJson(data)).toList();
+              List<CSItem> items =
+                  (list).map((data) => CSItem.fromJson(data)).toList();
 
               log('LIST CS ITEMS: $items');
 

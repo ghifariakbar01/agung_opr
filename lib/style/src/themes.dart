@@ -115,13 +115,14 @@ mixin Themes {
         borderSide: BorderSide(color: Palette.primaryColor, width: 2));
   }
 
-  static InputDecoration formStyle(String hintText, {Widget? icon}) {
+  static InputDecoration formStyle(String hintText,
+      {Widget? icon, double? hintFontSize}) {
     return InputDecoration(
       enabledBorder: Themes.notFocused(isRadius: true),
       focusedBorder: Themes.focused(),
       contentPadding: const EdgeInsets.all(16),
       border: InputBorder.none,
-      hintStyle: Themes.greyHint(FontWeight.normal, 16),
+      hintStyle: Themes.greyHint(FontWeight.normal, hintFontSize ?? 16),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.red, width: 1.0),
         borderRadius: BorderRadius.circular(4.0),

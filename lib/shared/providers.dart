@@ -11,6 +11,7 @@ import '../application/sign_in_form/sign_in_form_notifier.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../application/spk/spk.dart';
 import '../application/user/user_notifier.dart';
 import '../application/user/user_state.dart';
 import '../infrastructure/auth_remote_service.dart';
@@ -77,6 +78,10 @@ final modeNotifierProvider =
 
 // Misc
 
-final isOfflineProvider = StateProvider((ref) => false);
+final isOfflineStateProvider = StateProvider((ref) => false);
 
 final passwordVisibleProvider = StateProvider.autoDispose<bool>((ref) => false);
+
+// Selected SPK
+
+final selectedSPKStateProvider = StateProvider((ref) => SPK.initial());

@@ -50,7 +50,7 @@ class ModelSearch extends ConsumerWidget {
           onChanged: (search) => search.isNotEmpty && search.length > 1
               ? () async {
                   final isOnline =
-                      ref.read(isOfflineProvider.notifier).state == false;
+                      ref.read(isOfflineStateProvider.notifier).state == false;
 
                   ref
                       .read(modelSearchNotifierProvider.notifier)

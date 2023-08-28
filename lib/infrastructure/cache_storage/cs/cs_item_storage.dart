@@ -1,13 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../credentials_storage.dart';
+import '../../credentials_storage.dart';
 
-class CheckSheetLoadingStorage implements CredentialsStorage {
-  CheckSheetLoadingStorage(this._storage);
+class CheckSheetItemStorage implements CredentialsStorage {
+  CheckSheetItemStorage(this._storage);
 
   final FlutterSecureStorage _storage;
 
-  static const _key = 'check_sheet_loading';
+  static const _key = 'check_sheet_item';
 
   String? _cachedCredentials;
 

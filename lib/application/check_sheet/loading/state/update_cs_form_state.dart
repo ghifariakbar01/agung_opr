@@ -1,50 +1,40 @@
-// import 'package:agung_opr/application/update_csu/state/update_csu_ng_state.dart';
-// import 'package:agung_opr/domain/value_objects_copy.dart';
-// import 'package:flutter/material.dart';
-// import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:agung_opr/domain/value_objects_copy.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'update_csu_form_state.freezed.dart';
+import 'update_cs_ng_state.dart';
 
-// @freezed
-// class UpdateCSFormState with _$UpdateCSFormState {
-//   const factory UpdateCSFormState({
-//     required Gate gate,
-//     required Deck deck,
-//     required Supir1 supir1,
-//     required Supir2 supir2,
-//     required SupirSDR supirSDR,
-//     required TglTerima tglTerima,
-//     required TglKirim tglKirim,
-//     required TextEditingController gateTextController,
-//     required TextEditingController deckTextController,
-//     required TextEditingController supir1TextController,
-//     required TextEditingController supir2TextController,
-//     required TextEditingController supirSDRTextController,
-//     required TextEditingController tglTerimaTextController,
-//     required TextEditingController tglKirimTextController,
-//     required bool isShowError,
-//     required bool isNG,
-//     required UpdateCSUNGState ngStates,
-//   }) = _UpdateCSFormState;
+part 'update_cs_form_state.freezed.dart';
 
-//   factory UpdateCSFormState.initial() => UpdateCSFormState(
-//         gate: Gate(''),
-//         deck: Deck(''),
-//         supir1: Supir1(''),
-//         supir2: Supir2(''),
-//         supirSDR: SupirSDR(''),
-//         tglTerima: TglTerima(''),
-//         tglKirim: TglKirim(''),
-//         gateTextController: TextEditingController(),
-//         deckTextController: TextEditingController(),
-//         supir1TextController: TextEditingController(),
-//         supir2TextController: TextEditingController(),
-//         supirSDRTextController: TextEditingController(),
-//         tglTerimaTextController: TextEditingController(),
-//         tglKirimTextController: TextEditingController(),
-//         inOut: false,
-//         isShowError: false,
-//         isNG: [],
-//         ngStates: [],
-//       );
-// }
+@freezed
+class UpdateCSFormState with _$UpdateCSFormState {
+  const factory UpdateCSFormState({
+    required Nopol nopol,
+    required Supir1 namaSupir,
+    required SupirSDR namaAsistenSupir,
+    required TglBerangkat tglBerangkat,
+    required JamLoad jamLoadUnload,
+    required Gate gate,
+    required Keterangan keterangan,
+    required Tipe tipe,
+    required bool isShowError,
+    required TextEditingController jamLoadUnloadText,
+    required List<bool> isNG,
+    required List<UpdateCSNGState> ngStates,
+  }) = _UpdateCSFormState;
+
+  factory UpdateCSFormState.initial() => UpdateCSFormState(
+        nopol: Nopol(''),
+        namaSupir: Supir1(''),
+        namaAsistenSupir: SupirSDR(''),
+        tglBerangkat: TglBerangkat(''),
+        jamLoadUnload: JamLoad(''),
+        gate: Gate(''),
+        keterangan: Keterangan(''),
+        tipe: Tipe.Unknown,
+        jamLoadUnloadText: TextEditingController(),
+        isShowError: false,
+        isNG: [],
+        ngStates: [],
+      );
+}

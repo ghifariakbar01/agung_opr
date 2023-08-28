@@ -14,5 +14,8 @@ class SPK with _$SPK {
     required String nopol,
   }) = _SPK;
 
+  factory SPK.initial() =>
+      SPK(idSpk: 0, spkNo: '', supir1Nm: '', supir2Nm: '', nopol: '');
+
   factory SPK.fromJson(Map<String, Object?> json) => _$SPKFromJson(json);
 }

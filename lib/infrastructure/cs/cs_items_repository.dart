@@ -5,7 +5,7 @@ import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
-import '../../application/check_sheet/shared/state/cs_item_state.dart';
+import '../../application/check_sheet/shared/state/cs_item.dart';
 import '../../domain/local_failure.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
@@ -14,7 +14,7 @@ import 'cs_remote_service.dart';
 /// [SAVED] MODEL =>
 ///
 /// [
-///   [CSItemState]
+///   [CSItem]
 ///
 /// ]
 
@@ -27,13 +27,13 @@ class CSItemsRepository {
   Future<bool> hasOfflineData() => getCSItemsOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, List<CSItemState>>> getCSItems() async {
+  Future<Either<RemoteFailure, List<CSItem>>> getCSItems() async {
     try {
-      final listCSJenis = await _remoteService.getCSItems();
+      final listCSItem = await _remoteService.getCSItems();
 
-      await _storage.save(CSItemState.CSItemListToJson(listCSJenis));
+      await _storage.save(CSItem.CSItemListToJson(listCSItem));
 
-      return right(listCSJenis);
+      return right(listCSItem);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
@@ -47,9 +47,9 @@ class CSItemsRepository {
     }
   }
 
-  /// DATA: [CSItemState] FROM STORAGE
+  /// DATA: [CSItem] FROM STORAGE
   ///
-  Future<Either<RemoteFailure, List<CSItemState>>> getCSItemsOFFLINE() async {
+  Future<Either<RemoteFailure, List<CSItem>>> getCSItemsOFFLINE() async {
     try {
       final frameStorage = await _storage.read();
 
@@ -59,43 +59,25 @@ class CSItemsRepository {
 
       // HAS MAP
       if (frameStorage != null) {
-        debugger(message: 'called');
+        final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
-        final responsMap =
-            jsonDecode(frameStorage) as List<Map<String, dynamic>>;
-
-        final List<CSItemState> response =
-            CSItemState.CSItemListFromJson(responsMap);
-
-        debugger(message: 'called');
+        final List<CSItem> response = CSItem.CSItemListFromJson(responsMap);
 
         log('CS JENIS STORAGE RESPONSE: $response');
 
         if (response.isNotEmpty) {
-          debugger(message: 'called');
-
           return right(response);
         } else {
-          debugger(message: 'called');
-
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
-
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 
 import '../domain/failures.dart';
@@ -76,10 +78,14 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
 
 // ISENG
 Either<ValueFailure<String>, String> validateJam(String input) {
-  RegExp timePattern = RegExp(r'^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$');
+  RegExp timePattern = RegExp(r'^([01]\d|2[0-3]):[0-5]\d$');
   if (timePattern.hasMatch(input)) {
+    // debugger();
+
     return right(input);
   } else {
+    // debugger();
+
     return left(ValueFailure.invalidJam(failedValue: input));
   }
 }

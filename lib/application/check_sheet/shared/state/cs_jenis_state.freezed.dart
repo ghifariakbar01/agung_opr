@@ -14,16 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-CSJenisState _$CSJenisStateFromJson(Map<String, dynamic> json) {
-  return _CSJenisState.fromJson(json);
-}
-
 /// @nodoc
 mixin _$CSJenisState {
-  int get id => throw _privateConstructorUsedError;
-  String get nama => throw _privateConstructorUsedError;
+  List<CSJenis> get csJenisList => throw _privateConstructorUsedError;
+  int get selectedId => throw _privateConstructorUsedError;
+  bool get isProcessing => throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, List<CSJenis>>> get FOSOCSJenis =>
+      throw _privateConstructorUsedError;
+  Option<Either<LocalFailure, Unit>> get FOSOSaveCSJenis =>
+      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CSJenisStateCopyWith<CSJenisState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -35,7 +35,12 @@ abstract class $CSJenisStateCopyWith<$Res> {
           CSJenisState value, $Res Function(CSJenisState) then) =
       _$CSJenisStateCopyWithImpl<$Res, CSJenisState>;
   @useResult
-  $Res call({int id, String nama});
+  $Res call(
+      {List<CSJenis> csJenisList,
+      int selectedId,
+      bool isProcessing,
+      Option<Either<RemoteFailure, List<CSJenis>>> FOSOCSJenis,
+      Option<Either<LocalFailure, Unit>> FOSOSaveCSJenis});
 }
 
 /// @nodoc
@@ -51,18 +56,33 @@ class _$CSJenisStateCopyWithImpl<$Res, $Val extends CSJenisState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? nama = null,
+    Object? csJenisList = null,
+    Object? selectedId = null,
+    Object? isProcessing = null,
+    Object? FOSOCSJenis = null,
+    Object? FOSOSaveCSJenis = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      csJenisList: null == csJenisList
+          ? _value.csJenisList
+          : csJenisList // ignore: cast_nullable_to_non_nullable
+              as List<CSJenis>,
+      selectedId: null == selectedId
+          ? _value.selectedId
+          : selectedId // ignore: cast_nullable_to_non_nullable
               as int,
-      nama: null == nama
-          ? _value.nama
-          : nama // ignore: cast_nullable_to_non_nullable
-              as String,
+      isProcessing: null == isProcessing
+          ? _value.isProcessing
+          : isProcessing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      FOSOCSJenis: null == FOSOCSJenis
+          ? _value.FOSOCSJenis
+          : FOSOCSJenis // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSJenis>>>,
+      FOSOSaveCSJenis: null == FOSOSaveCSJenis
+          ? _value.FOSOSaveCSJenis
+          : FOSOSaveCSJenis // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, Unit>>,
     ) as $Val);
   }
 }
@@ -75,7 +95,12 @@ abstract class _$$_CSJenisStateCopyWith<$Res>
       __$$_CSJenisStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String nama});
+  $Res call(
+      {List<CSJenis> csJenisList,
+      int selectedId,
+      bool isProcessing,
+      Option<Either<RemoteFailure, List<CSJenis>>> FOSOCSJenis,
+      Option<Either<LocalFailure, Unit>> FOSOSaveCSJenis});
 }
 
 /// @nodoc
@@ -89,38 +114,68 @@ class __$$_CSJenisStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? nama = null,
+    Object? csJenisList = null,
+    Object? selectedId = null,
+    Object? isProcessing = null,
+    Object? FOSOCSJenis = null,
+    Object? FOSOSaveCSJenis = null,
   }) {
     return _then(_$_CSJenisState(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      csJenisList: null == csJenisList
+          ? _value._csJenisList
+          : csJenisList // ignore: cast_nullable_to_non_nullable
+              as List<CSJenis>,
+      selectedId: null == selectedId
+          ? _value.selectedId
+          : selectedId // ignore: cast_nullable_to_non_nullable
               as int,
-      nama: null == nama
-          ? _value.nama
-          : nama // ignore: cast_nullable_to_non_nullable
-              as String,
+      isProcessing: null == isProcessing
+          ? _value.isProcessing
+          : isProcessing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      FOSOCSJenis: null == FOSOCSJenis
+          ? _value.FOSOCSJenis
+          : FOSOCSJenis // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSJenis>>>,
+      FOSOSaveCSJenis: null == FOSOSaveCSJenis
+          ? _value.FOSOSaveCSJenis
+          : FOSOSaveCSJenis // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, Unit>>,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_CSJenisState implements _CSJenisState {
-  const _$_CSJenisState({required this.id, required this.nama});
+  const _$_CSJenisState(
+      {required final List<CSJenis> csJenisList,
+      required this.selectedId,
+      required this.isProcessing,
+      required this.FOSOCSJenis,
+      required this.FOSOSaveCSJenis})
+      : _csJenisList = csJenisList;
 
-  factory _$_CSJenisState.fromJson(Map<String, dynamic> json) =>
-      _$$_CSJenisStateFromJson(json);
+  final List<CSJenis> _csJenisList;
+  @override
+  List<CSJenis> get csJenisList {
+    if (_csJenisList is EqualUnmodifiableListView) return _csJenisList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_csJenisList);
+  }
 
   @override
-  final int id;
+  final int selectedId;
   @override
-  final String nama;
+  final bool isProcessing;
+  @override
+  final Option<Either<RemoteFailure, List<CSJenis>>> FOSOCSJenis;
+  @override
+  final Option<Either<LocalFailure, Unit>> FOSOSaveCSJenis;
 
   @override
   String toString() {
-    return 'CSJenisState(id: $id, nama: $nama)';
+    return 'CSJenisState(csJenisList: $csJenisList, selectedId: $selectedId, isProcessing: $isProcessing, FOSOCSJenis: $FOSOCSJenis, FOSOSaveCSJenis: $FOSOSaveCSJenis)';
   }
 
   @override
@@ -128,39 +183,53 @@ class _$_CSJenisState implements _CSJenisState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CSJenisState &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.nama, nama) || other.nama == nama));
+            const DeepCollectionEquality()
+                .equals(other._csJenisList, _csJenisList) &&
+            (identical(other.selectedId, selectedId) ||
+                other.selectedId == selectedId) &&
+            (identical(other.isProcessing, isProcessing) ||
+                other.isProcessing == isProcessing) &&
+            (identical(other.FOSOCSJenis, FOSOCSJenis) ||
+                other.FOSOCSJenis == FOSOCSJenis) &&
+            (identical(other.FOSOSaveCSJenis, FOSOSaveCSJenis) ||
+                other.FOSOSaveCSJenis == FOSOSaveCSJenis));
   }
 
-  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nama);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_csJenisList),
+      selectedId,
+      isProcessing,
+      FOSOCSJenis,
+      FOSOSaveCSJenis);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$_CSJenisStateCopyWith<_$_CSJenisState> get copyWith =>
       __$$_CSJenisStateCopyWithImpl<_$_CSJenisState>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_CSJenisStateToJson(
-      this,
-    );
-  }
 }
 
 abstract class _CSJenisState implements CSJenisState {
   const factory _CSJenisState(
-      {required final int id, required final String nama}) = _$_CSJenisState;
-
-  factory _CSJenisState.fromJson(Map<String, dynamic> json) =
-      _$_CSJenisState.fromJson;
+      {required final List<CSJenis> csJenisList,
+      required final int selectedId,
+      required final bool isProcessing,
+      required final Option<Either<RemoteFailure, List<CSJenis>>> FOSOCSJenis,
+      required final Option<Either<LocalFailure, Unit>>
+          FOSOSaveCSJenis}) = _$_CSJenisState;
 
   @override
-  int get id;
+  List<CSJenis> get csJenisList;
   @override
-  String get nama;
+  int get selectedId;
+  @override
+  bool get isProcessing;
+  @override
+  Option<Either<RemoteFailure, List<CSJenis>>> get FOSOCSJenis;
+  @override
+  Option<Either<LocalFailure, Unit>> get FOSOSaveCSJenis;
   @override
   @JsonKey(ignore: true)
   _$$_CSJenisStateCopyWith<_$_CSJenisState> get copyWith =>

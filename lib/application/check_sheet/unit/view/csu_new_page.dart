@@ -59,8 +59,9 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
             () {},
             (either) => either.fold(
                     (failure) => failure.maybeMap(
-                          noConnection: (value) =>
-                              ref.read(isOfflineProvider.notifier).state = true,
+                          noConnection: (value) => ref
+                              .read(isOfflineStateProvider.notifier)
+                              .state = true,
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(
@@ -115,8 +116,9 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
             () {},
             (either) => either.fold(
                     (failure) => failure.maybeMap(
-                          noConnection: (value) =>
-                              ref.read(isOfflineProvider.notifier).state = true,
+                          noConnection: (value) => ref
+                              .read(isOfflineStateProvider.notifier)
+                              .state = true,
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(
@@ -151,8 +153,9 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
             () {},
             (either) => either.fold(
                     (failure) => failure.maybeMap(
-                          noConnection: (value) =>
-                              ref.read(isOfflineProvider.notifier).state = true,
+                          noConnection: (value) => ref
+                              .read(isOfflineStateProvider.notifier)
+                              .state = true,
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(

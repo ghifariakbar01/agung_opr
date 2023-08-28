@@ -4,6 +4,7 @@ import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/spk/view/spk_search.dart';
 import 'package:agung_opr/shared/providers.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -11,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
+import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'spk_item.dart';
@@ -25,11 +27,11 @@ class SPKScaffold extends ConsumerWidget {
     final modeApp = ref.watch(modeNotifierProvider);
     final spkProvider = ref.watch(spkNotifierProvider);
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        _scrollController.position.notifyListeners();
-      },
-    );
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) {
+    //     _scrollController.position.notifyListeners();
+    //   },
+    // );
 
     _scrollController.addListener(() async {
       final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
@@ -166,6 +168,8 @@ class SPKScaffold extends ConsumerWidget {
                           await context.pushNamed(
                               RouteNames.updateFrameNameRoute,
                               extra: spkList[i].idSpk);
+
+                          return unit;
                         },
                         checkSheetUnit: () => context.pushNamed(
                             RouteNames.updateFrameNameRoute,
@@ -180,8 +184,19 @@ class SPKScaffold extends ConsumerWidget {
                         //     .pushNamed(RouteNames.assignUnitMerakNameRoute),
                         // dataUpdateQuery: () => context
                         //     .pushNamed(RouteNames.dataUpdateQueryNameRoute),
-                        checkSheetLoading: () => {},
-                        checkSheetUnloading: () => {},
+                        checkSheetLoading: () async {
+                          ref
+                              .read(updateCSNotifierProvider.notifier)
+                              .changeFillInitial();
+
+                          await context.pushNamed(
+                              RouteNames.checkSheetLoadingNameRoute,
+                              extra: spkList[i]);
+
+                          return unit;
+                        },
+                        checkSheetUnloading: () => context
+                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
                         checkSheetGateMerak: () => {},
                         assignUnitMerak: () => {},
                         dataUpdateQuery: () => {},

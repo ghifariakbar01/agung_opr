@@ -1,30 +1,28 @@
-import 'dart:convert';
-
+import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis.dart';
+import 'package:agung_opr/application/update_frame/frame.dart';
+import 'package:agung_opr/domain/local_failure.dart';
+import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../domain/remote_failure.dart';
 
 part 'cs_jenis_state.freezed.dart';
 
-part 'cs_jenis_state.g.dart';
-
 @freezed
 class CSJenisState with _$CSJenisState {
-  const factory CSJenisState({required int id, required String nama}) =
-      _CSJenisState;
+  const factory CSJenisState({
+    required List<CSJenis> csJenisList,
+    required int selectedId,
+    required bool isProcessing,
+    required Option<Either<RemoteFailure, List<CSJenis>>> FOSOCSJenis,
+    required Option<Either<LocalFailure, Unit>> FOSOSaveCSJenis,
+  }) = _CSJenisState;
 
-  factory CSJenisState.initial() => CSJenisState(id: 0, nama: '');
-
-  factory CSJenisState.fromJson(Map<String, Object?> json) =>
-      _$CSJenisStateFromJson(json);
-
-  static List<CSJenisState> CSJenisListFromJson(List<dynamic> jsonList) {
-    return jsonList
-        .map((e) => CSJenisState.fromJson(e as Map<String, dynamic>))
-        .toList();
-  }
-
-  static String CSJenisListToJson(List<CSJenisState> resultList) {
-    List<Map<String, dynamic>> jsonList =
-        resultList.map((e) => e.toJson()).toList();
-    return jsonEncode(jsonList);
-  }
+  factory CSJenisState.initial() => CSJenisState(
+        csJenisList: [],
+        selectedId: 0,
+        isProcessing: false,
+        FOSOCSJenis: none(),
+        FOSOSaveCSJenis: none(),
+      );
 }

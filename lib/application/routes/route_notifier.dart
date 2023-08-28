@@ -18,6 +18,7 @@ import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../check_sheet/unit/view/csu_new_page.dart';
 import '../check_sheet/unit/view/csu_result_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
+import '../spk/spk.dart';
 import '../update_frame/frame.dart';
 import 'route_names.dart';
 
@@ -104,7 +105,10 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
               name: RouteNames.checkSheetLoadingNameRoute,
               path: RouteNames.checkSheetLoadingName,
-              builder: (context, state) => CheckSheetLoadingPage(),
+              builder: (context, state) {
+                SPK spk = state.extra as SPK;
+                return CheckSheetLoadingPage(spk: spk);
+              },
             ),
             GoRoute(
               name: RouteNames.checkSheetUnloadingNameRoute,

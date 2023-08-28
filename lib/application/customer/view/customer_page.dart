@@ -63,8 +63,9 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
             () {},
             (either) => either.fold(
                     (failure) => failure.maybeMap(
-                          noConnection: (value) =>
-                              ref.read(isOfflineProvider.notifier).state = true,
+                          noConnection: (value) => ref
+                              .read(isOfflineStateProvider.notifier)
+                              .state = true,
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(

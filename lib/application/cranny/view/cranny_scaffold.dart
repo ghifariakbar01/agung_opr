@@ -9,6 +9,7 @@ import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../../widgets/v_bottomnav.dart';
 import 'cranny_item.dart';
+import 'cs/cs_cranny_page.dart';
 
 final List<String> labels = [
   'UPDATE FRAME DUMMY',
@@ -55,6 +56,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                       child: CrannyItem(label: label))
                 ]
               ],
+              CSCrannyPage(),
               // Frame
               updateFrameOfflineOrOnline.maybeWhen(
                 hasOfflineStorage: () => TextButton(

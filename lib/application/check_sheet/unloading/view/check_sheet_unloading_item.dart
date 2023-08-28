@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/style.dart';
-import '../../check_sheet_item_form.dart';
 
 class CheckSheetUnloadingItem extends ConsumerWidget {
   const CheckSheetUnloadingItem();
@@ -27,64 +26,64 @@ class CheckSheetUnloadingItem extends ConsumerWidget {
               ],
             ),
 
-            SizedBox(
-              height: 4,
-            ),
+            // SizedBox(
+            //   height: 4,
+            // ),
 
-            // Form Item
-            CheckSheetItemForm(
-                'A1. Driver Memasang Bantalan Karet Untuk Proses Unloading.'),
+            // // Form Item
+            // CheckSheetItemForm(
+            //     'A1. Driver Memasang Bantalan Karet Untuk Proses Unloading.'),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
-            CheckSheetItemForm(
-                'A2. Memastikan Driver Melakukan Loading, Asisten Memandu Loading di Sisi Car Carrier.'),
+            // CheckSheetItemForm(
+            //     'A2. Memastikan Driver Melakukan Loading, Asisten Memandu Loading di Sisi Car Carrier.'),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
-            CheckSheetItemForm('A3. Muatan Lurus Sesuai Garis Pandu.'),
+            // CheckSheetItemForm('A3. Muatan Lurus Sesuai Garis Pandu.'),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
-            CheckSheetItemForm(
-                'A4. Driver Tidak Melakukan Aktivitas Sampai Asisten Selesai Proses Unlashing (Melepaskan J-Hook).'),
+            // CheckSheetItemForm(
+            //     'A4. Driver Tidak Melakukan Aktivitas Sampai Asisten Selesai Proses Unlashing (Melepaskan J-Hook).'),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
-            CheckSheetItemForm(
-                'A5. Asisten Driver Memandu Unit Sampai Batas Aman (Melewati Marking Kuning).'),
+            // CheckSheetItemForm(
+            //     'A5. Asisten Driver Memandu Unit Sampai Batas Aman (Melewati Marking Kuning).'),
 
-            SizedBox(
-              height: 16,
-            ),
+            // SizedBox(
+            //   height: 16,
+            // ),
 
-            // Header
-            Row(
-              children: [
-                Text(
-                  'B. Langsir Self Drive',
-                  style: Themes.customColor(FontWeight.bold, 14, Colors.black),
-                ),
-              ],
-            ),
+            // // Header
+            // Row(
+            //   children: [
+            //     Text(
+            //       'B. Langsir Self Drive',
+            //       style: Themes.customColor(FontWeight.bold, 14, Colors.black),
+            //     ),
+            //   ],
+            // ),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
-            CheckSheetItemForm('B1. Self Tidak Memakai Accessories Tambahan'),
+            // CheckSheetItemForm('B1. Self Tidak Memakai Accessories Tambahan'),
 
-            SizedBox(
-              height: 8,
-            ),
+            // SizedBox(
+            //   height: 8,
+            // ),
 
             // Button Simpan
             // Row(
