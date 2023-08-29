@@ -12,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'spk_item.dart';
@@ -65,11 +64,9 @@ class SPKScaffold extends ConsumerWidget {
           'SPK List (${modeApp.maybeWhen(
             initial: () {},
             updateFrameDummy: () => 'Update Frame Dummy',
-            checkSheetUnit: () => 'Check Sheet Unit',
-            checkSheetLoading: () => 'CS Loading',
-            checkSheetUnloading: () => 'CS Unloading',
-            checkSheetGateMerak: () => 'CS Gate Merak',
-            assignUnitMerak: () => 'Assign Unit Merak',
+            checkSheetLoading: () => 'CCR Loading',
+            checkSheetUnloading: () => 'CCR Unloading',
+            checkSheetLoadingUnloading: () => 'CCR Loading & Unloading',
             orElse: () {},
           )})',
         ),
@@ -142,7 +139,7 @@ class SPKScaffold extends ConsumerWidget {
                   IgnorePointer(
                     ignoring: isSearching,
                     child: TextButton(
-                      onPressed: () => modeApp.when(
+                      onPressed: () => modeApp.maybeWhen(
                         initial: () => {},
                         updateFrameDummy: () async {
                           // INIT BACK 0
@@ -150,18 +147,14 @@ class SPKScaffold extends ConsumerWidget {
                               .read(frameNotifierProvider.notifier)
                               .changeFrameList([]);
 
-                          final responseLEN = 0;
-
                           ref
                               .read(frameNotifierProvider.notifier)
-                              .changeFillEmptyFOSOSaveFrameList(
-                                  length: responseLEN);
+                              .changeFillEmptyFOSOSaveFrameList(length: 0);
 
                           /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
                           ref
                               .read(updateFrameNotifierProvider.notifier)
-                              .changeFillEmptyList(
-                                  length: responseLEN, frame: []);
+                              .changeFillEmptyList(length: 0, frame: []);
 
                           //
 
@@ -174,32 +167,17 @@ class SPKScaffold extends ConsumerWidget {
                         checkSheetUnit: () => context.pushNamed(
                             RouteNames.updateFrameNameRoute,
                             extra: spkList[i].idSpk),
-                        // checkSheetLoading: () => context
-                        //     .pushNamed(RouteNames.checkSheetLoadingNameRoute),
-                        // checkSheetUnloading: () => context
-                        //     .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        // checkSheetGateMerak: () => context
-                        //     .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        // assignUnitMerak: () => context
-                        //     .pushNamed(RouteNames.assignUnitMerakNameRoute),
-                        // dataUpdateQuery: () => context
-                        //     .pushNamed(RouteNames.dataUpdateQueryNameRoute),
-                        checkSheetLoading: () async {
-                          ref
-                              .read(updateCSNotifierProvider.notifier)
-                              .changeFillInitial();
-
+                        checkSheetGateMerak: () => {},
+                        assignUnitMerak: () => {},
+                        dataUpdateQuery: () => {},
+                        // LOADING, UNLOADING, LOADING & UNLOADING
+                        orElse: () async {
                           await context.pushNamed(
                               RouteNames.checkSheetLoadingNameRoute,
                               extra: spkList[i]);
 
                           return unit;
                         },
-                        checkSheetUnloading: () => context
-                            .pushNamed(RouteNames.checkSheetUnloadingNameRoute),
-                        checkSheetGateMerak: () => {},
-                        assignUnitMerak: () => {},
-                        dataUpdateQuery: () => {},
                       ),
                       style: ButtonStyle(
                           padding: MaterialStatePropertyAll(EdgeInsets.zero)),

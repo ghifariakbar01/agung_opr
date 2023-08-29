@@ -2,24 +2,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'mode_state.dart';
 
+//
+///   [ModeState.updateFrameDummy],
+///   [ModeState.checkSheetUnit],
+///   [ModeState.checkSheetLoading],
+///   [ModeState.checkSheetUnloading],
+///   [ModeState.checkSheetLoadingUnloading],
+///   [ModeState.checkSheetGateMerak],
+///   [ModeState.assignUnitMerak],
+///   [ModeState.dataUpdateQuery]
+///
+
 class ModeNotifier extends StateNotifier<ModeState> {
   ModeNotifier() : super(ModeState.initial());
 
-  final Map<String, ModeState> labelsMode = {
-    'UPDATE FRAME DUMMY': ModeState.updateFrameDummy(),
-    'CHECKSHEET UNIT': ModeState.checkSheetUnit(),
-    'CHECKSHEET CCR LOADING': ModeState.checkSheetLoading(),
-    'CHECKSHEET CCR UNLOADING': ModeState.checkSheetUnloading(),
-    'CHECKSHEET GATE MERAK': ModeState.checkSheetGateMerak(),
-    'ASSIGN UNIT MERAK': ModeState.assignUnitMerak(),
-    'DATA AKAN DIUPDATE': ModeState.dataUpdateQuery()
-  };
-
-  void changeModeAplikasi(String modeKey) {
-    labelsMode.forEach((key, value) {
-      if (modeKey == key) {
-        state = value;
-      }
-    });
+  void changeModeAplikasi(ModeState modeState) {
+    state = modeState;
   }
 }

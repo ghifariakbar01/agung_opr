@@ -205,7 +205,8 @@ class UpdateFrameRepository {
     required SPPDC sppdc,
   }) async {
     try {
-      const String dbName = 'opr_trs_ti_unit_test';
+      // TEST
+      const String dbName = 'opr_trs_ti_unit';
 
       final idKendTypeStr = idKendType.getOrLeave('');
       final idKendTypeInt =
@@ -349,8 +350,6 @@ class UpdateFrameRepository {
   Map<String, Map<String, String>> convertToNestedMap(
       Map<String, dynamic> map) {
     Map<String, Map<String, String>> nestedMap = {};
-    // 1. map IS
-    // {159103: {715723: UPDATE opr_trs_ti_unit_test SET frame = 'MK2NCXPANPJ001185', engine = 'BANDA', warna = 'warna coklat', no_reff_expor = 'asdfasdf', id_kend_type = '591' WHERE id_unit = 715723}}
 
     map.entries.forEach((element) {
       final response = element.value as Map<String, dynamic>;

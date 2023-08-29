@@ -7,18 +7,22 @@ import 'package:agung_opr/infrastructure/update_frame/update_frame_repository.da
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../infrastructure/update_cs/update_cs_repository.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
+import '../check_sheet/shared/state/cs_id_query.dart';
 import '../check_sheet/unit/state/csu_id_query.dart';
 import 'auto_data_update_frame_state.dart';
 
 class AutoDataUpdateFrameNotifier
     extends StateNotifier<AutoDataUpdateFrameState> {
   AutoDataUpdateFrameNotifier(
+    this._updateCSRepository,
     this._updateCSUFrameRepository,
     this._updateFrameRepository,
     this._frameRepository,
   ) : super(AutoDataUpdateFrameState.initial());
 
+  final UpdateCSRepository _updateCSRepository;
   final UpdateCSUFrameRepository _updateCSUFrameRepository;
   final UpdateFrameRepository _updateFrameRepository;
   final FrameRepository _frameRepository;
@@ -51,7 +55,13 @@ class AutoDataUpdateFrameNotifier
     return isEmpty;
   }
 
+  void resetAutoDataRemoteFOSO() {
+    state = state.copyWith(FOSOAutoDataRemote: none());
+  }
+
   bool isCSUQueryEmpty() => state.csuIdQueries.isEmpty;
+
+  bool isCSQueryEmpty() => state.csIdQueries.isEmpty;
 
   void changeSavedQuery(
       {required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery}) {
@@ -60,6 +70,10 @@ class AutoDataUpdateFrameNotifier
 
   void changeSavedCSUQuery({required List<CSUIDQuery> csuIdQueries}) {
     state = state.copyWith(csuIdQueries: csuIdQueries);
+  }
+
+  void changeSavedCSQuery({required List<CSIDQuery> csIdQueries}) {
+    state = state.copyWith(csIdQueries: csIdQueries);
   }
 
   Future<void> getSavedQueryFromRepository() async {
@@ -72,6 +86,19 @@ class AutoDataUpdateFrameNotifier
 
     state = state.copyWith(
         isGetting: false, FOSOSPKAutoDataLocalUpdateFrame: optionOf(FOS));
+  }
+
+  Future<void> runSavedQueryFromRepository(
+      {required Map<String, Map<String, String>>
+          idSPKMapidTIUnitMapQuery}) async {
+    Either<RemoteFailure, Unit>? FOS;
+
+    state = state.copyWith(isGetting: true);
+
+    FOS = await _updateFrameRepository.updateFrameByQuery(
+        queryMap: idSPKMapidTIUnitMapQuery);
+
+    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
   }
 
   // 1.
@@ -101,15 +128,29 @@ class AutoDataUpdateFrameNotifier
     state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
   }
 
-  Future<void> runSavedQueryFromRepository(
-      {required Map<String, Map<String, String>>
-          idSPKMapidTIUnitMapQuery}) async {
+  // 1.
+  Future<void> getSavedCSQueryFromRepository() async {
+    Either<LocalFailure, List<CSIDQuery>>? FOS;
+
+    state =
+        state.copyWith(isGetting: true, FOSOAutoDataLocalUpdateFrameCS: none());
+
+    // CONVERT ID_CS_NAs to appropriate values
+    FOS = await _updateCSRepository.getUpdateCSQueryListOFFLINE();
+
+    state = state.copyWith(
+        isGetting: false, FOSOAutoDataLocalUpdateFrameCS: optionOf(FOS));
+  }
+
+  // 2.
+  Future<void> runSavedCSQueryFromRepository(
+      {required List<CSIDQuery> queryIds}) async {
     Either<RemoteFailure, Unit>? FOS;
 
     state = state.copyWith(isGetting: true);
 
-    FOS = await _updateFrameRepository.updateFrameByQuery(
-        queryMap: idSPKMapidTIUnitMapQuery);
+    // CONVERT ID_CS_NAs to appropriate values
+    FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
 
     state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
   }

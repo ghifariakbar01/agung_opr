@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/constants.dart';
+import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 
@@ -23,11 +24,18 @@ class DataUpdateLinearProgress extends ConsumerWidget {
     final updateCSUFrameOfflineOrOnline =
         ref.watch(updateCSUFrameOfflineNotifierProvider);
 
+    final updateCSFrameOfflineOrOnline =
+        ref.watch(updateCSOfflineNotifierProvider);
+
     final hasQueryData = updateFrameOfflineOrOnline.maybeWhen(
           hasOfflineStorage: () => true,
           orElse: () => false,
         ) ||
         updateCSUFrameOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => true,
+          orElse: () => false,
+        ) ||
+        updateCSFrameOfflineOrOnline.maybeWhen(
           hasOfflineStorage: () => true,
           orElse: () => false,
         );

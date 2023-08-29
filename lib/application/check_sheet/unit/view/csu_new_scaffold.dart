@@ -80,9 +80,6 @@ class CSUNewScaffold extends ConsumerWidget {
                             await ref
                                 .read(updateCSUFrameNotifierProvider.notifier)
                                 .saveQueryOK();
-
-                            context.pushReplacementNamed(
-                                RouteNames.dataUpdateQueryName);
                           }),
                       VButton(
                           label: 'NO DEFECT',

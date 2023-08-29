@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/assets.dart';
-import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../check_sheet/shared/state/cs_item_offline_state.dart';
 import '../../../widgets/v_dialogs.dart';
 import 'cs_cranny_column.dart';
@@ -124,7 +123,6 @@ class _CSCrannyPageState extends ConsumerState<CSCrannyPage> {
     return Stack(
       children: [
         CSCrannyColumn(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isSubmittingJenis || isSubmittingItem),
       ],
     );

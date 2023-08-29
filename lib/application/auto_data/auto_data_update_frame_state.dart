@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/shared/state/cs_id_query.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
@@ -14,6 +15,7 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
     //
     required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
     required List<CSUIDQuery> csuIdQueries,
+    required List<CSIDQuery> csIdQueries,
     //
     required Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
     //
@@ -21,13 +23,17 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
         FOSOSPKAutoDataLocalUpdateFrame,
     required Option<Either<LocalFailure, List<CSUIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCSU,
+    required Option<Either<LocalFailure, List<CSIDQuery>>>
+        FOSOAutoDataLocalUpdateFrameCS,
   }) = _AutoDataUpdateFrameState;
 
   factory AutoDataUpdateFrameState.initial() => AutoDataUpdateFrameState(
       isGetting: false,
       idSPKMapidTIUnitMapQuery: {},
       csuIdQueries: [],
+      csIdQueries: [],
       FOSOAutoDataRemote: none(),
       FOSOSPKAutoDataLocalUpdateFrame: none(),
-      FOSOAutoDataLocalUpdateFrameCSU: none());
+      FOSOAutoDataLocalUpdateFrameCSU: none(),
+      FOSOAutoDataLocalUpdateFrameCS: none());
 }

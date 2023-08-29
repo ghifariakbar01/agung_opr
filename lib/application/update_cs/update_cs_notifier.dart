@@ -75,8 +75,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
     final generateNGStates =
         List.generate(length, (index) => UpdateCSNGState.initial());
 
-    debugger();
-
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(ngStates: generateNGStates));
 
@@ -84,32 +82,21 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(isNG: generateIsNG));
-
-    // debugger(message
-    //: 'called');
   }
 
   Future<void> saveQueryOK() async {
     Either<LocalFailure, Unit>? FOS;
 
     if (isValid()) {
-      debugger();
-
       state = state.copyWith(
           isProcessing: true, showErrorMessages: false, FOSOUpdateCS: none());
 
       final stateCS = state.updateCSForm;
 
       // NG
-      final NG = state.updateCSForm.isNG;
-
-      final isNG = NG.firstWhere(
-        (element) => element == true,
-        orElse: () => false,
-      );
 
       final queryId = _repository.getOKSavableQuery(
-          idSPK: 1,
+          idSPK: state.idSPK,
           nopol: stateCS.nopol,
           supir1: stateCS.namaSupir,
           supir2: stateCS.namaAsistenSupir,
@@ -123,8 +110,12 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
                     UpdateCSNGState.initial().copyWith(status: OKorNG.OK),
               )
               .status,
-          tipe: Tipe.loading);
-      FOS = await _repository.saveCSUQueryOK(queryId: queryId, isNG: isNG);
+          tipe: stateCS.tipe);
+
+      debugger();
+
+      // set isNG to true
+      FOS = await _repository.saveCSQueryOK(queryId: queryId, isNG: true);
 
       state = state.copyWith(
           isProcessing: false,
@@ -147,33 +138,22 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       state = state.copyWith(
           isProcessing: true, showErrorMessages: false, FOSOUpdateCS: none());
 
-      // debugger(message: 'called');
-
-      final NG = state.updateCSForm.isNG;
-
-      final List<UpdateCSNGState> queryNgs = [];
-
-      for (int index = 0; index < NG.length; index++) {
-        if (NG[index] == true) {
-          final ngState = state.updateCSForm.ngStates[index];
-          // GET NG ITEM, JENIS, PENYEBAB
-          debugger();
-          queryNgs.add(ngState);
-        }
-      }
+      final ngStates = state.updateCSForm.ngStates;
 
       debugger();
 
       final queryId = _repository.getNGSavableQuery(
-          idSPK: state.idSPK, frameName: state.frameName, ngStates: queryNgs);
+          idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 
-      FOS = await _repository.saveCSUQueryNG(queryId: queryId);
+      FOS = await _repository.saveCSQueryOK(queryId: queryId);
 
       state = state.copyWith(
           isProcessing: false,
           showErrorMessages: false,
           FOSOUpdateCS: optionOf(FOS));
     } else {
+      debugger();
+
       state = state.copyWith(
           isProcessing: false,
           showErrorMessages: true,
@@ -266,7 +246,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
     final tipe = modeState.maybeWhen(
         checkSheetLoading: () => Tipe.loading,
         checkSheetUnloading: () => Tipe.unload,
-        checkSheetGateMerak: () => Tipe.loadunload,
+        checkSheetLoadingUnloading: () => Tipe.loadunload,
         orElse: () {
           debugger();
           return Tipe.Unknown;

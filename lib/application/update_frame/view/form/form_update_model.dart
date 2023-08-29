@@ -38,16 +38,12 @@ class FormUpdateModel extends ConsumerWidget {
       children: [
         Flexible(
           flex: 0,
-          child: SizedBox(
-            height: 70,
-            width: 50,
-            child: Center(
-              child: Text(
-                'Model',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-                textAlign: TextAlign.center,
-              ),
+          child: Center(
+            child: Text(
+              'Model',
+              style:
+                  Themes.customColor(FontWeight.bold, 14, Palette.primaryColor),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -56,50 +52,46 @@ class FormUpdateModel extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: SizedBox(
-            height: 65,
-            width: MediaQuery.of(context).size.width,
-            child: TextButton(
-              onPressed: () async {
-                await modeApp.maybeWhen(
-                    checkSheetUnit: () {},
-                    orElse: () async {
-                      final String? id =
-                          await context.pushNamed(RouteNames.modelNameRoute);
+          child: TextButton(
+            onPressed: () async {
+              await modeApp.maybeWhen(
+                  checkSheetUnit: () {},
+                  orElse: () async {
+                    final String? id =
+                        await context.pushNamed(RouteNames.modelNameRoute);
 
-                      if (id != null) {
-                        ref
-                            .read(updateFrameNotifierProvider.notifier)
-                            .changeIdKendType(idKendTypeStr: id, index: index);
+                    if (id != null) {
+                      ref
+                          .read(updateFrameNotifierProvider.notifier)
+                          .changeIdKendType(idKendTypeStr: id, index: index);
 
-                        frame.modelTextController[index].text = id;
-                      }
-                    });
-              },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: frame.modelTextController[index],
-                  decoration: Themes.formStyle(modelStr != ''
-                      ? modelStr + ' (ketik untuk ubah teks)'
-                      : 'Pilih model'),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) => {},
-                  validator: (_) => ref
-                      .read(updateFrameNotifierProvider)
-                      .updateFrameList[index]
-                      .idKendType
-                      .value
-                      .fold(
-                        (f) => f.maybeMap(
-                          empty: (_) => 'kosong',
-                          orElse: () => null,
-                        ),
-                        (_) => null,
+                      frame.modelTextController[index].text = id;
+                    }
+                  });
+            },
+            style:
+                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+            child: IgnorePointer(
+              ignoring: true,
+              child: TextFormField(
+                controller: frame.modelTextController[index],
+                decoration: Themes.formStyle(modelStr != ''
+                    ? modelStr + ' (ketik untuk ubah teks)'
+                    : 'Pilih model'),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => {},
+                validator: (_) => ref
+                    .read(updateFrameNotifierProvider)
+                    .updateFrameList[index]
+                    .idKendType
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'kosong',
+                        orElse: () => null,
                       ),
-                ),
+                      (_) => null,
+                    ),
               ),
             ),
           ),

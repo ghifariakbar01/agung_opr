@@ -1,19 +1,17 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_result.dart';
-import 'package:agung_opr/application/update_csu/state/update_csu_ng_state.dart';
-import 'package:agung_opr/application/update_csu/state/update_csu_state.dart';
-import 'package:agung_opr/domain/local_failure.dart';
-import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/local_failure.dart';
+import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../utils/validator.dart';
-import 'state/update_csu_form_state.dart';
+import '../check_sheet/unit/state/csu_ng_result.dart';
+import '../check_sheet/unit/state/csu_result.dart';
+import 'state/update_csu_ng_state.dart';
+import 'state/update_csu_state.dart';
 
 class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   UpdateCSUNotifier(
@@ -54,7 +52,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             // supir1: Supir1(csuResult.supir1 ?? ''),
             // supir2: Supir2(csuResult.supir2 ?? ''),
             supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
-            tglKirim: TglKirim(csuResult.tglKirim ?? ''),
+            tglKirim: TglKirim(''),
             tglTerima: TglTerima(''),
             gateTextController:
                 TextEditingController(text: csuResult.idGate.toString()),
@@ -67,8 +65,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             supirSDRTextController:
                 TextEditingController(text: csuResult.supirSDR ?? ''),
             tglTerimaTextController: TextEditingController(),
-            tglKirimTextController:
-                TextEditingController(text: csuResult.tglKirim ?? ''),
+            tglKirimTextController: TextEditingController(),
             inOut: csuResult.inout == false ? true : false));
   }
 

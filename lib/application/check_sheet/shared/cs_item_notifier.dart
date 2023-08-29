@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,6 +46,23 @@ class CheckSheetItemNotifier extends StateNotifier<CSItemState> {
 
   void changeId(int id) {
     state = state.copyWith(selectedId: id);
+  }
+
+  int getIndex({required int index, required int indexPrev}) {
+    final csIdMap = state.csItemListByID;
+
+    if (indexPrev == 0) return index;
+
+    int prevIndexLength = 0;
+
+    for (int i = 0; i < indexPrev; i++) {
+      prevIndexLength =
+          prevIndexLength + csIdMap.entries.elementAt(i).value.length;
+    }
+
+    final finalIndex = prevIndexLength + index;
+
+    return finalIndex - 1;
   }
 
   List<int> getCSId(int id) {

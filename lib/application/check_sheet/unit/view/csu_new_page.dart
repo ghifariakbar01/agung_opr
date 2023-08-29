@@ -199,6 +199,8 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                       .read(updateCSUFrameOfflineNotifierProvider.notifier)
                       .CUUpdateCSUFrameOFFLINEStatus();
 
+                  context.pop();
+
                   context.pushReplacementNamed(RouteNames.dataUpdateQueryName);
                 })));
 

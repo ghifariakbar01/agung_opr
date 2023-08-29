@@ -9,6 +9,8 @@ class ModeState with _$ModeState {
   const factory ModeState.checkSheetUnit() = _CheckSheetUnit;
   const factory ModeState.checkSheetLoading() = _CheckSheetLoading;
   const factory ModeState.checkSheetUnloading() = _CheckSheetUnloading;
+  const factory ModeState.checkSheetLoadingUnloading() =
+      _CheckSheetLoadingUnloading;
   const factory ModeState.checkSheetGateMerak() = _CheckSheetGateMerak;
   const factory ModeState.assignUnitMerak() = _AssignUnitMerak;
   const factory ModeState.dataUpdateQuery() = _DataUpdateQuery;

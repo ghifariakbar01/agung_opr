@@ -1,19 +1,19 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../../widgets/v_bottomnav.dart';
 import 'cranny_item.dart';
 import 'cs/cs_cranny_page.dart';
-
-final List<String> labels = [
-  'UPDATE FRAME DUMMY',
-];
 
 class CrannyScaffold extends ConsumerStatefulWidget {
   const CrannyScaffold();
@@ -31,7 +31,9 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
     final updateCSUFrameOfflineOrOnline =
         ref.watch(updateCSUFrameOfflineNotifierProvider);
 
-    final current = ref.watch(index);
+    final updateCSfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
+
+    log('updateCSfflineOrOnline $updateCSfflineOrOnline');
 
     return Scaffold(
       appBar: VAppBar(
@@ -41,21 +43,15 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              for (final label in labels) ...[
-                if (current == 1 && label == 'CHECKSHEET UNIT') ...[
-                  Container()
-                ] else ...[
-                  TextButton(
-                      onPressed: () async {
-                        ref
-                            .read(modeNotifierProvider.notifier)
-                            .changeModeAplikasi(label);
+              TextButton(
+                  onPressed: () async {
+                    ref
+                        .read(modeNotifierProvider.notifier)
+                        .changeModeAplikasi(ModeState.updateFrameDummy());
 
-                        await context.pushNamed(RouteNames.spkNameRoute);
-                      },
-                      child: CrannyItem(label: label))
-                ]
-              ],
+                    await context.pushNamed(RouteNames.spkNameRoute);
+                  },
+                  child: CrannyItem(label: 'UPDATE FRAME DUMMY')),
               CSCrannyPage(),
               // Frame
               updateFrameOfflineOrOnline.maybeWhen(
@@ -63,7 +59,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     onPressed: () async {
                       ref
                           .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi('DATA AKAN DIUPDATE');
+                          .changeModeAplikasi(ModeState.dataUpdateQuery());
 
                       await context
                           .pushNamed(RouteNames.dataUpdateQueryNameRoute);
@@ -77,7 +73,22 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     onPressed: () async {
                       ref
                           .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi('DATA AKAN DIUPDATE');
+                          .changeModeAplikasi(ModeState.dataUpdateQuery());
+
+                      await context
+                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                    },
+                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
+                orElse: () => Container(),
+              ),
+
+              // CS Items
+              updateCSfflineOrOnline.maybeWhen(
+                hasOfflineStorage: () => TextButton(
+                    onPressed: () async {
+                      ref
+                          .read(modeNotifierProvider.notifier)
+                          .changeModeAplikasi(ModeState.dataUpdateQuery());
 
                       await context
                           .pushNamed(RouteNames.dataUpdateQueryNameRoute);

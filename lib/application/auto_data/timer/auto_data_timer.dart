@@ -14,6 +14,7 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
     int duration, {
     required Future<void> Function() getSavedUpdateFrame,
     required Future<void> Function() getSavedUpdateCSUFrame,
+    required Future<void> Function() getSavedUpdateCSFrame,
   }) async {
     state = state.copyWith(durationInSeconds: duration, isRunning: true);
 
@@ -26,10 +27,12 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
         //
         await getSavedUpdateFrame();
         await getSavedUpdateCSUFrame();
+        await getSavedUpdateCSFrame();
         //
         await startTimer(duration,
             getSavedUpdateFrame: getSavedUpdateFrame,
-            getSavedUpdateCSUFrame: getSavedUpdateCSUFrame);
+            getSavedUpdateCSUFrame: getSavedUpdateCSUFrame,
+            getSavedUpdateCSFrame: getSavedUpdateCSFrame);
       }
     });
   }

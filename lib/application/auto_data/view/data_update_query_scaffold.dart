@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/auto_data/view/data_update_query_item.dart';
 import 'package:agung_opr/application/widgets/v_appbar.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +18,15 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
         autoDataUpdateFrameNotifierProvider
             .select((value) => value.idSPKMapidTIUnitMapQuery));
 
-    log('idSPKMapidTIUnitMapQuery ${idSPKMapidTIUnitMapQuery}}');
-
     final list = idSPKMapidTIUnitMapQuery.entries.toList();
 
     // CSU Items
     final csuIdQueries = ref.watch(autoDataUpdateFrameNotifierProvider
         .select((value) => value.csuIdQueries));
 
-    log('csuIdQueries ${csuIdQueries}}');
+    // CS Items
+    final csIdQueries = ref.watch(autoDataUpdateFrameNotifierProvider
+        .select((value) => value.csIdQueries));
 
     return Scaffold(
         appBar: VAppBar('Data Akan Diupdate'),
@@ -81,8 +79,18 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
                 // CSU Items
                 for (int index = 0; index < csuIdQueries.length; index++) ...[
                   DataUpdateQueryCSUItem(
+                    isCS: false,
                     idUnit: '${csuIdQueries[index].idUnit}',
                     query: csuIdQueries[index].query,
+                  ),
+                ],
+
+                // CS Items
+                for (int index = 0; index < csIdQueries.length; index++) ...[
+                  DataUpdateQueryCSUItem(
+                    isCS: true,
+                    idUnit: '${csIdQueries[index].idSPK}',
+                    query: csIdQueries[index].query,
                   ),
                 ],
               ],

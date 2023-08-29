@@ -16,8 +16,9 @@ class FrameRemoteService {
   final Map<String, String> _dioRequestNotifier;
 
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
-    const String dbName = 'opr_trs_ti_unit_test';
-    const String dbOprTrsSpk = 'opr_trs_spk_unit_test';
+    // TEST
+    const String dbName = 'opr_trs_ti_unit';
+    const String dbOprTrsSpk = 'opr_trs_spk_unit';
     const String dbCustomer = 'sls_mst_cust';
 
     try {

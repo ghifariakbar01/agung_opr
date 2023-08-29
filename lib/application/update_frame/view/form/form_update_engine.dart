@@ -29,16 +29,12 @@ class FormUpdateEngine extends ConsumerWidget {
       children: [
         Flexible(
           flex: 0,
-          child: SizedBox(
-            height: 70,
-            width: 50,
-            child: Center(
-              child: Text(
-                'Engine',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-                textAlign: TextAlign.center,
-              ),
+          child: Center(
+            child: Text(
+              'Engine',
+              style:
+                  Themes.customColor(FontWeight.bold, 14, Palette.primaryColor),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -47,34 +43,30 @@ class FormUpdateEngine extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: SizedBox(
-            height: 65,
-            width: MediaQuery.of(context).size.width,
-            child: IgnorePointer(
-              ignoring: modeApp.maybeWhen(
-                  checkSheetUnit: () => true, orElse: () => false),
-              child: TextFormField(
-                initialValue: engineStr,
-                decoration: Themes.formStyle(engineStr != ''
-                    ? engineStr + ' (ketik untuk ubah teks)'
-                    : 'Masukkan engine'),
-                keyboardType: TextInputType.name,
-                onChanged: (value) => ref
-                    .read(updateFrameNotifierProvider.notifier)
-                    .changeEngine(engineStr: value, index: index),
-                validator: (_) => ref
-                    .read(updateFrameNotifierProvider)
-                    .updateFrameList[index]
-                    .engine
-                    .value
-                    .fold(
-                      (f) => f.maybeMap(
-                        empty: (_) => 'kosong',
-                        orElse: () => null,
-                      ),
-                      (_) => null,
+          child: IgnorePointer(
+            ignoring: modeApp.maybeWhen(
+                checkSheetUnit: () => true, orElse: () => false),
+            child: TextFormField(
+              initialValue: engineStr,
+              decoration: Themes.formStyle(engineStr != ''
+                  ? engineStr + ' (ketik untuk ubah teks)'
+                  : 'Masukkan engine'),
+              keyboardType: TextInputType.name,
+              onChanged: (value) => ref
+                  .read(updateFrameNotifierProvider.notifier)
+                  .changeEngine(engineStr: value, index: index),
+              validator: (_) => ref
+                  .read(updateFrameNotifierProvider)
+                  .updateFrameList[index]
+                  .engine
+                  .value
+                  .fold(
+                    (f) => f.maybeMap(
+                      empty: (_) => 'kosong',
+                      orElse: () => null,
                     ),
-              ),
+                    (_) => null,
+                  ),
             ),
           ),
         )

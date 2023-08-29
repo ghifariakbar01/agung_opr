@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../../../style/style.dart';
@@ -7,10 +5,12 @@ import '../../../style/style.dart';
 class DataUpdateQueryCSUItem extends StatelessWidget {
   const DataUpdateQueryCSUItem({
     Key? key,
+    required this.isCS,
     required this.query,
     required this.idUnit,
   }) : super(key: key);
 
+  final bool isCS;
   final String query;
   final String idUnit;
 
@@ -30,7 +30,7 @@ class DataUpdateQueryCSUItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'ID UNIT: ${idUnit}',
+                'ID ${isCS ? 'SPK : ' : 'UNIT : '}  ${idUnit}',
                 style: Themes.customColor(
                     FontWeight.bold, 14, Palette.primaryColor),
               ),

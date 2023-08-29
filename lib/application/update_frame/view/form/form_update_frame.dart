@@ -35,15 +35,11 @@ class FormUpdateFrame extends ConsumerWidget {
       children: [
         Flexible(
           flex: 0,
-          child: SizedBox(
-            height: 70,
-            width: 50,
-            child: Center(
-              child: Text(
-                'Frame',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-              ),
+          child: Center(
+            child: Text(
+              'Frame',
+              style:
+                  Themes.customColor(FontWeight.bold, 14, Palette.primaryColor),
             ),
           ),
         ),
@@ -52,55 +48,50 @@ class FormUpdateFrame extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: SizedBox(
-            height: 65,
-            width: MediaQuery.of(context).size.width,
-            child: IgnorePointer(
-              ignoring: modeApp.maybeWhen(
-                  checkSheetUnit: () => true, orElse: () => false),
-              child: TextFormField(
-                controller: frameController,
-                decoration: Themes.formStyle(
-                    frameStr != ''
-                        ? frameStr + ' (ketik untuk ubah teks)'
-                        : 'Masukkan frame',
-                    icon: InkWell(
-                        onTap: () async {
-                          String? frame =
-                              await FlutterBarcodeScanner.scanBarcode(
-                                  "#65B689", "Cancel", false, ScanMode.DEFAULT);
+          child: IgnorePointer(
+            ignoring: modeApp.maybeWhen(
+                checkSheetUnit: () => true, orElse: () => false),
+            child: TextFormField(
+              controller: frameController,
+              decoration: Themes.formStyle(
+                  frameStr != ''
+                      ? frameStr + ' (ketik untuk ubah teks)'
+                      : 'Masukkan frame',
+                  icon: InkWell(
+                      onTap: () async {
+                        String? frame = await FlutterBarcodeScanner.scanBarcode(
+                            "#65B689", "Cancel", false, ScanMode.DEFAULT);
 
-                          if (frame.isNotEmpty) {
-                            frameController.text = frame;
+                        if (frame.isNotEmpty) {
+                          frameController.text = frame;
 
-                            ref
-                                .read(updateFrameNotifierProvider.notifier)
-                                .changeFrame(frameStr: frame, index: index);
-                          }
-                        },
-                        child: Ink(
-                          child: Icon(
-                            Icons.qr_code_2,
-                            color: Colors.black,
-                          ),
-                        ))),
-                keyboardType: TextInputType.name,
-                onChanged: (value) => ref
-                    .read(updateFrameNotifierProvider.notifier)
-                    .changeFrame(frameStr: value, index: index),
-                validator: (_) => ref
-                    .read(updateFrameNotifierProvider)
-                    .updateFrameList[index]
-                    .frame
-                    .value
-                    .fold(
-                      (f) => f.maybeMap(
-                        empty: (_) => 'kosong',
-                        orElse: () => null,
-                      ),
-                      (_) => null,
+                          ref
+                              .read(updateFrameNotifierProvider.notifier)
+                              .changeFrame(frameStr: frame, index: index);
+                        }
+                      },
+                      child: Ink(
+                        child: Icon(
+                          Icons.qr_code_2,
+                          color: Colors.black,
+                        ),
+                      ))),
+              keyboardType: TextInputType.name,
+              onChanged: (value) => ref
+                  .read(updateFrameNotifierProvider.notifier)
+                  .changeFrame(frameStr: value, index: index),
+              validator: (_) => ref
+                  .read(updateFrameNotifierProvider)
+                  .updateFrameList[index]
+                  .frame
+                  .value
+                  .fold(
+                    (f) => f.maybeMap(
+                      empty: (_) => 'kosong',
+                      orElse: () => null,
                     ),
-              ),
+                    (_) => null,
+                  ),
             ),
           ),
         )

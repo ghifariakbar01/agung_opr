@@ -1,17 +1,15 @@
-import 'dart:developer';
-
-import 'package:agung_opr/application/check_sheet/loading/view/form/form_jam.dart';
-import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 import '../../../update_cs/view/widget/cs_item_form.dart';
 import '../../../widgets/v_appbar.dart';
 import '../../../widgets/v_button.dart';
 import '../../shared/providers/cs_providers.dart';
 import 'form/form_gate.dart';
+import 'form/form_jam.dart';
 import 'form/form_keterangan.dart';
 
 class CheckSheetLoadingScaffold extends ConsumerWidget {
@@ -20,11 +18,9 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final csItem = ref.watch(csItemNotifierProvider);
-
     final csIdMap = csItem.csItemListByID;
 
     final updateCS = ref.watch(updateCSNotifierProvider);
-
     final isNGEmpty = updateCS.updateCSForm.isNG.isEmpty;
 
     final isDefect = ref.watch(updateCSNotifierProvider.select((value) => value
@@ -36,9 +32,18 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
     final showErrorMessage = ref.watch(
         updateCSNotifierProvider.select((value) => value.showErrorMessages));
 
+    final modeApp = ref.watch(modeNotifierProvider);
+
     return KeyboardDismissOnTap(
       child: Scaffold(
-          appBar: VAppBar('CS CCR Loading'),
+          appBar: VAppBar(
+            '${modeApp.maybeWhen(
+              checkSheetLoading: () => 'CCR Loading',
+              checkSheetUnloading: () => 'CCR Unloading',
+              checkSheetLoadingUnloading: () => 'CCR Loading & Unloading',
+              orElse: () {},
+            )}',
+          ),
 
           // drawer: Drawer(),
           body: SingleChildScrollView(
@@ -140,18 +145,9 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                                 index++) ...[
                               // Body
                               CSItemForm(
-                                index: index2 > 0
-                                    ? csIdMap.entries.fold(
-                                            0,
-                                            (int previousValue, element) =>
-                                                previousValue +
-                                                element.value.length) -
-                                        csIdMap.entries
-                                            .elementAt(index2)
-                                            .value
-                                            .length +
-                                        index
-                                    : index,
+                                index: ref
+                                    .read(csItemNotifierProvider.notifier)
+                                    .getIndex(index: index, indexPrev: index2),
                                 id: csIdMap.entries
                                     .elementAt(index2)
                                     .value[index]
@@ -189,6 +185,10 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                       label: 'NO DEFECT',
                       isEnabled: !isDefect,
                       onPressed: () async {
+                        await ref
+                            .read(updateCSNotifierProvider.notifier)
+                            .saveQueryNG();
+
                         await ref
                             .read(updateCSNotifierProvider.notifier)
                             .saveQueryOK();

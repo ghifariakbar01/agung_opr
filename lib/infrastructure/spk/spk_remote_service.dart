@@ -16,7 +16,8 @@ class SPKRemoteService {
   Future<List<SPK>> getSPKList({required int page}) async {
     try {
       final data = _dioRequestNotifier;
-      const String dbName = "opr_trs_spk_test";
+      // TEST
+      const String dbName = "opr_trs_spk";
 
       data.addAll({
         "mode": "SELECT",

@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../style/style.dart';
 
-class CSItemOKOrNG extends ConsumerWidget {
+class CSItemOKOrNG extends ConsumerStatefulWidget {
   const CSItemOKOrNG(
     this.id,
     this.index,
@@ -19,9 +19,25 @@ class CSItemOKOrNG extends ConsumerWidget {
   final String instruction;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CSItemOKOrNG> createState() => _CSItemOKOrNGState();
+}
+
+class _CSItemOKOrNGState extends ConsumerState<CSItemOKOrNG> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(updateCSNotifierProvider.notifier)
+          .changeNGId(id: widget.id, index: widget.index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isNG = ref.watch(updateCSNotifierProvider
-        .select((value) => value.updateCSForm.isNG[index]));
+        .select((value) => value.updateCSForm.isNG[widget.index]));
 
     return Row(
       children: [
@@ -29,7 +45,7 @@ class CSItemOKOrNG extends ConsumerWidget {
           child: Container(
               width: MediaQuery.of(context).size.width,
               child: Text(
-                '$id. $instruction',
+                '${widget.id}. ${widget.instruction}',
                 style: Themes.customColor(FontWeight.normal, 14, Colors.black),
               )),
         ),
@@ -48,11 +64,11 @@ class CSItemOKOrNG extends ConsumerWidget {
                   onTap: () {
                     ref
                         .read(updateCSNotifierProvider.notifier)
-                        .changeIsNG(isNG: false, index: index);
+                        .changeIsNG(isNG: false, index: widget.index);
 
                     ref
                         .read(updateCSNotifierProvider.notifier)
-                        .changeNGStatus(status: OKorNG.OK, index: index);
+                        .changeNGStatus(status: OKorNG.OK, index: widget.index);
                   },
                   child: Ink(
                     width: 40,
@@ -75,17 +91,17 @@ class CSItemOKOrNG extends ConsumerWidget {
                   onTap: () {
                     ref
                         .read(updateCSNotifierProvider.notifier)
-                        .changeNGId(id: id, index: index);
+                        .changeNGId(id: widget.id, index: widget.index);
 
                     ref
                         .read(updateCSNotifierProvider.notifier)
-                        .changeNGStatus(status: OKorNG.NG, index: index);
+                        .changeNGStatus(status: OKorNG.NG, index: widget.index);
 
                     ref
                         .read(updateCSNotifierProvider.notifier)
-                        .changeIsNG(isNG: true, index: index);
+                        .changeIsNG(isNG: true, index: widget.index);
 
-                    log('NG ID : ${id} INDEX: ${index}');
+                    log('NG ID : ${widget.id} INDEX: ${widget.index}');
                   },
                   child: Ink(
                     width: 40,

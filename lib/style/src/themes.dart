@@ -120,7 +120,7 @@ mixin Themes {
     return InputDecoration(
       enabledBorder: Themes.notFocused(isRadius: true),
       focusedBorder: Themes.focused(),
-      contentPadding: const EdgeInsets.all(16),
+      contentPadding: const EdgeInsets.all(8),
       border: InputBorder.none,
       hintStyle: Themes.greyHint(FontWeight.normal, hintFontSize ?? 16),
       errorBorder: OutlineInputBorder(

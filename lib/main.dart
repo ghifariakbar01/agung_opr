@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import 'application/check_sheet/shared/providers/cs_providers.dart';
 import 'application/spk/shared/spk_providers.dart';
 import 'config/configuration.dart';
 import 'shared/providers.dart';
@@ -105,6 +106,22 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
       hasOfflineStorage: () => ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedCSUQueryFromRepository(),
+      orElse: () {},
+    );
+
+    // UPDATE CS FRAME DATA ONLINE / OFFLINE
+    await ref
+        .read(updateCSOfflineNotifierProvider.notifier)
+        .CUUpdateCSOFFLINEStatus();
+
+    final updateCSOfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
+
+    log('updateCSOfflineOrOnline $updateCSOfflineOrOnline');
+
+    await updateCSOfflineOrOnline.maybeWhen(
+      hasOfflineStorage: () => ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedCSQueryFromRepository(),
       orElse: () {},
     );
 

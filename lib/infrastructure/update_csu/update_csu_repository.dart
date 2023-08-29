@@ -29,15 +29,6 @@ class UpdateCSUFrameRepository {
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  final tgl = DateFormat('yyyy-MM-dd')
-      .parse(DateTime.now().toString())
-      .toString()
-      .substring(0, 10);
-
-  final cAndUDate = DateTime.now()
-      .toString()
-      .substring(0, DateTime.now().toString().length - 3);
-
   Future<Either<RemoteFailure, Unit>> updateCSUByQuery(
       {required List<CSUIDQuery> queryIds}) async {
     final isQueryOK = queryIds.isNotEmpty;
@@ -63,13 +54,13 @@ class UpdateCSUFrameRepository {
         } on RestApiException catch (e) {
           debugger(message: 'called');
 
-          _removeQueryCSUFromSaved(idUnit: idUnit);
+          await _removeQueryCSUFromSaved(idUnit: idUnit);
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
           debugger(message: 'called');
 
-          _removeQueryCSUFromSaved(idUnit: idUnit);
+          await _removeQueryCSUFromSaved(idUnit: idUnit);
 
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {
@@ -259,7 +250,8 @@ class UpdateCSUFrameRepository {
     String idCS = 'ID_CS_NA',
     int noDefect = 0,
   }) {
-    const String dbName = 'cs_trs_cs_test';
+    // TEST
+    const String dbName = 'cs_trs_cs';
 
     // supir1, supir2,
 
@@ -281,6 +273,15 @@ class UpdateCSUFrameRepository {
     final tglKirimStr = tglKirim.getOrLeave('');
     final tglTerimaStr = tglTerima.getOrLeave('');
 
+    final tgl = DateFormat('yyyy-MM-dd')
+        .parse(DateTime.now().toString())
+        .toString()
+        .substring(0, 10);
+
+    final cAndUDate = DateTime.now()
+        .toString()
+        .substring(0, DateTime.now().toString().length - 3);
+
     // '${supir1Str}', '${supir2Str}'
 
     final csuQuery =
@@ -295,7 +296,7 @@ class UpdateCSUFrameRepository {
 
     log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
 
-    // debugger(message: 'called');
+    debugger();
 
     return csuIdQuery;
   }
@@ -306,13 +307,18 @@ class UpdateCSUFrameRepository {
     required List<UpdateCSUNGState> ngStates,
     String idCS = 'ID_CS_NA',
   }) {
-    const String dbName = 'cs_trs_cs_dtl_test';
-    const String dbNameCS = 'cs_trs_cs_test';
+    // TEST
+    const String dbName = 'cs_trs_cs_dtl';
+    const String dbNameCS = 'cs_trs_cs';
 
     final String insert =
         'INSERT INTO $dbName (id_cs, frame, c_date, u_date, c_user,  u_user, id_item, id_jns_defect, id_p_defect)';
 
     final nameUser = _userModelWithPassword.nama;
+
+    final cAndUDate = DateTime.now()
+        .toString()
+        .substring(0, DateTime.now().toString().length - 3);
 
     final requiredQuery =
         " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbNameCS), '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";

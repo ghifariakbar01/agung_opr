@@ -11,6 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../constants/assets.dart';
 import '../../../domain/local_failure.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
+import '../../check_sheet/shared/providers/cs_providers.dart';
+import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
 import 'cranny_scaffold.dart';
@@ -23,11 +25,6 @@ class CrannyMiddle extends ConsumerStatefulWidget {
 }
 
 class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
@@ -99,9 +96,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                 (queryIds) => ref
                         .read(autoDataUpdateFrameNotifierProvider.notifier)
                         .isCSUQueryEmpty()
-                    ? () {
-                        // debugger(message: 'called');
-                      }
+                    ? () {}
                     : ref.read(autoDataTimerNotifierProvider
                             .select((value) => value.isRunning == false))
                         ? () async {
@@ -110,14 +105,56 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                     .notifier)
                                 .changeSavedCSUQuery(csuIdQueries: queryIds);
 
-                            // debugger(message: 'called');
-
                             log('isCSUQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSUQueryEmpty()}');
                             log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
                             await ref
                                 .read(autoDataUpdateFrameNotifierProvider
                                     .notifier)
                                 .runSavedCSUQueryFromRepository(
+                                    queryIds: queryIds);
+                          }()
+                        : () {})));
+
+    // CS Items
+    ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameCS,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.map(
+                            storage: (_) => 'storage penuh',
+                            format: (value) => 'error format $value',
+                            empty: (_) => 'empty'),
+                        asset: Assets.iconCrossed,
+                      ),
+                    ),
+                (queryIds) => ref
+                        .read(autoDataUpdateFrameNotifierProvider.notifier)
+                        .isCSQueryEmpty()
+                    ? () {}
+                    : ref.read(autoDataTimerNotifierProvider
+                            .select((value) => value.isRunning == false))
+                        ? () async {
+                            ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .changeSavedCSQuery(csIdQueries: queryIds);
+
+                            debugger();
+
+                            log('isCSQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSQueryEmpty()}');
+                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
+                            await ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .runSavedCSQueryFromRepository(
                                     queryIds: queryIds);
                           }()
                         : () {})));
@@ -151,6 +188,13 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                   await ref
                       .read(updateCSUFrameOfflineNotifierProvider.notifier)
                       .CUUpdateCSUFrameOFFLINEStatus();
+                  await ref
+                      .read(updateCSOfflineNotifierProvider.notifier)
+                      .CUUpdateCSOFFLINEStatus();
+
+                  ref
+                      .read(autoDataUpdateFrameNotifierProvider.notifier)
+                      .resetAutoDataRemoteFOSO();
 
                   await showDialog(
                     context: context,

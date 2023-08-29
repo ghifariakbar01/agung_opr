@@ -17,57 +17,53 @@ class CSCrannyColumn extends ConsumerStatefulWidget {
   ConsumerState<CSCrannyColumn> createState() => _CSCrannyColumnState();
 }
 
-// final Map<String, ModeState> labelsMode = {
-//   'UPDATE FRAME DUMMY': ModeState.updateFrameDummy(),
-//   'CHECKSHEET UNIT': ModeState.checkSheetUnit(),
-//   'CHECKSHEET CCR LOADING': ModeState.checkSheetLoading(),
-//   'CHECKSHEET CCR UNLOADING': ModeState.checkSheetUnloading(),
-//   'CHECKSHEET GATE MERAK': ModeState.checkSheetGateMerak(),
-//   'ASSIGN UNIT MERAK': ModeState.assignUnitMerak(),
-//   'DATA AKAN DIUPDATE': ModeState.dataUpdateQuery()
-// };
-
 class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
   @override
   Widget build(BuildContext context) {
-    final jenis =
-        ref.watch(csJenisNotifierProvider.select((value) => value.csJenisList));
-
     return Column(
       children: [
-        for (final item in jenis) ...[
-          TextButton(
-              onPressed: () async {
-                final isLoading = item.nama.toLowerCase().contains('loading');
-                final isUnloading =
-                    item.nama.toLowerCase().contains('unloading');
-                final isInspection =
-                    item.nama.toLowerCase().contains('inspection');
+        TextButton(
+            onPressed: () async {
+              ModeState mode = ModeState.checkSheetLoading();
 
-                if (isLoading) {
-                  log('CALLED LOADING');
-                  ref
-                      .read(modeNotifierProvider.notifier)
-                      .changeModeAplikasi('CHECKSHEET CCR LOADING');
-                }
+              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
 
-                if (isUnloading) {
-                  ref
-                      .read(modeNotifierProvider.notifier)
-                      .changeModeAplikasi('CHECKSHEET CCR UNLOADING');
-                }
+              const int id = 1;
+              ref.read(csItemNotifierProvider.notifier).changeId(id);
 
-                if (isInspection) {}
+              await context.pushNamed(RouteNames.spkNameRoute);
+            },
+            child: CrannyItem(label: 'LOADING')),
+        TextButton(
+            onPressed: () async {
+              ModeState mode = ModeState.checkSheetLoadingUnloading();
 
-                ref.read(csItemNotifierProvider.notifier).changeId(item.id);
+              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
 
-                await context.pushNamed(RouteNames.spkNameRoute);
-              },
-              child: CrannyItem(
-                  label: item.nama
-                      .toUpperCase()
-                      .substring(0, item.nama.length - 1)))
-        ]
+              const int id = 2;
+              ref.read(csItemNotifierProvider.notifier).changeId(id);
+
+              await context.pushNamed(RouteNames.spkNameRoute);
+            },
+            child: CrannyItem(label: 'LOADING & UNLOADING')),
+        TextButton(
+            onPressed: () async {
+              ModeState mode = ModeState.checkSheetUnloading();
+
+              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+
+              const int id = 3;
+              ref.read(csItemNotifierProvider.notifier).changeId(id);
+
+              await context.pushNamed(RouteNames.spkNameRoute);
+            },
+            child: CrannyItem(label: 'UNLOADING')),
       ],
     );
   }

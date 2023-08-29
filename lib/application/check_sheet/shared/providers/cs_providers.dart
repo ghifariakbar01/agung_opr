@@ -16,6 +16,8 @@ import '../../../../infrastructure/cs/cs_remote_service.dart';
 import '../../../../infrastructure/update_cs/update_cs_remote_service.dart';
 import '../../../../shared/providers.dart';
 import '../../../update_cs/update_cs_notifier.dart';
+import '../../../update_cs/update_cs_offline_notifier.dart';
+import '../../loading/state/update_cs_offline_state.dart';
 import '../../loading/state/update_cs_state.dart';
 import '../cs_item_notifier.dart';
 import '../cs_item_offline_notifier.dart';
@@ -99,7 +101,7 @@ final updateCSNotifierProvider =
   (ref) => UpdateCSNotifier(ref.watch(updateCSRepositoryProvider)),
 );
 
-// final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateCSUFrameOfflineNotifier, UpdateCSUFrameOfflineState>(
-//     (ref) => UpdateCSUFrameOfflineNotifier(
-//         ref.watch(updateCSUFrameRepositoryProvider)));
+final updateCSOfflineNotifierProvider =
+    StateNotifierProvider<UpdateCSOfflineNotifier, UpdateCSOfflineState>(
+        (ref) =>
+            UpdateCSOfflineNotifier(ref.watch(updateCSRepositoryProvider)));

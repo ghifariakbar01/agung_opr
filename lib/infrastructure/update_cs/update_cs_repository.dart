@@ -29,15 +29,6 @@ class UpdateCSRepository {
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  final tgl = DateFormat('yyyy-MM-dd')
-      .parse(DateTime.now().toString())
-      .toString()
-      .substring(0, 10);
-
-  final cAndUDate = DateTime.now()
-      .toString()
-      .substring(0, DateTime.now().toString().length - 3);
-
   Future<Either<RemoteFailure, Unit>> updateCSByQuery(
       {required List<CSIDQuery> queryIds}) async {
     final isQueryOK = queryIds.isNotEmpty;
@@ -54,22 +45,22 @@ class UpdateCSRepository {
         // GET ID_CS
         // debugger(message: 'called');
 
-        log('STORAGE UPDATE CSU QUERY: $query');
+        log('STORAGE UPDATE CS QUERY: $query');
 
         try {
           await _remoteService.insertCSBYQuery(query: query);
 
-          await _removeQueryCSUFromSaved(idSPK: idSPK);
+          await _removeQueryCSFromSaved(idSPK: idSPK);
         } on RestApiException catch (e) {
           debugger(message: 'called');
 
-          _removeQueryCSUFromSaved(idSPK: idSPK);
+          _removeQueryCSFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
           debugger(message: 'called');
 
-          _removeQueryCSUFromSaved(idSPK: idSPK);
+          await _removeQueryCSFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {
@@ -95,7 +86,7 @@ class UpdateCSRepository {
     return right(unit);
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSUQueryNG(
+  Future<Either<LocalFailure, Unit>> saveCSQueryNG(
       {required CSIDQuery queryId}) async {
     try {
       final savedStrings = await _storage.read();
@@ -121,7 +112,7 @@ class UpdateCSRepository {
 
                 // debugger(message: 'called');
 
-                log('STORAGE UPDATE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
               } else {
                 // if not NG, replace list
                 final list = [...response];
@@ -132,7 +123,7 @@ class UpdateCSRepository {
 
                 // debugger(message: 'called');
 
-                log('STORAGE UPDATE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
               }
             }();
             break;
@@ -140,7 +131,7 @@ class UpdateCSRepository {
             () async {
               final list = [queryId];
 
-              log('STORAGE SAVE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
 
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
             }();
@@ -161,7 +152,7 @@ class UpdateCSRepository {
     }
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSUQueryOK(
+  Future<Either<LocalFailure, Unit>> saveCSQueryOK(
       {required CSIDQuery queryId, bool isNG = false}) async {
     try {
       final savedStrings = await _storage.read();
@@ -187,7 +178,7 @@ class UpdateCSRepository {
 
                 // debugger(message: 'called');
 
-                log('STORAGE UPDATE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
               } else {
                 if (!isNG) {
                   // if not NG, replace list
@@ -200,7 +191,7 @@ class UpdateCSRepository {
 
                   // debugger(message: 'called');
 
-                  log('STORAGE UPDATE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                  log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
                 } else {
                   // if NG, coancenate
                   final list = [...response, queryId];
@@ -210,7 +201,7 @@ class UpdateCSRepository {
 
                   // debugger(message: 'called');
 
-                  log('STORAGE UPDATE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                  log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
                 }
               }
             }();
@@ -219,7 +210,7 @@ class UpdateCSRepository {
             () async {
               final list = [queryId];
 
-              log('STORAGE SAVE CSU QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
 
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
             }();
@@ -251,6 +242,7 @@ class UpdateCSRepository {
     required OKorNG status,
     required Tipe tipe,
   }) {
+    // TEST
     const String dbName = 'pool_chk_kr';
 
     final nopolStr = nopol.getOrCrash();
@@ -259,23 +251,35 @@ class UpdateCSRepository {
     final gateStr = gate.getOrCrash();
     final jamLoadStr = jamLoad.getOrLeave('');
     final ketStr = ket.getOrLeave('');
+    final tgl = DateFormat('yyyy-MM-dd')
+        .parse(DateTime.now().toString())
+        .toString()
+        .substring(0, 10);
 
-    final String insert =
-        "INSERT INTO $dbName SET id_kr_chk = '(SELECT ISNULL(max(id_khr_ck), 0) + 1 FROM $dbName)', " +
-            "id_spk = $idSPK, " +
-            "nopol = '$nopolStr', " +
-            "driver1 = '$supir1Str', " +
-            "driver2 = '$supir2Str', " +
-            "tgl_berangkat = '$tgl', " +
-            "jamload = '$jamLoadStr', " +
-            "gate = '$gateStr', " +
-            "status = '${status.name}', " +
-            "tipe = '${tipe.name}', " +
-            "ket = '$ketStr', " +
-            "c_date = '$cAndUDate', " +
-            "u_date = '$cAndUDate', " +
-            "c_user = '${_userModelWithPassword.nama}', " +
-            "u_user = '${_userModelWithPassword.nama}' ";
+    final cAndUDate = DateTime.now()
+        .toString()
+        .substring(0, DateTime.now().toString().length - 3);
+
+    final String insert = "INSERT INTO $dbName " +
+        " (id_kr_chk, id_spk, nopol, driver1, driver2, tgl_berangkat, jamload, gate, status, tipe, ket, c_date, u_date, c_user, u_user) " +
+        " VALUES " +
+        " ( " +
+        " (SELECT ISNULL(max(id_kr_chk), 0) + 1 FROM $dbName)," +
+        "$idSPK, " +
+        "'$nopolStr', " +
+        "'$supir1Str', " +
+        "'$supir2Str', " +
+        "'$tgl', " +
+        "'$jamLoadStr', " +
+        "'$gateStr', " +
+        "'${status.name}', " +
+        "'${tipe.name}', " +
+        "'$ketStr', " +
+        "'$cAndUDate', " +
+        "'$cAndUDate', " +
+        "'${_userModelWithPassword.nama}', " +
+        "'${_userModelWithPassword.nama}' " +
+        " ) ";
 
     final CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: insert);
 
@@ -290,10 +294,14 @@ class UpdateCSRepository {
     required int idSPK,
     required String frameName,
     required List<UpdateCSNGState> ngStates,
-    String idCS = 'ID_CS_NA',
   }) {
+    // TEST
     const String dbName = 'pool_chk_kr_dtl';
     const String dbNamechk = 'pool_chk_kr';
+
+    final cAndUDate = DateTime.now()
+        .toString()
+        .substring(0, DateTime.now().toString().length - 3);
 
     List<int> idListDetail = [];
     List<String> status = [];
@@ -307,6 +315,8 @@ class UpdateCSRepository {
       }
     }
 
+    debugger();
+
     // CONVERT TO MAP, TO ADD ALL STRING
     Map<int, String> queryMap = {};
 
@@ -315,35 +325,38 @@ class UpdateCSRepository {
     // id_kr_chk_dtl (auto increment), id_kr_chk, id_list_dtl, status, ket, c_date, c_user, u_date, u_user
 
     for (int i = 0; i < idListDetail.length; i++) {
-      final String insert =
-          "INSERT INTO $dbName SET id_kr_chk_dtl = '(SELECT ISNULL(max(id_kr_chk_dtl), 0) + 1 FROM $dbName)', " +
-              " id_kr_chk = '(SELECT ISNULL(max(id_khr_ck), 0) + 1 FROM $dbNamechk)', " +
-              " c_date = '$cAndUDate', " +
-              " u_date = '$cAndUDate', " +
-              " c_user = '${_userModelWithPassword.nama}', " +
-              " u_user = '${_userModelWithPassword.nama}', " +
-              " id_list_dtl = '${idListDetail[i]}', " +
-              " status = '${status[i]}', " +
-              " ket = '${keterangan[i]}' ";
+      final String insert = "INSERT INTO $dbName " +
+          " (id_kr_chk_dtl,id_kr_chk, c_date, u_date, c_user, u_user, id_list_dtl, status, ket) " +
+          " VALUES " +
+          " ( " +
+          " (SELECT ISNULL(max(id_kr_chk_dtl), 0) + 1 FROM $dbName), " +
+          " (SELECT ISNULL(max(id_kr_chk), 0) + 1 FROM $dbNamechk), " +
+          " '$cAndUDate', " +
+          " '$cAndUDate', " +
+          " '${_userModelWithPassword.nama}', " +
+          " '${_userModelWithPassword.nama}', " +
+          "  ${idListDetail[i]}, " +
+          " '${status[i]}', " +
+          " '${keterangan[i]}' " +
+          " ) ";
 
       queryMap.addAll({idListDetail[i]: insert});
     }
 
     // GET QUERY STRING
-    final String queryString =
-        queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
+    String queryString = queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
 
-    final CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: queryString);
+    CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: queryString);
 
     log('QUERY SAVE CS NG: ${csIdQuery.toJson()}');
 
-    debugger(message: 'called');
+    debugger();
 
     return csIdQuery;
   }
 
-  // REMOVE SAVED CSU QUERY
-  Future<Unit> _removeQueryCSUFromSaved({required int? idSPK}) async {
+  // REMOVE SAVED CS QUERY
+  Future<Unit> _removeQueryCSFromSaved({required int? idSPK}) async {
     try {
       final savedStrings = await _storage.read();
       final isQueryOK = idSPK != null;
@@ -371,7 +384,7 @@ class UpdateCSRepository {
 
                 // debugger(message: 'called');
 
-                log('STORAGE UPDATE CSU FRAME DELETE: ${jsonEncode(list)}');
+                log('STORAGE UPDATE CS FRAME DELETE: ${jsonEncode(list)}');
 
                 return unit;
               }
@@ -399,7 +412,7 @@ class UpdateCSRepository {
   /// DATA: LIST OF [CSIDQuery]
   ///
   Future<Either<LocalFailure, List<CSIDQuery>>>
-      getUpdateCSUQueryListOFFLINE() async {
+      getUpdateCSQueryListOFFLINE() async {
     try {
       final savedStrings = await _storage.read();
       final isStorageSaved = savedStrings != null;
@@ -412,7 +425,7 @@ class UpdateCSRepository {
         return right(response);
       } else {
         // debugger(message: 'CALLED');
-        log('isStorageSaved CSU: NOT OK');
+        log('isStorageSaved CS: NOT OK');
 
         return right([]);
       }

@@ -3,15 +3,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:agung_opr/infrastructure/exceptions.dart';
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
+import '../../application/check_sheet/unit/state/csu_ng_result.dart';
 import '../../application/check_sheet/unit/state/csu_result.dart';
+import '../../application/check_sheet/unit/state/csu_trips.dart';
 
 class CSUFrameRemoteService {
   CSUFrameRemoteService(this._dio, this._dioRequestNotifier);
@@ -20,8 +18,9 @@ class CSUFrameRemoteService {
   final Map<String, String> _dioRequestNotifier;
 
   Future<List<CSUResult>> getCSUByFrameName({required String frameName}) async {
-    const String dbName = 'cs_trs_cs_test';
-    const String dbCSDtl = 'cs_trs_cs_dtl_test';
+    // TEST
+    const String dbName = 'cs_trs_cs';
+    const String dbCSDtl = 'cs_trs_cs_dtl';
 
     try {
       final data = _dioRequestNotifier;
@@ -93,7 +92,7 @@ class CSUFrameRemoteService {
   }
 
   Future<List<CSUNGResult>> getCSUNGByIdCS({required int idCS}) async {
-    const String dbName = 'cs_trs_cs_dtl_test';
+    const String dbName = 'cs_trs_cs_dtl';
 
     try {
       final data = _dioRequestNotifier;
