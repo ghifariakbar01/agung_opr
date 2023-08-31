@@ -66,7 +66,7 @@ class FormUpdateSPPDC extends ConsumerWidget {
 
                         log('sppdc $sppdc');
 
-                        if (sppdc.isNotEmpty) {
+                        if (sppdc.isNotEmpty && sppdc != '-1') {
                           sppdcController.text = sppdc;
 
                           ref

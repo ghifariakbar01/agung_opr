@@ -107,7 +107,7 @@ class SPKScaffold extends ConsumerWidget {
 
                                       log('NOSPK SCAN $noSPK');
 
-                                      if (noSPK.isNotEmpty) {
+                                      if (noSPK.isNotEmpty && noSPK != '-1') {
                                         ref
                                             .read(spkSearchNotifierProvider
                                                 .notifier)

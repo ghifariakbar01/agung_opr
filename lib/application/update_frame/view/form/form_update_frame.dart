@@ -62,7 +62,7 @@ class FormUpdateFrame extends ConsumerWidget {
                         String? frame = await FlutterBarcodeScanner.scanBarcode(
                             "#65B689", "Cancel", false, ScanMode.DEFAULT);
 
-                        if (frame.isNotEmpty) {
+                        if (frame.isNotEmpty && frame != '-1') {
                           frameController.text = frame;
 
                           ref

@@ -100,7 +100,7 @@ class UpdateFrameScaffold extends ConsumerWidget {
                                                     false,
                                                     ScanMode.DEFAULT);
 
-                                        if (frame.isNotEmpty) {
+                                        if (frame.isNotEmpty && frame != '-1') {
                                           ref
                                               .read(frameSearchNotifierProvider
                                                   .notifier)
