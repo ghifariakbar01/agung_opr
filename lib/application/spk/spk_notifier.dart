@@ -31,6 +31,16 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
   }
 
+  Future<void> searchSPKList({required String search}) async {
+    final Either<RemoteFailure, List<SPK>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOSPK: none());
+
+    FOS = await _repository.searchSPKList(search: search);
+
+    state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
+  }
+
   Future<void> searchSPKListOFFLINE({required String search}) async {
     final Either<RemoteFailure, List<SPK>> FOS;
 

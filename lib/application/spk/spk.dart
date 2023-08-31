@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'spk.freezed.dart';
@@ -18,4 +20,16 @@ class SPK with _$SPK {
       SPK(idSpk: 0, spkNo: '', supir1Nm: '', supir2Nm: '', nopol: '');
 
   factory SPK.fromJson(Map<String, Object?> json) => _$SPKFromJson(json);
+
+  static List<SPK> SPKListFromJson(List<dynamic> jsonList) {
+    return jsonList
+        .map((e) => SPK.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static String SPKListToJson(List<SPK> resultList) {
+    List<Map<String, dynamic>> jsonList =
+        resultList.map((e) => e.toJson()).toList();
+    return jsonEncode(jsonList);
+  }
 }

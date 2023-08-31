@@ -166,7 +166,7 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                   //
 
                   VButton(
-                      label: 'DEFECT',
+                      label: 'NG',
                       color: Palette.red,
                       isEnabled: isDefect,
                       onPressed: () async {
@@ -182,7 +182,7 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                         //     RouteNames.dataUpdateQueryName);
                       }),
                   VButton(
-                      label: 'NO DEFECT',
+                      label: 'OK',
                       isEnabled: !isDefect,
                       onPressed: () async {
                         await ref

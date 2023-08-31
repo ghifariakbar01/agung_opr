@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -325,6 +326,25 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           state.updateFrameList.copyWith(tglKirim: TglKirim(tglKirimStr)),
       FOSOUpdateCSU: none(),
     );
+  }
+
+  bool isTappable(
+      {required CSUResult csuResult, required List<CSUResult> csuResultItems}) {
+    Map<bool, List<CSUResult>> listGroupByGate = csuResultItems
+        .groupListsBy((element) => element.gate == csuResult.gate);
+
+    // USE FIRST, SINCE ONLY 1 LIST
+    List<CSUResult> listCSUResult = listGroupByGate.values.first;
+
+    if (listCSUResult.length == 2) {
+      bool isOut =
+          listCSUResult.firstWhere((element) => element.inout == true).inout ??
+              false;
+
+      return isOut ? false : true;
+    }
+
+    return true;
   }
 
   bool isValid() {

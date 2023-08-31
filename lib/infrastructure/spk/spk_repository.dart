@@ -42,6 +42,49 @@ class SPKRepository {
     }
   }
 
+  Future<Either<RemoteFailure, List<SPK>>> searchSPKList(
+      {required String search}) async {
+    try {
+      final spkList = await _remoteService.searchSPKList(search: search);
+
+      await this._add(spk: spkList);
+
+      return right(spkList);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  /// ADD [SPK] FROM SEARCH
+  ///
+  Future<Unit> _add({required List<SPK> spk}) async {
+    final spkStorage = await _storage.read();
+
+    if (spkStorage != null) {
+      final response = jsonDecode(spkStorage) as List<dynamic>;
+
+      final responseSPK = SPK.SPKListFromJson(response);
+
+      if (responseSPK.isNotEmpty) {
+        final responseSPKTosave = [...responseSPK, ...spk].toSet().toList();
+
+        final listResponseSPKToSave = SPK.SPKListToJson(responseSPKTosave);
+
+        await _storage.save(listResponseSPKToSave);
+      }
+    }
+
+    log('returned unit');
+
+    return unit;
+  }
+
   /// PAGINATE DATA LIST OF [SPK] FROM STORAGE
   ///
   /// process [page] and divide LIST OF [SPK]

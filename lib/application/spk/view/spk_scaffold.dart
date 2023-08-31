@@ -26,11 +26,11 @@ class SPKScaffold extends ConsumerWidget {
     final modeApp = ref.watch(modeNotifierProvider);
     final spkProvider = ref.watch(spkNotifierProvider);
 
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) {
-    //     _scrollController.position.notifyListeners();
-    //   },
-    // );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        _scrollController.position.notifyListeners();
+      },
+    );
 
     _scrollController.addListener(() async {
       final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
@@ -72,125 +72,126 @@ class SPKScaffold extends ConsumerWidget {
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
+            child: SingleChildScrollView(
               controller: _scrollController,
-              children: [
-                Row(
-                  children: [
-                    Flexible(flex: 5, child: SPKSearch()),
-                    Flexible(
-                        flex: 1,
-                        child: SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: Column(
-                            children: [
-                              Flexible(
-                                flex: 0,
-                                child: Text(
-                                  'NO.SPK',
-                                  textAlign: TextAlign.center,
-                                  style: Themes.customColor(
-                                      FontWeight.bold, 9, Colors.black),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Flexible(flex: 5, child: SPKSearch()),
+                      Flexible(
+                          flex: 1,
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Column(
+                              children: [
+                                Flexible(
+                                  flex: 0,
+                                  child: Text(
+                                    'NO.SPK',
+                                    textAlign: TextAlign.center,
+                                    style: Themes.customColor(
+                                        FontWeight.bold, 9, Colors.black),
+                                  ),
                                 ),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: InkWell(
-                                  onTap: () async {
-                                    log('NOSPK SCAN INIT');
-                                    String? noSPK =
-                                        await FlutterBarcodeScanner.scanBarcode(
-                                            "#65B689",
-                                            "Cancel",
-                                            false,
-                                            ScanMode.DEFAULT);
+                                Flexible(
+                                  flex: 2,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      log('NOSPK SCAN INIT');
+                                      String? noSPK =
+                                          await FlutterBarcodeScanner
+                                              .scanBarcode("#65B689", "Cancel",
+                                                  false, ScanMode.DEFAULT);
 
-                                    log('NOSPK SCAN $noSPK');
+                                      log('NOSPK SCAN $noSPK');
 
-                                    if (noSPK.isNotEmpty) {
-                                      ref
-                                          .read(spkSearchNotifierProvider
-                                              .notifier)
-                                          .changeSearchText(noSPK);
+                                      if (noSPK.isNotEmpty) {
+                                        ref
+                                            .read(spkSearchNotifierProvider
+                                                .notifier)
+                                            .changeSearchText(noSPK);
 
-                                      await ref
-                                          .read(spkNotifierProvider.notifier)
-                                          .searchSPKListOFFLINE(search: noSPK);
+                                        await ref
+                                            .read(spkNotifierProvider.notifier)
+                                            .searchSPKListOFFLINE(
+                                                search: noSPK);
 
-                                      log('NOSPK SCAN 2 $noSPK');
-                                    }
-                                  },
-                                  child: Ink(
-                                    child: Icon(
-                                      Icons.qr_code_2,
-                                      size: 40,
-                                      color: Colors.black,
+                                        log('NOSPK SCAN 2 $noSPK');
+                                      }
+                                    },
+                                    child: Ink(
+                                      child: Icon(
+                                        Icons.qr_code_2,
+                                        size: 40,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ))
-                  ],
-                ),
-                for (int i = 0; i < spkList.length; i++) ...[
-                  IgnorePointer(
-                    ignoring: isSearching,
-                    child: TextButton(
-                      onPressed: () => modeApp.maybeWhen(
-                        initial: () => {},
-                        updateFrameDummy: () async {
-                          // INIT BACK 0
-                          ref
-                              .read(frameNotifierProvider.notifier)
-                              .changeFrameList([]);
+                              ],
+                            ),
+                          ))
+                    ],
+                  ),
+                  for (int i = 0; i < spkList.length; i++) ...[
+                    IgnorePointer(
+                      ignoring: isSearching,
+                      child: TextButton(
+                        onPressed: () => modeApp.maybeWhen(
+                          initial: () => {},
+                          updateFrameDummy: () async {
+                            // INIT BACK 0
+                            ref
+                                .read(frameNotifierProvider.notifier)
+                                .changeFrameList([]);
 
-                          ref
-                              .read(frameNotifierProvider.notifier)
-                              .changeFillEmptyFOSOSaveFrameList(length: 0);
+                            ref
+                                .read(frameNotifierProvider.notifier)
+                                .changeFillEmptyFOSOSaveFrameList(length: 0);
 
-                          /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-                          ref
-                              .read(updateFrameNotifierProvider.notifier)
-                              .changeFillEmptyList(length: 0, frame: []);
+                            /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+                            ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .changeFillEmptyList(length: 0, frame: []);
 
-                          //
+                            //
 
-                          await context.pushNamed(
+                            await context.pushNamed(
+                                RouteNames.updateFrameNameRoute,
+                                extra: spkList[i].idSpk);
+
+                            return unit;
+                          },
+                          checkSheetUnit: () => context.pushNamed(
                               RouteNames.updateFrameNameRoute,
-                              extra: spkList[i].idSpk);
+                              extra: spkList[i].idSpk),
+                          checkSheetGateMerak: () => {},
+                          assignUnitMerak: () => {},
+                          dataUpdateQuery: () => {},
+                          // LOADING, UNLOADING, LOADING & UNLOADING
+                          orElse: () async {
+                            await context.pushNamed(
+                                RouteNames.checkSheetLoadingNameRoute,
+                                extra: spkList[i]);
 
-                          return unit;
-                        },
-                        checkSheetUnit: () => context.pushNamed(
-                            RouteNames.updateFrameNameRoute,
-                            extra: spkList[i].idSpk),
-                        checkSheetGateMerak: () => {},
-                        assignUnitMerak: () => {},
-                        dataUpdateQuery: () => {},
-                        // LOADING, UNLOADING, LOADING & UNLOADING
-                        orElse: () async {
-                          await context.pushNamed(
-                              RouteNames.checkSheetLoadingNameRoute,
-                              extra: spkList[i]);
-
-                          return unit;
-                        },
+                            return unit;
+                          },
+                        ),
+                        style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                        child: SPKItem(
+                          nomorSpk: spkList[i].spkNo,
+                          namaDriver:
+                              '${spkList[i].supir1Nm ?? ''} ${spkList[i].supir2Nm != null ? '/ ${spkList[i].supir2Nm}' : ''}',
+                          nomorPolisi: '${spkList[i].nopol}',
+                        ),
                       ),
-                      style: ButtonStyle(
-                          padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                      child: SPKItem(
-                        nomorSpk: spkList[i].spkNo,
-                        namaDriver:
-                            '${spkList[i].supir1Nm ?? ''} ${spkList[i].supir2Nm != null ? '/ ${spkList[i].supir2Nm}' : ''}',
-                        nomorPolisi: '${spkList[i].nopol}',
-                      ),
-                    ),
-                  )
-                ]
-              ],
+                    )
+                  ]
+                ],
+              ),
             )),
         // drawer: Drawer(),
         bottomNavigationBar: Container(

@@ -87,7 +87,11 @@ class CSUResultScaffold extends ConsumerWidget {
                           index < csuResultList.length;
                           index++) ...[
                         AbsorbPointer(
-                          absorbing: index != 0,
+                          absorbing: !ref
+                              .read(updateCSUFrameNotifierProvider.notifier)
+                              .isTappable(
+                                  csuResult: csuResultList[index],
+                                  csuResultItems: csuResultList),
                           child: TextButton(
                             onPressed: () async {
                               final csuItem = csuResultList[index];

@@ -4,6 +4,7 @@ import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/providers.dart';
 import '../../../style/style.dart';
 
 class SPKSearch extends ConsumerWidget {
@@ -46,14 +47,23 @@ class SPKSearch extends ConsumerWidget {
               .read(spkSearchNotifierProvider.notifier)
               .changeIsSearch(false),
           onChanged: (search) => search.isNotEmpty && search.length > 1
-              ? () {
-                  ref
-                      .read(spkNotifierProvider.notifier)
-                      .searchSPKListOFFLINE(search: search);
+              ? () async {
+                  final isOnline =
+                      ref.read(isOfflineStateProvider.notifier).state == false;
 
                   ref
                       .read(spkSearchNotifierProvider.notifier)
                       .changeSearchText('');
+
+                  if (isOnline) {
+                    await ref
+                        .read(spkNotifierProvider.notifier)
+                        .searchSPKList(search: search);
+                  } else {
+                    await ref
+                        .read(spkNotifierProvider.notifier)
+                        .searchSPKListOFFLINE(search: search);
+                  }
                 }()
               : ref
                   .read(spkNotifierProvider.notifier)
