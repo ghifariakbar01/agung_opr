@@ -14,23 +14,52 @@ class FrameSearch extends ConsumerWidget {
     final idSPK =
         ref.read(updateFrameNotifierProvider.select((value) => value.idSPK));
 
-    final searchInitialValue = ref
+    final search = ref
         .watch(frameSearchNotifierProvider.select((value) => value.searchText));
 
-    log('noSPK searchInitialValue $searchInitialValue');
+    final focusNode = ref
+        .watch(frameSearchNotifierProvider.select((value) => value.focusNode));
 
     return SizedBox(
       height: 48,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
           autofocus: false,
+          focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            searchInitialValue.isEmpty ? 'Input Frame' : searchInitialValue,
+            'Input Frame',
             icon: SizedBox(
               width: 55,
               child: Row(
                 children: [
-                  Icon(Icons.search),
+                  InkWell(
+                      onTap: () {
+                        search.isNotEmpty && search.length > 1
+                            ? () async {
+                                ref
+                                    .read(frameSearchNotifierProvider.notifier)
+                                    .changeIsSearch(true);
+
+                                await ref
+                                    .read(frameNotifierProvider.notifier)
+                                    .searchFrameListOFFLINE(
+                                        idSPK: '$idSPK', frame: search);
+
+                                ref
+                                    .read(frameSearchNotifierProvider.notifier)
+                                    .changeSearchText('');
+                              }()
+                            : () async {
+                                ref
+                                    .read(frameSearchNotifierProvider.notifier)
+                                    .changeIsSearch(false);
+
+                                await ref
+                                    .read(frameNotifierProvider.notifier)
+                                    .getFrameList(idSPK: idSPK);
+                              }();
+                      },
+                      child: Ink(child: Icon(Icons.search))),
                   Text(
                     'Cari',
                     style: Themes.greyHint(FontWeight.bold, 11),
@@ -42,13 +71,27 @@ class FrameSearch extends ConsumerWidget {
           onEditingComplete: () => ref
               .read(frameSearchNotifierProvider.notifier)
               .changeIsSearch(false),
-          onFieldSubmitted: (_) => ref
-              .read(frameSearchNotifierProvider.notifier)
-              .changeIsSearch(false),
           onTapOutside: (_) => ref
               .read(frameSearchNotifierProvider.notifier)
               .changeIsSearch(false),
-          onChanged: (search) => search.isNotEmpty && search.length > 1
+          onChanged: (search) async {
+            ref
+                .read(frameSearchNotifierProvider.notifier)
+                .changeSearchText(search);
+
+            if (search.isNotEmpty && search.length > 1) {
+              return;
+            } else {
+              ref
+                  .read(frameSearchNotifierProvider.notifier)
+                  .changeIsSearch(false);
+
+              await ref
+                  .read(frameNotifierProvider.notifier)
+                  .getFrameList(idSPK: idSPK);
+            }
+          },
+          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
               ? () async {
                   ref
                       .read(frameSearchNotifierProvider.notifier)

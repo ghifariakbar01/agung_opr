@@ -5,16 +5,23 @@ import 'package:go_router/go_router.dart';
 import '../../style/style.dart';
 
 class VAlertDialog extends StatelessWidget {
-  const VAlertDialog(
-      {Key? key,
-      required this.label,
-      required this.labelDescription,
-      required this.onPressed})
-      : super(key: key);
+  const VAlertDialog({
+    Key? key,
+    required this.label,
+    required this.labelDescription,
+    required this.onPressed,
+    this.onBackPressed,
+    this.backPressedLabel,
+    this.pressedLabel,
+  }) : super(key: key);
 
   final String label;
   final String labelDescription;
+  final String? backPressedLabel;
+  final String? pressedLabel;
+
   final Function() onPressed;
+  final Function()? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +47,9 @@ class VAlertDialog extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => context.pop(),
+            onPressed: onBackPressed ?? () => context.pop(),
             child: Text(
-              'TIDAK',
+              backPressedLabel ?? 'TIDAK',
               style: Themes.white(
                 FontWeight.bold,
                 15,
@@ -52,7 +59,7 @@ class VAlertDialog extends StatelessWidget {
           TextButton(
             onPressed: onPressed,
             child: Text(
-              'YA',
+              pressedLabel ?? 'YA',
               style: Themes.white(
                 FontWeight.bold,
                 15,

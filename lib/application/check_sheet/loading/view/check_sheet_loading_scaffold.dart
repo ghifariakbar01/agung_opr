@@ -60,7 +60,7 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                     ),
                     child: Center(
                       child: Text(
-                        '${selectedSPK.spkNo}\n${selectedSPK.supir1Nm} / ${selectedSPK.supir2Nm}\n${selectedSPK.nopol}',
+                        "${selectedSPK.spkNo}\n${selectedSPK.supir1Nm} ${selectedSPK.supir2Nm != null ? " /  ${selectedSPK.supir2Nm} " : ''}\n${selectedSPK.nopol}",
                         style: Themes.customColor(
                             FontWeight.bold, 16, Colors.black),
                         textAlign: TextAlign.center,

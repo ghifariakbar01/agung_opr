@@ -1,11 +1,9 @@
-import 'dart:developer';
-
-import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/providers.dart';
 import '../../../style/style.dart';
+import '../shared/model_providers.dart';
 
 class ModelSearch extends ConsumerWidget {
   const ModelSearch();
@@ -14,25 +12,54 @@ class ModelSearch extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final page = ref.watch(modelNotifierProvider.select((value) => value.page));
 
-    final searchInitialValue = ref
+    final search = ref
         .watch(modelSearchNotifierProvider.select((value) => value.searchText));
 
-    log('model searchInitialValue $searchInitialValue');
+    final focusNode = ref
+        .watch(modelSearchNotifierProvider.select((value) => value.focusNode));
 
     return SizedBox(
       height: 48,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
           autofocus: false,
+          focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            searchInitialValue.isEmpty
-                ? 'Input ID/MERK/NAMA/CATEGORY/GW/MR'
-                : searchInitialValue,
+            'Input ID/MERK/NAMA/CATEGORY/GW/MR',
             icon: SizedBox(
               width: 55,
               child: Row(
                 children: [
-                  Icon(Icons.search),
+                  InkWell(
+                      onTap: () {
+                        focusNode.unfocus();
+
+                        search.isNotEmpty && search.length > 1
+                            ? () async {
+                                final isOnline = ref
+                                        .read(isOfflineStateProvider.notifier)
+                                        .state ==
+                                    false;
+
+                                ref
+                                    .read(modelSearchNotifierProvider.notifier)
+                                    .changeSearchText('');
+
+                                if (isOnline) {
+                                  await ref
+                                      .read(modelNotifierProvider.notifier)
+                                      .searchModelList(search: search);
+                                } else {
+                                  await ref
+                                      .read(modelNotifierProvider.notifier)
+                                      .searchModelListOFFLINE(search: search);
+                                }
+                              }()
+                            : ref
+                                .read(modelNotifierProvider.notifier)
+                                .getModelListOFFLINE(page: page);
+                      },
+                      child: Ink(child: Icon(Icons.search))),
                   Text(
                     'Cari',
                     style: Themes.greyHint(FontWeight.bold, 11),
@@ -47,7 +74,20 @@ class ModelSearch extends ConsumerWidget {
           onTapOutside: (_) => ref
               .read(modelSearchNotifierProvider.notifier)
               .changeIsSearch(false),
-          onChanged: (search) => search.isNotEmpty && search.length > 1
+          onChanged: (search) async {
+            ref
+                .read(modelSearchNotifierProvider.notifier)
+                .changeSearchText(search);
+
+            if (search.isNotEmpty && search.length > 1) {
+              return;
+            } else {
+              await ref
+                  .read(modelNotifierProvider.notifier)
+                  .getModelListOFFLINE(page: 0);
+            }
+          },
+          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
               ? () async {
                   final isOnline =
                       ref.read(isOfflineStateProvider.notifier).state == false;

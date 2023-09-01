@@ -18,40 +18,59 @@ import 'spk_item.dart';
 
 final ScrollController _scrollController = ScrollController();
 
-class SPKScaffold extends ConsumerWidget {
+class SPKScaffold extends ConsumerStatefulWidget {
   const SPKScaffold();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SPKScaffold> createState() => _SPKScaffoldState();
+}
+
+class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
+  @override
+  void initState() {
+    super.initState();
+
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   _scrollController.addListener(() async {
+    //     final nextPageTrigger =
+    //         0.9 * _scrollController.position.maxScrollExtent;
+
+    //     final isMore =
+    //         ref.watch(spkNotifierProvider.select((value) => value.hasMore));
+    //     ;
+
+    //     final isGetting = ref
+    //         .watch(spkNotifierProvider.select((value) => value.isProcessing));
+
+    //     final page =
+    //         ref.watch(spkNotifierProvider.select((value) => value.page));
+
+    //     if (_scrollController.hasClients &&
+    //         _scrollController.position.pixels > nextPageTrigger &&
+    //         isMore &&
+    //         !isGetting) {
+    //       ref.read(spkNotifierProvider.notifier).changePage(page + 1);
+
+    //       await ref
+    //           .read(spkNotifierProvider.notifier)
+    //           .getSPKListOFFLINE(page: page + 1);
+    //     }
+    //   });
+    // });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final modeApp = ref.watch(modeNotifierProvider);
     final spkProvider = ref.watch(spkNotifierProvider);
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        _scrollController.position.notifyListeners();
+        if (_scrollController.hasClients && _scrollController.hasClients) {
+          _scrollController.position.notifyListeners();
+        }
       },
     );
-
-    _scrollController.addListener(() async {
-      final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
-
-      final isMore = spkProvider.hasMore;
-
-      final isGetting = spkProvider.isProcessing;
-
-      final page = spkProvider.page;
-
-      if (_scrollController.hasClients &&
-          _scrollController.position.pixels > nextPageTrigger &&
-          isMore &&
-          !isGetting) {
-        ref.read(spkNotifierProvider.notifier).changePage(page + 1);
-
-        await ref
-            .read(spkNotifierProvider.notifier)
-            .getSPKListOFFLINE(page: page + 1);
-      }
-    });
 
     final spkList = spkProvider.spkList;
 

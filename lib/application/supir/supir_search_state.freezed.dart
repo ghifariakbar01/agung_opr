@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SupirSearchState {
   bool get isSearching => throw _privateConstructorUsedError;
   String get searchText => throw _privateConstructorUsedError;
+  FocusNode get focusNode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SupirSearchStateCopyWith<SupirSearchState> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $SupirSearchStateCopyWith<$Res> {
           SupirSearchState value, $Res Function(SupirSearchState) then) =
       _$SupirSearchStateCopyWithImpl<$Res, SupirSearchState>;
   @useResult
-  $Res call({bool isSearching, String searchText});
+  $Res call({bool isSearching, String searchText, FocusNode focusNode});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$SupirSearchStateCopyWithImpl<$Res, $Val extends SupirSearchState>
   $Res call({
     Object? isSearching = null,
     Object? searchText = null,
+    Object? focusNode = null,
   }) {
     return _then(_value.copyWith(
       isSearching: null == isSearching
@@ -58,6 +60,10 @@ class _$SupirSearchStateCopyWithImpl<$Res, $Val extends SupirSearchState>
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
+      focusNode: null == focusNode
+          ? _value.focusNode
+          : focusNode // ignore: cast_nullable_to_non_nullable
+              as FocusNode,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$_SPKSearchStateCopyWith<$Res>
       __$$_SPKSearchStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isSearching, String searchText});
+  $Res call({bool isSearching, String searchText, FocusNode focusNode});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$_SPKSearchStateCopyWithImpl<$Res>
   $Res call({
     Object? isSearching = null,
     Object? searchText = null,
+    Object? focusNode = null,
   }) {
     return _then(_$_SPKSearchState(
       isSearching: null == isSearching
@@ -96,6 +103,10 @@ class __$$_SPKSearchStateCopyWithImpl<$Res>
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
+      focusNode: null == focusNode
+          ? _value.focusNode
+          : focusNode // ignore: cast_nullable_to_non_nullable
+              as FocusNode,
     ));
   }
 }
@@ -104,16 +115,20 @@ class __$$_SPKSearchStateCopyWithImpl<$Res>
 
 class _$_SPKSearchState implements _SPKSearchState {
   const _$_SPKSearchState(
-      {required this.isSearching, required this.searchText});
+      {required this.isSearching,
+      required this.searchText,
+      required this.focusNode});
 
   @override
   final bool isSearching;
   @override
   final String searchText;
+  @override
+  final FocusNode focusNode;
 
   @override
   String toString() {
-    return 'SupirSearchState(isSearching: $isSearching, searchText: $searchText)';
+    return 'SupirSearchState(isSearching: $isSearching, searchText: $searchText, focusNode: $focusNode)';
   }
 
   @override
@@ -124,11 +139,14 @@ class _$_SPKSearchState implements _SPKSearchState {
             (identical(other.isSearching, isSearching) ||
                 other.isSearching == isSearching) &&
             (identical(other.searchText, searchText) ||
-                other.searchText == searchText));
+                other.searchText == searchText) &&
+            (identical(other.focusNode, focusNode) ||
+                other.focusNode == focusNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isSearching, searchText);
+  int get hashCode =>
+      Object.hash(runtimeType, isSearching, searchText, focusNode);
 
   @JsonKey(ignore: true)
   @override
@@ -140,12 +158,15 @@ class _$_SPKSearchState implements _SPKSearchState {
 abstract class _SPKSearchState implements SupirSearchState {
   const factory _SPKSearchState(
       {required final bool isSearching,
-      required final String searchText}) = _$_SPKSearchState;
+      required final String searchText,
+      required final FocusNode focusNode}) = _$_SPKSearchState;
 
   @override
   bool get isSearching;
   @override
   String get searchText;
+  @override
+  FocusNode get focusNode;
   @override
   @JsonKey(ignore: true)
   _$$_SPKSearchStateCopyWith<_$_SPKSearchState> get copyWith =>

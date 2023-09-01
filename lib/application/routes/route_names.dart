@@ -8,6 +8,9 @@ class RouteNames {
   static const crannyNameRoute = '/cranny';
   static const crannyName = '/cranny';
 
+  static const termsAndConditionNameRoute = '/termsAndCondition';
+  static const termsAndConditionRoute = '/termsAndCondition';
+
   static const spkNameRoute = 'spk';
   static const spkName = 'spk';
 
@@ -37,6 +40,9 @@ class RouteNames {
 
   static const modelNameRoute = 'model';
   static const modelName = 'model';
+
+  static const profileNameRoute = 'profile';
+  static const profileRoute = 'profile';
 
   static const supirNameRoute = 'supir';
   static const supirName = 'supir';

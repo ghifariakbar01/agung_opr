@@ -79,10 +79,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     // SPK function get and update offline status
     Future<void> spkFunction() async {
-      // GET [500] LATEST DATA
-      for (int i = 0; i < 5; i++) {
-        await ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      }
+      // GET [100] LATEST DATA
+      await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
 
       await ref
           .read(spkOfflineNotifierProvider.notifier)

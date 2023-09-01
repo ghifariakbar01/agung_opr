@@ -12,6 +12,7 @@ import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../../widgets/v_bottomnav.dart';
+import 'cranny_drawer.dart';
 import 'cranny_item.dart';
 import 'cs/cs_cranny_page.dart';
 
@@ -37,7 +38,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
 
     return Scaffold(
       appBar: VAppBar(
-        'Aplikasi OPR CCR',
+        'Mobile Car Carrier OPR CCR',
       ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -98,8 +99,8 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
               )
             ],
           )),
-      // drawer: Drawer(),
-      bottomNavigationBar: VBottomNav(),
+      drawer: CrannyDrawer(),
+      // bottomNavigationBar: VBottomNav(),
     );
   }
 }

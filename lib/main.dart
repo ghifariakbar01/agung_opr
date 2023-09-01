@@ -12,6 +12,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'application/check_sheet/shared/providers/cs_providers.dart';
 import 'application/spk/shared/spk_providers.dart';
+import 'application/tc/shared/tc_providers.dart';
 import 'config/configuration.dart';
 import 'shared/providers.dart';
 import 'style/style.dart';
@@ -49,6 +50,9 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
   final authNotifier = ref.read(authNotifierProvider.notifier);
   await authNotifier.checkAndUpdateAuthStatus();
 
+  final tcNotifier = ref.read(tcNotifierProvider.notifier);
+  await tcNotifier.checkAndUpdateStatusTC();
+
   final authNotifierState = ref.read(authNotifierProvider);
   final isSignedIn = authNotifierState == AuthState.authenticated();
 
@@ -66,9 +70,8 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
       hasOfflineStorage: () =>
           ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
       orElse: () async {
-        for (int i = 0; i < 5; i++) {
-          await ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-        }
+        await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
+
         await ref
             .read(spkOfflineNotifierProvider.notifier)
             .checkAndUpdateSPKOFFLINEStatus();

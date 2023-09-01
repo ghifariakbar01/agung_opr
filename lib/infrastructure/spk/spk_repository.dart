@@ -103,7 +103,7 @@ class SPKRepository {
 
         // START PAGINATION
 
-        final int itemsPerPage = 20;
+        final int itemsPerPage = 10;
 
         int _startIndex = page * itemsPerPage;
 

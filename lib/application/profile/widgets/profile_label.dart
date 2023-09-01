@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 
 import '../../../style/style.dart';
@@ -23,7 +24,8 @@ class ProfileLabel extends StatelessWidget {
         ),
         Text(
           label,
-          style: Themes.blueSpaced(FontWeight.bold, 13),
+          style:
+              Themes.customColor(FontWeight.bold, 13, Palette.secondaryColor),
         )
       ],
     );

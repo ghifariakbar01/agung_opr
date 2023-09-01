@@ -20,7 +20,7 @@ class ModelRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT arap_mst_kend_type.id_kend_type AS id, arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat WHERE arap_mst_kend_type.nama LIKE '%$search%' ORDER BY arap_mst_kend_type.id_kend_type DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT arap_mst_kend_type.id_kend_type AS id, arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat WHERE arap_mst_kend_type.nama LIKE '%$search%' OR arap_mst_kend_type.id_kend_type LIKE '%$search%' OR arap_mst_kend_merk.nama LIKE '%$search%' OR arap_mst_kend_type.grossweight LIKE '%$search%' OR arap_mst_kend_type.measurement LIKE '%$search%' OR arap_mst_kend_cat.nama LIKE '%$search%' ORDER BY arap_mst_kend_type.id_kend_type DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

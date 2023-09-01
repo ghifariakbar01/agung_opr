@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'model_search_state.freezed.dart';
@@ -6,8 +7,9 @@ part 'model_search_state.freezed.dart';
 class ModelSearchState with _$ModelSearchState {
   const factory ModelSearchState(
       {required bool isSearching,
-      required String searchText}) = _SPKSearchState;
+      required String searchText,
+      required FocusNode focusNode}) = _SPKSearchState;
 
-  factory ModelSearchState.initial() =>
-      ModelSearchState(isSearching: false, searchText: '');
+  factory ModelSearchState.initial() => ModelSearchState(
+      isSearching: false, searchText: '', focusNode: FocusNode());
 }

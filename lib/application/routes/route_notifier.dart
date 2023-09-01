@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
 import 'package:agung_opr/application/customer/view/customer_page.dart';
@@ -17,8 +19,12 @@ import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../check_sheet/unit/view/csu_new_page.dart';
 import '../check_sheet/unit/view/csu_result_page.dart';
+import '../profile/profile_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
 import '../spk/spk.dart';
+import '../tc/shared/tc_providers.dart';
+import '../tc/tc_page.dart';
+import '../tc/tc_state.dart';
 import '../update_frame/frame.dart';
 import 'route_names.dart';
 
@@ -28,23 +34,53 @@ class RouterNotifier extends ChangeNotifier {
       authNotifierProvider,
       (_, __) => notifyListeners(),
     );
+
+    _ref.listen<TCState>(
+      tcNotifierProvider,
+      (_, __) => notifyListeners(),
+    );
   }
 
   final Ref _ref;
 
   String? redirectLogic(BuildContext context, GoRouterState state) {
     final authState = _ref.read(authNotifierProvider);
+    final tcState = _ref.read(tcNotifierProvider);
 
     final areWeSigningIn = state.matchedLocation == RouteNames.signInRoute;
+    final areWeReadingTC =
+        state.matchedLocation == RouteNames.termsAndConditionRoute;
+
+    final weVisitedTC = tcState == TCState.visited();
 
     return authState.maybeMap(
-      authenticated: (_) => areWeSigningIn ? RouteNames.crannyName : null,
+      authenticated: (_) {
+        if (areWeSigningIn && weVisitedTC) {
+          //
+
+          return RouteNames.crannyName;
+        } else if (areWeSigningIn && !weVisitedTC) {
+          //
+
+          return RouteNames.termsAndConditionNameRoute;
+        } else if (areWeReadingTC && weVisitedTC) {
+          //
+
+          return RouteNames.crannyName;
+        }
+        return null;
+      },
       orElse: () => areWeSigningIn ? null : RouteNames.signInRoute,
     );
   }
 
   List<GoRoute> get routes {
     return [
+      GoRoute(
+        name: RouteNames.termsAndConditionNameRoute,
+        path: RouteNames.termsAndConditionRoute,
+        builder: (context, state) => TCPage(),
+      ),
       GoRoute(
         name: RouteNames.crannyNameRoute,
         path: RouteNames.crannyName,
@@ -114,6 +150,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.checkSheetUnloadingNameRoute,
               path: RouteNames.checkSheetUnloadingName,
               builder: (context, state) => CheckSheetUnloadingPage(),
+            ),
+            GoRoute(
+              name: RouteNames.profileNameRoute,
+              path: RouteNames.profileRoute,
+              builder: (context, state) => const ProfilePage(),
             ),
             GoRoute(
               name: RouteNames.dataUpdateQueryName,
