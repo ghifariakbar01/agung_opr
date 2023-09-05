@@ -1,4 +1,3 @@
-
 import 'package:agung_opr/application/gate/csu_mst_gate.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/infrastructure/gate/gate_repository.dart';
@@ -22,6 +21,16 @@ class GateNotifier extends StateNotifier<CSUGateState> {
     // debugger(message: 'called');
 
     FOS = await _repository.getCSUGates();
+
+    state = state.copyWith(isProcessing: false, FOSOGate: optionOf(FOS));
+  }
+
+  Future<void> searchGateList({required String search}) async {
+    final Either<RemoteFailure, List<CSUMSTGate>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOGate: none());
+
+    FOS = await _repository.searchGatesList(search: search);
 
     state = state.copyWith(isProcessing: false, FOSOGate: optionOf(FOS));
   }

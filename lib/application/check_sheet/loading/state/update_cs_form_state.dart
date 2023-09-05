@@ -19,6 +19,7 @@ class UpdateCSFormState with _$UpdateCSFormState {
     required Tipe tipe,
     required bool isShowError,
     required TextEditingController jamLoadUnloadText,
+    required TextEditingController gateTextController,
     required List<bool> isNG,
     required List<UpdateCSNGState> ngStates,
   }) = _UpdateCSFormState;
@@ -33,6 +34,7 @@ class UpdateCSFormState with _$UpdateCSFormState {
         keterangan: Keterangan(''),
         tipe: Tipe.Unknown,
         jamLoadUnloadText: TextEditingController(),
+        gateTextController: TextEditingController(),
         isShowError: false,
         isNG: [],
         ngStates: [],

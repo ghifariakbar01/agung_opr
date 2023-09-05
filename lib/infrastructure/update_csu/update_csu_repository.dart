@@ -247,6 +247,7 @@ class UpdateCSUFrameRepository {
     required SupirSDR supirSDR,
     required TglKirim tglKirim,
     required TglTerima tglTerima,
+    required Keterangan keterangan,
     String idCS = 'ID_CS_NA',
     int noDefect = 0,
   }) {
@@ -256,7 +257,7 @@ class UpdateCSUFrameRepository {
     // supir1, supir2,
 
     final String insert =
-        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit)';
+        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit, ket)';
 
     final idUser = _userModelWithPassword.idUser;
     final nameUser = _userModelWithPassword.nama;
@@ -273,6 +274,8 @@ class UpdateCSUFrameRepository {
     final tglKirimStr = tglKirim.getOrLeave('');
     final tglTerimaStr = tglTerima.getOrLeave('');
 
+    final keteranganStr = keterangan.getOrLeave('');
+
     final tgl = DateFormat('yyyy-MM-dd')
         .parse(DateTime.now().toString())
         .toString()
@@ -285,7 +288,7 @@ class UpdateCSUFrameRepository {
     // '${supir1Str}', '${supir2Str}'
 
     final csuQuery =
-        " ${gateInt},  '${deckStr}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}' ";
+        " ${gateInt},  '${deckStr}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}', '${keteranganStr}' ";
 
     final requiredQuery =
         " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName), '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";

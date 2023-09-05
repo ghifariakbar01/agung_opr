@@ -49,7 +49,7 @@ class _FormKeteranganState extends ConsumerState<FormKeterangan> {
             child: TextFormField(
               initialValue: keteranganStr,
               decoration: Themes.formStyle(
-                'Masukkan KETERANGAN (Jika Jika Ada Temuan Abnormality Terkait APD, CCR) :',
+                'Masukkan KETERANGAN (Jika Ada Temuan Abnormality Terkait APD, CCR) :',
                 hintFontSize: 11,
                 icon: IconButton(
                     onPressed: () {},

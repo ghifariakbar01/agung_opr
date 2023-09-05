@@ -36,11 +36,12 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
     state = state.copyWith(
         idSPK: spk.idSpk,
         updateCSForm: state.updateCSForm.copyWith(
-            nopol: Nopol(spk.nopol),
-            namaSupir: Supir1(spk.supir1Nm ?? ''),
-            namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
-            jamLoadUnload: JamLoad(jam),
-            jamLoadUnloadText: TextEditingController(text: jam)));
+          nopol: Nopol(spk.nopol),
+          namaSupir: Supir1(spk.supir1Nm ?? ''),
+          namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
+          jamLoadUnload: JamLoad(jam),
+          jamLoadUnloadText: TextEditingController(text: jam),
+        ));
   }
 
   // void changeFillNG({required List<CSUNGResult> csuNGResult}) {

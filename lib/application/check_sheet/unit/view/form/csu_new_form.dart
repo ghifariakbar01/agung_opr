@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/unit/view/form/form_insert_keterangan.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../style/style.dart';
@@ -40,13 +41,12 @@ class CSUNewForm extends ConsumerWidget {
             SizedBox(
               height: 8,
             ),
-            FormInsertGate(index: 0),
-            FormInsertDeck(index: 0),
-            FormInsertSupirSDR(
-              index: 0,
-            ),
-            FormInsertTglTerima(index: 0),
-            FormInsertTglKirim(index: 0),
+            FormInsertGate(),
+            FormInsertDeck(),
+            FormInsertSupirSDR(),
+            FormInsertTglTerima(),
+            FormInsertTglKirim(),
+            FormInsertKeterangan(),
           ],
         ),
       ),

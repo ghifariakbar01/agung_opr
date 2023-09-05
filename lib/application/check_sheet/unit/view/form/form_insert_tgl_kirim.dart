@@ -9,9 +9,7 @@ import '../../../../../style/style.dart';
 ///
 ///
 class FormInsertTglKirim extends ConsumerWidget {
-  const FormInsertTglKirim({required this.index});
-
-  final int index;
+  const FormInsertTglKirim();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

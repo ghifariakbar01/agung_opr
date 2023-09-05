@@ -23,9 +23,7 @@ final deckList = {
 ///
 ///
 class FormInsertDeck extends ConsumerWidget {
-  const FormInsertDeck({required this.index});
-
-  final int index;
+  const FormInsertDeck();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

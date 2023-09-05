@@ -20,6 +20,7 @@ _$_CSUResult _$$_CSUResultFromJson(Map<String, dynamic> json) => _$_CSUResult(
       supirSDR: json['supir_sdr'] as String?,
       tglKirim: json['tgl_kirim_unit'] as String?,
       tglTerima: json['tgl_terima_unit'] as String?,
+      keterangan: json['ket'] as String?,
       updatedAt: json['u_date'] as String?,
       updatedBy: json['u_user'] as String?,
     );
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$_CSUResultToJson(_$_CSUResult instance) =>
       'supir_sdr': instance.supirSDR,
       'tgl_kirim_unit': instance.tglKirim,
       'tgl_terima_unit': instance.tglTerima,
+      'ket': instance.keterangan,
       'u_date': instance.updatedAt,
       'u_user': instance.updatedBy,
     };

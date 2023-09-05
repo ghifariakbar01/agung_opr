@@ -10,9 +10,7 @@ import '../../shared/csu_providers.dart';
 ///
 ///
 class FormInsertSupirSDR extends ConsumerWidget {
-  const FormInsertSupirSDR({required this.index});
-
-  final int index;
+  const FormInsertSupirSDR();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

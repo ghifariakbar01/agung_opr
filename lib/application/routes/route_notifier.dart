@@ -1,4 +1,3 @@
-
 import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
 import 'package:agung_opr/application/customer/view/customer_page.dart';
@@ -18,6 +17,7 @@ import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../check_sheet/unit/view/csu_new_page.dart';
 import '../check_sheet/unit/view/csu_result_page.dart';
+import '../gate/view/gate_page.dart';
 import '../profile/profile_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
 import '../spk/spk.dart';
@@ -94,6 +94,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.spkNameRoute,
               path: RouteNames.spkName,
               builder: (context, state) => SPKPage(),
+            ),
+            GoRoute(
+              name: RouteNames.gateNameRoute,
+              path: RouteNames.gateName,
+              builder: (context, state) => GatePage(),
             ),
             GoRoute(
               name: RouteNames.modelNameRoute,

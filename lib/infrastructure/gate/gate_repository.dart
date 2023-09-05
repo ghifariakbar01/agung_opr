@@ -64,6 +64,30 @@ class GateRepository {
     }
   }
 
+  Future<Either<RemoteFailure, List<CSUMSTGate>>> searchGatesList(
+      {required String search}) async {
+    try {
+      // debugger(message: 'called');
+
+      final listCSUMSTGate =
+          await _remoteService.searchGatesList(search: search);
+
+      // await this._SAVECSUItems(csuItemsParam: listCSUMSTGate);
+
+      return right(listCSUMSTGate);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
   /// DATA: [CSUMSTGate] FROM STORAGE
   ///
   /// get [CSUMSTGate]

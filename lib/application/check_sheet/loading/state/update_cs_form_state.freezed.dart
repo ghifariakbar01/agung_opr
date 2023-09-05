@@ -27,6 +27,8 @@ mixin _$UpdateCSFormState {
   bool get isShowError => throw _privateConstructorUsedError;
   TextEditingController get jamLoadUnloadText =>
       throw _privateConstructorUsedError;
+  TextEditingController get gateTextController =>
+      throw _privateConstructorUsedError;
   List<bool> get isNG => throw _privateConstructorUsedError;
   List<UpdateCSNGState> get ngStates => throw _privateConstructorUsedError;
 
@@ -52,6 +54,7 @@ abstract class $UpdateCSFormStateCopyWith<$Res> {
       Tipe tipe,
       bool isShowError,
       TextEditingController jamLoadUnloadText,
+      TextEditingController gateTextController,
       List<bool> isNG,
       List<UpdateCSNGState> ngStates});
 }
@@ -79,6 +82,7 @@ class _$UpdateCSFormStateCopyWithImpl<$Res, $Val extends UpdateCSFormState>
     Object? tipe = null,
     Object? isShowError = null,
     Object? jamLoadUnloadText = null,
+    Object? gateTextController = null,
     Object? isNG = null,
     Object? ngStates = null,
   }) {
@@ -123,6 +127,10 @@ class _$UpdateCSFormStateCopyWithImpl<$Res, $Val extends UpdateCSFormState>
           ? _value.jamLoadUnloadText
           : jamLoadUnloadText // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      gateTextController: null == gateTextController
+          ? _value.gateTextController
+          : gateTextController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       isNG: null == isNG
           ? _value.isNG
           : isNG // ignore: cast_nullable_to_non_nullable
@@ -154,6 +162,7 @@ abstract class _$$_UpdateCSFormStateCopyWith<$Res>
       Tipe tipe,
       bool isShowError,
       TextEditingController jamLoadUnloadText,
+      TextEditingController gateTextController,
       List<bool> isNG,
       List<UpdateCSNGState> ngStates});
 }
@@ -179,6 +188,7 @@ class __$$_UpdateCSFormStateCopyWithImpl<$Res>
     Object? tipe = null,
     Object? isShowError = null,
     Object? jamLoadUnloadText = null,
+    Object? gateTextController = null,
     Object? isNG = null,
     Object? ngStates = null,
   }) {
@@ -223,6 +233,10 @@ class __$$_UpdateCSFormStateCopyWithImpl<$Res>
           ? _value.jamLoadUnloadText
           : jamLoadUnloadText // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      gateTextController: null == gateTextController
+          ? _value.gateTextController
+          : gateTextController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
       isNG: null == isNG
           ? _value._isNG
           : isNG // ignore: cast_nullable_to_non_nullable
@@ -249,6 +263,7 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
       required this.tipe,
       required this.isShowError,
       required this.jamLoadUnloadText,
+      required this.gateTextController,
       required final List<bool> isNG,
       required final List<UpdateCSNGState> ngStates})
       : _isNG = isNG,
@@ -274,6 +289,8 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
   final bool isShowError;
   @override
   final TextEditingController jamLoadUnloadText;
+  @override
+  final TextEditingController gateTextController;
   final List<bool> _isNG;
   @override
   List<bool> get isNG {
@@ -292,7 +309,7 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
 
   @override
   String toString() {
-    return 'UpdateCSFormState(nopol: $nopol, namaSupir: $namaSupir, namaAsistenSupir: $namaAsistenSupir, tglBerangkat: $tglBerangkat, jamLoadUnload: $jamLoadUnload, gate: $gate, keterangan: $keterangan, tipe: $tipe, isShowError: $isShowError, jamLoadUnloadText: $jamLoadUnloadText, isNG: $isNG, ngStates: $ngStates)';
+    return 'UpdateCSFormState(nopol: $nopol, namaSupir: $namaSupir, namaAsistenSupir: $namaAsistenSupir, tglBerangkat: $tglBerangkat, jamLoadUnload: $jamLoadUnload, gate: $gate, keterangan: $keterangan, tipe: $tipe, isShowError: $isShowError, jamLoadUnloadText: $jamLoadUnloadText, gateTextController: $gateTextController, isNG: $isNG, ngStates: $ngStates)';
   }
 
   @override
@@ -317,6 +334,8 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
                 other.isShowError == isShowError) &&
             (identical(other.jamLoadUnloadText, jamLoadUnloadText) ||
                 other.jamLoadUnloadText == jamLoadUnloadText) &&
+            (identical(other.gateTextController, gateTextController) ||
+                other.gateTextController == gateTextController) &&
             const DeepCollectionEquality().equals(other._isNG, _isNG) &&
             const DeepCollectionEquality().equals(other._ngStates, _ngStates));
   }
@@ -334,6 +353,7 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
       tipe,
       isShowError,
       jamLoadUnloadText,
+      gateTextController,
       const DeepCollectionEquality().hash(_isNG),
       const DeepCollectionEquality().hash(_ngStates));
 
@@ -357,6 +377,7 @@ abstract class _UpdateCSFormState implements UpdateCSFormState {
       required final Tipe tipe,
       required final bool isShowError,
       required final TextEditingController jamLoadUnloadText,
+      required final TextEditingController gateTextController,
       required final List<bool> isNG,
       required final List<UpdateCSNGState> ngStates}) = _$_UpdateCSFormState;
 
@@ -380,6 +401,8 @@ abstract class _UpdateCSFormState implements UpdateCSFormState {
   bool get isShowError;
   @override
   TextEditingController get jamLoadUnloadText;
+  @override
+  TextEditingController get gateTextController;
   @override
   List<bool> get isNG;
   @override

@@ -33,6 +33,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             supirSDR: SupirSDR(''),
             tglTerima: TglTerima(''),
             tglKirim: TglKirim(''),
+            keterangan: Keterangan(''),
             gateTextController: TextEditingController(),
             deckTextController: TextEditingController(),
             // supir1TextController: TextEditingController(),
@@ -40,6 +41,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             supirSDRTextController: TextEditingController(),
             tglTerimaTextController: TextEditingController(),
             tglKirimTextController: TextEditingController(),
+            keteranganTextController: TextEditingController(),
             inOut: false));
   }
 
@@ -55,6 +57,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
             supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
             tglKirim: TglKirim(''),
             tglTerima: TglTerima(''),
+            keterangan: Keterangan(''),
             gateTextController:
                 TextEditingController(text: csuResult.idGate.toString()),
             deckTextController:
@@ -67,6 +70,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
                 TextEditingController(text: csuResult.supirSDR ?? ''),
             tglTerimaTextController: TextEditingController(),
             tglKirimTextController: TextEditingController(),
+            keteranganTextController:
+                TextEditingController(text: csuResult.keterangan ?? ''),
             inOut: csuResult.inout == false ? true : false));
   }
 
@@ -144,6 +149,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           supirSDR: stateCSU.supirSDR,
           tglKirim: stateCSU.tglKirim,
           tglTerima: stateCSU.tglTerima,
+          keterangan: stateCSU.keterangan,
           noDefect: isNG == true ? 1 : 0,
           inOut: stateCSU.inOut == false ? 0 : 1);
 
@@ -328,6 +334,14 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     );
   }
 
+  void changeKeterangan(String keteranganStr) {
+    state = state.copyWith(
+      updateFrameList:
+          state.updateFrameList.copyWith(keterangan: Keterangan(keteranganStr)),
+      FOSOUpdateCSU: none(),
+    );
+  }
+
   bool isTappable(
       {required CSUResult csuResult, required List<CSUResult> csuResultItems}) {
     Map<bool, List<CSUResult>> listGroupByGate = csuResultItems
@@ -359,40 +373,9 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       // frame.supirSDR,
       // frame.tglTerima,
       // frame.tglKirim,
+      // frame.keterangan
     ];
 
     return Validator.validate(values);
-  }
-
-  Future<void> updateCheckSheet() async {
-    Either<LocalFailure, Unit>? FOS;
-
-    final item = state.updateFrameList;
-
-    if (isValid()) {
-      state = state.copyWith(
-          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
-
-      debugger(message: 'called');
-
-      // FOS = await _repository.(
-      //   idSPK: state.idSPK.toString(),
-      //   idUnit: item.idUnit,
-      //   idKendType: item.idKendType,
-      //   engine: item.engine,
-      //   frame: item.frame,
-      //   noReff: item.noReff,
-      //   warna: item.warna,
-      //   sppdc: item.sppdc,
-      // );
-
-      state = state.copyWith(
-          isProcessing: false, showErrorMessages: false, FOSOUpdateCSU: none());
-    } else {
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: true,
-          FOSOUpdateCSU: optionOf(FOS));
-    }
   }
 }

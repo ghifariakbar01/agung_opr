@@ -39,6 +39,8 @@ mixin _$CSUResult {
   String? get tglKirim => throw _privateConstructorUsedError;
   @JsonKey(name: 'tgl_terima_unit')
   String? get tglTerima => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ket')
+  String? get keterangan => throw _privateConstructorUsedError;
   @JsonKey(name: 'u_date')
   String? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'u_user')
@@ -69,6 +71,7 @@ abstract class $CSUResultCopyWith<$Res> {
       @JsonKey(name: 'supir_sdr') String? supirSDR,
       @JsonKey(name: 'tgl_kirim_unit') String? tglKirim,
       @JsonKey(name: 'tgl_terima_unit') String? tglTerima,
+      @JsonKey(name: 'ket') String? keterangan,
       @JsonKey(name: 'u_date') String? updatedAt,
       @JsonKey(name: 'u_user') String? updatedBy});
 }
@@ -99,6 +102,7 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
     Object? supirSDR = freezed,
     Object? tglKirim = freezed,
     Object? tglTerima = freezed,
+    Object? keterangan = freezed,
     Object? updatedAt = freezed,
     Object? updatedBy = freezed,
   }) {
@@ -155,6 +159,10 @@ class _$CSUResultCopyWithImpl<$Res, $Val extends CSUResult>
           ? _value.tglTerima
           : tglTerima // ignore: cast_nullable_to_non_nullable
               as String?,
+      keterangan: freezed == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -188,6 +196,7 @@ abstract class _$$_CSUResultCopyWith<$Res> implements $CSUResultCopyWith<$Res> {
       @JsonKey(name: 'supir_sdr') String? supirSDR,
       @JsonKey(name: 'tgl_kirim_unit') String? tglKirim,
       @JsonKey(name: 'tgl_terima_unit') String? tglTerima,
+      @JsonKey(name: 'ket') String? keterangan,
       @JsonKey(name: 'u_date') String? updatedAt,
       @JsonKey(name: 'u_user') String? updatedBy});
 }
@@ -216,6 +225,7 @@ class __$$_CSUResultCopyWithImpl<$Res>
     Object? supirSDR = freezed,
     Object? tglKirim = freezed,
     Object? tglTerima = freezed,
+    Object? keterangan = freezed,
     Object? updatedAt = freezed,
     Object? updatedBy = freezed,
   }) {
@@ -272,6 +282,10 @@ class __$$_CSUResultCopyWithImpl<$Res>
           ? _value.tglTerima
           : tglTerima // ignore: cast_nullable_to_non_nullable
               as String?,
+      keterangan: freezed == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -301,6 +315,7 @@ class _$_CSUResult implements _CSUResult {
       @JsonKey(name: 'supir_sdr') required this.supirSDR,
       @JsonKey(name: 'tgl_kirim_unit') required this.tglKirim,
       @JsonKey(name: 'tgl_terima_unit') required this.tglTerima,
+      @JsonKey(name: 'ket') required this.keterangan,
       @JsonKey(name: 'u_date') required this.updatedAt,
       @JsonKey(name: 'u_user') required this.updatedBy});
 
@@ -340,6 +355,9 @@ class _$_CSUResult implements _CSUResult {
   @JsonKey(name: 'tgl_terima_unit')
   final String? tglTerima;
   @override
+  @JsonKey(name: 'ket')
+  final String? keterangan;
+  @override
   @JsonKey(name: 'u_date')
   final String? updatedAt;
   @override
@@ -348,7 +366,7 @@ class _$_CSUResult implements _CSUResult {
 
   @override
   String toString() {
-    return 'CSUResult(inout: $inout, id: $id, idGate: $idGate, defectAmount: $defectAmount, isDefect: $isDefect, gate: $gate, frame: $frame, supir1: $supir1, supir2: $supir2, posisi: $posisi, supirSDR: $supirSDR, tglKirim: $tglKirim, tglTerima: $tglTerima, updatedAt: $updatedAt, updatedBy: $updatedBy)';
+    return 'CSUResult(inout: $inout, id: $id, idGate: $idGate, defectAmount: $defectAmount, isDefect: $isDefect, gate: $gate, frame: $frame, supir1: $supir1, supir2: $supir2, posisi: $posisi, supirSDR: $supirSDR, tglKirim: $tglKirim, tglTerima: $tglTerima, keterangan: $keterangan, updatedAt: $updatedAt, updatedBy: $updatedBy)';
   }
 
   @override
@@ -374,6 +392,8 @@ class _$_CSUResult implements _CSUResult {
                 other.tglKirim == tglKirim) &&
             (identical(other.tglTerima, tglTerima) ||
                 other.tglTerima == tglTerima) &&
+            (identical(other.keterangan, keterangan) ||
+                other.keterangan == keterangan) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.updatedBy, updatedBy) ||
@@ -397,6 +417,7 @@ class _$_CSUResult implements _CSUResult {
       supirSDR,
       tglKirim,
       tglTerima,
+      keterangan,
       updatedAt,
       updatedBy);
 
@@ -429,6 +450,7 @@ abstract class _CSUResult implements CSUResult {
           @JsonKey(name: 'supir_sdr') required final String? supirSDR,
           @JsonKey(name: 'tgl_kirim_unit') required final String? tglKirim,
           @JsonKey(name: 'tgl_terima_unit') required final String? tglTerima,
+          @JsonKey(name: 'ket') required final String? keterangan,
           @JsonKey(name: 'u_date') required final String? updatedAt,
           @JsonKey(name: 'u_user') required final String? updatedBy}) =
       _$_CSUResult;
@@ -468,6 +490,9 @@ abstract class _CSUResult implements CSUResult {
   @override
   @JsonKey(name: 'tgl_terima_unit')
   String? get tglTerima;
+  @override
+  @JsonKey(name: 'ket')
+  String? get keterangan;
   @override
   @JsonKey(name: 'u_date')
   String? get updatedAt;

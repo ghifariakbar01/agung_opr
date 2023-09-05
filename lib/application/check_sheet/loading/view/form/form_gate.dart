@@ -1,17 +1,22 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
-import 'package:agung_opr/application/gate/csu_mst_gate.dart';
-import 'package:agung_opr/application/gate/providers/gate_providers.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../domain/remote_failure.dart';
 import '../../../../../shared/providers.dart';
 import '../../../../../style/style.dart';
+import '../../../../gate/csu_mst_gate.dart';
+import '../../../../gate/providers/gate_providers.dart';
+import '../../../../routes/route_names.dart';
 import '../../../../widgets/alert_helper.dart';
+import '../../../shared/providers/cs_providers.dart';
 
+/// [TextEditingController] For displaying value only
+///
+///
 class FormGate extends ConsumerStatefulWidget {
   const FormGate();
 
@@ -63,13 +68,13 @@ class _FormGateState extends ConsumerState<FormGate> {
                         .changeGateList(gateResponse);
                   }
                 })));
-
     final gates = ref.watch(gateNotifierProvider);
 
-    final gateItem = ref.watch(
-        updateCSNotifierProvider.select((value) => value.updateCSForm.gate));
+    final gateTextController = ref.watch(updateCSNotifierProvider
+        .select((value) => value.updateCSForm.gateTextController));
 
-    final gateStr = gateItem.getOrLeave('');
+    final gateStr = ref.watch(updateCSNotifierProvider
+        .select((value) => value.updateCSForm.gate.getOrLeave('')));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,39 +101,70 @@ class _FormGateState extends ConsumerState<FormGate> {
           flex: 1,
           child: Container(
             height: 50,
-            width: MediaQuery.of(context).size.width,
+            width: 50,
             decoration: BoxDecoration(
                 border: Border.all(color: Palette.primaryColor, width: 2),
                 borderRadius: BorderRadius.circular(12)),
-            padding: EdgeInsets.all(4),
-            child: DropdownButton<CSUMSTGate>(
-              value: gates.gates.firstWhere(
-                (element) => element.nama.toString() == gateStr,
-                orElse: () => CSUMSTGate.initial(),
-              ),
-              elevation: 16,
-              underline: Container(),
-              onChanged: (CSUMSTGate? value) {
-                // This is called when the user selects an item.
-                if (value != null)
+            child: TextButton(
+              onPressed: () async {
+                final String? id =
+                    await context.pushNamed(RouteNames.gateNameRoute);
+
+                if (id != null) {
+                  ref.read(updateCSNotifierProvider.notifier).changeGate(id);
+
                   ref
                       .read(updateCSNotifierProvider.notifier)
-                      .changeGate(value.nama.toString());
+                      .state
+                      .updateCSForm
+                      .gateTextController
+                      .text = id;
+                }
               },
-              items: gates.gates
-                  .map<DropdownMenuItem<CSUMSTGate>>((CSUMSTGate value) {
-                return DropdownMenuItem<CSUMSTGate>(
-                  value: value,
-                  child: Text(
-                    '${value.nama}',
-                    style:
-                        Themes.customColor(FontWeight.normal, 14, Colors.black),
+              style: ButtonStyle(
+                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              child: IgnorePointer(
+                ignoring: true,
+                child: TextFormField(
+                  controller: gateTextController,
+                  decoration: Themes.formStyle(
+                    'Pilih gate',
                   ),
-                );
-              }).toList(),
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) => {},
+                  validator: (_) => ref
+                      .read(updateCSNotifierProvider)
+                      .updateCSForm
+                      .gate
+                      .value
+                      .fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'kosong',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+                ),
+              ),
             ),
           ),
-        )
+        ),
+        SizedBox(
+          width: 8,
+        ),
+        Flexible(
+          flex: 2,
+          child: Text(
+            gates.gates
+                    .firstWhere((element) => element.id.toString() == gateStr,
+                        orElse: () => CSUMSTGate.initial())
+                    .nama ??
+                '',
+            style:
+                Themes.customColor(FontWeight.normal, 12, Palette.primaryColor),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ],
     );
   }

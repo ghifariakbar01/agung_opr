@@ -9,9 +9,7 @@ import '../../../../../style/style.dart';
 ///
 ///
 class FormInsertTglTerima extends ConsumerWidget {
-  const FormInsertTglTerima({required this.index});
-
-  final int index;
+  const FormInsertTglTerima();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

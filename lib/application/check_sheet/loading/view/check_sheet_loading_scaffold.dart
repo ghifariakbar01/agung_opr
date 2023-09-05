@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 import '../../../update_cs/view/widget/cs_item_form.dart';
+import '../../../update_frame/shared/update_frame_providers.dart';
+import '../../../update_frame/view/frame_search.dart';
+import '../../../update_frame/view/update_frame_item_scaffold.dart';
 import '../../../widgets/v_appbar.dart';
 import '../../../widgets/v_button.dart';
 import '../../shared/providers/cs_providers.dart';
@@ -33,6 +37,13 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
         updateCSNotifierProvider.select((value) => value.showErrorMessages));
 
     final modeApp = ref.watch(modeNotifierProvider);
+
+    final frameList = ref.watch(frameNotifierProvider);
+    final isSearching = ref.watch(
+        frameSearchNotifierProvider.select((value) => value.isSearching));
+
+    final isLoading =
+        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return KeyboardDismissOnTap(
       child: Scaffold(
@@ -68,6 +79,101 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                     ),
                   ),
 
+                  SizedBox(
+                    height: 8,
+                  ),
+
+                  // FRAME
+                  modeApp.maybeWhen(
+                      checkSheetLoading: () => Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Flexible(flex: 5, child: FrameSearch()),
+                                  Flexible(
+                                      flex: 1,
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: Column(
+                                          children: [
+                                            Flexible(
+                                              flex: 0,
+                                              child: Text(
+                                                'FRAME',
+                                                textAlign: TextAlign.center,
+                                                style: Themes.customColor(
+                                                    FontWeight.bold,
+                                                    9,
+                                                    Colors.black),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              flex: 2,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  String? frame =
+                                                      await FlutterBarcodeScanner
+                                                          .scanBarcode(
+                                                              "#65B689",
+                                                              "Cancel",
+                                                              false,
+                                                              ScanMode.DEFAULT);
+
+                                                  if (frame.isNotEmpty &&
+                                                      frame != '-1') {
+                                                    ref
+                                                        .read(
+                                                            frameSearchNotifierProvider
+                                                                .notifier)
+                                                        .changeSearchText(
+                                                            frame);
+
+                                                    final idSPK = ref.read(
+                                                        updateFrameNotifierProvider
+                                                            .select((value) =>
+                                                                value.idSPK));
+
+                                                    await ref
+                                                        .read(
+                                                            frameNotifierProvider
+                                                                .notifier)
+                                                        .searchFrameListOFFLINE(
+                                                            idSPK: '$idSPK',
+                                                            frame: frame);
+                                                  }
+                                                },
+                                                child: Ink(
+                                                  child: Icon(
+                                                    Icons.qr_code_2,
+                                                    size: 40,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              if (!isSearching || !isLoading) ...[
+                                for (int index = 0;
+                                    index < frameList.frameList.length;
+                                    index++) ...[
+                                  UpdateFrameItemScaffold(
+                                    index,
+                                  ),
+                                ]
+                              ]
+                            ],
+                          ),
+                      orElse: () => Container()),
+
+                  //
                   SizedBox(
                     height: 8,
                   ),

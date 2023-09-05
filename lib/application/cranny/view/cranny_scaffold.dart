@@ -43,15 +43,15 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              TextButton(
-                  onPressed: () async {
-                    ref
-                        .read(modeNotifierProvider.notifier)
-                        .changeModeAplikasi(ModeState.updateFrameDummy());
+              // TextButton(
+              //     onPressed: () async {
+              //       ref
+              //           .read(modeNotifierProvider.notifier)
+              //           .changeModeAplikasi(ModeState.updateFrameDummy());
 
-                    await context.pushNamed(RouteNames.spkNameRoute);
-                  },
-                  child: CrannyItem(label: 'UPDATE FRAME DUMMY')),
+              //       await context.pushNamed(RouteNames.spkNameRoute);
+              //     },
+              //     child: CrannyItem(label: 'UPDATE FRAME DUMMY')),
               CSCrannyPage(),
               // Frame
               updateFrameOfflineOrOnline.maybeWhen(

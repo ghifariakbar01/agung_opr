@@ -31,6 +31,7 @@ class CSUResult with _$CSUResult {
     @JsonKey(name: 'supir_sdr') required String? supirSDR,
     @JsonKey(name: 'tgl_kirim_unit') required String? tglKirim,
     @JsonKey(name: 'tgl_terima_unit') required String? tglTerima,
+    @JsonKey(name: 'ket') required String? keterangan,
     @JsonKey(name: 'u_date') required String? updatedAt,
     @JsonKey(name: 'u_user') required String? updatedBy,
   }) = _CSUResult;
@@ -49,6 +50,7 @@ class CSUResult with _$CSUResult {
         supirSDR: '',
         tglKirim: '',
         tglTerima: '',
+        keterangan: '',
         updatedAt: '',
         updatedBy: '',
       );

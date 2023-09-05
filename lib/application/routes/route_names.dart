@@ -50,6 +50,9 @@ class RouteNames {
   static const customerNameRoute = 'customer';
   static const customerName = 'customer';
 
+  static const gateNameRoute = 'gate';
+  static const gateName = 'gate';
+
   static const dataUpdateQueryNameRoute = 'dataUpdateQuery';
   static const dataUpdateQueryName = 'dataUpdateQuery';
 }
