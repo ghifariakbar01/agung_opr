@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';

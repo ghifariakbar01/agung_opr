@@ -11,7 +11,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
-import '../../widgets/v_bottomnav.dart';
 import 'cranny_drawer.dart';
 import 'cranny_item.dart';
 import 'cs/cs_cranny_page.dart';

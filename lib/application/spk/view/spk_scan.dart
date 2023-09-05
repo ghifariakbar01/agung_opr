@@ -1,13 +1,8 @@
-import 'dart:developer';
 
-import 'package:agung_opr/style/style.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 // import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../widgets/v_appbar.dart';
 
 // final qrControllerProvider = Provider((ref) => MobileScannerController(
 //       autoStart: true,

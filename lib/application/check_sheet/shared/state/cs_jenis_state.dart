@@ -1,5 +1,4 @@
 import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis.dart';
-import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

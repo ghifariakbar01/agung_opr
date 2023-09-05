@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';

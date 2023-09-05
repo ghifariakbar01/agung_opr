@@ -1,6 +1,4 @@
 import 'package:agung_opr/application/customer/customer_search_state.dart';
-import 'package:agung_opr/application/model/model_search_notifier.dart';
-import 'package:agung_opr/application/model/model_search_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../infrastructure/cache_storage/customer_storage.dart';

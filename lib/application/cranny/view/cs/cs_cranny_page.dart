@@ -4,7 +4,6 @@ import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.
 import 'package:agung_opr/application/check_sheet/shared/state/cs_item.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis_offline_state.dart';
-import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/shared/providers.dart';

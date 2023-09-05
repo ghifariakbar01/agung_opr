@@ -418,7 +418,7 @@ class FrameRepository {
     // debugger(message: 'called');
 
     listMap.values.forEach((element) {
-      final json = element as List<Frame>;
+      final json = element;
 
       json.forEach((element) {
         jsonFrames.add(element.toJson());

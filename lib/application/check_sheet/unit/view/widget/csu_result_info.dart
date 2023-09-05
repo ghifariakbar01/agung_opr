@@ -1,7 +1,4 @@
-import 'dart:developer';
 
-import 'package:agung_opr/application/customer/customer.dart';
-import 'package:agung_opr/application/customer/shared/customer_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

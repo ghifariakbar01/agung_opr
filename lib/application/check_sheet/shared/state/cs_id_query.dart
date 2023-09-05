@@ -9,7 +9,6 @@ import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'cs_result.dart';
 
 part 'cs_id_query.freezed.dart';
 

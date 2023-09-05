@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';

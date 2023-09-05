@@ -2,18 +2,13 @@ import '../credentials_storage.dart';
 import '../update_csu/update_csu_remote_service.dart';
 
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
-import '../../domain/local_failure.dart';
-import '../credentials_storage.dart';
 import '../exceptions.dart';
 
 class CSUJenisPenyebabRepository {

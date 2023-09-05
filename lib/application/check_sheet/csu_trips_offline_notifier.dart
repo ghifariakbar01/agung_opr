@@ -1,8 +1,6 @@
-import 'package:agung_opr/infrastructure/update_csu/update_csu_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../infrastructure/csu/csu_repository.dart';
-import '../../infrastructure/model/model_repository.dart';
 import 'unit/state/csu_trips_offline_state.dart';
 
 class CSUTripsOfflineNotifier extends StateNotifier<CSUTripsOfflineState> {
