@@ -20,6 +20,7 @@ class UserModelWithPassword with _$UserModelWithPassword {
       required String? fullname,
       @JsonKey(name: 'no_telp1') required String? noTelp1,
       @JsonKey(name: 'no_telp2') required String? noTelp2,
+      @JsonKey(name: 'pass_update') required String? passwordUpdate,
       required String? email,
       required String? email2,
       required String? photo,
@@ -42,6 +43,7 @@ class UserModelWithPassword with _$UserModelWithPassword {
         nama: '',
         noTelp1: '',
         noTelp2: '',
+        passwordUpdate: '',
         password: '',
         photo: '',
       );

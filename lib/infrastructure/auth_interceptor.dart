@@ -1,26 +1,45 @@
-// import 'package:dio/dio.dart';
+import 'package:agung_opr/shared/providers.dart';
+import 'package:dio/dio.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// import 'auth_repository.dart';
+import '../application/password_expired/password_expired_notifier.dart';
+import '../application/password_expired/password_expired_state.dart';
+import '../constants/constants.dart';
 
-// class AuthInterceptor extends Interceptor {
-//   AuthInterceptor(this._repository);
+class AuthInterceptor extends Interceptor {
+  AuthInterceptor(this._ref);
 
-//   final AuthRepository _repository;
+  final Ref _ref;
 
-//   @override
-//   Future<dynamic> onRequest(
-//     RequestOptions options,
-//     RequestInterceptorHandler handler,
-//   ) async {
-//     // final storedCredentials = await _repository.getSignedInCredentials();
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    super.onResponse(response, handler);
 
-//     final RequestOptions modifiedOptions = options
-//       ..headers.addAll(
-//         storedCredentials == null
-//             ? <String, String>{}
-//             : <String, String>{'Authorization': 'bearer $storedCredentials'},
-//       );
+    final items = response.data?[0];
 
-//     handler.next(modifiedOptions);
-//   }
-// }
+    // final message = items['error'] as String?;
+    final errorNum = items['errornum'] as int?;
+
+    PasswordExpiredState passwordExpired =
+        _ref.watch(passwordExpiredNotifierStatusProvider);
+    PasswordExpiredNotifier passwordExpiredNotifier =
+        _ref.watch(passwordExpiredNotifierProvider.notifier);
+
+    //
+
+    if (errorNum == null) {
+      //
+
+      await passwordExpired.maybeWhen(
+          expired: () => passwordExpiredNotifier.clearPasswordExpired(),
+          orElse: () {});
+    }
+
+    if (errorNum == Constants.passWrongCode ||
+        errorNum == Constants.passExpCode) {
+      //
+
+      await passwordExpiredNotifier.savePasswordExpired();
+    }
+  }
+}

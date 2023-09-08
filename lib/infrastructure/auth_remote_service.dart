@@ -80,6 +80,7 @@ class AuthRemoteService {
                 noTelp1: listSelected['no_telp1'] ?? '',
                 noTelp2: listSelected['no_telp2'] ?? '',
                 photo: listSelected['picture'],
+                passwordUpdate: listSelected['pass_update'] ?? '',
                 password: password,
               );
 

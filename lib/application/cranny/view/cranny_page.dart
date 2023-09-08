@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_id_query.dart';
@@ -12,13 +13,16 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
+import '../../../domain/auth_failure.dart';
 import '../../../domain/local_failure.dart';
 import '../../../domain/user_failure.dart';
+import '../../../domain/value_objects_copy.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
+import '../../reminder/reminder_notifier.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
@@ -43,6 +47,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // GET USER
       await ref.read(userNotifierProvider.notifier).getUser();
     });
   }
@@ -127,87 +132,171 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await savedQueriesFunction();
     }
 
+    //
     ref.listen<Option<Either<UserFailure, String?>>>(
-      userNotifierProvider.select(
-        (state) => state.failureOrSuccessOption,
-      ),
-      (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-        () {},
-        (either) => either.fold(
-            (failure) => showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (_) => VSimpleDialog(
-                    label: 'Error',
-                    labelDescription: failure.maybeMap(
-                        empty: (_) => 'No user found',
-                        unknown: (unkn) => '${unkn.errorCode} ${unkn.message}',
-                        orElse: () => ''),
-                    asset: Assets.iconCrossed,
-                  ),
-                ), (userString) {
-          final userParsed =
-              ref.read(userNotifierProvider.notifier).parseUser(userString);
+        userNotifierProvider.select(
+          (state) => state.failureOrSuccessOption,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                    (failure) => showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => VSimpleDialog(
+                            label: 'Error',
+                            labelDescription: failure.maybeMap(
+                                empty: (_) => 'No user found',
+                                unknown: (unkn) =>
+                                    '${unkn.errorCode} ${unkn.message}',
+                                orElse: () => ''),
+                            asset: Assets.iconCrossed,
+                          ),
+                        ), (userString) async {
+                  final userParsed = ref
+                      .read(userNotifierProvider.notifier)
+                      .parseUser(userString);
 
-          userParsed.fold(
-              (failure) => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (_) => VSimpleDialog(
-                      label: 'Error',
-                      labelDescription: failure.maybeMap(
-                          errorParsing: (error) =>
-                              'Error while parsing user. ${error.message}',
-                          orElse: () => ''),
-                      asset: Assets.iconCrossed,
-                    ),
-                  ),
-              (userParsed) => ref
-                  .read(userNotifierProvider.notifier)
-                  .onUserParsed(
-                    user: userParsed,
-                    initializeDioRequest: () =>
-                        ref.read(dioRequestProvider).addAll({
-                      "username": "${userParsed.nama}",
-                      "password": "${userParsed.password}",
-                    }),
-                    initializeAndCheckData: () => getAndSaveAllData(),
-                    initializeAutoData: () => ref
-                        .read(autoDataTimerNotifierProvider.notifier)
-                        .startTimer(
-                      Constants.dataIntervalTimerInSeconds,
-                      getSavedUpdateFrame: () async {
-                        await ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .getSavedQueryFromRepository();
-                        await ref
-                            .read(updateFrameOfflineNotifierProvider.notifier)
-                            .CUUpdateFrameOFFLINEStatus();
-                      },
-                      getSavedUpdateCSUFrame: () async {
-                        await ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .getSavedCSUQueryFromRepository();
-                        await ref
-                            .read(
-                                updateCSUFrameOfflineNotifierProvider.notifier)
-                            .CUUpdateCSUFrameOFFLINEStatus();
-                      },
-                      getSavedUpdateCSFrame: () async {
-                        await ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .getSavedCSQueryFromRepository();
-                        await ref
-                            .read(updateCSOfflineNotifierProvider.notifier)
-                            .CUUpdateCSOFFLINEStatus();
-                      },
-                    ),
-                    checkAndUpdateStatus: () => ref
-                        .read(authNotifierProvider.notifier)
-                        .checkAndUpdateAuthStatus(),
-                  ));
-        }),
+                  debugger();
+
+                  // GET RECENT USER VALUES FROM DB
+                  await userParsed.fold(
+                      (failure) => showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (_) => VSimpleDialog(
+                              label: 'Error',
+                              labelDescription: failure.maybeMap(
+                                  errorParsing: (error) =>
+                                      'Error while parsing user. ${error.message}',
+                                  orElse: () => ''),
+                              asset: Assets.iconCrossed,
+                            ),
+                          ),
+                      (user) => ref
+                          .read(userNotifierProvider.notifier)
+                          .saveUserAfterUpdate(
+                            idKaryawan: IdKaryawan(user.idKary ?? ''),
+                            password: Password(user.password ?? ''),
+                            userId: UserId(user.nama ?? ''),
+                          ));
+                })));
+
+    //
+    ref.listen<Option<Either<AuthFailure, Unit?>>>(
+      userNotifierProvider.select(
+        (state) => state.failureOrSuccessOptionUpdate,
       ),
+      (_, failureOrSuccessOptionUpdate) => failureOrSuccessOptionUpdate.fold(
+          () {},
+          (either) => either.fold(
+                  (failure) => failure.maybeMap(
+                        noConnection: (_) =>
+                            ref.read(userNotifierProvider.notifier).getUser(),
+                        orElse: () => showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => VSimpleDialog(
+                            label: 'Error',
+                            labelDescription: failure.maybeMap(
+                                server: (server) =>
+                                    '${server.errorCode} ${server.message}',
+                                storage: (_) => 'storage penuh',
+                                orElse: () => ''),
+                            asset: Assets.iconCrossed,
+                          ),
+                        ),
+                      ), (_) async {
+                final userString = await ref
+                    .read(userNotifierProvider.notifier)
+                    .getUserString();
+
+                final userParsed = ref
+                    .read(userNotifierProvider.notifier)
+                    .parseUser(userString);
+
+                //
+                await userParsed.fold(
+                    (failure) => showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => VSimpleDialog(
+                            label: 'Error',
+                            labelDescription: failure.maybeMap(
+                                errorParsing: (error) =>
+                                    'Error while parsing user. ${error.message}',
+                                orElse: () => ''),
+                            asset: Assets.iconCrossed,
+                          ),
+                        ),
+                    (userParsed) => ref
+                        .read(userNotifierProvider.notifier)
+                        .onUserParsed(
+                          user: userParsed,
+                          initializeDioRequest: () =>
+                              ref.read(dioRequestProvider).addAll({
+                            "username": "${userParsed.nama}",
+                            "password": "${userParsed.password}",
+                          }),
+                          checkReminderStatus: () async {
+                            if (userParsed.passwordUpdate!.isNotEmpty) {
+                              await Future.delayed(Duration(seconds: 1));
+                              ReminderNotifier reminderNotifier =
+                                  ref.read(reminderNotifierProvider.notifier);
+                              DateTime passwordUpdate =
+                                  reminderNotifier.convertToDateTime(
+                                      passUpdate:
+                                          userParsed.passwordUpdate ?? '');
+                              int daysLeft = reminderNotifier.getDaysLeft(
+                                  passUpdate: DateTime(
+                                      passwordUpdate.year,
+                                      passwordUpdate.month + 1,
+                                      passwordUpdate.day));
+
+                              reminderNotifier.changeDaysLeft(daysLeft);
+                            }
+                          },
+                          initializeAndCheckData: () => getAndSaveAllData(),
+                          initializeAutoData: () => ref
+                              .read(autoDataTimerNotifierProvider.notifier)
+                              .startTimer(
+                            Constants.dataIntervalTimerInSeconds,
+                            getSavedUpdateFrame: () async {
+                              await ref
+                                  .read(autoDataUpdateFrameNotifierProvider
+                                      .notifier)
+                                  .getSavedQueryFromRepository();
+                              await ref
+                                  .read(updateFrameOfflineNotifierProvider
+                                      .notifier)
+                                  .CUUpdateFrameOFFLINEStatus();
+                            },
+                            getSavedUpdateCSUFrame: () async {
+                              await ref
+                                  .read(autoDataUpdateFrameNotifierProvider
+                                      .notifier)
+                                  .getSavedCSUQueryFromRepository();
+                              await ref
+                                  .read(updateCSUFrameOfflineNotifierProvider
+                                      .notifier)
+                                  .CUUpdateCSUFrameOFFLINEStatus();
+                            },
+                            getSavedUpdateCSFrame: () async {
+                              await ref
+                                  .read(autoDataUpdateFrameNotifierProvider
+                                      .notifier)
+                                  .getSavedCSQueryFromRepository();
+                              await ref
+                                  .read(
+                                      updateCSOfflineNotifierProvider.notifier)
+                                  .CUUpdateCSOFFLINEStatus();
+                            },
+                          ),
+                          checkAndUpdateStatus: () => ref
+                              .read(authNotifierProvider.notifier)
+                              .checkAndUpdateAuthStatus(),
+                        ));
+              })),
     );
 
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(

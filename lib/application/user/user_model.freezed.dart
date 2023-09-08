@@ -40,6 +40,8 @@ mixin _$UserModelWithPassword {
   String? get noTelp1 => throw _privateConstructorUsedError;
   @JsonKey(name: 'no_telp2')
   String? get noTelp2 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pass_update')
+  String? get passwordUpdate => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get email2 => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
@@ -69,6 +71,7 @@ abstract class $UserModelWithPasswordCopyWith<$Res> {
       String? fullname,
       @JsonKey(name: 'no_telp1') String? noTelp1,
       @JsonKey(name: 'no_telp2') String? noTelp2,
+      @JsonKey(name: 'pass_update') String? passwordUpdate,
       String? email,
       String? email2,
       String? photo,
@@ -100,6 +103,7 @@ class _$UserModelWithPasswordCopyWithImpl<$Res,
     Object? fullname = freezed,
     Object? noTelp1 = freezed,
     Object? noTelp2 = freezed,
+    Object? passwordUpdate = freezed,
     Object? email = freezed,
     Object? email2 = freezed,
     Object? photo = freezed,
@@ -150,6 +154,10 @@ class _$UserModelWithPasswordCopyWithImpl<$Res,
           ? _value.noTelp2
           : noTelp2 // ignore: cast_nullable_to_non_nullable
               as String?,
+      passwordUpdate: freezed == passwordUpdate
+          ? _value.passwordUpdate
+          : passwordUpdate // ignore: cast_nullable_to_non_nullable
+              as String?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -190,6 +198,7 @@ abstract class _$$_UserModelWithPasswordCopyWith<$Res>
       String? fullname,
       @JsonKey(name: 'no_telp1') String? noTelp1,
       @JsonKey(name: 'no_telp2') String? noTelp2,
+      @JsonKey(name: 'pass_update') String? passwordUpdate,
       String? email,
       String? email2,
       String? photo,
@@ -218,6 +227,7 @@ class __$$_UserModelWithPasswordCopyWithImpl<$Res>
     Object? fullname = freezed,
     Object? noTelp1 = freezed,
     Object? noTelp2 = freezed,
+    Object? passwordUpdate = freezed,
     Object? email = freezed,
     Object? email2 = freezed,
     Object? photo = freezed,
@@ -268,6 +278,10 @@ class __$$_UserModelWithPasswordCopyWithImpl<$Res>
           ? _value.noTelp2
           : noTelp2 // ignore: cast_nullable_to_non_nullable
               as String?,
+      passwordUpdate: freezed == passwordUpdate
+          ? _value.passwordUpdate
+          : passwordUpdate // ignore: cast_nullable_to_non_nullable
+              as String?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -303,6 +317,7 @@ class _$_UserModelWithPassword implements _UserModelWithPassword {
       required this.fullname,
       @JsonKey(name: 'no_telp1') required this.noTelp1,
       @JsonKey(name: 'no_telp2') required this.noTelp2,
+      @JsonKey(name: 'pass_update') required this.passwordUpdate,
       required this.email,
       required this.email2,
       required this.photo,
@@ -342,6 +357,9 @@ class _$_UserModelWithPassword implements _UserModelWithPassword {
   @JsonKey(name: 'no_telp2')
   final String? noTelp2;
   @override
+  @JsonKey(name: 'pass_update')
+  final String? passwordUpdate;
+  @override
   final String? email;
   @override
   final String? email2;
@@ -352,7 +370,7 @@ class _$_UserModelWithPassword implements _UserModelWithPassword {
 
   @override
   String toString() {
-    return 'UserModelWithPassword(idUser: $idUser, idKary: $idKary, ktp: $ktp, deptList: $deptList, company: $company, jabatan: $jabatan, imeiHp: $imeiHp, nama: $nama, fullname: $fullname, noTelp1: $noTelp1, noTelp2: $noTelp2, email: $email, email2: $email2, photo: $photo, password: $password)';
+    return 'UserModelWithPassword(idUser: $idUser, idKary: $idKary, ktp: $ktp, deptList: $deptList, company: $company, jabatan: $jabatan, imeiHp: $imeiHp, nama: $nama, fullname: $fullname, noTelp1: $noTelp1, noTelp2: $noTelp2, passwordUpdate: $passwordUpdate, email: $email, email2: $email2, photo: $photo, password: $password)';
   }
 
   @override
@@ -373,6 +391,8 @@ class _$_UserModelWithPassword implements _UserModelWithPassword {
                 other.fullname == fullname) &&
             (identical(other.noTelp1, noTelp1) || other.noTelp1 == noTelp1) &&
             (identical(other.noTelp2, noTelp2) || other.noTelp2 == noTelp2) &&
+            (identical(other.passwordUpdate, passwordUpdate) ||
+                other.passwordUpdate == passwordUpdate) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.email2, email2) || other.email2 == email2) &&
             (identical(other.photo, photo) || other.photo == photo) &&
@@ -395,6 +415,7 @@ class _$_UserModelWithPassword implements _UserModelWithPassword {
       fullname,
       noTelp1,
       noTelp2,
+      passwordUpdate,
       email,
       email2,
       photo,
@@ -428,6 +449,7 @@ abstract class _UserModelWithPassword implements UserModelWithPassword {
       required final String? fullname,
       @JsonKey(name: 'no_telp1') required final String? noTelp1,
       @JsonKey(name: 'no_telp2') required final String? noTelp2,
+      @JsonKey(name: 'pass_update') required final String? passwordUpdate,
       required final String? email,
       required final String? email2,
       required final String? photo,
@@ -466,6 +488,9 @@ abstract class _UserModelWithPassword implements UserModelWithPassword {
   @override
   @JsonKey(name: 'no_telp2')
   String? get noTelp2;
+  @override
+  @JsonKey(name: 'pass_update')
+  String? get passwordUpdate;
   @override
   String? get email;
   @override

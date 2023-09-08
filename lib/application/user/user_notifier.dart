@@ -17,6 +17,8 @@ class UserNotifier extends StateNotifier<UserState> {
 
   final AuthRepository _repository;
 
+  Future<String> getUserString() => _repository.getUserString();
+
   Future<void> getUser() async {
     Either<UserFailure, String?> failureOrSuccess;
 
@@ -58,23 +60,36 @@ class UserNotifier extends StateNotifier<UserState> {
     state = state.copyWith(user: user);
   }
 
+  void setUserInitial() {
+    state = state.copyWith(user: UserModelWithPassword.initial());
+  }
+
   Future<void> onUserParsed({
     required UserModelWithPassword user,
+    required Function checkReminderStatus,
     required Function initializeDioRequest,
     required Function initializeAndCheckData,
     required Function initializeAutoData,
     required Function checkAndUpdateStatus,
   }) async {
     setUser(user);
+    await checkReminderStatus();
     await initializeDioRequest();
     await initializeAndCheckData();
     await initializeAutoData();
     await checkAndUpdateStatus();
   }
 
-  Future<void> logout(UserModelWithPassword user) async {
-    final logout = await _repository.clearCredentialsStorage();
+  Future<void> logout() async {
+    Either<AuthFailure, Unit?> failureOrSuccess;
 
-    logout.fold((_) => log('error logging out'), (_) => setUser(user));
+    state =
+        state.copyWith(isGetting: true, failureOrSuccessOptionUpdate: none());
+
+    failureOrSuccess = await _repository.clearCredentialsStorage();
+
+    state = state.copyWith(
+        isGetting: false,
+        failureOrSuccessOptionUpdate: optionOf(failureOrSuccess));
   }
 }

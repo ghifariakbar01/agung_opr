@@ -37,8 +37,8 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
         return true;
       },
       baseUrl: BuildConfig.get().baseUrl,
-    );
-  // ..interceptors.add(ref.read(authInterceptorProvider));
+    )
+    ..interceptors.add(ref.read(authInterceptorProvider));
 
   if (!BuildConfig.isProduction) {
     ref.read(dioProvider).interceptors.add(PrettyDioLogger(
@@ -128,8 +128,16 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
       orElse: () {},
     );
 
+    final passwordExpiredNotifier =
+        ref.read(passwordExpiredNotifierStatusProvider.notifier);
+    await passwordExpiredNotifier.checkAndUpdateExpired();
+
     return unit;
   }
+
+  final passwordExpiredNotifier =
+      ref.read(passwordExpiredNotifierStatusProvider.notifier);
+  await passwordExpiredNotifier.checkAndUpdateExpired();
 
   return unit;
 });
