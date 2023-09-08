@@ -17,7 +17,7 @@ class SPKRemoteService {
     try {
       final data = _dioRequestNotifier;
       // TEST
-      const String dbName = "opr_trs_spk_test";
+      const String dbName = "opr_trs_spk";
 
       data.addAll({
         "mode": "SELECT",
@@ -88,7 +88,7 @@ class SPKRemoteService {
     try {
       final data = _dioRequestNotifier;
       // TEST
-      const String dbName = "opr_trs_spk_test";
+      const String dbName = "opr_trs_spk";
 
       data.addAll({
         "mode": "SELECT",

@@ -19,8 +19,8 @@ class CSUFrameRemoteService {
 
   Future<List<CSUResult>> getCSUByFrameName({required String frameName}) async {
     // TEST
-    const String dbName = 'cs_trs_cs_test';
-    const String dbCSDtl = 'cs_trs_cs_dtl_test';
+    const String dbName = 'cs_trs_cs';
+    const String dbCSDtl = 'cs_trs_cs_dtl';
 
     try {
       final data = _dioRequestNotifier;
@@ -92,7 +92,7 @@ class CSUFrameRemoteService {
   }
 
   Future<List<CSUNGResult>> getCSUNGByIdCS({required int idCS}) async {
-    const String dbName = 'cs_trs_cs_dtl_test';
+    const String dbName = 'cs_trs_cs_dtl';
 
     try {
       final data = _dioRequestNotifier;

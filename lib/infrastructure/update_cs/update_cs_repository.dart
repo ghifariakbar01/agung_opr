@@ -243,7 +243,7 @@ class UpdateCSRepository {
     required Tipe tipe,
   }) {
     // TEST
-    const String dbName = 'pool_chk_kr_test';
+    const String dbName = 'pool_chk_kr';
 
     final nopolStr = nopol.getOrCrash();
     final supir1Str = supir1.getOrLeave('');
@@ -296,8 +296,8 @@ class UpdateCSRepository {
     required List<UpdateCSNGState> ngStates,
   }) {
     // TEST
-    const String dbName = 'pool_chk_kr_dtl_test';
-    const String dbNamechk = 'pool_chk_kr_test';
+    const String dbName = 'pool_chk_kr_dtl';
+    const String dbNamechk = 'pool_chk_kr';
 
     final cAndUDate = DateTime.now()
         .toString()

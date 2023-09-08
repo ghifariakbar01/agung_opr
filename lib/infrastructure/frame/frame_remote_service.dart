@@ -17,8 +17,8 @@ class FrameRemoteService {
 
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
     // TEST
-    const String dbName = 'opr_trs_ti_unit_test';
-    const String dbOprTrsSpk = 'opr_trs_spk_unit_test';
+    const String dbName = 'opr_trs_ti_unit';
+    const String dbOprTrsSpk = 'opr_trs_spk_unit';
     const String dbCustomer = 'sls_mst_cust';
 
     try {
@@ -110,7 +110,7 @@ class FrameRemoteService {
 
   Future<Map<String, List<Frame>>> getFrameListWithoutSPK() async {
     // TEST
-    const String dbName = 'opr_trs_ti_unit_test';
+    const String dbName = 'opr_trs_ti_unit';
     const String dbCustomer = 'sls_mst_cust';
 
     try {
@@ -202,7 +202,7 @@ class FrameRemoteService {
   Future<Map<String, List<Frame>>> searchFrameListWithoutSPK(
       {required String search}) async {
     // TEST
-    const String dbName = 'opr_trs_ti_unit_test';
+    const String dbName = 'opr_trs_ti_unit';
     const String dbCustomer = 'sls_mst_cust';
 
     try {

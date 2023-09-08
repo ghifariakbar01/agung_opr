@@ -206,7 +206,7 @@ class UpdateFrameRepository {
   }) async {
     try {
       // TEST
-      const String dbName = 'opr_trs_ti_unit_test';
+      const String dbName = 'opr_trs_ti_unit';
 
       final idKendTypeStr = idKendType.getOrLeave('');
       final idKendTypeInt =
