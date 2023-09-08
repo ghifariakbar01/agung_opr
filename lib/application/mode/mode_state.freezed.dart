@@ -21,6 +21,7 @@ mixin _$ModeState {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -34,6 +35,7 @@ mixin _$ModeState {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -47,6 +49,7 @@ mixin _$ModeState {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -61,6 +64,8 @@ mixin _$ModeState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -75,6 +80,8 @@ mixin _$ModeState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -89,6 +96,7 @@ mixin _$ModeState {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -158,6 +166,7 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -174,6 +183,7 @@ class _$_Initial implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -190,6 +200,7 @@ class _$_Initial implements _Initial {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -210,6 +221,8 @@ class _$_Initial implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -227,6 +240,8 @@ class _$_Initial implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -244,6 +259,7 @@ class _$_Initial implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -305,6 +321,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -321,6 +338,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -337,6 +355,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -357,6 +376,8 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -374,6 +395,8 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -391,6 +414,7 @@ class _$_UpdateFrameDummy implements _UpdateFrameDummy {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -452,6 +476,7 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -468,6 +493,7 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -484,6 +510,7 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -504,6 +531,8 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -521,6 +550,8 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -538,6 +569,7 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -556,6 +588,163 @@ class _$_CheckSheetUnit implements _CheckSheetUnit {
 
 abstract class _CheckSheetUnit implements ModeState {
   const factory _CheckSheetUnit() = _$_CheckSheetUnit;
+}
+
+/// @nodoc
+abstract class _$$_CheckSheetUnitWithoutSPKCopyWith<$Res> {
+  factory _$$_CheckSheetUnitWithoutSPKCopyWith(
+          _$_CheckSheetUnitWithoutSPK value,
+          $Res Function(_$_CheckSheetUnitWithoutSPK) then) =
+      __$$_CheckSheetUnitWithoutSPKCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_CheckSheetUnitWithoutSPKCopyWithImpl<$Res>
+    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetUnitWithoutSPK>
+    implements _$$_CheckSheetUnitWithoutSPKCopyWith<$Res> {
+  __$$_CheckSheetUnitWithoutSPKCopyWithImpl(_$_CheckSheetUnitWithoutSPK _value,
+      $Res Function(_$_CheckSheetUnitWithoutSPK) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$_CheckSheetUnitWithoutSPK implements _CheckSheetUnitWithoutSPK {
+  const _$_CheckSheetUnitWithoutSPK();
+
+  @override
+  String toString() {
+    return 'ModeState.checkSheetUnitWithoutSPK()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_CheckSheetUnitWithoutSPK);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() updateFrameDummy,
+    required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
+    required TResult Function() checkSheetLoading,
+    required TResult Function() checkSheetUnloading,
+    required TResult Function() checkSheetLoadingUnloading,
+    required TResult Function() checkSheetGateMerak,
+    required TResult Function() assignUnitMerak,
+    required TResult Function() dataUpdateQuery,
+  }) {
+    return checkSheetUnitWithoutSPK();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? updateFrameDummy,
+    TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
+    TResult? Function()? checkSheetLoading,
+    TResult? Function()? checkSheetUnloading,
+    TResult? Function()? checkSheetLoadingUnloading,
+    TResult? Function()? checkSheetGateMerak,
+    TResult? Function()? assignUnitMerak,
+    TResult? Function()? dataUpdateQuery,
+  }) {
+    return checkSheetUnitWithoutSPK?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? updateFrameDummy,
+    TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
+    TResult Function()? checkSheetLoading,
+    TResult Function()? checkSheetUnloading,
+    TResult Function()? checkSheetLoadingUnloading,
+    TResult Function()? checkSheetGateMerak,
+    TResult Function()? assignUnitMerak,
+    TResult Function()? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (checkSheetUnitWithoutSPK != null) {
+      return checkSheetUnitWithoutSPK();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
+    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
+    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
+    required TResult Function(_CheckSheetLoadingUnloading value)
+        checkSheetLoadingUnloading,
+    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
+    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
+    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+  }) {
+    return checkSheetUnitWithoutSPK(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
+    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult? Function(_CheckSheetLoadingUnloading value)?
+        checkSheetLoadingUnloading,
+    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+  }) {
+    return checkSheetUnitWithoutSPK?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
+    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
+    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
+    TResult Function(_CheckSheetLoadingUnloading value)?
+        checkSheetLoadingUnloading,
+    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
+    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
+    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    required TResult orElse(),
+  }) {
+    if (checkSheetUnitWithoutSPK != null) {
+      return checkSheetUnitWithoutSPK(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CheckSheetUnitWithoutSPK implements ModeState {
+  const factory _CheckSheetUnitWithoutSPK() = _$_CheckSheetUnitWithoutSPK;
 }
 
 /// @nodoc
@@ -599,6 +788,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -615,6 +805,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -631,6 +822,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -651,6 +843,8 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -668,6 +862,8 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -685,6 +881,7 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -746,6 +943,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -762,6 +960,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -778,6 +977,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -798,6 +998,8 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -815,6 +1017,8 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -832,6 +1036,7 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -896,6 +1101,7 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -912,6 +1118,7 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -928,6 +1135,7 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -948,6 +1156,8 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -965,6 +1175,8 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -982,6 +1194,7 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -1043,6 +1256,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -1059,6 +1273,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -1075,6 +1290,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -1095,6 +1311,8 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -1112,6 +1330,8 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -1129,6 +1349,7 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -1190,6 +1411,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -1206,6 +1428,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -1222,6 +1445,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -1242,6 +1466,8 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -1259,6 +1485,8 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -1276,6 +1504,7 @@ class _$_AssignUnitMerak implements _AssignUnitMerak {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
@@ -1337,6 +1566,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     required TResult Function() initial,
     required TResult Function() updateFrameDummy,
     required TResult Function() checkSheetUnit,
+    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
@@ -1353,6 +1583,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     TResult? Function()? initial,
     TResult? Function()? updateFrameDummy,
     TResult? Function()? checkSheetUnit,
+    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
@@ -1369,6 +1600,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     TResult Function()? initial,
     TResult Function()? updateFrameDummy,
     TResult Function()? checkSheetUnit,
+    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
@@ -1389,6 +1621,8 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     required TResult Function(_Initial value) initial,
     required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
     required TResult Function(_CheckSheetUnit value) checkSheetUnit,
+    required TResult Function(_CheckSheetUnitWithoutSPK value)
+        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
@@ -1406,6 +1640,8 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult? Function(_CheckSheetUnitWithoutSPK value)?
+        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
@@ -1423,6 +1659,7 @@ class _$_DataUpdateQuery implements _DataUpdateQuery {
     TResult Function(_Initial value)? initial,
     TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
+    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?

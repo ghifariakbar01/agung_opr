@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/routes/route_names.dart';
+import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
 import 'package:agung_opr/application/widgets/v_button.dart';
@@ -107,24 +108,24 @@ class UpdateFrameItem extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   // Update Frame
-                  Flexible(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 65,
-                      child: VButton(
-                          label: 'SIMPAN',
-                          onPressed: () async {
-                            await ref
-                                .read(updateFrameNotifierProvider.notifier)
-                                .updateFrame(index: index);
+                  // Flexible(
+                  //   flex: 1,
+                  //   child: SizedBox(
+                  //     height: 65,
+                  //     child: VButton(
+                  //         label: 'SIMPAN',
+                  //         onPressed: () async {
+                  //           await ref
+                  //               .read(updateFrameNotifierProvider.notifier)
+                  //               .updateFrame(index: index);
 
-                            await ref
-                                .read(
-                                    updateFrameOfflineNotifierProvider.notifier)
-                                .CUUpdateFrameOFFLINEStatus();
-                          }),
-                    ),
-                  ),
+                  //           await ref
+                  //               .read(
+                  //                   updateFrameOfflineNotifierProvider.notifier)
+                  //               .CUUpdateFrameOFFLINEStatus();
+                  //         }),
+                  //   ),
+                  // ),
 
                   // CSU
                   Flexible(
@@ -133,9 +134,15 @@ class UpdateFrameItem extends ConsumerWidget {
                       height: 65,
                       child: VButton(
                           label: 'CSU',
-                          onPressed: () => context.pushNamed(
-                              RouteNames.CSUListNameRoute,
-                              extra: frame)),
+                          onPressed: () async {
+                            if (frame is Frame) {
+                              Map<String, dynamic> frameMap = frame.toJson();
+
+                              await context.pushNamed(
+                                  RouteNames.CSUListNameRoute,
+                                  extra: frameMap);
+                            }
+                          }),
                     ),
                   ),
                 ],

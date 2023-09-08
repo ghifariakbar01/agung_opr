@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/application/update_frame/frame_state.dart';
 import 'package:agung_opr/application/update_frame/update_frame_single_state.dart';
@@ -13,12 +15,36 @@ class FrameNotifier extends StateNotifier<FrameState> {
 
   final FrameRepository _repository;
 
+  void changeFillInitial() {
+    state = FrameState.initial();
+  }
+
   Future<void> getFrameList({required int idSPK}) async {
     final Either<RemoteFailure, List<Frame>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOFrame: none());
 
     FOS = await _repository.getFrameList(idSPK: idSPK);
+
+    state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
+  }
+
+  Future<void> getFrameListWithoutSPK() async {
+    final Either<RemoteFailure, List<Frame>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOFrame: none());
+
+    FOS = await _repository.getFrameListWithoutSPK();
+
+    state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
+  }
+
+  Future<void> searchFrameListWithoutSPK({required String frame}) async {
+    final Either<RemoteFailure, List<Frame>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOFrame: none());
+
+    FOS = await _repository.searchFrameListWithoutSPK(search: frame);
 
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
@@ -38,6 +64,7 @@ class FrameNotifier extends StateNotifier<FrameState> {
       {required int idSPK,
       required int index,
       required String custnm,
+      required String tglDibuat,
       required UpdateFrameStateSingle newFrame}) async {
     final Either<LocalFailure, Unit> FOS;
 
@@ -67,7 +94,8 @@ class FrameNotifier extends StateNotifier<FrameState> {
         warna: warnaStr,
         idKendType: idKendTypeInt,
         sppdc: sppdcStr,
-        custnm: custnm);
+        custnm: custnm,
+        tglDibuat: tglDibuat);
 
     FOS = await _repository.saveFrameIndexedSPK(
         idSPK: idSPK, index: index, newFrame: frame);
@@ -110,5 +138,36 @@ class FrameNotifier extends StateNotifier<FrameState> {
 
     // Update the state with the new list
     state = state.copyWith(FOSOSaveFrame: list);
+  }
+
+  void resetFOSOSaveFrame() {
+    state = state.copyWith(FOSOSaveFrame: []);
+  }
+
+  List<Option<Either<LocalFailure, Unit>>> isFOSONotOK() {
+    List<Option<Either<LocalFailure, Unit>>> list = [
+      ...state.FOSOSaveFrame
+    ]; // Create a copy of the list
+
+    List<Option<Either<LocalFailure, Unit>>> NotOKFOSO = [];
+
+    list.forEach((element) {
+      element.fold(() => NotOKFOSO.add(element),
+          (either) => either.fold((_) => NotOKFOSO.add(element), (_) {}));
+    });
+
+    return NotOKFOSO;
+  }
+
+  bool isLastFOSO({required int index}) {
+    List<Option<Either<LocalFailure, Unit>>> list = [
+      ...state.FOSOSaveFrame
+    ]; // Create a copy of the list
+
+    int lastIndex = list.length - 1;
+
+    if (index == lastIndex) return true;
+
+    return false;
   }
 }

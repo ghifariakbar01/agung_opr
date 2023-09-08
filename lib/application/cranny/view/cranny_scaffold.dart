@@ -33,7 +33,17 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
 
     final updateCSfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
 
+    log('updateFrameOfflineOrOnline $updateFrameOfflineOrOnline');
     log('updateCSfflineOrOnline $updateCSfflineOrOnline');
+
+    bool isUpdateAvailable = updateFrameOfflineOrOnline.maybeWhen(
+            hasOfflineStorage: () => true, orElse: () => false) ||
+        updateCSUFrameOfflineOrOnline.maybeWhen(
+            hasOfflineStorage: () => true,
+            orElse: () =>
+                false ||
+                updateCSfflineOrOnline.maybeWhen(
+                    hasOfflineStorage: () => true, orElse: () => false));
 
     return Scaffold(
       appBar: VAppBar(
@@ -52,50 +62,30 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
               //       await context.pushNamed(RouteNames.spkNameRoute);
               //     },
               //     child: CrannyItem(label: 'UPDATE FRAME DUMMY')),
+              //
+              if (isUpdateAvailable) ...[
+                TextButton(
+                    onPressed: () async {
+                      ref
+                          .read(modeNotifierProvider.notifier)
+                          .changeModeAplikasi(ModeState.dataUpdateQuery());
+
+                      await context
+                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                    },
+                    child: CrannyItem(label: 'DATA AKAN DIUPDATE'))
+              ],
+              //
+              TextButton(
+                  onPressed: () async {
+                    ref.read(modeNotifierProvider.notifier).changeModeAplikasi(
+                        ModeState.checkSheetUnitWithoutSPK());
+
+                    await context.pushNamed(RouteNames.unitNameRoute);
+                  },
+                  child: CrannyItem(label: 'CHECK SHEET UNIT')),
+              //
               CSCrannyPage(),
-              // Frame
-              updateFrameOfflineOrOnline.maybeWhen(
-                hasOfflineStorage: () => TextButton(
-                    onPressed: () async {
-                      ref
-                          .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi(ModeState.dataUpdateQuery());
-
-                      await context
-                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
-                    },
-                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
-                orElse: () => Container(),
-              ),
-              // CSU Items
-              updateCSUFrameOfflineOrOnline.maybeWhen(
-                hasOfflineStorage: () => TextButton(
-                    onPressed: () async {
-                      ref
-                          .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi(ModeState.dataUpdateQuery());
-
-                      await context
-                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
-                    },
-                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
-                orElse: () => Container(),
-              ),
-
-              // CS Items
-              updateCSfflineOrOnline.maybeWhen(
-                hasOfflineStorage: () => TextButton(
-                    onPressed: () async {
-                      ref
-                          .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi(ModeState.dataUpdateQuery());
-
-                      await context
-                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
-                    },
-                    child: CrannyItem(label: 'DATA AKAN DIUPDATE')),
-                orElse: () => Container(),
-              )
             ],
           )),
       drawer: CrannyDrawer(),

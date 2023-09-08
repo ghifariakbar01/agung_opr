@@ -18,7 +18,6 @@ import 'cs_cranny_column.dart';
 
 /// [CSJenis] Initialization
 /// [CSItem] Initialization
-///
 
 class CSCrannyPage extends ConsumerStatefulWidget {
   const CSCrannyPage();

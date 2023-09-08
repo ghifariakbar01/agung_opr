@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
 import 'package:agung_opr/application/customer/view/customer_page.dart';
+import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/model/view/model_page.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
 import 'package:agung_opr/application/spk/view/spk_scan.dart';
@@ -24,6 +27,7 @@ import '../spk/spk.dart';
 import '../tc/shared/tc_providers.dart';
 import '../tc/tc_page.dart';
 import '../tc/tc_state.dart';
+import '../unit/view/unit_page.dart';
 import '../update_frame/frame.dart';
 import 'route_names.dart';
 
@@ -49,6 +53,8 @@ class RouterNotifier extends ChangeNotifier {
     final areWeSigningIn = state.matchedLocation == RouteNames.signInRoute;
     final areWeReadingTC =
         state.matchedLocation == RouteNames.termsAndConditionRoute;
+    final areWeInCSLoading =
+        state.matchedLocation == RouteNames.checkSheetLoadingNameRoute;
 
     final weVisitedTC = tcState == TCState.visited();
 
@@ -66,6 +72,12 @@ class RouterNotifier extends ChangeNotifier {
           //
 
           return RouteNames.crannyName;
+        } else if (areWeInCSLoading) {
+          debugger();
+          this
+              ._ref
+              .read(modeNotifierProvider.notifier)
+              .changeModeAplikasi(ModeState.checkSheetLoading());
         }
         return null;
       },
@@ -94,6 +106,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.spkNameRoute,
               path: RouteNames.spkName,
               builder: (context, state) => SPKPage(),
+            ),
+            GoRoute(
+              name: RouteNames.unitNameRoute,
+              path: RouteNames.unitName,
+              builder: (context, state) => UnitPage(),
             ),
             GoRoute(
               name: RouteNames.gateNameRoute,
@@ -132,7 +149,9 @@ class RouterNotifier extends ChangeNotifier {
                 name: RouteNames.CSUListNameRoute,
                 path: RouteNames.CSUListName,
                 builder: (context, state) {
-                  Frame item = state.extra as Frame;
+                  Map<String, dynamic> frameMap =
+                      state.extra as Map<String, dynamic>;
+                  Frame item = Frame.fromJson(frameMap);
                   return CSUResultPage(frame: item);
                 }),
             GoRoute(
@@ -146,7 +165,9 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.checkSheetLoadingNameRoute,
               path: RouteNames.checkSheetLoadingName,
               builder: (context, state) {
-                SPK spk = state.extra as SPK;
+                Map<String, dynamic> spkMap =
+                    state.extra as Map<String, dynamic>;
+                SPK spk = SPK.fromJson(spkMap);
                 return CheckSheetLoadingPage(spk: spk);
               },
             ),

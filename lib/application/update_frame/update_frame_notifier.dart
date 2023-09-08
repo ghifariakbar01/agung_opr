@@ -1,8 +1,8 @@
-
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:agung_opr/infrastructure/update_frame/update_frame_repository.dart';
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,6 +17,50 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
   ) : super(UpdateFrameState.initial());
 
   final UpdateFrameRepository _repository;
+
+  Future<void> updateAllFrame({
+    required List<UpdateFrameStateSingle> updateFrameList,
+  }) async {
+    Either<LocalFailure, Unit>? FOS;
+
+    if (updateFrameList.isNotEmpty) {
+      updateFrameList.forEachIndexed((index, item) async {
+        //
+        if (isValid(index)) {
+          state = state.copyWith(isProcessing: true);
+
+          this.changeFOSOUpdateFrame(index: index, FOS: none());
+
+          // debugger(message: 'called');
+
+          FOS = await _repository.updateFrameSPK(
+            idSPK: state.idSPK.toString(),
+            idUnit: item.idUnit,
+            idKendType: item.idKendType,
+            engine: item.engine,
+            frame: item.frame,
+            warna: item.warna,
+            sppdc: item.sppdc,
+          );
+
+          state = state.copyWith(isProcessing: false);
+
+          this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+        } else {
+          this.changeShowErrorMessage(index: index, isShowError: true);
+
+          state = state.copyWith(isProcessing: false);
+
+          this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+        }
+      });
+    } else {
+      //
+      state = state.copyWith(isProcessing: false);
+
+      //
+    }
+  }
 
   Future<void> updateFrame({
     required int index,

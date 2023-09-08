@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../shared/update_frame_providers.dart';
+import '../../update_frame/shared/update_frame_providers.dart';
 
-class FrameSearch extends ConsumerWidget {
-  const FrameSearch();
+class FrameSearchWithoutSPK extends ConsumerWidget {
+  const FrameSearchWithoutSPK();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final idSPK =
-        ref.read(updateFrameNotifierProvider.select((value) => value.idSPK));
-
     final search = ref
         .watch(frameSearchNotifierProvider.select((value) => value.searchText));
 
@@ -32,7 +29,7 @@ class FrameSearch extends ConsumerWidget {
                 children: [
                   InkWell(
                       onTap: () {
-                        search.isNotEmpty && search.length > 0
+                        search.isNotEmpty && search.length > 1
                             ? () async {
                                 ref
                                     .read(frameSearchNotifierProvider.notifier)
@@ -40,8 +37,7 @@ class FrameSearch extends ConsumerWidget {
 
                                 await ref
                                     .read(frameNotifierProvider.notifier)
-                                    .searchFrameListOFFLINE(
-                                        idSPK: '$idSPK', frame: search);
+                                    .searchFrameListWithoutSPK(frame: search);
 
                                 ref
                                     .read(frameSearchNotifierProvider.notifier)
@@ -54,7 +50,7 @@ class FrameSearch extends ConsumerWidget {
 
                                 await ref
                                     .read(frameNotifierProvider.notifier)
-                                    .getFrameList(idSPK: idSPK);
+                                    .getFrameListWithoutSPK();
                               }();
                       },
                       child: Ink(child: Icon(Icons.search))),
@@ -77,7 +73,7 @@ class FrameSearch extends ConsumerWidget {
                 .read(frameSearchNotifierProvider.notifier)
                 .changeSearchText(search);
 
-            if (search.isNotEmpty && search.length > 0) {
+            if (search.isNotEmpty && search.length > 1) {
               return;
             } else {
               ref
@@ -86,10 +82,10 @@ class FrameSearch extends ConsumerWidget {
 
               await ref
                   .read(frameNotifierProvider.notifier)
-                  .getFrameList(idSPK: idSPK);
+                  .getFrameListWithoutSPK();
             }
           },
-          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 0
+          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
               ? () async {
                   ref
                       .read(frameSearchNotifierProvider.notifier)
@@ -97,7 +93,7 @@ class FrameSearch extends ConsumerWidget {
 
                   await ref
                       .read(frameNotifierProvider.notifier)
-                      .searchFrameListOFFLINE(idSPK: '$idSPK', frame: search);
+                      .searchFrameListWithoutSPK(frame: search);
 
                   ref
                       .read(frameSearchNotifierProvider.notifier)
@@ -110,7 +106,7 @@ class FrameSearch extends ConsumerWidget {
 
                   await ref
                       .read(frameNotifierProvider.notifier)
-                      .getFrameList(idSPK: idSPK);
+                      .getFrameListWithoutSPK();
                 }()),
     );
   }

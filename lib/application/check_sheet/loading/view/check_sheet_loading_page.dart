@@ -229,8 +229,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                   context.pushReplacementNamed(RouteNames.dataUpdateQueryName);
                 })));
 
-    final isLoading =
-        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
+    final isLoading = ref.watch(
+            frameNotifierProvider.select((value) => value.isProcessing)) ||
+        ref.watch(
+            updateFrameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
       children: [

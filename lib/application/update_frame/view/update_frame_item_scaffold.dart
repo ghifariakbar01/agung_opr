@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../shared/update_frame_providers.dart';
 import 'update_frame_item_middle.dart';
@@ -53,19 +54,26 @@ class _UpdateFrameItemScaffoldState
                   final updateFrameProvider =
                       ref.read(updateFrameNotifierProvider);
 
-                  final custnm = ref.read(frameNotifierProvider
-                      .select((value) => value.frameList[widget.index].custnm));
+                  final frame = ref.read(frameNotifierProvider
+                      .select((value) => value.frameList[widget.index]));
+
+                  final modeApp = ref.read(modeNotifierProvider);
 
                   debugger(message: 'called');
 
                   log('INDEX: ${widget.index}');
 
+                  int idSpk = modeApp.maybeWhen(
+                      checkSheetUnit: () => updateFrameProvider.idSPK,
+                      orElse: () => 0);
+
                   await ref
                       .read(frameNotifierProvider.notifier)
                       .saveFrameIndexedSPK(
-                          idSPK: updateFrameProvider.idSPK,
+                          idSPK: idSpk,
                           index: widget.index,
-                          custnm: custnm ?? '-',
+                          custnm: frame.custnm ?? '',
+                          tglDibuat: frame.tglDibuat ?? '',
                           newFrame: updateFrameProvider
                               .updateFrameList[widget.index]);
                 })));

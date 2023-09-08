@@ -29,6 +29,9 @@ class RouteNames {
   static const CSUNewNameRoute = 'CSUNew';
   static const CSUNewName = 'CSUNew';
 
+  static const unitNameRoute = 'unit';
+  static const unitName = 'unit';
+
   static const checkSheetLoadingNameRoute = 'checkSheetLoading';
   static const checkSheetLoadingName = 'checkSheetLoading';
 

@@ -1,8 +1,9 @@
-
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/widgets/v_appbar.dart';
 import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -70,6 +71,10 @@ class CSUResultScaffold extends ConsumerWidget {
                               ref
                                   .read(updateCSUFrameNotifierProvider.notifier)
                                   .changeFillInitial();
+                              ref
+                                  .read(modeNotifierProvider.notifier)
+                                  .changeModeAplikasi(
+                                      ModeState.checkSheetUnit());
 
                               // PASS -1 AS EMPTY
                               await context.pushNamed(

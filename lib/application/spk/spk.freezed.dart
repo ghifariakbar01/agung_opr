@@ -28,6 +28,8 @@ mixin _$SPK {
   String? get supir1Nm => throw _privateConstructorUsedError;
   @JsonKey(name: 'supir2_nm')
   String? get supir2Nm => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tgl_berangkat')
+  String? get tglBerangkat => throw _privateConstructorUsedError;
   String get nopol => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +47,7 @@ abstract class $SPKCopyWith<$Res> {
       @JsonKey(name: 'spk_no') String spkNo,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
+      @JsonKey(name: 'tgl_berangkat') String? tglBerangkat,
       String nopol});
 }
 
@@ -64,6 +67,7 @@ class _$SPKCopyWithImpl<$Res, $Val extends SPK> implements $SPKCopyWith<$Res> {
     Object? spkNo = null,
     Object? supir1Nm = freezed,
     Object? supir2Nm = freezed,
+    Object? tglBerangkat = freezed,
     Object? nopol = null,
   }) {
     return _then(_value.copyWith(
@@ -82,6 +86,10 @@ class _$SPKCopyWithImpl<$Res, $Val extends SPK> implements $SPKCopyWith<$Res> {
       supir2Nm: freezed == supir2Nm
           ? _value.supir2Nm
           : supir2Nm // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tglBerangkat: freezed == tglBerangkat
+          ? _value.tglBerangkat
+          : tglBerangkat // ignore: cast_nullable_to_non_nullable
               as String?,
       nopol: null == nopol
           ? _value.nopol
@@ -102,6 +110,7 @@ abstract class _$$_SPKCopyWith<$Res> implements $SPKCopyWith<$Res> {
       @JsonKey(name: 'spk_no') String spkNo,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
+      @JsonKey(name: 'tgl_berangkat') String? tglBerangkat,
       String nopol});
 }
 
@@ -118,6 +127,7 @@ class __$$_SPKCopyWithImpl<$Res> extends _$SPKCopyWithImpl<$Res, _$_SPK>
     Object? spkNo = null,
     Object? supir1Nm = freezed,
     Object? supir2Nm = freezed,
+    Object? tglBerangkat = freezed,
     Object? nopol = null,
   }) {
     return _then(_$_SPK(
@@ -137,6 +147,10 @@ class __$$_SPKCopyWithImpl<$Res> extends _$SPKCopyWithImpl<$Res, _$_SPK>
           ? _value.supir2Nm
           : supir2Nm // ignore: cast_nullable_to_non_nullable
               as String?,
+      tglBerangkat: freezed == tglBerangkat
+          ? _value.tglBerangkat
+          : tglBerangkat // ignore: cast_nullable_to_non_nullable
+              as String?,
       nopol: null == nopol
           ? _value.nopol
           : nopol // ignore: cast_nullable_to_non_nullable
@@ -153,6 +167,7 @@ class _$_SPK implements _SPK {
       @JsonKey(name: 'spk_no') required this.spkNo,
       @JsonKey(name: 'supir1_nm') required this.supir1Nm,
       @JsonKey(name: 'supir2_nm') required this.supir2Nm,
+      @JsonKey(name: 'tgl_berangkat') required this.tglBerangkat,
       required this.nopol});
 
   factory _$_SPK.fromJson(Map<String, dynamic> json) => _$$_SPKFromJson(json);
@@ -170,11 +185,14 @@ class _$_SPK implements _SPK {
   @JsonKey(name: 'supir2_nm')
   final String? supir2Nm;
   @override
+  @JsonKey(name: 'tgl_berangkat')
+  final String? tglBerangkat;
+  @override
   final String nopol;
 
   @override
   String toString() {
-    return 'SPK(idSpk: $idSpk, spkNo: $spkNo, supir1Nm: $supir1Nm, supir2Nm: $supir2Nm, nopol: $nopol)';
+    return 'SPK(idSpk: $idSpk, spkNo: $spkNo, supir1Nm: $supir1Nm, supir2Nm: $supir2Nm, tglBerangkat: $tglBerangkat, nopol: $nopol)';
   }
 
   @override
@@ -188,13 +206,15 @@ class _$_SPK implements _SPK {
                 other.supir1Nm == supir1Nm) &&
             (identical(other.supir2Nm, supir2Nm) ||
                 other.supir2Nm == supir2Nm) &&
+            (identical(other.tglBerangkat, tglBerangkat) ||
+                other.tglBerangkat == tglBerangkat) &&
             (identical(other.nopol, nopol) || other.nopol == nopol));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, idSpk, spkNo, supir1Nm, supir2Nm, nopol);
+  int get hashCode => Object.hash(
+      runtimeType, idSpk, spkNo, supir1Nm, supir2Nm, tglBerangkat, nopol);
 
   @JsonKey(ignore: true)
   @override
@@ -216,6 +236,7 @@ abstract class _SPK implements SPK {
       @JsonKey(name: 'spk_no') required final String spkNo,
       @JsonKey(name: 'supir1_nm') required final String? supir1Nm,
       @JsonKey(name: 'supir2_nm') required final String? supir2Nm,
+      @JsonKey(name: 'tgl_berangkat') required final String? tglBerangkat,
       required final String nopol}) = _$_SPK;
 
   factory _SPK.fromJson(Map<String, dynamic> json) = _$_SPK.fromJson;
@@ -232,6 +253,9 @@ abstract class _SPK implements SPK {
   @override
   @JsonKey(name: 'supir2_nm')
   String? get supir2Nm;
+  @override
+  @JsonKey(name: 'tgl_berangkat')
+  String? get tglBerangkat;
   @override
   String get nopol;
   @override

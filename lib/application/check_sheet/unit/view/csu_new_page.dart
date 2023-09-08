@@ -16,6 +16,7 @@ import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/alert_helper.dart';
+import '../state/csu_ng_result.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
   const CSUNewPage({this.idCS = -1});
@@ -98,13 +99,41 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                           .read(csuFrameNotifierProvider.notifier)
                           .getCSUNGByIdCS(idCS: widget.idCS);
                     }
+                  }
+                })));
 
-                    final NGItems = ref.read(csuFrameNotifierProvider
-                        .select((value) => value.csuNGResultList));
-
+    ref.listen<Option<Either<RemoteFailure, List<CSUNGResult>>>>(
+        csuFrameNotifierProvider.select(
+          (state) => state.FOSOCSUNGResult,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                    (failure) => failure.maybeMap(
+                          noConnection: (value) => ref
+                              .read(isOfflineStateProvider.notifier)
+                              .state = true,
+                          orElse: () => AlertHelper.showSnackBar(
+                            context,
+                            message: failure.maybeMap(
+                              storage: (_) =>
+                                  'Storage penuh. Tidak bisa menyimpan data HASIL CSU',
+                              server: (value) =>
+                                  value.message ?? 'Server Error',
+                              parse: (value) => 'Parse $value',
+                              orElse: () => '',
+                            ),
+                          ),
+                        ), (csuNGResponse) {
+                  /// SET [csuNGResponse] from GOT CSUNGResultList
+                  // debugger(message: 'called');
+                  log('FRAME CSU NG RESPONSE: $csuNGResponse');
+                  if (csuNGResponse != []) {
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
-                        .changeFillNG(csuNGResult: NGItems);
+                        .changeFillNG(csuNGResult: csuNGResponse);
+
+                    debugger();
                   }
                 })));
 
@@ -199,7 +228,7 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                       .read(updateCSUFrameOfflineNotifierProvider.notifier)
                       .CUUpdateCSUFrameOFFLINEStatus();
 
-                  context.pop();
+                  // buildContext.pop();
 
                   context.pushReplacementNamed(RouteNames.dataUpdateQueryName);
                 })));

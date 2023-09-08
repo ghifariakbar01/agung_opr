@@ -206,7 +206,7 @@ class UpdateFrameRepository {
   }) async {
     try {
       // TEST
-      const String dbName = 'opr_trs_ti_unit';
+      const String dbName = 'opr_trs_ti_unit_test';
 
       final idKendTypeStr = idKendType.getOrLeave('');
       final idKendTypeInt =
@@ -256,7 +256,9 @@ class UpdateFrameRepository {
     try {
       final savedStrings = await _storage.read();
       final isNewFrameOK = newFrameMap.isNotEmpty;
-      final isStorageSaved = savedStrings != null;
+      final isStorageSaved = savedStrings != null && savedStrings != '{}';
+
+      log('isStorageSaved $isStorageSaved');
 
       if (isNewFrameOK) {
         switch (isStorageSaved) {
@@ -272,6 +274,8 @@ class UpdateFrameRepository {
               final keyNoSPK = newFrameMap.keys.first;
               // VALUES ARE [FRAME LIST]
               final valuesNoTIUnit = newFrameMap.values.first;
+
+              debugger();
 
               // EXISTING SECOND KEY [NO TI UNIT]
               final keyIdUnit = newFrameMap.values.first.keys.first;

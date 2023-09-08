@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:agung_opr/application/mode/mode_state.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
@@ -67,6 +71,8 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
     final isSearching = ref
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
 
+    ModeState modeState = ref.watch(modeNotifierProvider);
+
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
@@ -84,8 +90,13 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
                       ignoring: isSearching,
                       child: TextButton(
                         onPressed: () {
-                          final gateId = gateList[i].id.toString();
-                          context.pop(gateId);
+                          String gateParam = modeState.maybeWhen(
+                              checkSheetUnit: () => gateList[i].id.toString(),
+                              checkSheetUnitWithoutSPK: () =>
+                                  gateList[i].id.toString(),
+                              orElse: () => gateList[i].nama.toString());
+
+                          context.pop(gateParam);
                         },
                         style: ButtonStyle(
                             padding: MaterialStatePropertyAll(EdgeInsets.zero)),

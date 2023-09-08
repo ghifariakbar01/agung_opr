@@ -101,24 +101,24 @@ class _FormGateState extends ConsumerState<FormGate> {
           flex: 1,
           child: Container(
             height: 50,
-            width: 50,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 border: Border.all(color: Palette.primaryColor, width: 2),
                 borderRadius: BorderRadius.circular(12)),
             child: TextButton(
               onPressed: () async {
-                final String? id =
+                final String? nama =
                     await context.pushNamed(RouteNames.gateNameRoute);
 
-                if (id != null) {
-                  ref.read(updateCSNotifierProvider.notifier).changeGate(id);
+                if (nama != null) {
+                  ref.read(updateCSNotifierProvider.notifier).changeGate(nama);
 
                   ref
                       .read(updateCSNotifierProvider.notifier)
                       .state
                       .updateCSForm
                       .gateTextController
-                      .text = id;
+                      .text = nama;
                 }
               },
               style: ButtonStyle(
@@ -151,19 +151,6 @@ class _FormGateState extends ConsumerState<FormGate> {
         ),
         SizedBox(
           width: 8,
-        ),
-        Flexible(
-          flex: 2,
-          child: Text(
-            gates.gates
-                    .firstWhere((element) => element.id.toString() == gateStr,
-                        orElse: () => CSUMSTGate.initial())
-                    .nama ??
-                '',
-            style:
-                Themes.customColor(FontWeight.normal, 12, Palette.primaryColor),
-            textAlign: TextAlign.center,
-          ),
         ),
       ],
     );

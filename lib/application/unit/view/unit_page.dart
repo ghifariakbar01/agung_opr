@@ -1,7 +1,6 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/spk/shared/spk_providers.dart';
-import 'package:agung_opr/application/spk/spk.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:dartz/dartz.dart';
@@ -9,26 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../auto_data/view/data_update_linear_progress.dart';
+import '../../update_frame/frame.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
-import 'spk_scaffold.dart';
+import 'unit_scaffold.dart';
 
-class SPKPage extends ConsumerStatefulWidget {
-  const SPKPage();
+class UnitPage extends ConsumerStatefulWidget {
+  const UnitPage();
 
   @override
-  ConsumerState<SPKPage> createState() => _SPKPageState();
+  ConsumerState<UnitPage> createState() => _UnitPageState();
 }
 
-class _SPKPageState extends ConsumerState<SPKPage> {
+class _UnitPageState extends ConsumerState<UnitPage> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final spkOfflineOrOnline = ref.watch(spkOfflineNotifierProvider);
+      final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
-      log('spkOfflineOrOnline $spkOfflineOrOnline');
+      log('frameOfflineOrOnline $frameOfflineOrOnline');
 
       // debugger(message: 'called');
 
@@ -46,21 +46,19 @@ class _SPKPageState extends ConsumerState<SPKPage> {
       //   },
       // );
 
-      for (int i = 0; i < 5; i++) {
-        ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      }
+      await ref.read(frameNotifierProvider.notifier).getFrameListWithoutSPK();
 
       await ref
-          .read(spkOfflineNotifierProvider.notifier)
-          .checkAndUpdateSPKOFFLINEStatus();
+          .read(frameOfflineNotifierProvider.notifier)
+          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<Option<Either<RemoteFailure, List<SPK>>>>(
-        spkNotifierProvider.select(
-          (state) => state.FOSOSPK,
+    ref.listen<Option<Either<RemoteFailure, List<Frame>>>>(
+        frameNotifierProvider.select(
+          (state) => state.FOSOFrame,
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
@@ -73,40 +71,42 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                             context,
                             message: failure.maybeMap(
                               storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data SPK',
+                                  'Storage penuh. Tidak bisa menyimpan data FRAME',
                               server: (value) =>
                                   value.message ?? 'Server Error',
+                              parse: (value) => 'Parse $value',
                               orElse: () => '',
                             ),
                           ),
-                        ), (SPKResponse) {
-                  final oldSPK =
-                      ref.read(spkNotifierProvider.notifier).state.spkList;
+                        ), (frameResponse) {
+                  /// SET [frameResponse] from GOT frameList
+                  // debugger(message: 'called');
+                  log('FRAME RESPONSE: $frameResponse');
+                  if (frameResponse != []) {
+                    ref
+                        .read(frameNotifierProvider.notifier)
+                        .changeFrameList(frameResponse);
 
-                  final page =
-                      ref.read(spkNotifierProvider.notifier).state.page;
+                    final responseLEN = frameResponse.length;
 
-                  ref.read(spkNotifierProvider.notifier).processSPKList(
-                        newSPK: SPKResponse,
-                        page: page,
-                        changeSPK: () => ref
-                            .read(spkNotifierProvider.notifier)
-                            .changeSPKList(newSPK: SPKResponse, oldSPK: oldSPK),
-                        replaceSPK: () => ref
-                            .read(spkNotifierProvider.notifier)
-                            .replaceSPKList(SPKResponse),
-                        changeIsMore: () => ref
-                            .read(spkNotifierProvider.notifier)
-                            .changeIsMore(false),
-                      );
+                    ref
+                        .read(frameNotifierProvider.notifier)
+                        .changeFillEmptyFOSOSaveFrameList(length: responseLEN);
+
+                    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+                    ref
+                        .read(updateFrameNotifierProvider.notifier)
+                        .changeFillEmptyList(
+                            length: responseLEN, frame: frameResponse);
+                  }
                 })));
 
     final isLoading =
-        ref.watch(spkNotifierProvider.select((value) => value.isProcessing));
+        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
       children: [
-        SPKScaffold(),
+        UnitScaffold(),
         Positioned(top: 15, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],

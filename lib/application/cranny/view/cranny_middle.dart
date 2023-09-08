@@ -191,7 +191,6 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                   await ref
                       .read(updateCSOfflineNotifierProvider.notifier)
                       .CUUpdateCSOFFLINEStatus();
-
                   ref
                       .read(autoDataUpdateFrameNotifierProvider.notifier)
                       .resetAutoDataRemoteFOSO();

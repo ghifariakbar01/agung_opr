@@ -252,7 +252,7 @@ class UpdateCSUFrameRepository {
     int noDefect = 0,
   }) {
     // TEST
-    const String dbName = 'cs_trs_cs';
+    const String dbName = 'cs_trs_cs_test';
 
     // supir1, supir2,
 
@@ -311,8 +311,8 @@ class UpdateCSUFrameRepository {
     String idCS = 'ID_CS_NA',
   }) {
     // TEST
-    const String dbName = 'cs_trs_cs_dtl';
-    const String dbNameCS = 'cs_trs_cs';
+    const String dbName = 'cs_trs_cs_dtl_test';
+    const String dbNameCS = 'cs_trs_cs_test';
 
     final String insert =
         'INSERT INTO $dbName (id_cs, frame, c_date, u_date, c_user,  u_user, id_item, id_jns_defect, id_p_defect)';

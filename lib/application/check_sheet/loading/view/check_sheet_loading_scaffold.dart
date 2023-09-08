@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/update_frame/update_frame_single_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -299,6 +300,25 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                             .read(updateCSNotifierProvider.notifier)
                             .saveQueryOK();
                       }),
+
+                  SizedBox(
+                    height: 65,
+                    child: VButton(
+                        label: 'SIMPAN FRAME',
+                        onPressed: () async {
+                          List<UpdateFrameStateSingle> updateFrameList =
+                              ref.read(updateFrameNotifierProvider
+                                  .select((value) => value.updateFrameList));
+
+                          await ref
+                              .read(updateFrameNotifierProvider.notifier)
+                              .updateAllFrame(updateFrameList: updateFrameList);
+
+                          await ref
+                              .read(updateFrameOfflineNotifierProvider.notifier)
+                              .CUUpdateFrameOFFLINEStatus();
+                        }),
+                  ),
                 ],
               ),
             ),

@@ -36,18 +36,17 @@ import 'frame_remote_service.dart';
         {"id_unit":715438,"frame":"MHFAA8GS2P0904325","engine":"","warna":"","no_reff_expor":"","id_kend_type":38},
         {"id_unit":715439,"frame":"MHKA6GJ6JPJ663738","engine":"","warna":"","no_reff_expor":"","id_kend_type":41}]
     }
+
+    NB: 
+    ID_SPK 0 For Frames Without SPK
+
 */
+
 class FrameRepository {
-  FrameRepository(
-    this._remoteService,
-    this._storage,
-  );
+  FrameRepository(this._remoteService, this._storage);
 
   final FrameRemoteService _remoteService;
   final CredentialsStorage _storage;
-
-  Future<bool> hasOfflineData() => getStorageCondition()
-      .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<bool> hasOfflineDataIndex(int idSPK) =>
       getFrameListOFFLINE(idSPK: idSPK)
@@ -132,6 +131,57 @@ class FrameRepository {
       {required int idSPK}) async {
     try {
       final modelMapList = await _remoteService.getFrameList(idSPK: idSPK);
+
+      await this._GETAndADDFrameInMap(newFrame: modelMapList);
+
+      if (modelMapList["$idSPK"] != null) {
+        return right(modelMapList["$idSPK"] as List<Frame>);
+      } else {
+        return right([]);
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  Future<Either<RemoteFailure, List<Frame>>> searchFrameListWithoutSPK(
+      {required String search}) async {
+    try {
+      final modelMapList =
+          await _remoteService.searchFrameListWithoutSPK(search: search);
+
+      await this._GETAndADDFrameInMap(newFrame: modelMapList);
+
+      if (modelMapList["0"] != null) {
+        return right(modelMapList["0"] as List<Frame>);
+      } else {
+        return right([]);
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (e) {
+      return left(RemoteFailure.parse(message: e.message));
+    } on JsonUnsupportedObjectError {
+      return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
+  Future<Either<RemoteFailure, List<Frame>>> getFrameListWithoutSPK(
+      {int? idSPK = 0}) async {
+    try {
+      final modelMapList = await _remoteService.getFrameListWithoutSPK();
 
       await this._GETAndADDFrameInMap(newFrame: modelMapList);
 

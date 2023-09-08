@@ -183,17 +183,37 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
 
                             return unit;
                           },
-                          checkSheetUnit: () => context.pushNamed(
-                              RouteNames.updateFrameNameRoute,
-                              extra: spkList[i].idSpk),
+                          checkSheetUnit: () async {
+                            // INIT BACK 0
+                            ref
+                                .read(frameNotifierProvider.notifier)
+                                .changeFrameList([]);
+
+                            ref
+                                .read(frameNotifierProvider.notifier)
+                                .changeFillEmptyFOSOSaveFrameList(length: 0);
+
+                            /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+                            ref
+                                .read(updateFrameNotifierProvider.notifier)
+                                .changeFillEmptyList(length: 0, frame: []);
+
+                            //
+
+                            await context.pushNamed(
+                                RouteNames.updateFrameNameRoute,
+                                extra: spkList[i].idSpk);
+                          },
                           checkSheetGateMerak: () => {},
                           assignUnitMerak: () => {},
                           dataUpdateQuery: () => {},
                           // LOADING, UNLOADING, LOADING & UNLOADING
                           orElse: () async {
+                            Map<String, dynamic> spkMap = spkList[i].toJson();
+
                             await context.pushNamed(
                                 RouteNames.checkSheetLoadingNameRoute,
-                                extra: spkList[i]);
+                                extra: spkMap);
 
                             return unit;
                           },
@@ -205,6 +225,8 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                           namaDriver:
                               '${spkList[i].supir1Nm ?? ''} ${spkList[i].supir2Nm != null ? '/ ${spkList[i].supir2Nm}' : ''}',
                           nomorPolisi: '${spkList[i].nopol}',
+                          tglBerangkat:
+                              'TGL BERANGKAT: ${spkList[i].tglBerangkat}',
                         ),
                       ),
                     )

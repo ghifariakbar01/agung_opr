@@ -1,6 +1,4 @@
 class Constants {
-  static String githubURL =
-      "https://github.com/MCarlomagno/FaceRecognitionAuth/tree/master";
-
-  static int dataIntervalTimerInSeconds = 30;
+  
+  static int dataIntervalTimerInSeconds = 120;
 }

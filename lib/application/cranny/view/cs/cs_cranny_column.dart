@@ -1,7 +1,7 @@
-
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +25,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
             onPressed: () async {
               ModeState mode = ModeState.checkSheetLoading();
 
+              ref.read(frameNotifierProvider.notifier).changeFillInitial();
               ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
               ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
               ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
@@ -39,6 +40,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
             onPressed: () async {
               ModeState mode = ModeState.checkSheetLoadingUnloading();
 
+              ref.read(frameNotifierProvider.notifier).changeFillInitial();
               ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
               ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
               ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
@@ -53,6 +55,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
             onPressed: () async {
               ModeState mode = ModeState.checkSheetUnloading();
 
+              ref.read(frameNotifierProvider.notifier).changeFillInitial();
               ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
               ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
               ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
