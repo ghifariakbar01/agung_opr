@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../style/style.dart';
 import '../../../shared/providers.dart';
-import '../../password_expired/password_expired_state.dart';
 import '../../profile/widgets/profile_label.dart';
 import '../../remember_me/remember_me_state.dart';
 
@@ -55,22 +54,12 @@ class _SignInFormState extends ConsumerState<SignInForm> {
     final userId = signInForm.userId.getOrLeave('');
     final password = signInForm.password.getOrLeave('');
 
-    PasswordExpiredState passwordExpired =
-        ref.watch(passwordExpiredNotifierStatusProvider);
-
     return Form(
       autovalidateMode: signInForm.showErrorMessages
           ? AutovalidateMode.always
           : AutovalidateMode.disabled,
       child: Column(
         children: [
-          passwordExpired.maybeWhen(
-            expired: () => Text(
-              'Password Anda Expired. Login menggunakan Password Baru.',
-              style: Themes.customColor(FontWeight.bold, 14, Palette.red),
-            ),
-            orElse: () => Container(),
-          ),
           SizedBox(
             height: 4,
           ),

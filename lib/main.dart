@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/auth/auth_notifier.dart';
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
@@ -37,8 +36,8 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
         return true;
       },
       baseUrl: BuildConfig.get().baseUrl,
-    )
-    ..interceptors.add(ref.read(authInterceptorProvider));
+    );
+  // ..interceptors.add(ref.read(authInterceptorProvider));
 
   if (!BuildConfig.isProduction) {
     ref.read(dioProvider).interceptors.add(PrettyDioLogger(
@@ -53,91 +52,76 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
   final tcNotifier = ref.read(tcNotifierProvider.notifier);
   await tcNotifier.checkAndUpdateStatusTC();
 
-  final authNotifierState = ref.read(authNotifierProvider);
-  final isSignedIn = authNotifierState == AuthState.authenticated();
+  // SPK DATA ONLINE / OFFLINE
+  await ref
+      .read(spkOfflineNotifierProvider.notifier)
+      .checkAndUpdateSPKOFFLINEStatus();
 
-  if (isSignedIn) {
-    // SPK DATA ONLINE / OFFLINE
-    await ref
-        .read(spkOfflineNotifierProvider.notifier)
-        .checkAndUpdateSPKOFFLINEStatus();
+  final spkOfflineOrOnline = ref.watch(spkOfflineNotifierProvider);
 
-    final spkOfflineOrOnline = ref.watch(spkOfflineNotifierProvider);
+  log('spkOfflineOrOnline $spkOfflineOrOnline');
 
-    log('spkOfflineOrOnline $spkOfflineOrOnline');
+  await spkOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () =>
+        ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
+    orElse: () async {
+      await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
 
-    await spkOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () =>
-          ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
-      orElse: () async {
-        await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
+      await ref
+          .read(spkOfflineNotifierProvider.notifier)
+          .checkAndUpdateSPKOFFLINEStatus();
+    },
+  );
 
-        await ref
-            .read(spkOfflineNotifierProvider.notifier)
-            .checkAndUpdateSPKOFFLINEStatus();
-      },
-    );
+  // UPDATE FRAME DATA ONLINE / OFFLINE
+  await ref
+      .read(updateFrameOfflineNotifierProvider.notifier)
+      .CUUpdateFrameOFFLINEStatus();
 
-    // UPDATE FRAME DATA ONLINE / OFFLINE
-    await ref
-        .read(updateFrameOfflineNotifierProvider.notifier)
-        .CUUpdateFrameOFFLINEStatus();
+  final updateFrameOfflineOrOnline =
+      ref.watch(updateFrameOfflineNotifierProvider);
 
-    final updateFrameOfflineOrOnline =
-        ref.watch(updateFrameOfflineNotifierProvider);
+  log('updateFrameOfflineOrOnline $updateFrameOfflineOrOnline');
 
-    log('updateFrameOfflineOrOnline $updateFrameOfflineOrOnline');
+  await updateFrameOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () => ref
+        .read(autoDataUpdateFrameNotifierProvider.notifier)
+        .getSavedQueryFromRepository(),
+    orElse: () {},
+  );
 
-    await updateFrameOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedQueryFromRepository(),
-      orElse: () {},
-    );
+  // UPDATE CSU FRAME DATA ONLINE / OFFLINE
+  await ref
+      .read(updateCSUFrameOfflineNotifierProvider.notifier)
+      .CUUpdateCSUFrameOFFLINEStatus();
 
-    // UPDATE CSU FRAME DATA ONLINE / OFFLINE
-    await ref
-        .read(updateCSUFrameOfflineNotifierProvider.notifier)
-        .CUUpdateCSUFrameOFFLINEStatus();
+  final updateCSUrameOfflineOrOnline =
+      ref.watch(updateCSUFrameOfflineNotifierProvider);
 
-    final updateCSUrameOfflineOrOnline =
-        ref.watch(updateCSUFrameOfflineNotifierProvider);
+  log('updateCSUrameOfflineOrOnline $updateCSUrameOfflineOrOnline');
 
-    log('updateCSUrameOfflineOrOnline $updateCSUrameOfflineOrOnline');
+  await updateCSUrameOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () => ref
+        .read(autoDataUpdateFrameNotifierProvider.notifier)
+        .getSavedCSUQueryFromRepository(),
+    orElse: () {},
+  );
 
-    await updateCSUrameOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSUQueryFromRepository(),
-      orElse: () {},
-    );
+  // UPDATE CS FRAME DATA ONLINE / OFFLINE
+  await ref
+      .read(updateCSOfflineNotifierProvider.notifier)
+      .CUUpdateCSOFFLINEStatus();
 
-    // UPDATE CS FRAME DATA ONLINE / OFFLINE
-    await ref
-        .read(updateCSOfflineNotifierProvider.notifier)
-        .CUUpdateCSOFFLINEStatus();
+  final updateCSOfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
 
-    final updateCSOfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
+  log('updateCSOfflineOrOnline $updateCSOfflineOrOnline');
 
-    log('updateCSOfflineOrOnline $updateCSOfflineOrOnline');
-
-    await updateCSOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSQueryFromRepository(),
-      orElse: () {},
-    );
-
-    final passwordExpiredNotifier =
-        ref.read(passwordExpiredNotifierStatusProvider.notifier);
-    await passwordExpiredNotifier.checkAndUpdateExpired();
-
-    return unit;
-  }
-
-  final passwordExpiredNotifier =
-      ref.read(passwordExpiredNotifierStatusProvider.notifier);
-  await passwordExpiredNotifier.checkAndUpdateExpired();
+  await updateCSOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () => ref
+        .read(autoDataUpdateFrameNotifierProvider.notifier)
+        .getSavedCSQueryFromRepository(),
+    orElse: () {},
+  );
 
   return unit;
 });

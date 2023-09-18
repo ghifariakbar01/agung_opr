@@ -13,23 +13,9 @@ part 'auth_notifier.freezed.dart';
 part 'auth_state.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this._repository, this._ref) : super(const AuthState.initial()) {
-    // PASSWORD EXPIRED
-    _ref.listen<Option<Either<LocalFailure, Unit>>>(
-        passwordExpiredNotifierProvider
-            .select((value) => value.failureOrSuccessOption),
-        (__, failureOrSuccess) => failureOrSuccess.fold(() {}, (_) async {
-              UserNotifier userNotifier =
-                  _ref.read(userNotifierProvider.notifier);
-
-              userNotifier.setUserInitial();
-              await userNotifier.logout();
-              await checkAndUpdateAuthStatus();
-            }));
-  }
+  AuthNotifier(this._repository) : super(const AuthState.initial());
 
   final AuthRepository _repository;
-  final Ref _ref;
 
   Future<void> checkAndUpdateAuthStatus() async {
     final isSignedIn = await _repository.isSignedIn();

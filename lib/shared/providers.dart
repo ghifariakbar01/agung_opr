@@ -6,10 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../application/auth/auth_notifier.dart';
 import '../application/mode/mode_state.dart';
 import '../application/mode/mode_state_notifier.dart';
-import '../application/password_expired/password_expired_notifier.dart';
-import '../application/password_expired/password_expired_notifier_state.dart';
-import '../application/password_expired/password_expired_notifier_status.dart';
-import '../application/password_expired/password_expired_state.dart';
 import '../application/reminder/reminder_notifier.dart';
 import '../application/reminder/reminder_state.dart';
 import '../application/routes/route_notifier.dart';
@@ -71,7 +67,7 @@ final authInterceptorProvider = Provider(
 );
 
 final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>(
-  (ref) => AuthNotifier(ref.watch(authRepositoryProvider), ref),
+  (ref) => AuthNotifier(ref.watch(authRepositoryProvider)),
 );
 
 final userNotifierProvider = StateNotifierProvider<UserNotifier, UserState>(
@@ -85,24 +81,6 @@ final signInFormNotifierProvider =
 // MODE APLIKASI
 final modeNotifierProvider =
     StateNotifierProvider<ModeNotifier, ModeState>((ref) => ModeNotifier());
-
-// PASS EXPIRED
-final passwordExpiredStorageProvider = Provider<CredentialsStorage>(
-  (ref) => PasswordExpiredStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final passwordExpiredRepositoryProvider = Provider((ref) =>
-    PasswordExpiredRepository(ref.watch(passwordExpiredStorageProvider)));
-
-final passwordExpiredNotifierProvider = StateNotifierProvider<
-        PasswordExpiredNotifier, PasswordExpiredNotifierState>(
-    (ref) =>
-        PasswordExpiredNotifier(ref.watch(passwordExpiredRepositoryProvider)));
-
-final passwordExpiredNotifierStatusProvider =
-    StateNotifierProvider<PasswordExpiredNotifierStatus, PasswordExpiredState>(
-        (ref) => PasswordExpiredNotifierStatus(
-            ref, ref.watch(passwordExpiredRepositoryProvider)));
 
 // REMINDER
 final reminderNotifierProvider =
