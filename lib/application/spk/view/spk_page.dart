@@ -46,9 +46,7 @@ class _SPKPageState extends ConsumerState<SPKPage> {
       //   },
       // );
 
-      for (int i = 0; i < 5; i++) {
-        ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      }
+      ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
 
       await ref
           .read(spkOfflineNotifierProvider.notifier)
