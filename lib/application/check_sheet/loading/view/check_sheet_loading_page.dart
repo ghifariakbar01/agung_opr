@@ -40,39 +40,24 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       //
       ModeState modeState = ref.read(modeNotifierProvider);
       await modeState.maybeWhen(checkSheetLoading: () async {
-        ref
-            .read(updateFrameNotifierProvider.notifier)
-            .changeIdSPK(idSPK: widget.spk.idSpk);
-
         await ref
             .read(frameOfflineNotifierProvider.notifier)
-            .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+            .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
 
         final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
-        log('frameOfflineOrOnline $frameOfflineOrOnline');
-
         await frameOfflineOrOnline.maybeWhen(
-          hasOfflineStorage: () async {
-            // ref
-            //     .read(frameNotifierProvider.notifier)
-            //     .getFrameListOFFLINE(idSPK: widget.spk.idSpk);
-            await ref
-                .read(frameNotifierProvider.notifier)
-                .getFrameList(idSPK: widget.spk.idSpk);
-
-            await ref
-                .read(frameOfflineNotifierProvider.notifier)
-                .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
-          },
+          hasOfflineStorage: () => ref
+              .read(frameNotifierProvider.notifier)
+              .getFrameListOFFLINE(idSPK: 0),
           orElse: () async {
             await ref
                 .read(frameNotifierProvider.notifier)
-                .getFrameList(idSPK: widget.spk.idSpk);
+                .getFrameList(idSPK: 0);
 
             await ref
                 .read(frameOfflineNotifierProvider.notifier)
-                .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+                .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
           },
         );
       }, orElse: () {

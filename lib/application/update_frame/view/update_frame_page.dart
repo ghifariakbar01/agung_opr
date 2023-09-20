@@ -38,21 +38,10 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
 
       final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
-      log('frameOfflineOrOnline $frameOfflineOrOnline');
-
       await frameOfflineOrOnline.maybeWhen(
-        hasOfflineStorage: () async {
-          // ref
-          //     .read(frameNotifierProvider.notifier)
-          //     .getFrameListOFFLINE(idSPK: widget.idSPK);
-          await ref
-              .read(frameNotifierProvider.notifier)
-              .getFrameList(idSPK: widget.idSPK);
-
-          await ref
-              .read(frameOfflineNotifierProvider.notifier)
-              .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.idSPK);
-        },
+        hasOfflineStorage: () => ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameListOFFLINE(idSPK: widget.idSPK),
         orElse: () async {
           await ref
               .read(frameNotifierProvider.notifier)
@@ -94,7 +83,10 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
                   /// SET [frameResponse] from GOT frameList
                   // debugger(message: 'called');
                   log('FRAME RESPONSE: $frameResponse');
+
                   if (frameResponse != []) {
+                    debugger();
+
                     ref
                         .read(frameNotifierProvider.notifier)
                         .changeFrameList(frameResponse);
@@ -104,12 +96,15 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
                     ref
                         .read(frameNotifierProvider.notifier)
                         .changeFillEmptyFOSOSaveFrameList(length: responseLEN);
+                    debugger();
 
                     /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
                     ref
                         .read(updateFrameNotifierProvider.notifier)
                         .changeFillEmptyList(
                             length: responseLEN, frame: frameResponse);
+
+                    debugger();
                   }
                 })));
 

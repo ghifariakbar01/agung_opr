@@ -28,7 +28,7 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "select *, (select count(id_item) from $dbCSDtl where id_cs = $dbName.id_cs) as defectAmount, (select nama from cs_mst_gate where id_gate = $dbName.id_gate) as gate from $dbName where frame like '$frameName' ORDER BY u_date DESC",
+            "select *, (select count(id_item) from $dbCSDtl where id_cs = $dbName.id_cs) as defectAmount, (select nama from cs_mst_gate where id_gate = $dbName.id_gate) as gate from $dbName where frame like '$frameName' ORDER BY u_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',
@@ -175,7 +175,7 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT (SELECT nama FROM $dbSlsCostnalatis WHERE id_costanalis = B.id_costanalis) AS costanalis, (SELECT nama FROM $dbMstCust WHERE id_cust = B.id_cust) AS custnm FROM $dbOprTiUnit AS A INNER JOIN $dbOprTi AS B ON A.id_do = B.id_do WHERE A.frame LIKE '$frameName'",
+            "SELECT (SELECT nama FROM $dbSlsCostnalatis WHERE id_costanalis = B.id_costanalis) AS costanalis, (SELECT nama FROM $dbMstCust WHERE id_cust = B.id_cust) AS custnm FROM $dbOprTiUnit AS A INNER JOIN $dbOprTi AS B ON A.id_do = B.id_do WHERE A.frame LIKE '$frameName' ORDER BY A.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

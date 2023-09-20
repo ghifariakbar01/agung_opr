@@ -30,27 +30,19 @@ class _SPKPageState extends ConsumerState<SPKPage> {
 
       log('spkOfflineOrOnline $spkOfflineOrOnline');
 
-      // debugger(message: 'called');
+      await spkOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () =>
+            ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
+        orElse: () async {
+          for (int i = 0; i < 5; i++) {
+            ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
+          }
 
-      // await spkOfflineOrOnline.maybeWhen(
-      //   hasOfflineStorage: () =>
-      //       ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
-      //   orElse: () async {
-      //     for (int i = 0; i < 5; i++) {
-      //       ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      //     }
-
-      //     await ref
-      //         .read(spkOfflineNotifierProvider.notifier)
-      //         .checkAndUpdateSPKOFFLINEStatus();
-      //   },
-      // );
-
-      ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
-
-      await ref
-          .read(spkOfflineNotifierProvider.notifier)
-          .checkAndUpdateSPKOFFLINEStatus();
+          await ref
+              .read(spkOfflineNotifierProvider.notifier)
+              .checkAndUpdateSPKOFFLINEStatus();
+        },
+      );
     });
   }
 

@@ -36,8 +36,8 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
         return true;
       },
       baseUrl: BuildConfig.get().baseUrl,
-    );
-  // ..interceptors.add(ref.read(authInterceptorProvider));
+    )
+    ..interceptors.add(ref.read(authInterceptorProvider));
 
   if (!BuildConfig.isProduction) {
     ref.read(dioProvider).interceptors.add(PrettyDioLogger(

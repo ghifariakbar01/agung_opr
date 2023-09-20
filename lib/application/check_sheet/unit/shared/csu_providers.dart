@@ -19,12 +19,16 @@ import '../../../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../../../shared/providers.dart';
 import '../../../update_csu/state/update_csu_state.dart';
 import '../../../update_csu/update_csu_notifier.dart';
+import '../../csu_items_offline_notifier.dart';
+import '../../csu_result_offline_notifier.dart';
 import '../../csu_trips_offline_notifier.dart';
 import '../csu_item_notifier.dart';
 import '../csu_jenis_penyebab_notifier.dart';
 import '../csu_result_notifier.dart';
+import '../state/csu_items_offline_state.dart';
 import '../state/csu_items_state.dart';
 import '../state/csu_jenis_penyebab_state.dart';
+import '../state/csu_result_offline_state.dart';
 import '../state/csu_result_state.dart';
 
 // import '../../../infrastructure/cache_storage/update_frame_storage.dart';
@@ -55,10 +59,10 @@ final csuFrameNotifierProvider =
   (ref) => CSUFrameResultNotifier(ref.watch(csuFrameRepositoryProvider)),
 );
 
-// final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateCSUFrameOfflineNotifier, UpdateCSUFrameOfflineState>(
-//     (ref) => UpdateCSUFrameOfflineNotifier(
-//         ref.watch(updateCSUFrameRepositoryProvider)));
+final csuResultOfflineNotifierProvider =
+    StateNotifierProvider<CSUResultOfflineNotifier, CSUResultOfflineState>(
+        (ref) =>
+            CSUResultOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
 
 ///  UPDATE CSU
 final updateCSUFrameStorage = Provider<CredentialsStorage>(
@@ -109,12 +113,12 @@ final csuItemsRepositoryProvider = Provider((ref) => CSUItemsRepository(
 final csuItemsFrameNotifierProvider =
     StateNotifierProvider<CSUItemsNotifier, CSUItemsState>(
   (ref) => CSUItemsNotifier(ref.watch(csuItemsRepositoryProvider)),
-
-  // final updateFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
-//     (ref) =>
-//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
 );
+
+final csuItemsOfflineNotifierProvider =
+    StateNotifierProvider<CSUItemsOfflineNotifier, CSUItemsOfflineState>(
+        (ref) =>
+            CSUItemsOfflineNotifier(ref.watch(csuItemsRepositoryProvider)));
 
 // CSU JENIS PENYEBAB
 final jenisDefectStorage = Provider<CredentialsStorage>(

@@ -105,8 +105,8 @@ class UnitScaffold extends ConsumerWidget {
                                           await ref
                                               .read(frameNotifierProvider
                                                   .notifier)
-                                              .searchFrameListWithoutSPK(
-                                                  frame: frame);
+                                              .searchFrameListOFFLINE(
+                                                  idSPK: '0', frame: frame);
                                         }
                                       },
                                       child: Ink(

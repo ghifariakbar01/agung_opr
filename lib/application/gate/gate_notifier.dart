@@ -25,6 +25,28 @@ class GateNotifier extends StateNotifier<CSUGateState> {
     state = state.copyWith(isProcessing: false, FOSOGate: optionOf(FOS));
   }
 
+  Future<void> getGatesOFFLINE() async {
+    Either<RemoteFailure, List<CSUMSTGate>>? FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOGate: none());
+
+    // debugger(message: 'called');
+
+    FOS = await _repository.getGatesOFFLINE();
+
+    state = state.copyWith(isProcessing: false, FOSOGate: optionOf(FOS));
+  }
+
+  Future<void> searchGateListOFFLINE({required String search}) async {
+    final Either<RemoteFailure, List<CSUMSTGate>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOGate: none());
+
+    FOS = await _repository.searchGatesListOFFLINE(search: search);
+
+    state = state.copyWith(isProcessing: false, FOSOGate: optionOf(FOS));
+  }
+
   Future<void> searchGateList({required String search}) async {
     final Either<RemoteFailure, List<CSUMSTGate>> FOS;
 

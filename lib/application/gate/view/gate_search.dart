@@ -34,11 +34,6 @@ class GateSearch extends ConsumerWidget {
 
                         search.isNotEmpty && search.length > 0
                             ? () async {
-                                final isOnline = ref
-                                        .read(isOfflineStateProvider.notifier)
-                                        .state ==
-                                    false;
-
                                 ref
                                     .read(gateSearchNotifierProvider.notifier)
                                     .changeSearchText('');
@@ -53,11 +48,11 @@ class GateSearch extends ConsumerWidget {
 
                                 await ref
                                     .read(gateNotifierProvider.notifier)
-                                    .searchGateList(search: search);
+                                    .searchGateListOFFLINE(search: search);
                               }()
                             : ref
                                 .read(gateNotifierProvider.notifier)
-                                .getGates();
+                                .getGatesOFFLINE();
                       },
                       child: Ink(child: Icon(Icons.search))),
                   Text(
@@ -82,14 +77,11 @@ class GateSearch extends ConsumerWidget {
             if (search.isNotEmpty && search.length > 0) {
               return;
             } else {
-              await ref.read(gateNotifierProvider.notifier).getGates();
+              await ref.read(gateNotifierProvider.notifier).getGatesOFFLINE();
             }
           },
           onFieldSubmitted: (search) => search.isNotEmpty && search.length > 0
               ? () async {
-                  final isOnline =
-                      ref.read(isOfflineStateProvider.notifier).state == false;
-
                   ref
                       .read(gateSearchNotifierProvider.notifier)
                       .changeSearchText('');
@@ -104,9 +96,9 @@ class GateSearch extends ConsumerWidget {
 
                   await ref
                       .read(gateNotifierProvider.notifier)
-                      .searchGateList(search: search);
+                      .searchGateListOFFLINE(search: search);
                 }()
-              : ref.read(gateNotifierProvider.notifier).getGates()),
+              : ref.read(gateNotifierProvider.notifier).getGatesOFFLINE()),
     );
   }
 }

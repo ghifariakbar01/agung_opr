@@ -42,13 +42,31 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
 
       ref.read(csuFrameNotifierProvider.notifier).changeFrame(frame);
 
+      // CSU RESULT STORAGE
       await ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUByFrameName(frameName: frameName);
+          .read(csuTripsOfflineNotifierProvider.notifier)
+          .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
 
-      await ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUTripsByFrameId(idUnit: frameId, frameName: frameName);
+      final csuResultOfflineOrOnline =
+          ref.watch(csuTripsOfflineNotifierProvider);
+
+      log('csuResultOfflineOrOnline $csuResultOfflineOrOnline');
+
+      await csuResultOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(csuFrameNotifierProvider.notifier)
+            .getCSUResultByFrameNameOFFLINE(frame: frameName),
+        orElse: () async {
+          await ref
+              .read(csuFrameNotifierProvider.notifier)
+              .getCSUByFrameName(frameName: frameName);
+
+          // CSU RESULT STORAGE
+          await ref
+              .read(csuTripsOfflineNotifierProvider.notifier)
+              .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
+        },
+      );
 
       //
 
@@ -64,7 +82,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
       await tripsOfflineOrOnline.maybeWhen(
         hasOfflineStorage: () => ref
             .read(csuFrameNotifierProvider.notifier)
-            .getCSUTripsByFrameId(idUnit: frameId, frameName: frameName),
+            .getCSUTripsByFrameIdOFFLINE(idUnit: frameId),
         orElse: () async {
           await ref
               .read(csuFrameNotifierProvider.notifier)
@@ -167,7 +185,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
                           ),
                         ), (csuResponseTrips) {
                   /// SET [csuResponseTrips] from GOT csuResultList
-                  // debugger(message: 'called');
+                  debugger(message: 'called');
                   log('FRAME CSU RESPONSE TRIPS: $csuResponseTrips');
                   if (csuResponseTrips != []) {
                     ref

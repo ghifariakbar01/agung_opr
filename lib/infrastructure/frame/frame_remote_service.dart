@@ -108,7 +108,8 @@ class FrameRemoteService {
     }
   }
 
-  Future<Map<String, List<Frame>>> getFrameListWithoutSPK() async {
+  Future<Map<String, List<Frame>>> getFrameListWithoutSPK(
+      {required int page}) async {
     // TEST
     const String dbName = 'opr_trs_ti_unit';
     const String dbCustomer = 'sls_mst_cust';
@@ -133,7 +134,7 @@ class FrameRemoteService {
             "(SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +
             " $dbName AS T" +
-            " ORDER BY T.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY"
+            " ORDER BY T.id_unit DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY"
       });
 
       final response = await _dio.post('',

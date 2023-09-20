@@ -46,7 +46,31 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
           .read(updateCSUFrameNotifierProvider.notifier)
           .changeFrameName(frame.frame ?? '');
 
-      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+      // CSU ITEMS
+      await ref
+          .read(csuItemsOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUItemsOFFLINEStatus();
+
+      final csuItemsOfflineOrOnline =
+          ref.watch(csuItemsOfflineNotifierProvider);
+
+      log('csuItemsOfflineOrOnline $csuItemsOfflineOrOnline');
+
+      await csuItemsOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(csuItemsFrameNotifierProvider.notifier)
+            .getCSUItemsOFFLINE(),
+        orElse: () async {
+          debugger();
+
+          await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+
+          // CSU RESULT STORAGE
+          await ref
+              .read(csuItemsOfflineNotifierProvider.notifier)
+              .checkAndUpdateCSUItemsOFFLINEStatus();
+        },
+      );
     });
   }
 

@@ -60,7 +60,7 @@ class UpdateCSRepository {
         } on NoConnectionException {
           debugger(message: 'called');
 
-          await _removeQueryCSFromSaved(idSPK: idSPK);
+          // await _removeQueryCSFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {

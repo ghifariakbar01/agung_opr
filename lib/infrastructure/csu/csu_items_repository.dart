@@ -79,16 +79,13 @@ class CSUItemsRepository {
     try {
       final csuItemStorage = await _storage.read();
 
-      debugger(message: 'called');
-
       log('CSU ITEM STORAGE: $csuItemStorage');
 
       // HAS MAP
       if (csuItemStorage != null) {
         // debugger(message: 'called');
 
-        final responsMap =
-            jsonDecode(csuItemStorage) as List<Map<String, dynamic>>;
+        final responsMap = jsonDecode(csuItemStorage) as List<dynamic>;
 
         final List<CSUItems> response = listCSUItemsFromJson(responsMap);
 

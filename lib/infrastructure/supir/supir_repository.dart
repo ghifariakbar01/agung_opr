@@ -100,8 +100,6 @@ class SupirRepository {
 
       final searchLowerCase = search.toLowerCase();
 
-      log('SUPIR STORAGE: $supirStorage');
-
       // HAS LIST
       if (supirStorage != null) {
         final response = jsonDecode(supirStorage);
@@ -109,16 +107,42 @@ class SupirRepository {
         List<Supir> supirList =
             (response as List).map((data) => Supir.fromJson(data)).toList();
 
+        // debugger();
+
         final searchedList = supirList.where((supir) {
-          return supir.id.toString() == searchLowerCase ||
-              supir.nama?.toLowerCase() == searchLowerCase ||
-              supir.phone?.toLowerCase() == searchLowerCase ||
-              supir.alamat.toString() == searchLowerCase ||
-              supir.kategori.toString() == searchLowerCase;
+          if (supir.nama != null &&
+              supir.phone != null &&
+              supir.alamat != null &&
+              supir.kategori != null) {
+            return supir.id.toString() == searchLowerCase ||
+                supir.nama!.toLowerCase().contains(searchLowerCase) ||
+                supir.phone!.toLowerCase().contains(searchLowerCase) ||
+                supir.alamat.toString().contains(searchLowerCase) ||
+                supir.kategori.toString().contains(searchLowerCase);
+          } else if (supir.phone != null &&
+              supir.alamat != null &&
+              supir.kategori != null) {
+            return supir.id.toString() == searchLowerCase ||
+                supir.phone!.toLowerCase().contains(searchLowerCase) ||
+                supir.alamat.toString().contains(searchLowerCase) ||
+                supir.kategori.toString().contains(searchLowerCase);
+          } else if (supir.alamat != null && supir.kategori != null) {
+            return supir.id.toString() == searchLowerCase ||
+                supir.alamat.toString().contains(searchLowerCase) ||
+                supir.kategori.toString().contains(searchLowerCase);
+          } else if (supir.kategori != null) {
+            return supir.id.toString() == searchLowerCase ||
+                supir.kategori.toString().contains(searchLowerCase);
+          }
+
+          return supir.id.toString() == searchLowerCase;
         }).toList();
+        // debugger();
 
         return right(searchedList);
       } else {
+        // debugger();
+
         return right([]);
       }
     } on RestApiException catch (e) {

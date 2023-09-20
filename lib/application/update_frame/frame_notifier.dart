@@ -29,12 +29,12 @@ class FrameNotifier extends StateNotifier<FrameState> {
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
 
-  Future<void> getFrameListWithoutSPK() async {
+  Future<void> getFrameListWithoutSPK({required int page}) async {
     final Either<RemoteFailure, List<Frame>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOFrame: none());
 
-    FOS = await _repository.getFrameListWithoutSPK();
+    FOS = await _repository.getFrameListWithoutSPK(page: page);
 
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }

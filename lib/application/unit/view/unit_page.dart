@@ -26,31 +26,30 @@ class _UnitPageState extends ConsumerState<UnitPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref
+          .read(frameOfflineNotifierProvider.notifier)
+          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+
       final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
       log('frameOfflineOrOnline $frameOfflineOrOnline');
 
-      // debugger(message: 'called');
+      await frameOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameListOFFLINE(idSPK: 0),
+        orElse: () async {
+          for (int i = 0; i < 5; i++) {
+            ref
+                .read(frameNotifierProvider.notifier)
+                .getFrameListWithoutSPK(page: i);
+          }
 
-      // await spkOfflineOrOnline.maybeWhen(
-      //   hasOfflineStorage: () =>
-      //       ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
-      //   orElse: () async {
-      //     for (int i = 0; i < 5; i++) {
-      //       ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      //     }
-
-      //     await ref
-      //         .read(spkOfflineNotifierProvider.notifier)
-      //         .checkAndUpdateSPKOFFLINEStatus();
-      //   },
-      // );
-
-      await ref.read(frameNotifierProvider.notifier).getFrameListWithoutSPK();
-
-      await ref
-          .read(frameOfflineNotifierProvider.notifier)
-          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+          await ref
+              .read(frameOfflineNotifierProvider.notifier)
+              .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+        },
+      );
     });
   }
 

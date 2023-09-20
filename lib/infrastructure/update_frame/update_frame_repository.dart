@@ -103,13 +103,13 @@ class UpdateFrameRepository {
                 } on RestApiException catch (e) {
                   debugger(message: 'called');
 
-                  _removeQueryFromMap(query: query);
+                  await _removeQueryFromMap(query: query);
 
                   return left(RemoteFailure.server(e.errorCode, e.message));
                 } on NoConnectionException {
                   debugger(message: 'called');
 
-                  _removeQueryFromMap(query: query);
+                  //  await  _removeQueryFromMap(query: query);
 
                   return left(RemoteFailure.noConnection());
                 } on RangeError catch (e) {

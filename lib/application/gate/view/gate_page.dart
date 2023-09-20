@@ -25,13 +25,29 @@ class _GatePageState extends ConsumerState<GatePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // final gateOfflineOrOnline = ref.watch(gateOfflineNotifierProvider);
+      // GATE STORAGE
+      await ref
+          .read(gateOfflineNotifierProvider.notifier)
+          .checkAndUpdateGateOFFLINEStatus();
 
-      // log('gateOfflineOrOnline $gateOfflineOrOnline');
+      final gateOfflineOrOnline = ref.watch(gateOfflineNotifierProvider);
+
+      log('gateOfflineOrOnline $gateOfflineOrOnline');
 
       // debugger(message: 'called');
 
-      await ref.read(gateNotifierProvider.notifier).getGates();
+      await gateOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () =>
+            ref.read(gateNotifierProvider.notifier).getGatesOFFLINE(),
+        orElse: () async {
+          await ref.read(gateNotifierProvider.notifier).getGates();
+
+          // GATE STORAGE
+          await ref
+              .read(gateOfflineNotifierProvider.notifier)
+              .checkAndUpdateGateOFFLINEStatus();
+        },
+      );
     });
   }
 

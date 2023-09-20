@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/providers.dart';
 import '../../../style/style.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 
@@ -35,9 +36,21 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
                                     .read(frameSearchNotifierProvider.notifier)
                                     .changeIsSearch(true);
 
-                                await ref
-                                    .read(frameNotifierProvider.notifier)
-                                    .searchFrameListWithoutSPK(frame: search);
+                                final isOnline = ref
+                                        .read(isOfflineStateProvider.notifier)
+                                        .state ==
+                                    false;
+
+                                if (isOnline) {
+                                  await ref
+                                      .read(frameNotifierProvider.notifier)
+                                      .searchFrameListWithoutSPK(frame: search);
+                                } else {
+                                  await ref
+                                      .read(frameNotifierProvider.notifier)
+                                      .searchFrameListOFFLINE(
+                                          idSPK: '0', frame: search);
+                                }
 
                                 ref
                                     .read(frameSearchNotifierProvider.notifier)
@@ -50,7 +63,7 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
 
                                 await ref
                                     .read(frameNotifierProvider.notifier)
-                                    .getFrameListWithoutSPK();
+                                    .getFrameListOFFLINE(idSPK: 0);
                               }();
                       },
                       child: Ink(child: Icon(Icons.search))),
@@ -82,7 +95,7 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
 
               await ref
                   .read(frameNotifierProvider.notifier)
-                  .getFrameListWithoutSPK();
+                  .getFrameListOFFLINE(idSPK: 0);
             }
           },
           onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
@@ -91,9 +104,18 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
                       .read(frameSearchNotifierProvider.notifier)
                       .changeIsSearch(true);
 
-                  await ref
-                      .read(frameNotifierProvider.notifier)
-                      .searchFrameListWithoutSPK(frame: search);
+                  final isOnline =
+                      ref.read(isOfflineStateProvider.notifier).state == false;
+
+                  if (isOnline) {
+                    await ref
+                        .read(frameNotifierProvider.notifier)
+                        .searchFrameListWithoutSPK(frame: search);
+                  } else {
+                    await ref
+                        .read(frameNotifierProvider.notifier)
+                        .searchFrameListOFFLINE(idSPK: '0', frame: search);
+                  }
 
                   ref
                       .read(frameSearchNotifierProvider.notifier)
@@ -106,7 +128,7 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
 
                   await ref
                       .read(frameNotifierProvider.notifier)
-                      .getFrameListWithoutSPK();
+                      .getFrameListOFFLINE(idSPK: 0);
                 }()),
     );
   }

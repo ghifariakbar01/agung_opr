@@ -179,9 +179,10 @@ class FrameRepository {
   }
 
   Future<Either<RemoteFailure, List<Frame>>> getFrameListWithoutSPK(
-      {int? idSPK = 0}) async {
+      {required int page, int? idSPK = 0}) async {
     try {
-      final modelMapList = await _remoteService.getFrameListWithoutSPK();
+      final modelMapList =
+          await _remoteService.getFrameListWithoutSPK(page: page);
 
       await this._GETAndADDFrameInMap(newFrame: modelMapList);
 
@@ -322,7 +323,19 @@ class FrameRepository {
 
           final searchedList = frameList
               .where((element) => element.frame != null
-                  ? element.frame!.toUpperCase().contains(searchUpperCase)
+                  ? element.frame!.toUpperCase().contains(searchUpperCase) ||
+                      element.idUnit
+                          .toString()
+                          .toUpperCase()
+                          .contains(searchUpperCase) ||
+                      element.custnm
+                          .toString()
+                          .toUpperCase()
+                          .contains(searchUpperCase) ||
+                      element.tglDibuat
+                          .toString()
+                          .toUpperCase()
+                          .contains(searchUpperCase)
                   : element != Frame.initial())
               .toList();
 
@@ -352,7 +365,7 @@ class FrameRepository {
 
       // debugger(message: 'called');
 
-      log('FRAME STORAGE: $frameStorage');
+      // log('FRAME STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {
@@ -363,8 +376,6 @@ class FrameRepository {
         final response = convertMaptoListMap(map: responsMap);
 
         // debugger(message: 'called');
-
-        log('FRAME STORAGE RESPONSE: $response');
 
         final key = idSPK.toString();
 

@@ -203,6 +203,8 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                             await context.pushNamed(
                                 RouteNames.updateFrameNameRoute,
                                 extra: spkList[i].idSpk);
+
+                            return unit;
                           },
                           checkSheetGateMerak: () => {},
                           assignUnitMerak: () => {},

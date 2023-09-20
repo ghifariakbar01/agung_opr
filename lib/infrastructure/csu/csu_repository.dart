@@ -120,7 +120,7 @@ class CSUFrameRepository {
   final CredentialsStorage _storage;
   final CredentialsStorage _storageTrips;
 
-  Future<bool> hasOfflineDataIndex(String frameName) =>
+  Future<bool> hasOfflineCSUResultIndex(String frameName) =>
       getSPKCSUOFFLINE(frameName: frameName)
           .then((credentials) => credentials.fold((_) => false, (_) => true));
 
@@ -395,7 +395,7 @@ class CSUFrameRepository {
   /// DATA: [FrameNameCSUResult] FROM STORAGE
   ///
   /// process [frameName] and get [FrameNameCSUResult]
-  Future<Either<RemoteFailure, FrameNameCSUResult>> getSPKCSUOFFLINE(
+  Future<Either<RemoteFailure, List<CSUResult>>> getSPKCSUOFFLINE(
       {required String frameName}) async {
     try {
       final frameStorage = await _storage.read();
@@ -406,15 +406,14 @@ class CSUFrameRepository {
 
       // HAS MAP
       if (frameStorage != null) {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
-        final responsMap =
-            jsonDecode(frameStorage) as List<Map<String, dynamic>>;
+        final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<FrameNameCSUResult> response =
             listFrameNameCSUResultFromJson(responsMap);
 
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         log('FRAME STORAGE RESPONSE: $response');
 
@@ -423,29 +422,29 @@ class CSUFrameRepository {
             .firstWhereOrNull((element) => element.frameName == frameName);
 
         if (key != null) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
-          return right(key);
+          return right(key.csuResult);
         } else {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.parse(message: error.message));
     }
@@ -485,8 +484,12 @@ class CSUFrameRepository {
           final csuResults = key.csuResult;
 
           if (csuResults.isNotEmpty) {
+            // debugger(message: 'called');
+
             return right(csuResults);
           } else {
+            // debugger(message: 'called');
+
             return right([]);
           }
         } else {

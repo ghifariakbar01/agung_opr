@@ -19,6 +19,8 @@ import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
+import '../../gate/providers/gate_providers.dart';
+import '../../supir/shared/supir_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
@@ -89,6 +91,19 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
           .checkAndUpdateSPKOFFLINEStatus();
     }
 
+    Future<void> frameFunction() async {
+      // GET [500] LATEST DATA
+      for (int i = 0; i < 5; i++) {
+        await ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameListWithoutSPK(page: i);
+      }
+
+      await ref
+          .read(frameOfflineNotifierProvider.notifier)
+          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+    }
+
     // MODEL function get and update offline status
     Future<void> modelFunction() async {
       // GET [500] LATEST DATA
@@ -107,6 +122,16 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
           .checkAndUpdateModelOFFLINEStatus();
     }
 
+    // CSU ITEMS
+    Future<void> csuItemsFunction() async {
+      // GET [500] LATEST DATA
+      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+
+      await ref
+          .read(csuItemsOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUItemsOFFLINEStatus();
+    }
+
     // CUSTOMER function get and update offline status
     Future<void> customerFunction() async {
       // GET [500] LATEST DATA
@@ -121,11 +146,35 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
           .checkAndUpdateCustomerOFFLINEStatus();
     }
 
+    // SUPIR function get and update offline status
+    Future<void> supirFunction() async {
+      for (int i = 0; i < 5; i++) {
+        await ref.read(supirNotifierProvider.notifier).getSupirList(page: i);
+      }
+
+      await ref
+          .read(supirOfflineNotifierProvider.notifier)
+          .checkAndUpdateSupirOFFLINEStatus();
+    }
+
+    // GATES function get and update offline status
+    Future<void> gatesFunction() async {
+      await ref.read(gateNotifierProvider.notifier).getGates();
+
+      await ref
+          .read(gateOfflineNotifierProvider.notifier)
+          .checkAndUpdateGateOFFLINEStatus();
+    }
+
     // GET AND SAVE ALL DATA
     Future<void> getAndSaveAllData() async {
       await CSFunction();
       await spkFunction();
+      await frameFunction();
       await modelFunction();
+      await supirFunction();
+      await gatesFunction();
+      await csuItemsFunction();
       await customerFunction();
       await savedQueriesFunction();
     }
@@ -284,7 +333,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       upgrader: Upgrader(
           showIgnore: false,
           showLater: false,
-          dialogStyle: UpgradeDialogStyle.cupertino),
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          messages: MyUpgraderMessages()),
       child: Stack(
         children: [
           CrannyMiddle(),
@@ -294,4 +344,13 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       ),
     );
   }
+}
+
+class MyUpgraderMessages extends UpgraderMessages {
+  @override
+  String get body =>
+      'Lakukan update dengan versi aplikasi Mobile Carrier OPR CCR terbaru.';
+
+  @override
+  String get buttonTitleIgnore => '-';
 }

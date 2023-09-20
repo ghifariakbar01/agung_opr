@@ -54,7 +54,7 @@ class FrameSearch extends ConsumerWidget {
 
                                 await ref
                                     .read(frameNotifierProvider.notifier)
-                                    .getFrameList(idSPK: idSPK);
+                                    .getFrameListOFFLINE(idSPK: idSPK);
                               }();
                       },
                       child: Ink(child: Icon(Icons.search))),
@@ -86,7 +86,7 @@ class FrameSearch extends ConsumerWidget {
 
               await ref
                   .read(frameNotifierProvider.notifier)
-                  .getFrameList(idSPK: idSPK);
+                  .getFrameListOFFLINE(idSPK: idSPK);
             }
           },
           onFieldSubmitted: (search) => search.isNotEmpty && search.length > 0
@@ -110,7 +110,7 @@ class FrameSearch extends ConsumerWidget {
 
                   await ref
                       .read(frameNotifierProvider.notifier)
-                      .getFrameList(idSPK: idSPK);
+                      .getFrameListOFFLINE(idSPK: idSPK);
                 }()),
     );
   }

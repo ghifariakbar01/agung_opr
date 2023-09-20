@@ -60,7 +60,7 @@ class UpdateCSUFrameRepository {
         } on NoConnectionException {
           debugger(message: 'called');
 
-          await _removeQueryCSUFromSaved(idUnit: idUnit);
+          // await _removeQueryCSUFromSaved(idUnit: idUnit);
 
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {

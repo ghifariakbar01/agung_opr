@@ -46,48 +46,51 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                 updateCSfflineOrOnline.maybeWhen(
                     hasOfflineStorage: () => true, orElse: () => false));
 
-    final reminder = ref.watch(reminderNotifierProvider);
+    final isOffline = ref.watch(isOfflineStateProvider);
 
-    log('reminder.daysLeft ${reminder.daysLeft}');
+    log('isOffline $isOffline');
 
     return Scaffold(
       appBar: VAppBar(
         'Mobile Car Carrier OPR CCR',
       ),
+      floatingActionButton: !isOffline
+          ? FloatingActionButton.small(
+              backgroundColor: Colors.white,
+              elevation: 5,
+              child: Icon(
+                Icons.refresh,
+                color: Palette.primaryColor,
+              ),
+              onPressed: () =>
+                  ref.read(userNotifierProvider.notifier).getUser(),
+            )
+          : FloatingActionButton.small(
+              backgroundColor: Colors.white,
+              elevation: 5,
+              child: Icon(
+                Icons.signal_cellular_connected_no_internet_0_bar_rounded,
+                color: Palette.primaryColor,
+              ),
+              onPressed: () {},
+            ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              // TextButton(
-              //     onPressed: () async {
-              //       ref
-              //           .read(modeNotifierProvider.notifier)
-              //           .changeModeAplikasi(ModeState.updateFrameDummy());
-
-              //       await context.pushNamed(RouteNames.spkNameRoute);
-              //     },
-              //     child: CrannyItem(label: 'UPDATE FRAME DUMMY')),
-              //
-              //
-              if (reminder.daysLeft < 8) ...[
-                Text(
-                  reminder.daysLeft == 0
-                      ? ref
-                          .read(reminderNotifierProvider.notifier)
-                          .daysLeftStringDue
-                      : reminder.daysLeft < 0
-                          ? ref
-                              .read(reminderNotifierProvider.notifier)
-                              .daysLeftStringPass
-                          : ref
-                              .read(reminderNotifierProvider.notifier)
-                              .daysLeftString,
-                  style: Themes.customColor(FontWeight.bold, 9, Palette.red),
+              if (isOffline) ...[
+                Center(
+                  child: Text(
+                    '( MODE OFFLINE )',
+                    style: Themes.customColor(
+                        FontWeight.bold, 15, Palette.primaryColor),
+                  ),
                 ),
                 SizedBox(
                   height: 8,
                 ),
               ],
+
               if (isUpdateAvailable) ...[
                 TextButton(
                     onPressed: () async {

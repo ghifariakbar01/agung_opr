@@ -48,7 +48,7 @@ class GateRepository {
 
       final listCSUMSTGate = await _remoteService.getCSUGates();
 
-      // await this._SAVECSUItems(csuItemsParam: listCSUMSTGate);
+      await this._SAVEGateItems(gateParam: listCSUMSTGate);
 
       return right(listCSUMSTGate);
     } on RestApiException catch (e) {
@@ -88,6 +88,62 @@ class GateRepository {
     }
   }
 
+  // SAVE GATE ITEMS IN STORAGE
+  Future<Unit> _SAVEGateItems({required List<CSUMSTGate> gateParam}) async {
+    final isNewFrameOK = gateParam.isNotEmpty;
+
+    if (isNewFrameOK) {
+      final json = listCSUMSTGateToJsonSavable(gateParam);
+
+      await _storage.save(json);
+    } else {
+      throw FormatException(
+          'new Gate Items are Empty. In gate_repository _SAVEGateItems');
+    }
+
+    return unit;
+  }
+
+  /// SEARCH BY [ID] , [NAMA]
+  Future<Either<RemoteFailure, List<CSUMSTGate>>> searchGatesListOFFLINE(
+      {required String search}) async {
+    try {
+      final gateStorage = await _storage.read();
+
+      final searchUpperCase = search.toUpperCase();
+
+      log('CSUMSTGate STORAGE: $gateStorage');
+
+      // HAS LIST
+      if (gateStorage != null) {
+        final response = jsonDecode(gateStorage);
+
+        List<CSUMSTGate> gateList = (response as List)
+            .map((data) => CSUMSTGate.fromJson(data))
+            .toList();
+
+        final searchedList = gateList.where((element) {
+          if (element.nama != null) {
+            return element.id.toString() == search ||
+                element.nama!.toUpperCase().contains(searchUpperCase);
+          } else {
+            return element.id.toString() == search;
+          }
+        }).toList();
+
+        return right(searchedList);
+      } else {
+        return right([]);
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
+    }
+  }
+
   /// DATA: [CSUMSTGate] FROM STORAGE
   ///
   /// get [CSUMSTGate]
@@ -101,41 +157,40 @@ class GateRepository {
 
       // HAS MAP
       if (csuItemStorage != null) {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
-        final responsMap =
-            jsonDecode(csuItemStorage) as List<Map<String, dynamic>>;
+        final responsMap = jsonDecode(csuItemStorage) as List<dynamic>;
 
         final List<CSUMSTGate> response = listCSUMSTGateFromJson(responsMap);
 
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         log('CSU STORAGE RESPONSE: $response');
 
         if (response.isNotEmpty) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return right(response);
         } else {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      debugger(message: 'called');
+      // debugger(message: 'called');
 
       return left(RemoteFailure.parse(message: error.message));
     }

@@ -58,6 +58,16 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
         state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
   }
 
+  Future<void> getCSUResultByFrameNameOFFLINE({required String frame}) async {
+    final Either<RemoteFailure, List<CSUResult>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOCSUResult: none());
+
+    FOS = await _repository.getSPKCSUOFFLINE(frameName: frame);
+
+    state = state.copyWith(isProcessing: false, FOSOCSUResult: optionOf(FOS));
+  }
+
   void changeCSUResultList(List<CSUResult> csuResultList) {
     state = state.copyWith(csuResultList: [...csuResultList]);
   }

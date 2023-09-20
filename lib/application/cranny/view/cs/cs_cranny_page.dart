@@ -75,15 +75,22 @@ class _CSCrannyPageState extends ConsumerState<CSCrannyPage> {
       (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
         () {},
         (either) => either.fold(
-            (failure) => showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (_) => VSimpleDialog(
-                    label: 'Error',
-                    labelDescription: failure.maybeMap(orElse: () => ''),
-                    asset: Assets.iconCrossed,
-                  ),
-                ),
+            (failure) => failure.maybeMap(
+                noConnection: (_) => {},
+                orElse: () => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error CS',
+                        labelDescription: failure.maybeMap(
+                          server: (value) => 'Server: $value',
+                          storage: (value) => 'Storage: $value',
+                          parse: (value) => 'Parse: $value',
+                          orElse: () => '',
+                        ),
+                        asset: Assets.iconCrossed,
+                      ),
+                    )),
             (csJenis) => ref
                 .read(csJenisNotifierProvider.notifier)
                 .changeCSJenisList(csJenis ?? [])),
@@ -97,15 +104,22 @@ class _CSCrannyPageState extends ConsumerState<CSCrannyPage> {
       (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
         () {},
         (either) => either.fold(
-            (failure) => showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (_) => VSimpleDialog(
-                    label: 'Error',
-                    labelDescription: failure.maybeMap(orElse: () => ''),
-                    asset: Assets.iconCrossed,
-                  ),
-                ),
+            (failure) => failure.maybeMap(
+                noConnection: (_) => {},
+                orElse: () => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error CS',
+                        labelDescription: failure.maybeMap(
+                          server: (value) => 'Server: $value',
+                          storage: (value) => 'Storage: $value',
+                          parse: (value) => 'Parse: $value',
+                          orElse: () => '',
+                        ),
+                        asset: Assets.iconCrossed,
+                      ),
+                    )),
             (csItem) => ref
                 .read(csItemNotifierProvider.notifier)
                 .changeCSItemsList(csItem ?? [])),

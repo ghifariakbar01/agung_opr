@@ -143,7 +143,7 @@ class ModelRepository {
 
       final searchLowerCase = search.toLowerCase();
 
-      log('MODEL STORAGE: $modelStorage');
+      // log('MODEL STORAGE: $modelStorage');
 
       // HAS LIST
       if (modelStorage != null) {
@@ -153,13 +153,28 @@ class ModelRepository {
             (response as List).map((data) => Model.fromJson(data)).toList();
 
         final searchedList = modelList.where((model) {
+          if (model.merk != null &&
+              model.nama != null &&
+              model.category != null) {
+            return model.id.toString() == searchLowerCase ||
+                model.merk!.toLowerCase().contains(searchLowerCase) ||
+                model.nama!.toLowerCase().contains(searchLowerCase) ||
+                model.category!.toLowerCase().contains(searchLowerCase);
+          } else if (model.nama != null && model.category != null) {
+            return model.id.toString() == searchLowerCase ||
+                model.nama!.toLowerCase().contains(searchLowerCase) ||
+                model.category!.toLowerCase().contains(searchLowerCase);
+          } else if (model.category != null) {
+            return model.id.toString() == searchLowerCase ||
+                model.category!.toLowerCase().contains(searchLowerCase);
+          }
+
           return model.id.toString() == searchLowerCase ||
-              model.merk?.toLowerCase() == searchLowerCase ||
-              model.nama?.toLowerCase() == searchLowerCase ||
-              model.category?.toLowerCase() == searchLowerCase ||
-              model.grossweight.toString() == searchLowerCase ||
-              model.measurement.toString() == searchLowerCase;
+              model.grossweight.toString().contains(searchLowerCase) ||
+              model.measurement.toString().contains(searchLowerCase);
         }).toList();
+
+        debugger();
 
         return right(searchedList);
       } else {
