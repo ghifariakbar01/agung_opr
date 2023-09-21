@@ -1,10 +1,5 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
-import 'package:agung_opr/application/check_sheet/unit/view/csu_new_scaffold.dart';
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +11,12 @@ import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/alert_helper.dart';
+import '../../../widgets/loading_overlay.dart';
+import '../shared/csu_providers.dart';
+import '../state/csu_items.dart';
+import '../state/csu_jenis_penyebab_item.dart';
 import '../state/csu_ng_result.dart';
+import 'csu_new_scaffold.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
   const CSUNewPage({this.idCS = -1});
@@ -28,6 +28,33 @@ class CSUNewPage extends ConsumerStatefulWidget {
 }
 
 class _CSUNewPageState extends ConsumerState<CSUNewPage> {
+  Future<void> getCSNGByIDFFLINE(int idCS) async {
+    await ref
+        .read(csuNGByIDOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
+
+    final CSNGByID = ref.watch(csuNGByIDOfflineNotifierProvider);
+
+    log('CSNGByID $CSNGByID');
+
+    await CSNGByID.maybeWhen(
+      hasOfflineStorage: () => ref
+          .read(csuFrameNotifierProvider.notifier)
+          .getCSUNGByIdCSOFFLINE(idCS: widget.idCS),
+      orElse: () async {
+        debugger();
+        await ref
+            .read(csuFrameNotifierProvider.notifier)
+            .getCSUNGByIdCS(idCS: widget.idCS);
+
+        // PENYEBAB CSU STORAGE
+        await ref
+            .read(csuNGByIDOfflineNotifierProvider.notifier)
+            .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,14 +141,13 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                         .read(updateCSUFrameNotifierProvider.notifier)
                         .changeFillEmptyList(length: responseLEN);
 
+                    // CSU JENIS
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .getCSUJenisItems();
+                        .getCSUJenisItemsOFFLINE();
 
                     if (widget.idCS != -1) {
-                      await ref
-                          .read(csuFrameNotifierProvider.notifier)
-                          .getCSUNGByIdCS(idCS: widget.idCS);
+                      await getCSNGByIDFFLINE(widget.idCS);
                     }
                   }
                 })));
@@ -192,9 +218,10 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .changeCSUJenisItems(CSUJenisResponse);
 
+                    // CSU PENYEBAB
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .getCSUPenyebabItems();
+                        .getCSUPenyebabItemsOFFLINE();
                   }
                 })));
 

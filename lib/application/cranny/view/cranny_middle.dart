@@ -10,9 +10,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
 import '../../../domain/local_failure.dart';
+import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
+import '../../clear_data/clear_data_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
 import 'cranny_scaffold.dart';
@@ -27,6 +29,28 @@ class CrannyMiddle extends ConsumerStatefulWidget {
 class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
   @override
   Widget build(BuildContext context) {
+    // Clear Data upon refreshing
+    ref.listen<Option<Either<LocalFailure, Unit>>>(
+        clearDataNotifierProvider.select(
+          (state) => state.FOSOSPKClearData,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => VSimpleDialog(
+                          label: 'Error',
+                          labelDescription: failure.maybeMap(
+                              storage: (_) => 'storage penuh',
+                              format: (error) => 'Error Format Clear: $error',
+                              orElse: () => ''),
+                          asset: Assets.iconCrossed,
+                        )),
+                (_) => ref.read(userNotifierProvider.notifier).getUser())));
+
+    //
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(
           (state) => state.FOSOSPKAutoDataLocalUpdateFrame,

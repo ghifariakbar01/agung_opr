@@ -1,6 +1,8 @@
+import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_by_id_offline_state.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_trips_offline_state.dart';
 import 'package:agung_opr/application/update_csu/state/update_csu_frame_offline_state.dart';
 import 'package:agung_opr/application/update_csu/update_csu_offline_notifier.dart';
+import 'package:agung_opr/infrastructure/cache_storage/csu/csu_ng_by_id_frame_storage.dart';
 import 'package:agung_opr/infrastructure/cache_storage/csu/csu_penyebab_storage.dart';
 import 'package:agung_opr/infrastructure/csu/csu_jenis_penyebab_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,13 +22,16 @@ import '../../../../shared/providers.dart';
 import '../../../update_csu/state/update_csu_state.dart';
 import '../../../update_csu/update_csu_notifier.dart';
 import '../../csu_items_offline_notifier.dart';
+import '../../csu_ng_by_id_offline_notifier.dart';
 import '../../csu_result_offline_notifier.dart';
 import '../../csu_trips_offline_notifier.dart';
 import '../csu_item_notifier.dart';
 import '../csu_jenis_penyebab_notifier.dart';
+import '../csu_jenis_penyebab_offline_notifier.dart';
 import '../csu_result_notifier.dart';
 import '../state/csu_items_offline_state.dart';
 import '../state/csu_items_state.dart';
+import '../state/csu_jenis_penyebab_offline_state.dart';
 import '../state/csu_jenis_penyebab_state.dart';
 import '../state/csu_result_offline_state.dart';
 import '../state/csu_result_state.dart';
@@ -44,6 +49,10 @@ final csuFrameStorage = Provider<CredentialsStorage>(
   (ref) => CSUFrameStorage(ref.watch(flutterSecureStorageProvider)),
 );
 
+final csuNGByIDFrameStorage = Provider<CredentialsStorage>(
+  (ref) => CSUNGByIDFrameStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
 final csuFrameRemoteServiceProvider = Provider(
   (ref) => CSUFrameRemoteService(
       ref.watch(dioProvider), ref.watch(dioRequestProvider)),
@@ -52,7 +61,8 @@ final csuFrameRemoteServiceProvider = Provider(
 final csuFrameRepositoryProvider = Provider((ref) => CSUFrameRepository(
     ref.watch(csuFrameRemoteServiceProvider),
     ref.watch(csuFrameStorage),
-    ref.watch(csuFrameTripsStorage)));
+    ref.watch(csuFrameTripsStorage),
+    ref.watch(csuNGByIDFrameStorage)));
 
 final csuFrameNotifierProvider =
     StateNotifierProvider<CSUFrameResultNotifier, CSUResultState>(
@@ -63,6 +73,11 @@ final csuResultOfflineNotifierProvider =
     StateNotifierProvider<CSUResultOfflineNotifier, CSUResultOfflineState>(
         (ref) =>
             CSUResultOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
+
+final csuNGByIDOfflineNotifierProvider =
+    StateNotifierProvider<CSUNGByIDOfflineNotifier, CSUNGByIDfflineState>(
+        (ref) =>
+            CSUNGByIDOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
 
 ///  UPDATE CSU
 final updateCSUFrameStorage = Provider<CredentialsStorage>(
@@ -138,7 +153,8 @@ final jenisPenyebabFrameNotifierProvider =
   (ref) => CSUJenisPenyebabNotifier(ref.watch(jenisPenyebabRepositoryProvider)),
 );
 
-// final updateFrameOfflineNotifierProvider = StateNotifierProvider<
-//         UpdateFrameOfflineNotifier, UpdateFrameOfflineState>(
-//     (ref) =>
-//         UpdateFrameOfflineNotifier(ref.watch(updateFrameRepositoryProvider)));
+final jenisPenyebabOfflineNotifierProvider = StateNotifierProvider<
+    CSUJenisPenyebabOfflineNotifier, CSUJenisPenyebabOfflineState>(
+  (ref) => CSUJenisPenyebabOfflineNotifier(
+      ref.watch(jenisPenyebabRepositoryProvider)),
+);

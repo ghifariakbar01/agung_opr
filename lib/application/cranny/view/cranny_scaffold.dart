@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
+import '../../clear_data/clear_data_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'cranny_drawer.dart';
@@ -62,8 +63,9 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                 Icons.refresh,
                 color: Palette.primaryColor,
               ),
-              onPressed: () =>
-                  ref.read(userNotifierProvider.notifier).getUser(),
+              onPressed: () => ref
+                  .read(clearDataNotifierProvider.notifier)
+                  .clearAllStorage(),
             )
           : FloatingActionButton.small(
               backgroundColor: Colors.white,

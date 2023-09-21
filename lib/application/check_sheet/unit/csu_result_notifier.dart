@@ -34,6 +34,16 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
     state = state.copyWith(isProcessing: false, FOSOCSUNGResult: optionOf(FOS));
   }
 
+  Future<void> getCSUNGByIdCSOFFLINE({required int idCS}) async {
+    final Either<RemoteFailure, List<CSUNGResult>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOCSUNGResult: none());
+
+    FOS = await _repository.getCSUNGResultByIDOFFLINE(idCS: idCS);
+
+    state = state.copyWith(isProcessing: false, FOSOCSUNGResult: optionOf(FOS));
+  }
+
   Future<void> getCSUTripsByFrameId(
       {required int idUnit, required String frameName}) async {
     final Either<RemoteFailure, List<CSUTrips>> FOS;

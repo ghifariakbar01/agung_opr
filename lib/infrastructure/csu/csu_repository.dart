@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
+import '../../application/check_sheet/unit/state/csu_ng_result_by_id.dart';
 import '../../application/check_sheet/unit/state/csu_result.dart';
 import '../../application/check_sheet/unit/state/csu_trips.dart';
 import '../../application/check_sheet/unit/state/spk_csu_result.dart';
@@ -114,11 +115,17 @@ import 'csu_remote_service.dart';
 */
 
 class CSUFrameRepository {
-  CSUFrameRepository(this._remoteService, this._storage, this._storageTrips);
+  CSUFrameRepository(
+      this._remoteService, this._storage, this._storageTrips, this._storageNG);
 
   final CSUFrameRemoteService _remoteService;
   final CredentialsStorage _storage;
+  final CredentialsStorage _storageNG;
   final CredentialsStorage _storageTrips;
+
+  Future<bool> hasOfflineCSUNGResultIndex(int idCS) =>
+      getCSUNGResultByIDOFFLINE(idCS: idCS)
+          .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<bool> hasOfflineCSUResultIndex(String frameName) =>
       getSPKCSUOFFLINE(frameName: frameName)
@@ -159,8 +166,8 @@ class CSUFrameRepository {
 
       debugger();
 
-      // await this._GETAndREPLACECsuInList(
-      //     frameName: frameName, newCSU: listFrameNameCSUNGResult);
+      await this._GETAndREPLACECsuNGSInList(
+          idCS: idCS, newCSUNGList: listFrameNameCSUNGResult);
 
       return right(listFrameNameCSUNGResult);
     } on RestApiException catch (e) {
@@ -198,6 +205,102 @@ class CSUFrameRepository {
     } on PlatformException {
       return left(RemoteFailure.storage());
     }
+  }
+
+  // _GETAndREPLACECsuNGInList
+  Future<Unit> _GETAndREPLACECsuNGSInList(
+      {required int idCS, required List<CSUNGResult> newCSUNGList}) async {
+    final savedStrings = await _storageNG.read();
+    final isNewFrameOK = newCSUNGList.isNotEmpty;
+    final isStorageSaved = savedStrings != null;
+
+    if (isNewFrameOK) {
+      switch (isStorageSaved) {
+        case true:
+          () async {
+            // debugger(message: 'CALLED');
+            final parsed = jsonDecode(savedStrings!) as List<dynamic>;
+
+            final List<CSUNGResultByID> parsedListCSUSNG =
+                CSUNGResultByID.CSUNGResultListFromJson(parsed);
+
+            // FIRST, CHECK IF EXISTING KEY [ID-CS] EXIST
+            final key = parsedListCSUSNG
+                .firstWhereOrNull((element) => element.idCS == idCS);
+
+            if (key != null) {
+              final indexIdCS = parsedListCSUSNG
+                  .indexWhere((element) => element.idCS == idCS);
+
+              final isIndexFound = indexIdCS != -1;
+
+              // [FRAME-NAME]
+              if (isIndexFound) {
+                // LIST OF PARSED LIST CSU
+                final list = [...parsedListCSUSNG];
+
+                list[indexIdCS] =
+                    CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+
+                log('STORAGE CSU NG RESULT BY ID UPDATE: ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+
+                // SAVE LIST
+                await _storageNG
+                    .save(CSUNGResultByID.CSUNGResultListToJson(list));
+              }
+
+              // [FRAME-NAME] NEW
+              else {
+                final CSUNGResultByID newElement =
+                    CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+
+                final list = [...parsedListCSUSNG, newElement];
+
+                await _storageNG
+                    .save(CSUNGResultByID.CSUNGResultListToJson(list));
+
+                log('STORAGE CSU NG RESULT BY IDE W/O ID-CS : ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+              }
+            }
+            // THEN, HANDLE WHERE [ID-CS] NOT EXIST,
+            // PARAM IS LIST OF CSU NG AND INDEX [ID-CS]
+            else {
+              final CSUNGResultByID newElement =
+                  CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+
+              final list = [...parsedListCSUSNG, newElement];
+
+              await _storageNG
+                  .save(CSUNGResultByID.CSUNGResultListToJson(list));
+
+              log('STORAGE CSU NG RESULT BY ID CS W/O ID-CS : ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+            }
+
+            // debugger(message: 'called');
+
+            return unit;
+          }();
+          break;
+        case false:
+          () async {
+            // debugger(message: 'called');
+            final CSUNGResultByID newElement =
+                CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+
+            // SAVE LIST
+            await _storageNG
+                .save(CSUNGResultByID.CSUNGResultListToJson([newElement]));
+
+            log('STORAGE CSU NG RESULT BY ID CS UPDATE NEW: ${CSUNGResultByID.CSUNGResultListToJson([
+                  newElement
+                ])}');
+
+            return unit;
+          }();
+      }
+    }
+
+    return unit;
   }
 
   // SAVE CSU FRAME TRIPS IN STORAGE
@@ -335,6 +438,8 @@ class CSUFrameRepository {
 
                 log('STORAGE CSU SPK UPDATE: ${listFrameNameCSUResultToJson(list)}');
 
+                debugger();
+
                 // SAVE LIST
                 await _storage.save(listFrameNameCSUResultToJson(list));
               }
@@ -349,6 +454,8 @@ class CSUFrameRepository {
                 await _storage.save(listFrameNameCSUResultToJson(list));
 
                 log('STORAGE CSU SPK UPDATE W/ ID-SPK : ${listFrameNameCSUResultToJson(list)}');
+
+                debugger();
               }
             }
             // THEN, HANDLE WHERE [ID-SPK] NOT EXIST,
@@ -363,6 +470,8 @@ class CSUFrameRepository {
               await _storage.save(listFrameNameCSUResultToJson(list));
 
               log('STORAGE CSU SPK UPDATE ID-SPK N/A: ${listFrameNameCSUResultToJson(list)}');
+
+              debugger();
             }
 
             // debugger(message: 'called');
@@ -390,6 +499,64 @@ class CSUFrameRepository {
     }
 
     return unit;
+  }
+
+  /// DATA: [CSUNGResultByID] FROM STORAGE
+  ///
+  /// process [idCS] and get [CSUNGResultByID]
+  Future<Either<RemoteFailure, List<CSUNGResult>>> getCSUNGResultByIDOFFLINE(
+      {required int idCS}) async {
+    try {
+      final frameStorage = await _storage.read();
+
+      // debugger(message: 'called');
+
+      log('CSU NG BY ID STORAGE: $frameStorage');
+
+      // HAS MAP
+      if (frameStorage != null) {
+        // debugger(message: 'called');
+
+        final responsMap = jsonDecode(frameStorage) as List<dynamic>;
+
+        final List<CSUNGResultByID> response =
+            CSUNGResultByID.CSUNGResultListFromJson(responsMap);
+
+        // debugger(message: 'called');
+
+        log('CSU NG BY ID STORAGE RESPONSE: $response');
+
+        // FIRST, CHECK IF EXISTING KEY [ID-SPK] EXIST
+        final key =
+            response.firstWhereOrNull((element) => element.idCS == idCS);
+
+        if (key != null) {
+          // debugger(message: 'called');
+
+          return right(key.csuNGResult);
+        } else {
+          debugger(message: 'called');
+
+          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+        }
+      } else {
+        debugger(message: 'called');
+
+        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+      }
+    } on RestApiException catch (e) {
+      // debugger(message: 'called');
+
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      // debugger(message: 'called');
+
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (error) {
+      // debugger(message: 'called');
+
+      return left(RemoteFailure.parse(message: error.message));
+    }
   }
 
   /// DATA: [FrameNameCSUResult] FROM STORAGE
@@ -551,5 +718,47 @@ class CSUFrameRepository {
     } on PlatformException {
       return left(LocalFailure.storage());
     }
+  }
+
+  Future<Unit> clearNGStorage() async {
+    final storedCredentials = await _storageNG.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _storageNG.clear();
+
+    return unit;
+  }
+
+  Future<Unit> clearTripsStorage() async {
+    final storedCredentials = await _storageTrips.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _storageTrips.clear();
+
+    return unit;
+  }
+
+  Future<Unit> clearCSUResultStorage() async {
+    final storedCredentials = await _storageTrips.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _storageTrips.clear();
+
+    return unit;
   }
 }

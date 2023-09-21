@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../credentials_storage.dart';
 import '../update_csu/update_csu_remote_service.dart';
 
@@ -18,6 +20,12 @@ class CSUJenisPenyebabRepository {
   final UpdateCSUFrameRemoteService _remoteService;
   final CredentialsStorage _jenisStorage;
   final CredentialsStorage _penyebabStorage;
+
+  Future<bool> hasOfflineDataJenis() => getJenisItemsOFFLINE()
+      .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  Future<bool> hasOfflineDataPenyebab() => getPenyebabItemsOFFLINE()
+      .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getCSUJenisItems() async {
@@ -97,6 +105,108 @@ class CSUJenisPenyebabRepository {
       throw FormatException(
           'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
     }
+
+    return unit;
+  }
+
+  /// DATA: [CSUJenisPenyebabItem] FROM STORAGE
+  ///
+  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      getJenisItemsOFFLINE() async {
+    try {
+      final csJenisStorage = await _jenisStorage.read();
+
+      // debugger(message: 'called');
+
+      log('CS JENIS ITEMS STORAGE: $csJenisStorage');
+
+      // HAS MAP
+      if (csJenisStorage != null) {
+        final responsMap = jsonDecode(csJenisStorage) as List<dynamic>;
+
+        final List<CSUJenisPenyebabItem> response =
+            responsMap.map((e) => CSUJenisPenyebabItem.fromJson(e)).toList();
+
+        log('CS JENIS ITEMS STORAGE RESPONSE: $response');
+
+        if (response.isNotEmpty) {
+          return right(response);
+        } else {
+          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+        }
+      } else {
+        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (error) {
+      return left(RemoteFailure.parse(message: error.message));
+    }
+  }
+
+  /// DATA: [CSUJenisPenyebabItem] FROM STORAGE
+  ///
+  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
+      getPenyebabItemsOFFLINE() async {
+    try {
+      final csPenyebabStorage = await _penyebabStorage.read();
+
+      // debugger(message: 'called');
+
+      log('CS PENYEBAB ITEMS STORAGE: $csPenyebabStorage');
+
+      // HAS MAP
+      if (csPenyebabStorage != null) {
+        final responsMap = jsonDecode(csPenyebabStorage) as List<dynamic>;
+
+        final List<CSUJenisPenyebabItem> response =
+            responsMap.map((e) => CSUJenisPenyebabItem.fromJson(e)).toList();
+
+        log('CS PENYEBAB ITEMS STORAGE RESPONSE: $response');
+
+        if (response.isNotEmpty) {
+          return right(response);
+        } else {
+          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+        }
+      } else {
+        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException catch (error) {
+      return left(RemoteFailure.parse(message: error.message));
+    }
+  }
+
+  Future<Unit> clearJenisStorage() async {
+    final storedCredentials = await _jenisStorage.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _jenisStorage.clear();
+
+    return unit;
+  }
+
+  Future<Unit> clearPenyebabStorage() async {
+    final storedCredentials = await _penyebabStorage.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _penyebabStorage.clear();
 
     return unit;
   }

@@ -42,22 +42,22 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       await modeState.maybeWhen(checkSheetLoading: () async {
         await ref
             .read(frameOfflineNotifierProvider.notifier)
-            .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+            .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
 
         final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
         await frameOfflineOrOnline.maybeWhen(
           hasOfflineStorage: () => ref
               .read(frameNotifierProvider.notifier)
-              .getFrameListOFFLINE(idSPK: 0),
+              .getFrameListOFFLINE(idSPK: widget.spk.idSpk),
           orElse: () async {
             await ref
                 .read(frameNotifierProvider.notifier)
-                .getFrameList(idSPK: 0);
+                .getFrameList(idSPK: widget.spk.idSpk);
 
             await ref
                 .read(frameOfflineNotifierProvider.notifier)
-                .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+                .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
           },
         );
       }, orElse: () {

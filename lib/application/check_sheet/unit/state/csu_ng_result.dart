@@ -5,6 +5,8 @@
 //   "id_p_defect": 3
 // },
 
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'csu_ng_result.freezed.dart';
@@ -20,4 +22,16 @@ class CSUNGResult with _$CSUNGResult {
 
   factory CSUNGResult.fromJson(Map<String, Object?> json) =>
       _$CSUNGResultFromJson(json);
+
+  static List<CSUNGResult> CSUNGResultListFromJson(List<dynamic> jsonList) {
+    return jsonList
+        .map((e) => CSUNGResult.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static String CSUNGResultListToJson(List<CSUNGResult> resultList) {
+    List<Map<String, dynamic>> jsonList =
+        resultList.map((e) => e.toJson()).toList();
+    return jsonEncode(jsonList);
+  }
 }

@@ -501,4 +501,18 @@ class FrameRepository {
 
     return frame;
   }
+
+  Future<Unit> clearFrameStorage() async {
+    final storedCredentials = await _storage.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _storage.clear();
+
+    return unit;
+  }
 }

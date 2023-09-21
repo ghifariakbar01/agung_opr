@@ -213,4 +213,18 @@ class GateRepository {
       return left(LocalFailure.storage());
     }
   }
+
+  Future<Unit> clearGateStorage() async {
+    final storedCredentials = await _storage.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    debugger(message: 'called');
+
+    await _storage.clear();
+
+    return unit;
+  }
 }

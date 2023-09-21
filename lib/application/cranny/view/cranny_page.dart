@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_id_query.dart';
 import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
@@ -79,6 +81,29 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(csItemOfflineNotifierProvider.notifier)
           .checkAndUpdateCSItemOFFLINEStatus();
+    }
+
+    Future<void> csJenisFunction() async {
+      // debugger();
+
+      await ref
+          .read(jenisPenyebabFrameNotifierProvider.notifier)
+          .getCSUJenisItems();
+
+      // JENIS CSU STORAGE
+      await ref
+          .read(jenisPenyebabOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
+    }
+
+    Future<void> csPenyebabFunction() async {
+      await ref
+          .read(jenisPenyebabFrameNotifierProvider.notifier)
+          .getCSUPenyebabItems();
+
+      await ref
+          .read(jenisPenyebabOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
     }
 
     // SPK function get and update offline status
@@ -174,8 +199,10 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await modelFunction();
       await supirFunction();
       await gatesFunction();
+      await csJenisFunction();
       await csuItemsFunction();
       await customerFunction();
+      await csPenyebabFunction();
       await savedQueriesFunction();
     }
 

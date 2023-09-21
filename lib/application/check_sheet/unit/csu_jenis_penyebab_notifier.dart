@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -14,6 +13,19 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
 
   final CSUJenisPenyebabRepository _repository;
 
+  Future<void> getCSUJenisItemsOFFLINE() async {
+    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
+
+    // debugger(message: 'called');
+
+    FOS = await _repository.getJenisItemsOFFLINE();
+
+    state = state.copyWith(
+        isProcessing: false, FOSOUpdateCSUJenisItems: optionOf(FOS));
+  }
+
   Future<void> getCSUJenisItems() async {
     Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
 
@@ -25,6 +37,20 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
 
     state = state.copyWith(
         isProcessing: false, FOSOUpdateCSUJenisItems: optionOf(FOS));
+  }
+
+  Future<void> getCSUPenyebabItemsOFFLINE() async {
+    Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
+
+    state =
+        state.copyWith(isProcessing: true, FOSOUpdateCSUPenyebabItems: none());
+
+    // debugger(message: 'called');
+
+    FOS = await _repository.getPenyebabItemsOFFLINE();
+
+    state = state.copyWith(
+        isProcessing: false, FOSOUpdateCSUPenyebabItems: optionOf(FOS));
   }
 
   Future<void> getCSUPenyebabItems() async {

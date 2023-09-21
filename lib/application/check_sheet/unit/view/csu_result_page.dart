@@ -44,11 +44,11 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
 
       // CSU RESULT STORAGE
       await ref
-          .read(csuTripsOfflineNotifierProvider.notifier)
-          .checkAndUpdateTripsOFFLINEStatus(idUnit: frameId);
+          .read(csuResultOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUResultOFFLINEStatus(frame: frameName);
 
       final csuResultOfflineOrOnline =
-          ref.watch(csuTripsOfflineNotifierProvider);
+          ref.watch(csuResultOfflineNotifierProvider);
 
       log('csuResultOfflineOrOnline $csuResultOfflineOrOnline');
 
@@ -185,7 +185,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
                           ),
                         ), (csuResponseTrips) {
                   /// SET [csuResponseTrips] from GOT csuResultList
-                  debugger(message: 'called');
+                  // debugger(message: 'called');
                   log('FRAME CSU RESPONSE TRIPS: $csuResponseTrips');
                   if (csuResponseTrips != []) {
                     ref

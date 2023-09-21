@@ -50,7 +50,7 @@ class CSUFrameRemoteService {
               List<CSUResult> csuList =
                   (list).map((data) => CSUResult.fromJson(data)).toList();
 
-              log('LIST CSU: $csuList');
+              log('LIST CSU FRAME BY NAME: $csuList');
 
               return csuList;
             } catch (e) {
