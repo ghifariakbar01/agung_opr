@@ -7,6 +7,7 @@ import 'package:agung_opr/infrastructure/cache_storage/csu/csu_penyebab_storage.
 import 'package:agung_opr/infrastructure/csu/csu_jenis_penyebab_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../infrastructure/cache_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_frame_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_items_storage.dart';
 import '../../../../infrastructure/cache_storage/csu/csu_jenis_storage.dart';
@@ -16,6 +17,7 @@ import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/csu/csu_items_repository.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
 import '../../../../infrastructure/csu/csu_repository.dart';
+import '../../../../infrastructure/csu/csu_trips_savable_repository.dart';
 import '../../../../infrastructure/update_csu/update_csu_remote_service.dart';
 import '../../../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../../../shared/providers.dart';
@@ -35,6 +37,8 @@ import '../state/csu_jenis_penyebab_offline_state.dart';
 import '../state/csu_jenis_penyebab_state.dart';
 import '../state/csu_result_offline_state.dart';
 import '../state/csu_result_state.dart';
+import '../state/csu_trips.dart';
+import '../state/unit_csu_trips.dart';
 
 // import '../../../infrastructure/cache_storage/update_frame_storage.dart';
 // import '../../../infrastructure/credentials_storage.dart';
@@ -58,11 +62,19 @@ final csuFrameRemoteServiceProvider = Provider(
       ref.watch(dioProvider), ref.watch(dioRequestProvider)),
 );
 
+// CSUFrameRepository({
+//     required this.storage,
+//     required this.storageNG,
+//     required this.storageTrips,
+//     required this.remoteService,
+//     required this.ngCacheRepository,
+//     required this.tripsCacheRepository,
+//     required this.resultCacheRepository,
+//   });
+
 final csuFrameRepositoryProvider = Provider((ref) => CSUFrameRepository(
-    ref.watch(csuFrameRemoteServiceProvider),
-    ref.watch(csuFrameStorage),
-    ref.watch(csuFrameTripsStorage),
-    ref.watch(csuNGByIDFrameStorage)));
+  
+)));
 
 final csuFrameNotifierProvider =
     StateNotifierProvider<CSUFrameResultNotifier, CSUResultState>(
@@ -109,6 +121,10 @@ final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
 final csuFrameTripsStorage = Provider<CredentialsStorage>(
   (ref) => CSUFTripsFrameStorage(ref.watch(flutterSecureStorageProvider)),
 );
+
+final csuFrameTripsSavableRepository = Provider<Cache<CSUTrips, UnitCSUTrips>>(
+    (ref) =>
+        CSUTripsSavableRepository(storage: ref.watch(csuFrameTripsStorage)));
 
 final csuTripsOfflineNotifierProvider =
     StateNotifierProvider<CSUTripsOfflineNotifier, CSUTripsOfflineState>(

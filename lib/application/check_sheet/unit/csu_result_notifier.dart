@@ -1,18 +1,28 @@
-import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_trips.dart';
-import 'package:agung_opr/application/update_frame/frame.dart';
-import 'package:agung_opr/domain/remote_failure.dart';
-import 'package:agung_opr/infrastructure/csu/csu_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../domain/remote_failure.dart';
+import '../../../infrastructure/cache_storage.dart';
+import '../../../infrastructure/csu/csu_repository.dart';
+import '../../update_frame/frame.dart';
+import 'state/csu_ng_result.dart';
+import 'state/csu_ng_result_by_id.dart';
 import 'state/csu_result.dart';
 import 'state/csu_result_state.dart';
+import 'state/csu_trips.dart';
+import 'state/spk_csu_result.dart';
+import 'state/unit_csu_trips.dart';
 
 class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
-  CSUFrameResultNotifier(this._repository) : super(CSUResultState.initial());
+  CSUFrameResultNotifier(this._repository, this.ngCacheRepository,
+      this.resultCacheRepository, this.tripsSavableRepository)
+      : super(CSUResultState.initial());
 
   final CSUFrameRepository _repository;
+  //
+  final Cache<CSUTrips, UnitCSUTrips> tripsSavableRepository;
+  final Cache<CSUNGResult, CSUNGResultByID> ngCacheRepository;
+  final Cache<CSUResult, FrameNameCSUResult> resultCacheRepository;
 
   Future<void> getCSUByFrameName({required String frameName}) async {
     final Either<RemoteFailure, List<CSUResult>> FOS;
@@ -39,7 +49,7 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
 
     state = state.copyWith(isProcessing: true, FOSOCSUNGResult: none());
 
-    FOS = await _repository.getCSUNGResultByIDOFFLINE(idCS: idCS);
+    FOS = await ngCacheRepository.getByKey(idCS.toString());
 
     state = state.copyWith(isProcessing: false, FOSOCSUNGResult: optionOf(FOS));
   }
@@ -62,7 +72,7 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
 
     state = state.copyWith(isProcessing: true, FOSOCSUTripsResult: none());
 
-    FOS = await _repository.getCSUFrameTripsOFFLINE(idUnit: idUnit);
+    FOS = await tripsSavableRepository.getByKey(idUnit.toString());
 
     state =
         state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
@@ -73,7 +83,7 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
 
     state = state.copyWith(isProcessing: true, FOSOCSUResult: none());
 
-    FOS = await _repository.getSPKCSUOFFLINE(frameName: frame);
+    FOS = await resultCacheRepository.getByKey(frame);
 
     state = state.copyWith(isProcessing: false, FOSOCSUResult: optionOf(FOS));
   }
