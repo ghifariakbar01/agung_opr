@@ -8,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
-import '../../utils/validator.dart';
 import '../check_sheet/unit/state/csu_ng_result.dart';
 import '../check_sheet/unit/state/csu_result.dart';
 import 'state/update_csu_ng_state.dart';
@@ -123,86 +122,72 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   Future<void> saveQueryOK() async {
     Either<LocalFailure, Unit>? FOS;
 
-    if (isValid()) {
-      state = state.copyWith(
-          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
+    state = state.copyWith(
+        isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
-      // debugger(message: 'called');
+    // debugger(message: 'called');
 
-      final stateCSU = state.updateFrameList;
+    final stateCSU = state.updateFrameList;
 
-      // NG
-      final NG = state.updateFrameList.isNG;
+    // NG
+    final NG = state.updateFrameList.isNG;
 
-      final isNG = NG.firstWhere(
-        (element) => element == true,
-        orElse: () => false,
-      );
+    final isNG = NG.firstWhere(
+      (element) => element == true,
+      orElse: () => false,
+    );
 
-      final queryId = _repository.getOKSavableQuery(
-          idUnit: state.idUnit,
-          frameName: state.frameName,
-          gate: stateCSU.gate,
-          posisi: stateCSU.deck,
-          // supir1: stateCSU.supir1,
-          // supir2: stateCSU.supir2,
-          supirSDR: stateCSU.supirSDR,
-          tglKirim: stateCSU.tglKirim,
-          tglTerima: stateCSU.tglTerima,
-          keterangan: stateCSU.keterangan,
-          noDefect: isNG == true ? 1 : 0,
-          inOut: stateCSU.inOut == false ? 0 : 1);
+    final queryId = _repository.getOKSavableQuery(
+        idUnit: state.idUnit,
+        frameName: state.frameName,
+        gate: stateCSU.gate,
+        posisi: stateCSU.deck,
+        // supir1: stateCSU.supir1,
+        // supir2: stateCSU.supir2,
+        supirSDR: stateCSU.supirSDR,
+        tglKirim: stateCSU.tglKirim,
+        tglTerima: stateCSU.tglTerima,
+        keterangan: stateCSU.keterangan,
+        noDefect: isNG == true ? 1 : 0,
+        inOut: stateCSU.inOut == false ? 0 : 1);
 
-      FOS = await _repository.saveCSUQueryOK(queryId: queryId, isNG: isNG);
+    FOS = await _repository.saveCSUQueryOK(queryId: queryId, isNG: isNG);
 
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: false,
-          FOSOUpdateCSU: optionOf(FOS));
-    } else {
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: true,
-          FOSOUpdateCSU: optionOf(FOS));
-    }
+    state = state.copyWith(
+        isProcessing: false,
+        showErrorMessages: false,
+        FOSOUpdateCSU: optionOf(FOS));
   }
 
   Future<void> saveQueryNG() async {
     Either<LocalFailure, Unit>? FOS;
 
-    if (isValid()) {
-      state = state.copyWith(
-          isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
+    state = state.copyWith(
+        isProcessing: true, showErrorMessages: false, FOSOUpdateCSU: none());
 
-      // debugger(message: 'called');
+    // debugger(message: 'called');
 
-      final NG = state.updateFrameList.isNG;
+    final NG = state.updateFrameList.isNG;
 
-      final List<UpdateCSUNGState> queryNgs = [];
+    final List<UpdateCSUNGState> queryNgs = [];
 
-      for (int index = 0; index < state.updateFrameList.isNG.length; index++) {
-        if (NG[index] == true) {
-          // GET NG ITEM, JENIS, PENYEBAB
-          final NGItem = state.updateFrameList.ngStates[index];
-          queryNgs.add(NGItem);
-        }
+    for (int index = 0; index < state.updateFrameList.isNG.length; index++) {
+      if (NG[index] == true) {
+        // GET NG ITEM, JENIS, PENYEBAB
+        final NGItem = state.updateFrameList.ngStates[index];
+        queryNgs.add(NGItem);
       }
-
-      final queryId = _repository.getNGSavableQuery(
-          idUnit: state.idUnit, frameName: state.frameName, ngStates: queryNgs);
-
-      FOS = await _repository.saveCSUQueryNG(queryId: queryId);
-
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: false,
-          FOSOUpdateCSU: optionOf(FOS));
-    } else {
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: true,
-          FOSOUpdateCSU: optionOf(FOS));
     }
+
+    final queryId = _repository.getNGSavableQuery(
+        idUnit: state.idUnit, frameName: state.frameName, ngStates: queryNgs);
+
+    FOS = await _repository.saveCSUQueryNG(queryId: queryId);
+
+    state = state.copyWith(
+        isProcessing: false,
+        showErrorMessages: false,
+        FOSOUpdateCSU: optionOf(FOS));
   }
 
   void changeIsNG({required bool isNG, required int index}) {
@@ -361,21 +346,21 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     return true;
   }
 
-  bool isValid() {
-    final frame = state.updateFrameList;
+  // bool isValid() {
+  //   final frame = state.updateFrameList;
 
-    // HERE
-    final values = [
-      frame.gate,
-      frame.deck,
-      // frame.supir1,
-      // frame.supir2,
-      // frame.supirSDR,
-      // frame.tglTerima,
-      // frame.tglKirim,
-      // frame.keterangan
-    ];
+  //   // HERE
+  //   final values = [
+  //     // frame.gate,
+  //     // frame.deck,
+  //     // frame.supir1,
+  //     // frame.supir2,
+  //     // frame.supirSDR,
+  //     // frame.tglTerima,
+  //     // frame.tglKirim,
+  //     // frame.keterangan
+  //   ];
 
-    return Validator.validate(values);
-  }
+  //   return Validator.validate(values);
+  // }
 }

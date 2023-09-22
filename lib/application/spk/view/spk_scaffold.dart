@@ -224,11 +224,12 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                             padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                         child: SPKItem(
                           nomorSpk: spkList[i].spkNo,
-                          namaDriver:
-                              '${spkList[i].supir1Nm ?? ''} ${spkList[i].supir2Nm != null ? '/ ${spkList[i].supir2Nm}' : ''}',
                           nomorPolisi: '${spkList[i].nopol}',
+                          namaTrayek: spkList[i].namaTrayek ?? '',
                           tglBerangkat:
                               'TGL BERANGKAT: ${spkList[i].tglBerangkat}',
+                          namaDriver:
+                              '${spkList[i].supir1Nm ?? ''} ${spkList[i].supir2Nm != null ? '/ ${spkList[i].supir2Nm}' : ''}',
                         ),
                       ),
                     )

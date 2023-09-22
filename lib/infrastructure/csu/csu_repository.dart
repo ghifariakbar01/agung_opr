@@ -755,8 +755,6 @@ class CSUFrameRepository {
       return unit;
     }
 
-    debugger(message: 'called');
-
     await _storageTrips.clear();
 
     return unit;

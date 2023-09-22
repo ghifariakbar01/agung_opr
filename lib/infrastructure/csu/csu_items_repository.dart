@@ -163,8 +163,6 @@ class CSUItemsRepository {
       return unit;
     }
 
-    debugger(message: 'called');
-
     await _storage.clear();
 
     return unit;

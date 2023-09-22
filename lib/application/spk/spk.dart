@@ -13,16 +13,18 @@ class SPK with _$SPK {
     @JsonKey(name: 'spk_no') required String spkNo,
     @JsonKey(name: 'supir1_nm') required String? supir1Nm,
     @JsonKey(name: 'supir2_nm') required String? supir2Nm,
+    @JsonKey(name: 'trayek_nama') required String? namaTrayek,
     @JsonKey(name: 'tgl_berangkat') required String? tglBerangkat,
     required String nopol,
   }) = _SPK;
 
   factory SPK.initial() => SPK(
       idSpk: 0,
+      nopol: '',
       spkNo: '',
       supir1Nm: '',
       supir2Nm: '',
-      nopol: '',
+      namaTrayek: '',
       tglBerangkat: '');
 
   factory SPK.fromJson(Map<String, Object?> json) => _$SPKFromJson(json);

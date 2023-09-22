@@ -190,8 +190,6 @@ class CSUJenisPenyebabRepository {
       return unit;
     }
 
-    debugger(message: 'called');
-
     await _jenisStorage.clear();
 
     return unit;
@@ -203,8 +201,6 @@ class CSUJenisPenyebabRepository {
     if (storedCredentials == null) {
       return unit;
     }
-
-    debugger(message: 'called');
 
     await _penyebabStorage.clear();
 

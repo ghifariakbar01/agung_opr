@@ -262,10 +262,10 @@ class UpdateCSUFrameRepository {
     final idUser = _userModelWithPassword.idUser;
     final nameUser = _userModelWithPassword.nama;
 
-    final gateStr = gate.getOrCrash();
-    final gateInt = int.parse(gateStr);
+    final gateStr = gate.getOrLeave('');
+    final gateInt = gateStr.isNotEmpty ? int.parse(gateStr) : 0;
 
-    final deckStr = posisi.getOrCrash();
+    final deckStr = posisi.getOrLeave('');
     // final supir1Str = supir1.getOrCrash();
     // final supir2Str = supir2.getOrLeave('');
 

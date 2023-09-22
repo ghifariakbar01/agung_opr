@@ -18,11 +18,36 @@ class SPKRemoteService {
       final data = _dioRequestNotifier;
       // TEST
       const String dbName = "opr_trs_spk";
+      const String dbTrayekName = "opr_mst_trayek";
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol, tgl_berangkat FROM $dbName WHERE dc_sta = 1 AND tiba_sta = 0 AND kmbl_sta = 0 AND id_spk LIKE '%$search%' OR spk_no LIKE '%$search%' OR supir1_nm LIKE '%$search%' OR supir2_nm LIKE '%$search%' OR nopol LIKE '%$search%' ORDER BY spk_tgl DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+        "command": "SELECT " +
+            " spk.id_spk," +
+            " spk.id_trayek," +
+            " spk.spk_no," +
+            "   spk.supir1_nm," +
+            "   spk.supir2_nm," +
+            "   spk.nopol," +
+            "   spk.tgl_berangkat," +
+            " trayek.nama AS trayek_nama" +
+            " FROM " +
+            " $dbName AS spk " +
+            " JOIN " +
+            " $dbTrayekName AS trayek " +
+            " ON " +
+            " spk.id_trayek = trayek.id_trayek " +
+            " WHERE " +
+            " spk.dc_sta = 1 " +
+            " AND spk.tiba_sta = 0 " +
+            " AND spk.kmbl_sta = 0 " +
+            " AND id_spk LIKE '%$search%' OR spk_no LIKE '%$search%' OR supir1_nm LIKE '%$search%' OR supir2_nm LIKE '%$search%' OR nopol LIKE '%$search%' " +
+            " ORDER BY " +
+            " spk.spk_tgl DESC " +
+            " OFFSET " +
+            " 0 ROWS " +
+            " FETCH FIRST " +
+            " 100 ROWS ONLY"
       });
 
       final response = await _dio.post('',
@@ -89,20 +114,46 @@ class SPKRemoteService {
       final data = _dioRequestNotifier;
       // TEST
       const String dbName = "opr_trs_spk";
+      const String dbTrayekName = "opr_mst_trayek";
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT id_spk, spk_no, supir1_nm, supir2_nm, nopol, tgl_berangkat FROM $dbName WHERE dc_sta = 1 AND tiba_sta = 0 AND kmbl_sta = 0 ORDER BY spk_tgl DESC OFFSET $page ROWS FETCH FIRST 10 ROWS ONLY",
+        "command": "SELECT " +
+            "spk.id_spk," +
+            "spk.id_trayek," +
+            "spk.spk_no," +
+            "   spk.supir1_nm," +
+            "   spk.supir2_nm," +
+            "   spk.nopol," +
+            "   spk.tgl_berangkat," +
+            " trayek.nama AS trayek_nama" +
+            " FROM " +
+            " $dbName AS spk " +
+            " JOIN " +
+            " $dbTrayekName AS trayek " +
+            " ON " +
+            " spk.id_trayek = trayek.id_trayek " +
+            " WHERE " +
+            " spk.dc_sta = 1 " +
+            " AND spk.tiba_sta = 0 " +
+            " AND spk.kmbl_sta = 0 " +
+            " ORDER BY " +
+            " spk.spk_tgl DESC " +
+            " OFFSET " +
+            " 0 ROWS " +
+            " FETCH FIRST " +
+            " 10 ROWS ONLY"
       });
 
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data ${jsonEncode(data)}');
+      log('data spk ${jsonEncode(data)}');
       // log('response $response');
 
       final items = response.data?[0];
+
+      log('item spk ${jsonEncode(data)}');
 
       if (items['status'] == 'Success') {
         final listExist = items['items'] != null && items['items'] is List;

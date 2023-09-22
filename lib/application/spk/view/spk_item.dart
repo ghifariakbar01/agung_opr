@@ -5,12 +5,14 @@ class SPKItem extends StatelessWidget {
   const SPKItem({
     Key? key,
     required this.nomorSpk,
+    required this.namaTrayek,
     required this.namaDriver,
     required this.nomorPolisi,
     required this.tglBerangkat,
   }) : super(key: key);
 
   final String nomorSpk;
+  final String namaTrayek;
   final String namaDriver;
   final String nomorPolisi;
   final String tglBerangkat;
@@ -25,7 +27,7 @@ class SPKItem extends StatelessWidget {
             border: Border.all(color: Palette.primaryColor, width: 2)),
         child: Center(
           child: Text(
-            '$nomorSpk\n$namaDriver\n$nomorPolisi\n$tglBerangkat',
+            '$nomorSpk\n$namaDriver\n$nomorPolisi\n$namaTrayek\n$tglBerangkat',
             textAlign: TextAlign.center,
             style:
                 Themes.customColor(FontWeight.bold, 15, Palette.primaryColor),
