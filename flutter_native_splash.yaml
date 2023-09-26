@@ -10,7 +10,7 @@ flutter_native_splash:
   # color is the only required parameter.  It sets the background color of your splash screen.
   color: "#ffffff"
   image: assets/splash_screen.png
-  fullscreen: true
+  # fullscreen: true
 
   # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s)
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,

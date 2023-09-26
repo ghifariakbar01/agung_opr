@@ -63,6 +63,18 @@ class TCPage extends ConsumerWidget {
                 SizedBox(
                   height: 16,
                 ),
+                InkWell(
+                    onTap: () => launchUrl(Uri.parse(
+                        'https://www.apple.com/legal/internet-services/itunes/appstore/dev/stdeula')),
+                    child: Text(
+                      'Apple’s Standard License Agreement',
+                      style: Themes.customColor(
+                          FontWeight.normal, 12, Palette.primaryColor),
+                    )),
+                //
+                SizedBox(
+                  height: 16,
+                ),
 
                 headingText('Log Data'),
                 normalText(
