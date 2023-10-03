@@ -1,50 +1,42 @@
-import 'package:agung_opr/application/update_frame/update_frame_single_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
-import '../../../update_cs/view/widget/cs_item_form.dart';
+import '../../../clear_data/clear_data_providers.dart';
+import '../../../mode/mode_state.dart';
+import '../../../spk/spk.dart';
+import '../../../spk/view/spk_item.dart';
+import '../../../update_frame/frame_state.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
-import '../../../update_frame/view/frame_search.dart';
+import '../../../update_frame/view/form/form_update_sppdc.dart';
 import '../../../update_frame/view/update_frame_item_scaffold.dart';
 import '../../../widgets/v_appbar.dart';
-import '../../../widgets/v_button.dart';
-import '../../shared/providers/cs_providers.dart';
+import 'check_sheet_button.dart';
+import 'check_sheet_kelengkapan.dart';
 import 'form/form_gate.dart';
 import 'form/form_jam.dart';
 import 'form/form_keterangan.dart';
+
+final hideKelengkapanAndButtonProvider = StateProvider<bool>((ref) {
+  return true;
+});
 
 class CheckSheetLoadingScaffold extends ConsumerWidget {
   const CheckSheetLoadingScaffold();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final csItem = ref.watch(csItemNotifierProvider);
-    final csIdMap = csItem.csItemListByID;
+    final SPK selectedSPK = ref.watch(selectedSPKStateProvider);
+    final ModeState modeApp = ref.watch(modeNotifierProvider);
+    final FrameState frameList = ref.watch(frameNotifierProvider);
 
-    final updateCS = ref.watch(updateCSNotifierProvider);
-    final isNGEmpty = updateCS.updateCSForm.isNG.isEmpty;
-
-    final isDefect = ref.watch(updateCSNotifierProvider.select((value) => value
-        .updateCSForm.isNG
-        .firstWhere((checkSheet) => checkSheet == true, orElse: () => false)));
-
-    final selectedSPK = ref.watch(selectedSPKStateProvider);
-
-    final showErrorMessage = ref.watch(
-        updateCSNotifierProvider.select((value) => value.showErrorMessages));
-
-    final modeApp = ref.watch(modeNotifierProvider);
-
-    final frameList = ref.watch(frameNotifierProvider);
-    final isSearching = ref.watch(
-        frameSearchNotifierProvider.select((value) => value.isSearching));
-
-    final isLoading =
+    final bool isLoading =
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
+
+    final bool hideKelengkapanAndButton =
+        ref.watch(hideKelengkapanAndButtonProvider);
 
     return KeyboardDismissOnTap(
       child: Scaffold(
@@ -56,8 +48,16 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
               orElse: () {},
             )}',
           ),
-
-          // drawer: Drawer(),
+          floatingActionButton: FloatingActionButton.small(
+            backgroundColor: Colors.white,
+            elevation: 5,
+            child: Icon(
+              Icons.refresh,
+              color: Palette.primaryColor,
+            ),
+            onPressed: () =>
+                ref.read(clearDataNotifierProvider.notifier).clearAllStorage(),
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -65,103 +65,46 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                 children: [
                   // Header
                   Container(
-                    height: 77,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Palette.yellow,
                     ),
                     child: Center(
-                      child: Text(
-                        "${selectedSPK.spkNo}\n${selectedSPK.supir1Nm} ${selectedSPK.supir2Nm != null ? " /  ${selectedSPK.supir2Nm} " : ''}\n${selectedSPK.nopol}",
-                        style: Themes.customColor(
-                            FontWeight.bold, 16, Colors.black),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+                        child: SPKItem(
+                            color: Colors.white,
+                            brdrColor: Colors.transparent,
+                            nomorPolisi: selectedSPK.nopol,
+                            nomorSpk: selectedSPK.idSpk.toString(),
+                            namaDriver: selectedSPK.supir1Nm ?? '',
+                            namaTrayek: selectedSPK.namaTrayek ?? '',
+                            tglBerangkat: selectedSPK.tglBerangkat ?? '')),
                   ),
 
                   SizedBox(
-                    height: 8,
+                    height: 16,
                   ),
 
-                  // FRAME
+                  // UNIT LIST
                   modeApp.maybeWhen(
                       checkSheetLoading: () => Column(
                             children: [
-                              Row(
-                                children: [
-                                  Flexible(flex: 5, child: FrameSearch()),
-                                  Flexible(
-                                      flex: 1,
-                                      child: SizedBox(
-                                        height: 50,
-                                        width: 50,
-                                        child: Column(
-                                          children: [
-                                            Flexible(
-                                              flex: 0,
-                                              child: Text(
-                                                'FRAME',
-                                                textAlign: TextAlign.center,
-                                                style: Themes.customColor(
-                                                    FontWeight.bold,
-                                                    9,
-                                                    Colors.black),
-                                              ),
-                                            ),
-                                            Flexible(
-                                              flex: 2,
-                                              child: InkWell(
-                                                onTap: () async {
-                                                  String? frame =
-                                                      await FlutterBarcodeScanner
-                                                          .scanBarcode(
-                                                              "#65B689",
-                                                              "Cancel",
-                                                              false,
-                                                              ScanMode.DEFAULT);
-
-                                                  if (frame.isNotEmpty &&
-                                                      frame != '-1') {
-                                                    ref
-                                                        .read(
-                                                            frameSearchNotifierProvider
-                                                                .notifier)
-                                                        .changeSearchText(
-                                                            frame);
-
-                                                    final idSPK = ref.read(
-                                                        updateFrameNotifierProvider
-                                                            .select((value) =>
-                                                                value.idSPK));
-
-                                                    await ref
-                                                        .read(
-                                                            frameNotifierProvider
-                                                                .notifier)
-                                                        .searchFrameListOFFLINE(
-                                                            idSPK: '$idSPK',
-                                                            frame: frame);
-                                                  }
-                                                },
-                                                child: Ink(
-                                                  child: Icon(
-                                                    Icons.qr_code_2,
-                                                    size: 40,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                ],
+                              Form(
+                                autovalidateMode: AutovalidateMode.always,
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Palette.primaryColor,
+                                          width: 2)),
+                                  child: FormUpdateSPPDC(
+                                    index: 0,
+                                  ),
+                                ),
                               ),
                               SizedBox(
-                                height: 8,
+                                height: 16,
                               ),
-                              if (!isSearching || !isLoading) ...[
+                              if (!isLoading) ...[
                                 for (int index = 0;
                                     index < frameList.frameList.length;
                                     index++) ...[
@@ -179,146 +122,56 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                     height: 8,
                   ),
 
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              color: Palette.primaryColor, width: 2)),
-                      padding: EdgeInsets.all(4),
-                      child: Form(
-                        autovalidateMode: showErrorMessage
-                            ? AutovalidateMode.always
-                            : AutovalidateMode.disabled,
-                        child: Column(children: [
-                          SizedBox(
-                            height: 4,
-                          ),
-                          FormGate(),
-                          FormJam(),
-                          FormKeterangan(),
-                          SizedBox(
-                            height: 4,
-                          ),
-                        ]),
-                      )),
-
-                  SizedBox(
-                    height: 8,
-                  ),
-
-                  //
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border:
-                            Border.all(color: Palette.primaryColor, width: 2)),
-                    padding: EdgeInsets.all(8),
-                    child: Column(
+                  if (modeApp == ModeState.checkSheetLoading())
+                    Row(
                       children: [
                         Text(
-                          'KELENGKAPAN',
+                          'Sembunyikan Checker',
                           style: Themes.customColor(
-                              FontWeight.bold, 16, Palette.primaryColor),
+                              FontWeight.bold, 15, Palette.primaryColorDarker),
                         ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        if (!isNGEmpty) ...[
-                          for (int index2 = 0;
-                              index2 < csIdMap.keys.length;
-                              index2++) ...[
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '${csIdMap.keys.elementAt(index2)}. ' +
-                                      '${ref.read(csJenisNotifierProvider.select((value) => value.csJenisList.firstWhere((element) => element.id == csIdMap.keys.elementAt(index2)))).nama}',
-                                  style: Themes.customColor(
-                                      FontWeight.bold, 14, Colors.black),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            for (int index = 0;
-                                index <
-                                    csIdMap.entries
-                                        .elementAt(index2)
-                                        .value
-                                        .length;
-                                index++) ...[
-                              // Body
-                              CSItemForm(
-                                index: ref
-                                    .read(csItemNotifierProvider.notifier)
-                                    .getIndex(index: index, indexPrev: index2),
-                                id: csIdMap.entries
-                                    .elementAt(index2)
-                                    .value[index]
-                                    .id,
-                                instruction: csIdMap.entries
-                                    .elementAt(index2)
-                                    .value[index]
-                                    .description,
-                              )
-                            ]
-                          ]
-                        ]
+                        Switch(
+                            activeColor: Palette.primaryColor,
+                            value: hideKelengkapanAndButton,
+                            onChanged: (value) => ref
+                                .read(hideKelengkapanAndButtonProvider.notifier)
+                                .state = value),
                       ],
                     ),
-                  ),
-                  //
 
-                  VButton(
-                      label: 'NG',
-                      color: Palette.red,
-                      isEnabled: isDefect,
-                      onPressed: () async {
-                        await ref
-                            .read(updateCSNotifierProvider.notifier)
-                            .saveQueryNG();
+                  if (!hideKelengkapanAndButton ||
+                      modeApp != ModeState.checkSheetLoading()) ...[
+                    Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                color: Palette.primaryColor, width: 2)),
+                        padding: EdgeInsets.all(4),
+                        child: Form(
+                          autovalidateMode: AutovalidateMode.always,
+                          child: Column(children: [
+                            SizedBox(
+                              height: 4,
+                            ),
+                            FormGate(),
+                            FormJam(),
+                            FormKeterangan(),
+                            SizedBox(
+                              height: 4,
+                            ),
+                          ]),
+                        )),
 
-                        await ref
-                            .read(updateCSNotifierProvider.notifier)
-                            .saveQueryOK();
+                    SizedBox(
+                      height: 8,
+                    ),
 
-                        // context.pushReplacementNamed(
-                        //     RouteNames.dataUpdateQueryName);
-                      }),
-                  VButton(
-                      label: 'OK',
-                      isEnabled: !isDefect,
-                      onPressed: () async {
-                        await ref
-                            .read(updateCSNotifierProvider.notifier)
-                            .saveQueryNG();
+                    //
+                    CheckSheetKelengkapan(),
+                    //
 
-                        await ref
-                            .read(updateCSNotifierProvider.notifier)
-                            .saveQueryOK();
-                      }),
-
-                  SizedBox(
-                    height: 65,
-                    child: VButton(
-                        label: 'SIMPAN FRAME',
-                        onPressed: () async {
-                          List<UpdateFrameStateSingle> updateFrameList =
-                              ref.read(updateFrameNotifierProvider
-                                  .select((value) => value.updateFrameList));
-
-                          await ref
-                              .read(updateFrameNotifierProvider.notifier)
-                              .updateAllFrame(updateFrameList: updateFrameList);
-
-                          await ref
-                              .read(updateFrameOfflineNotifierProvider.notifier)
-                              .CUUpdateFrameOFFLINEStatus();
-                        }),
-                  ),
+                    CheckSheetButton(),
+                  ]
                 ],
               ),
             ),
@@ -326,3 +179,13 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
     );
   }
 }
+
+
+// final csItem = ref.watch(csItemNotifierProvider);
+    // final csIdMap = csItem.csItemListByID;
+
+    // final updateCS = ref.watch(updateCSNotifierProvider);
+    // final isNGEmpty = updateCS.updateCSForm.isNG.isEmpty;
+
+      // final showErrorMessage = ref.watch(
+      //   updateCSNotifierProvider.select((value) => value.showErrorMessages));

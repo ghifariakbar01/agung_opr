@@ -97,7 +97,7 @@ class _SPKPageState extends ConsumerState<SPKPage> {
     return Stack(
       children: [
         SPKScaffold(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        Positioned(top: 45, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

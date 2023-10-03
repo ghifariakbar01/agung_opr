@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,20 +15,17 @@ class FormUpdateSPPDC extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sppdc = ref.watch(updateFrameNotifierProvider.select((value) =>
-        value.updateFrameList.length < index
-            ? SPPDC('')
-            : value.updateFrameList[index].sppdc));
+    final sppdc =
+        ref.watch(updateFrameNotifierProvider.select((value) => value.sppdc));
 
-    final sppdcController = ref.watch(updateFrameNotifierProvider.select(
-        (value) => value.sppdcTextController.length < index ||
-                value.sppdcTextController.isEmpty
-            ? TextEditingController()
-            : value.sppdcTextController[index]));
+    final sppdcController = ref.watch(updateFrameNotifierProvider
+        .select((value) => value.sjkbTextController));
 
     final sppdcStr = sppdc.getOrLeave('');
 
     final modeApp = ref.watch(modeNotifierProvider);
+
+    log('sppdc $sppdc');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +67,7 @@ class FormUpdateSPPDC extends ConsumerWidget {
 
                           ref
                               .read(updateFrameNotifierProvider.notifier)
-                              .changeNoSPPDC(noSPPDCStr: sppdc, index: index);
+                              .changeNoSPPDC(noSPPDCStr: sppdc);
                         }
                       },
                       child: Ink(
@@ -83,19 +79,15 @@ class FormUpdateSPPDC extends ConsumerWidget {
               keyboardType: TextInputType.name,
               onChanged: (value) => ref
                   .read(updateFrameNotifierProvider.notifier)
-                  .changeNoSPPDC(noSPPDCStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .sppdc
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
-                    ),
-                    (_) => null,
-                  ),
+                  .changeNoSPPDC(noSPPDCStr: value),
+              validator: (_) =>
+                  ref.read(updateFrameNotifierProvider).sppdc.value.fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'Silahkan Masukan no SPPDC disini',
+                          orElse: () => 'invalid',
+                        ),
+                        (_) => null,
+                      ),
             ),
           ),
         )

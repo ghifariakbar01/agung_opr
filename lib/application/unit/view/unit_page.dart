@@ -106,7 +106,7 @@ class _UnitPageState extends ConsumerState<UnitPage> {
     return Stack(
       children: [
         UnitScaffold(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        Positioned(top: 45, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

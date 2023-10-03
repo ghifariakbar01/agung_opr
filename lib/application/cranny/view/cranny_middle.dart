@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -171,7 +170,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                     .notifier)
                                 .changeSavedCSQuery(csIdQueries: queryIds);
 
-                            debugger();
+                            // debugger();
 
                             log('isCSQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSQueryEmpty()}');
                             log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
@@ -191,45 +190,38 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => showDialog(
-                          context: context,
-                          barrierDismissible: true,
-                          builder: (_) => VSimpleDialog(
-                            label: 'Error',
-                            labelDescription: failure.map(
-                              storage: (_) => 'storage penuh',
-                              noConnection: (_) => 'tidak ada koneksi',
-                              parse: (error) => 'error parse $error',
-                              server: (error) =>
-                                  '${error.errorCode} ${error.message}',
-                            ),
-                            asset: Assets.iconCrossed,
-                          ),
-                        ), (_) async {
+                    (failure) => failure.maybeWhen(
+                        noConnection: () => {},
+                        orElse: () => showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (_) => VSimpleDialog(
+                                label: 'Error',
+                                labelDescription: failure.map(
+                                  storage: (_) => 'storage penuh',
+                                  noConnection: (_) => 'tidak ada koneksi',
+                                  parse: (error) => 'error parse $error',
+                                  server: (error) =>
+                                      '${error.errorCode} ${error.message}',
+                                ),
+                                asset: Assets.iconCrossed,
+                              ),
+                            )), (_) async {
                   await ref
                       .read(updateFrameOfflineNotifierProvider.notifier)
                       .CUUpdateFrameOFFLINEStatus();
-                  await ref
-                      .read(updateCSUFrameOfflineNotifierProvider.notifier)
-                      .CUUpdateCSUFrameOFFLINEStatus();
                   await ref
                       .read(updateCSOfflineNotifierProvider.notifier)
                       .CUUpdateCSOFFLINEStatus();
                   ref
                       .read(autoDataUpdateFrameNotifierProvider.notifier)
                       .resetAutoDataRemoteFOSO();
-
-                  await showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (_) => VSimpleDialog(
-                      label: 'Sukses',
-                      labelDescription: 'Sukses melakukan query tersimpan.',
-                      asset: Assets.iconChecked,
-                    ),
-                  );
                 })));
 
     return CrannyScaffold();
   }
 }
+
+//   await ref
+// .read(updateCSUFrameOfflineNotifierProvider.notifier)
+// .CUUpdateCSUFrameOFFLINEStatus();

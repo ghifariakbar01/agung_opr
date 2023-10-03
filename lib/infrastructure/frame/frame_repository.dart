@@ -365,7 +365,7 @@ class FrameRepository {
 
       // debugger(message: 'called');
 
-      // log('FRAME STORAGE: $frameStorage');
+      log('FRAME STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {

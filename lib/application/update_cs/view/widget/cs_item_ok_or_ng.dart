@@ -101,7 +101,7 @@ class _CSItemOKOrNGState extends ConsumerState<CSItemOKOrNG> {
                         .read(updateCSNotifierProvider.notifier)
                         .changeIsNG(isNG: true, index: widget.index);
 
-                    log('NG ID : ${widget.id} INDEX: ${widget.index}');
+                    log('NG ID CS : ${widget.id} INDEX: ${widget.index}');
                   },
                   child: Ink(
                     width: 40,

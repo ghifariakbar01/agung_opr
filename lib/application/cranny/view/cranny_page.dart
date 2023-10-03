@@ -1,31 +1,32 @@
-import 'dart:developer';
-
-import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
-import 'package:agung_opr/application/check_sheet/shared/state/cs_id_query.dart';
-import 'package:agung_opr/application/cranny/view/cranny_middle.dart';
-import 'package:agung_opr/application/customer/shared/customer_providers.dart';
-import 'package:agung_opr/application/model/shared/model_providers.dart';
-import 'package:agung_opr/application/spk/shared/spk_providers.dart';
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
-import 'package:agung_opr/constants/constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../../constants/assets.dart';
+import '../../../constants/constants.dart';
 import '../../../domain/local_failure.dart';
 import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
+import '../../check_sheet/shared/providers/cs_providers.dart';
+import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
+import '../../customer/shared/customer_providers.dart';
 import '../../gate/providers/gate_providers.dart';
+import '../../model/shared/model_providers.dart';
+import '../../routes/route_names.dart';
+import '../../spk/shared/spk_providers.dart';
+import '../../spk/spk.dart';
 import '../../supir/shared/supir_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/alert_helper.dart';
+import '../../widgets/loading_overlay.dart';
 import '../../widgets/v_dialogs.dart';
+import 'cranny_middle.dart';
 
 /**
  * [SPK] Initialization
@@ -293,6 +294,21 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                             checkAndUpdateStatus: () => ref
                                 .read(authNotifierProvider.notifier)
                                 .checkAndUpdateAuthStatus(),
+                            redirectIfFromSPK: () async {
+                              SPK selectedSPK = ref
+                                  .read(updateCSNotifierProvider)
+                                  .selectedSPK;
+                              selectedSPK != SPK.initial()
+                                  ? () async {
+                                      Map<String, dynamic> spkMap =
+                                          selectedSPK.toJson();
+
+                                      await context.pushNamed(
+                                          RouteNames.checkSheetLoadingNameRoute,
+                                          extra: spkMap);
+                                    }()
+                                  : () {}();
+                            },
                           ));
                 })));
 
@@ -358,14 +374,15 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     return UpgradeAlert(
       upgrader: Upgrader(
-          showIgnore: false,
-          showLater: false,
-          dialogStyle: UpgradeDialogStyle.cupertino,
-          messages: MyUpgraderMessages()),
+        showLater: false,
+        showIgnore: false,
+        messages: MyUpgraderMessages(),
+        dialogStyle: UpgradeDialogStyle.cupertino,
+      ),
       child: Stack(
         children: [
           CrannyMiddle(),
-          Positioned(top: 15, child: DataUpdateLinearProgress()),
+          Positioned(top: 45, child: DataUpdateLinearProgress()),
           LoadingOverlay(isLoading: false),
         ],
       ),
@@ -376,7 +393,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get body =>
-      'Lakukan update dengan versi aplikasi Mobile Carrier OPR CCR terbaru.';
+      'Mohon lakukan update dengan versi aplikasi Mobile Carrier OPR CCR terbaru.';
 
   @override
   String get buttonTitleIgnore => '-';

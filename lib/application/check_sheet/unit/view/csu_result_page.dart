@@ -200,7 +200,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
     return Stack(
       children: [
         CSUResultScaffold(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        Positioned(top: 45, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

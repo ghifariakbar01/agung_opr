@@ -80,14 +80,7 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
-          'SPK List (${modeApp.maybeWhen(
-            initial: () {},
-            updateFrameDummy: () => 'Update Frame Dummy',
-            checkSheetLoading: () => 'CCR Loading',
-            checkSheetUnloading: () => 'CCR Unloading',
-            checkSheetLoadingUnloading: () => 'CCR Loading & Unloading',
-            orElse: () {},
-          )})',
+          'SPK List',
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),

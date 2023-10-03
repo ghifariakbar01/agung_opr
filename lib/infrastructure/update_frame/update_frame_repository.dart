@@ -6,8 +6,8 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
+import '../../application/update_frame/update_frame_single_state.dart';
 import '../../domain/local_failure.dart';
-import '../../domain/value_objects_copy.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
 import 'update_frame_remote_service.dart';
@@ -195,50 +195,45 @@ class UpdateFrameRepository {
     }
   }
 
-  Future<Either<LocalFailure, Unit>> updateFrameSPK({
-    required String idSPK,
-    required IDUnit idUnit,
-    required IDKendType idKendType,
-    required FrameUnit frame,
-    required EngineUnit engine,
-    required WarnaUnit warna,
-    required SPPDC sppdc,
-  }) async {
+  Future<Either<LocalFailure, Unit>> updateFrameSPK(
+      {required List<UpdateFrameStateSingle> updateFrameList,
+      required String idSPK,
+      required String sppdc}) async {
     try {
-      // TEST
-      const String dbName = 'opr_trs_ti_unit';
+      final Map<String, String> mapOfCommands = {};
 
-      final idKendTypeStr = idKendType.getOrLeave('');
-      final idKendTypeInt =
-          idKendTypeStr.isNotEmpty ? int.parse(idKendTypeStr) : 0;
+      updateFrameList.forEach((UpdateFrameStateSingle element) {
+        // TEST
+        const String dbName = 'opr_trs_ti_unit';
 
-      final engineStr = engine.getOrLeave('');
-      final warnaStr = warna.getOrLeave('');
-      // MANDATORY
-      final frameStr = frame.getOrCrash();
-      final sppdcStr = sppdc.getOrCrash();
+        final idKendTypeStr = element.idKendType.getOrLeave('');
+        final idKendTypeInt =
+            idKendTypeStr.isNotEmpty ? int.parse(idKendTypeStr) : 0;
 
-      final idUnitStr = idUnit.getOrCrash();
-      final idUnitInt = int.parse(idUnitStr);
+        final engineStr = element.engine.getOrLeave('');
+        final warnaStr = element.warna.getOrLeave('');
+        // MANDATORY
+        final frameStr = element.frame.getOrCrash();
+        final sppdcStr = sppdc;
 
-      // final frameResponse = await _remoteService.updateFrame(
-      //     idUnit: idUnitInt,
-      //     idKendType: idKendTypeInt,
-      //     engine: engineStr,
-      //     frame: frameStr,
-      //     warna: warnaStr,
-      //     noReffExp: noReffStr);
+        final idUnitStr = element.idUnit.getOrCrash();
+        final idUnitInt = int.parse(idUnitStr);
 
-      final command =
-          "UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', warna = '$warnaStr', id_kend_type = '$idKendTypeInt' WHERE id_unit = $idUnitInt";
+        final command =
+            "UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', warna = '$warnaStr', id_kend_type = '$idKendTypeInt' WHERE id_unit = $idUnitInt";
 
-      final frameSaveMap = {
-        idSPK: {idUnitStr: command}
-      };
+        final Map<String, String> newMapOfCommands = {idUnitStr: command};
 
-      debugger(message: 'called');
+        mapOfCommands.addAll(newMapOfCommands);
+      });
 
-      await this._GETAndADDFrameSPKInMap(newFrameMap: frameSaveMap);
+      // THEN ADD mapOfCommands TO newMap by idSPK
+
+      final Map<String, Map<String, String>> newMap = {idSPK: mapOfCommands};
+
+      // debugger(message: 'called');
+
+      await this._GETAndADDFrameSPKInMap(newFrameMap: newMap);
 
       return right(unit);
     } on FormatException catch (e) {
@@ -258,46 +253,68 @@ class UpdateFrameRepository {
       final isNewFrameOK = newFrameMap.isNotEmpty;
       final isStorageSaved = savedStrings != null && savedStrings != '{}';
 
-      log('isStorageSaved $isStorageSaved');
+      log('isStorageSaved $isStorageSaved $savedStrings');
 
       if (isNewFrameOK) {
         switch (isStorageSaved) {
           case true:
             () async {
               debugger(message: 'CALLED');
-              final parsedResponse =
-                  jsonDecode(savedStrings!) as Map<String, dynamic>;
-
-              final parsedMap = convertToNestedMap(parsedResponse);
+              final Map<String, Map<String, dynamic>> parsedMap =
+                  convertToNestedMap(
+                      jsonDecode(savedStrings!) as Map<String, dynamic>);
 
               // FIRST, CHECK IF EXISTING KEY [NO SPK] EXIST
-              final keyNoSPK = newFrameMap.keys.first;
-              // VALUES ARE [FRAME LIST]
-              final valuesNoTIUnit = newFrameMap.values.first;
+              final idSpk = newFrameMap.keys.first;
+
+              // VALUES ARE [MAP OF ID UNIT AND QUERY]
+              final IdUnitQueryToInsert = newFrameMap.values.first;
 
               debugger();
 
               // EXISTING SECOND KEY [NO TI UNIT]
-              final keyIdUnit = newFrameMap.values.first.keys.first;
-              final valueIdUnitQuery = newFrameMap.values.first.values.first;
+              final keyIdUnitQueryToInsert =
+                  newFrameMap.values.first.keys.first;
 
-              if (parsedMap.containsKey(keyNoSPK)) {
-                if (valuesNoTIUnit.containsKey(keyIdUnit)) {
-                  valuesNoTIUnit.update(keyIdUnit, (value) => valueIdUnitQuery);
+              final valueIdUnitQueryToInsert =
+                  newFrameMap.values.first.values.first;
+
+              // VALUES ARE Map<String, dynamic> , CHECK BY keyIdUnitQueryToInsert
+              final valuesParsedMap = parsedMap.values as Map<String, dynamic>;
+              final IdUnitQueryToInsertExist = valuesParsedMap.entries
+                      .firstWhereOrNull(
+                          (element) => element.key == keyIdUnitQueryToInsert) !=
+                  null;
+
+              if (parsedMap.containsKey(idSpk)) {
+                debugger();
+                if (IdUnitQueryToInsertExist) {
+                  debugger();
+
+                  IdUnitQueryToInsert.update(keyIdUnitQueryToInsert,
+                      (value) => valueIdUnitQueryToInsert);
                 }
+
+                // THEN UPDATE parsedMap
+
+                debugger();
 
                 // TI UNIT, QUERY VALUE
                 parsedMap.update(
-                    keyNoSPK, (value) => {keyIdUnit: valueIdUnitQuery});
+                    idSpk,
+                    (value) =>
+                        {keyIdUnitQueryToInsert: valueIdUnitQueryToInsert});
               }
               // IF EXISTING KEY NULL
               else {
+                debugger();
+
                 parsedMap.addAll({
-                  keyNoSPK: {keyIdUnit: valueIdUnitQuery}
+                  idSpk: {keyIdUnitQueryToInsert: valueIdUnitQueryToInsert}
                 });
               }
 
-              debugger(message: 'called');
+              // debugger(message: 'called');
 
               log('STORAGE UPDATE FRAME UPDATE: ${jsonEncode(parsedMap)}');
 

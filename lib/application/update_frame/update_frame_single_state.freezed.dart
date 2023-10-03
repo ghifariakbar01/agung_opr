@@ -18,11 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UpdateFrameStateSingle {
   IDUnit get idUnit => throw _privateConstructorUsedError;
   FrameUnit get frame => throw _privateConstructorUsedError;
-  EngineUnit get engine => throw _privateConstructorUsedError;
   WarnaUnit get warna => throw _privateConstructorUsedError;
-  SPPDC get sppdc => throw _privateConstructorUsedError;
-  IDKendType get idKendType => throw _privateConstructorUsedError;
   bool get isShowError => throw _privateConstructorUsedError;
+  EngineUnit get engine => throw _privateConstructorUsedError;
+  IDKendType get idKendType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateFrameStateSingleCopyWith<UpdateFrameStateSingle> get copyWith =>
@@ -38,11 +37,10 @@ abstract class $UpdateFrameStateSingleCopyWith<$Res> {
   $Res call(
       {IDUnit idUnit,
       FrameUnit frame,
-      EngineUnit engine,
       WarnaUnit warna,
-      SPPDC sppdc,
-      IDKendType idKendType,
-      bool isShowError});
+      bool isShowError,
+      EngineUnit engine,
+      IDKendType idKendType});
 }
 
 /// @nodoc
@@ -61,11 +59,10 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
   $Res call({
     Object? idUnit = null,
     Object? frame = null,
-    Object? engine = null,
     Object? warna = null,
-    Object? sppdc = null,
-    Object? idKendType = null,
     Object? isShowError = null,
+    Object? engine = null,
+    Object? idKendType = null,
   }) {
     return _then(_value.copyWith(
       idUnit: null == idUnit
@@ -76,26 +73,22 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
           ? _value.frame
           : frame // ignore: cast_nullable_to_non_nullable
               as FrameUnit,
-      engine: null == engine
-          ? _value.engine
-          : engine // ignore: cast_nullable_to_non_nullable
-              as EngineUnit,
       warna: null == warna
           ? _value.warna
           : warna // ignore: cast_nullable_to_non_nullable
               as WarnaUnit,
-      sppdc: null == sppdc
-          ? _value.sppdc
-          : sppdc // ignore: cast_nullable_to_non_nullable
-              as SPPDC,
-      idKendType: null == idKendType
-          ? _value.idKendType
-          : idKendType // ignore: cast_nullable_to_non_nullable
-              as IDKendType,
       isShowError: null == isShowError
           ? _value.isShowError
           : isShowError // ignore: cast_nullable_to_non_nullable
               as bool,
+      engine: null == engine
+          ? _value.engine
+          : engine // ignore: cast_nullable_to_non_nullable
+              as EngineUnit,
+      idKendType: null == idKendType
+          ? _value.idKendType
+          : idKendType // ignore: cast_nullable_to_non_nullable
+              as IDKendType,
     ) as $Val);
   }
 }
@@ -111,11 +104,10 @@ abstract class _$$_UpdateFrameStateSingleCopyWith<$Res>
   $Res call(
       {IDUnit idUnit,
       FrameUnit frame,
-      EngineUnit engine,
       WarnaUnit warna,
-      SPPDC sppdc,
-      IDKendType idKendType,
-      bool isShowError});
+      bool isShowError,
+      EngineUnit engine,
+      IDKendType idKendType});
 }
 
 /// @nodoc
@@ -132,11 +124,10 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
   $Res call({
     Object? idUnit = null,
     Object? frame = null,
-    Object? engine = null,
     Object? warna = null,
-    Object? sppdc = null,
-    Object? idKendType = null,
     Object? isShowError = null,
+    Object? engine = null,
+    Object? idKendType = null,
   }) {
     return _then(_$_UpdateFrameStateSingle(
       idUnit: null == idUnit
@@ -147,26 +138,22 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
           ? _value.frame
           : frame // ignore: cast_nullable_to_non_nullable
               as FrameUnit,
-      engine: null == engine
-          ? _value.engine
-          : engine // ignore: cast_nullable_to_non_nullable
-              as EngineUnit,
       warna: null == warna
           ? _value.warna
           : warna // ignore: cast_nullable_to_non_nullable
               as WarnaUnit,
-      sppdc: null == sppdc
-          ? _value.sppdc
-          : sppdc // ignore: cast_nullable_to_non_nullable
-              as SPPDC,
-      idKendType: null == idKendType
-          ? _value.idKendType
-          : idKendType // ignore: cast_nullable_to_non_nullable
-              as IDKendType,
       isShowError: null == isShowError
           ? _value.isShowError
           : isShowError // ignore: cast_nullable_to_non_nullable
               as bool,
+      engine: null == engine
+          ? _value.engine
+          : engine // ignore: cast_nullable_to_non_nullable
+              as EngineUnit,
+      idKendType: null == idKendType
+          ? _value.idKendType
+          : idKendType // ignore: cast_nullable_to_non_nullable
+              as IDKendType,
     ));
   }
 }
@@ -177,30 +164,27 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
   const _$_UpdateFrameStateSingle(
       {required this.idUnit,
       required this.frame,
-      required this.engine,
       required this.warna,
-      required this.sppdc,
-      required this.idKendType,
-      required this.isShowError});
+      required this.isShowError,
+      required this.engine,
+      required this.idKendType});
 
   @override
   final IDUnit idUnit;
   @override
   final FrameUnit frame;
   @override
-  final EngineUnit engine;
-  @override
   final WarnaUnit warna;
   @override
-  final SPPDC sppdc;
+  final bool isShowError;
+  @override
+  final EngineUnit engine;
   @override
   final IDKendType idKendType;
-  @override
-  final bool isShowError;
 
   @override
   String toString() {
-    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, engine: $engine, warna: $warna, sppdc: $sppdc, idKendType: $idKendType, isShowError: $isShowError)';
+    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, warna: $warna, isShowError: $isShowError, engine: $engine, idKendType: $idKendType)';
   }
 
   @override
@@ -210,18 +194,17 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
             other is _$_UpdateFrameStateSingle &&
             (identical(other.idUnit, idUnit) || other.idUnit == idUnit) &&
             (identical(other.frame, frame) || other.frame == frame) &&
-            (identical(other.engine, engine) || other.engine == engine) &&
             (identical(other.warna, warna) || other.warna == warna) &&
-            (identical(other.sppdc, sppdc) || other.sppdc == sppdc) &&
-            (identical(other.idKendType, idKendType) ||
-                other.idKendType == idKendType) &&
             (identical(other.isShowError, isShowError) ||
-                other.isShowError == isShowError));
+                other.isShowError == isShowError) &&
+            (identical(other.engine, engine) || other.engine == engine) &&
+            (identical(other.idKendType, idKendType) ||
+                other.idKendType == idKendType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, idUnit, frame, engine, warna,
-      sppdc, idKendType, isShowError);
+  int get hashCode => Object.hash(
+      runtimeType, idUnit, frame, warna, isShowError, engine, idKendType);
 
   @JsonKey(ignore: true)
   @override
@@ -235,26 +218,23 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
   const factory _UpdateFrameStateSingle(
       {required final IDUnit idUnit,
       required final FrameUnit frame,
-      required final EngineUnit engine,
       required final WarnaUnit warna,
-      required final SPPDC sppdc,
-      required final IDKendType idKendType,
-      required final bool isShowError}) = _$_UpdateFrameStateSingle;
+      required final bool isShowError,
+      required final EngineUnit engine,
+      required final IDKendType idKendType}) = _$_UpdateFrameStateSingle;
 
   @override
   IDUnit get idUnit;
   @override
   FrameUnit get frame;
   @override
-  EngineUnit get engine;
-  @override
   WarnaUnit get warna;
   @override
-  SPPDC get sppdc;
+  bool get isShowError;
+  @override
+  EngineUnit get engine;
   @override
   IDKendType get idKendType;
-  @override
-  bool get isShowError;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateFrameStateSingleCopyWith<_$_UpdateFrameStateSingle> get copyWith =>

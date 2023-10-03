@@ -53,18 +53,6 @@ class FormUpdateWarna extends ConsumerWidget {
               onChanged: (value) => ref
                   .read(updateFrameNotifierProvider.notifier)
                   .changeWarna(warnaStr: value, index: index),
-              validator: (_) => ref
-                  .read(updateFrameNotifierProvider)
-                  .updateFrameList[index]
-                  .warna
-                  .value
-                  .fold(
-                    (f) => f.maybeMap(
-                      empty: (_) => 'kosong',
-                      orElse: () => null,
-                    ),
-                    (_) => null,
-                  ),
             ),
           ),
         )

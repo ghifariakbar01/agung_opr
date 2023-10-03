@@ -106,14 +106,14 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     child: CrannyItem(label: 'DATA AKAN DIUPDATE'))
               ],
               //
-              TextButton(
-                  onPressed: () async {
-                    ref.read(modeNotifierProvider.notifier).changeModeAplikasi(
-                        ModeState.checkSheetUnitWithoutSPK());
+              // TextButton(
+              //     onPressed: () async {
+              //       ref.read(modeNotifierProvider.notifier).changeModeAplikasi(
+              //           ModeState.checkSheetUnitWithoutSPK());
 
-                    await context.pushNamed(RouteNames.unitNameRoute);
-                  },
-                  child: CrannyItem(label: 'CHECK SHEET UNIT')),
+              //       await context.pushNamed(RouteNames.unitNameRoute);
+              //     },
+              //     child: CrannyItem(label: 'UPDATE UNIT')),
               //
               CSCrannyPage(),
               //

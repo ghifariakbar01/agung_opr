@@ -52,9 +52,9 @@ class UpdateCSRepository {
 
           await _removeQueryCSFromSaved(idSPK: idSPK);
         } on RestApiException catch (e) {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
-          _removeQueryCSFromSaved(idSPK: idSPK);
+          await _removeQueryCSFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
@@ -285,7 +285,7 @@ class UpdateCSRepository {
 
     log('QUERY SAVE CS : ${csIdQuery.toJson()}');
 
-    debugger();
+    // debugger();
 
     return csIdQuery;
   }
@@ -315,7 +315,7 @@ class UpdateCSRepository {
       }
     }
 
-    debugger();
+    // debugger();
 
     // CONVERT TO MAP, TO ADD ALL STRING
     Map<int, String> queryMap = {};
@@ -350,7 +350,7 @@ class UpdateCSRepository {
 
     log('QUERY SAVE CS NG: ${csIdQuery.toJson()}');
 
-    debugger();
+    // debugger();
 
     return csIdQuery;
   }

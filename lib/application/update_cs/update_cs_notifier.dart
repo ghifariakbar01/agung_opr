@@ -21,9 +21,13 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
   final UpdateCSRepository _repository;
 
+  changeModeState(ModeState mode) => state = state.copyWith(modeSelected: mode);
+
   void changeFillInitial() {
     state = state.copyWith(updateCSForm: UpdateCSFormState.initial());
   }
+
+  changeSelectedSPK(SPK spk) => state = state.copyWith(selectedSPK: spk);
 
   void changeFillWithValue({
     required SPK spk,
@@ -37,9 +41,9 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
         idSPK: spk.idSpk,
         updateCSForm: state.updateCSForm.copyWith(
           nopol: Nopol(spk.nopol),
+          jamLoadUnload: JamLoad(jam),
           namaSupir: Supir1(spk.supir1Nm ?? ''),
           namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
-          jamLoadUnload: JamLoad(jam),
           jamLoadUnloadText: TextEditingController(text: jam),
         ));
   }
@@ -113,7 +117,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
               .status,
           tipe: stateCS.tipe);
 
-      debugger();
+      // debugger();
 
       // set isNG to true
       FOS = await _repository.saveCSQueryOK(queryId: queryId, isNG: true);
@@ -123,7 +127,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           showErrorMessages: false,
           FOSOUpdateCS: optionOf(FOS));
     } else {
-      debugger();
+      // debugger();
 
       state = state.copyWith(
           isProcessing: false,
@@ -141,8 +145,8 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
       final ngStates = state.updateCSForm.ngStates;
 
-      debugger();
-
+      // debugger();
+//
       final queryId = _repository.getNGSavableQuery(
           idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 
@@ -153,7 +157,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           showErrorMessages: false,
           FOSOUpdateCS: optionOf(FOS));
     } else {
-      debugger();
+      // debugger();
 
       state = state.copyWith(
           isProcessing: false,

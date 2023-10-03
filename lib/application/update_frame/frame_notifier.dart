@@ -8,6 +8,7 @@ import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/frame/frame_repository.dart';
 
 class FrameNotifier extends StateNotifier<FrameState> {
@@ -63,6 +64,7 @@ class FrameNotifier extends StateNotifier<FrameState> {
   Future<void> saveFrameIndexedSPK(
       {required int idSPK,
       required int index,
+      required SPPDC sppdc,
       required String custnm,
       required String tglDibuat,
       required UpdateFrameStateSingle newFrame}) async {
@@ -85,7 +87,7 @@ class FrameNotifier extends StateNotifier<FrameState> {
     final idKendTypeStr = newFrame.idKendType.getOrCrash();
     final idKendTypeInt = int.parse(idKendTypeStr);
     //
-    final sppdcStr = newFrame.sppdc.getOrCrash();
+    final sppdcStr = sppdc.getOrCrash();
 
     final frame = Frame(
         idUnit: idUnitInt,

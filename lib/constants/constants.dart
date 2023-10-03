@@ -3,5 +3,5 @@ class Constants {
   static const int passWrongCode = 3;
   static const String passWrong = 'Password Wrong';
   static const String passExpString = 'Password Expired';
-  static int dataIntervalTimerInSeconds = 120;
+  static int dataIntervalTimerInSeconds = 1;
 }

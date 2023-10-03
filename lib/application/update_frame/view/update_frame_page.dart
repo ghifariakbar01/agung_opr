@@ -8,6 +8,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../domain/local_failure.dart';
 import '../../../domain/remote_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
@@ -57,6 +58,26 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<Option<Either<LocalFailure, Unit>>>(
+        updateFrameNotifierProvider.select(
+          (state) => state.FOSOUpdateFrame,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                        storage: (_) =>
+                            'Mohon Maaf Storage anda penuh. Anda tidak bisa menyimpan data Update Frame',
+                        format: (error) => 'Error format. $error',
+                        orElse: () => '',
+                      ),
+                    ),
+                (_) => ref
+                    .read(updateFrameOfflineNotifierProvider.notifier)
+                    .CUUpdateFrameOFFLINEStatus())));
+
     ref.listen<Option<Either<RemoteFailure, List<Frame>>>>(
         frameNotifierProvider.select(
           (state) => state.FOSOFrame,
@@ -72,7 +93,7 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
                             context,
                             message: failure.maybeMap(
                               storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data FRAME',
+                                  'Mohon Maaf Storage anda penuh. Anda tidak bisa menyimpan data Frame',
                               server: (value) =>
                                   value.message ?? 'Server Error',
                               parse: (value) => 'Parse $value',
@@ -114,7 +135,7 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
     return Stack(
       children: [
         UpdateFrameScaffold(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        Positioned(top: 45, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

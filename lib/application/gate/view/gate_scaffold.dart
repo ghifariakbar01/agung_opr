@@ -11,6 +11,7 @@ import '../../../style/style.dart';
 import '../../model/shared/model_providers.dart';
 import '../../spk/shared/spk_providers.dart';
 import '../../widgets/v_appbar.dart';
+import '../csu_mst_gate.dart';
 import '../gate_item.dart';
 import '../providers/gate_providers.dart';
 import 'gate_search.dart';
@@ -66,7 +67,9 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
       },
     );
 
-    final gateList = gateProvider.gates;
+    final gateList = gateProvider.gates
+        .where((element) => element != CSUMSTGate.initial())
+        .toList();
 
     final isSearching = ref
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));

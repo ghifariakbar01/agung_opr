@@ -36,11 +36,11 @@ class UpdateCSRemoteService {
 
       if (items['status'] == 'Success') {
         // HERE
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         return unit;
       } else {
-        debugger(message: 'called');
+        // debugger(message: 'called');
 
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;

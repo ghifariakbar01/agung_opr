@@ -79,7 +79,7 @@ mixin Themes {
 
   static TextStyle greyHint(FontWeight fontWeight, double fontSize) {
     return GoogleFonts.poppins(
-      color: Palette.greySecondary,
+      color: Palette.grey,
       fontWeight: fontWeight,
       fontSize: fontSize,
     );

@@ -23,7 +23,7 @@ class GateSearch extends ConsumerWidget {
           autofocus: false,
           focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Input nama',
+            'Cari Gate',
             icon: SizedBox(
               width: 55,
               child: Row(

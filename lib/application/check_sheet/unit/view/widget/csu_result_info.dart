@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -6,6 +5,8 @@ import '../../../../../style/style.dart';
 import '../../shared/csu_providers.dart';
 import '../csu_trips_item.dart';
 import 'csu_row_item.dart';
+
+final hideTripProvider = StateProvider<bool>((ref) => true);
 
 class CSUResultInfo extends ConsumerWidget {
   const CSUResultInfo();
@@ -17,6 +18,8 @@ class CSUResultInfo extends ConsumerWidget {
 
     final csuResultTripList = ref.watch(
         csuFrameNotifierProvider.select((value) => value.csuTripsResultList));
+
+    final hideTrip = ref.watch(hideTripProvider);
 
     return // Informasi Unit
         Container(
@@ -50,13 +53,29 @@ class CSUResultInfo extends ConsumerWidget {
           ),
 
           // Trips
-          if (csuResultTripList.isNotEmpty) ...[
+          if (csuResultTripList.isNotEmpty && hideTrip != true) ...[
             for (int index = 0; index < csuResultTripList.length; index++) ...[
               CSUTripsItem(
                 index: index,
               )
             ],
-          ]
+          ],
+
+          Row(
+            children: [
+              Text(
+                'Sembunyikan Trip',
+                style: Themes.customColor(
+                    FontWeight.bold, 12, Palette.primaryColor),
+              ),
+              Switch(
+                value: hideTrip,
+                onChanged: (value) =>
+                    ref.read(hideTripProvider.notifier).state = value,
+                activeColor: Palette.primaryColor,
+              ),
+            ],
+          )
         ],
       ),
     );

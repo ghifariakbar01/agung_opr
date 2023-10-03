@@ -15,34 +15,20 @@ class GateItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
+          height: 50,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Palette.primaryColor, width: 2)),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ID: ${gate.id}',
-                        style: Themes.customColor(
-                            FontWeight.bold, 14, Palette.primaryColor),
-                      ),
-                      Text(
-                        'NAMA: ${gate.nama ?? '-'}',
-                        style: Themes.customColor(
-                            FontWeight.bold, 12, Palette.primaryColor),
-                      ),
-                    ],
-                  ),
-                ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Center(
+              child: Text(
+                '${gate.nama ?? '-'}',
+                style: Themes.customColor(
+                    FontWeight.bold, 12, Palette.primaryColor),
               ),
-            ],
+            ),
           )),
     );
   }

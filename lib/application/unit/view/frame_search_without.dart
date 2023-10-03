@@ -23,7 +23,7 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
           autofocus: false,
           focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Input Frame',
+            'Cari Frame',
             icon: SizedBox(
               width: 55,
               child: Row(

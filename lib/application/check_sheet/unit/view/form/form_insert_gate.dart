@@ -61,7 +61,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                         ), (gateResponse) {
                   /// SET [gateResponse] from GOT gateList
                   // debugger(message: 'called');
-                  log('GATE RESPONSE: $gateResponse');
+                  // log('GATE RESPONSE: $gateResponse');
                   if (gateResponse != []) {
                     ref
                         .read(gateNotifierProvider.notifier)
@@ -130,7 +130,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                 child: TextFormField(
                   controller: gateTextController,
                   decoration: Themes.formStyle(
-                    'Pilih gate',
+                    'Pilih Gate',
                   ),
                   keyboardType: TextInputType.name,
                   onChanged: (value) => {},
@@ -141,7 +141,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                       .value
                       .fold(
                         (f) => f.maybeMap(
-                          empty: (_) => 'kosong',
+                          empty: (_) => 'Silahkan Masukan Gate disini',
                           orElse: () => null,
                         ),
                         (_) => null,

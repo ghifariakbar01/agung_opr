@@ -436,7 +436,6 @@ class UpdateCSUFrameRepository {
         return right(response);
       } else {
         // debugger(message: 'CALLED');
-        log('isStorageSaved CSU: NOT OK');
 
         return right([]);
       }

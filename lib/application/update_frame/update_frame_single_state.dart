@@ -8,19 +8,18 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
   const factory UpdateFrameStateSingle({
     required IDUnit idUnit,
     required FrameUnit frame,
-    required EngineUnit engine,
     required WarnaUnit warna,
-    required SPPDC sppdc,
-    required IDKendType idKendType,
     required bool isShowError,
+    required EngineUnit engine,
+    required IDKendType idKendType,
   }) = _UpdateFrameStateSingle;
 
   factory UpdateFrameStateSingle.initial() => UpdateFrameStateSingle(
-      idUnit: IDUnit(''),
-      frame: FrameUnit(''),
-      engine: EngineUnit(''),
-      warna: WarnaUnit(''),
-      sppdc: SPPDC(''),
-      idKendType: IDKendType(''),
-      isShowError: false);
+        isShowError: false,
+        idUnit: IDUnit(''),
+        frame: FrameUnit(''),
+        warna: WarnaUnit(''),
+        engine: EngineUnit(''),
+        idKendType: IDKendType(''),
+      );
 }

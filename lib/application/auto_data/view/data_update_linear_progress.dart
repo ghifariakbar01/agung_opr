@@ -1,4 +1,3 @@
-
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +41,7 @@ class DataUpdateLinearProgress extends ConsumerWidget {
     return Visibility(
       visible: hasQueryData,
       child: SizedBox(
-        height: 15,
+        height: 30,
         width: MediaQuery.of(context).size.width,
         child: LinearProgressIndicator(
           color: Palette.secondaryColor,

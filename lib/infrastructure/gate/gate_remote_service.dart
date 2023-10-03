@@ -27,8 +27,8 @@ class GateRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data ${jsonEncode(data)}');
-      log('response $response');
+      // log('data ${jsonEncode(data)}');
+      // log('response $response');
 
       final items = response.data?[0];
 
@@ -43,7 +43,7 @@ class GateRemoteService {
               List<CSUMSTGate> csuMSTGate =
                   (list).map((data) => CSUMSTGate.fromJson(data)).toList();
 
-              log('LIST CSUMSTGate: $list');
+              // log('LIST CSUMSTGate: $list');
 
               // debugger(message: 'called');
 
@@ -116,7 +116,7 @@ class GateRemoteService {
               List<CSUMSTGate> csuMSTGate =
                   (list).map((data) => CSUMSTGate.fromJson(data)).toList();
 
-              log('LIST CSUMSTGate: $list');
+              // log('LIST CSUMSTGate: $list');
 
               // debugger(message: 'called');
 

@@ -93,7 +93,7 @@ class SPKRepository {
     try {
       final spkStorage = await _storage.read();
 
-      log('SPK STORAGE: $spkStorage');
+      // log('SPK STORAGE: $spkStorage');
 
       // HAS LIST
       if (spkStorage != null) {
@@ -143,7 +143,7 @@ class SPKRepository {
 
       final searchUpperCase = search.toUpperCase();
 
-      log('SPK STORAGE: $spkStorage');
+      // log('SPK STORAGE: $spkStorage');
 
       // HAS LIST
       if (spkStorage != null) {

@@ -25,7 +25,7 @@ class SPKSearch extends ConsumerWidget {
           autofocus: false,
           focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Input Nomor SPK/NOPOL/DRIVER',
+            'Cari NOPOL(Angka Saja) / Nama DRIVER / SPK',
             icon: SizedBox(
               width: 55,
               child: Row(

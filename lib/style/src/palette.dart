@@ -3,6 +3,8 @@ part of style;
 class Palette {
   static const primaryColor = Color(0xff65B689);
 
+  static const primaryColorDarker = Color.fromARGB(255, 57, 123, 87);
+
   static const primaryDarker = Color(0xFF005BE4);
 
   static const primaryDarkerMaximize = Color.fromARGB(255, 0, 74, 184);

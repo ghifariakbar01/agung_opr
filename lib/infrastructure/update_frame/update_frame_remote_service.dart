@@ -32,7 +32,7 @@ class UpdateFrameRemoteService {
       final items = response.data?[0];
 
       if (items['status'] == 'Success') {
-        debugger(message: 'called');
+        // debugger(message: 'called');
         // HERE
         return unit;
       } else {

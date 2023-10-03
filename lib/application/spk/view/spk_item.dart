@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class SPKItem extends StatelessWidget {
   const SPKItem({
     Key? key,
+    this.color,
+    this.brdrColor,
     required this.nomorSpk,
     required this.namaTrayek,
     required this.namaDriver,
@@ -11,6 +13,8 @@ class SPKItem extends StatelessWidget {
     required this.tglBerangkat,
   }) : super(key: key);
 
+  final Color? color;
+  final Color? brdrColor;
   final String nomorSpk;
   final String namaTrayek;
   final String namaDriver;
@@ -24,13 +28,24 @@ class SPKItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Palette.primaryColor, width: 2)),
+            border:
+                Border.all(color: brdrColor ?? Palette.primaryColor, width: 2)),
         child: Center(
-          child: Text(
-            '$nomorSpk\n$namaDriver\n$nomorPolisi\n$namaTrayek\n$tglBerangkat',
-            textAlign: TextAlign.center,
-            style:
-                Themes.customColor(FontWeight.bold, 15, Palette.primaryColor),
+          child: Column(
+            children: [
+              Text(
+                '$nomorPolisi\n$tglBerangkat',
+                textAlign: TextAlign.center,
+                style: Themes.customColor(
+                    FontWeight.bold, 15, Palette.primaryColorDarker),
+              ),
+              Text(
+                '$namaTrayek\n\n$nomorSpk\n$namaDriver',
+                textAlign: TextAlign.center,
+                style: Themes.customColor(
+                    FontWeight.bold, 15, color ?? Palette.primaryColor),
+              ),
+            ],
           ),
         ),
       ),

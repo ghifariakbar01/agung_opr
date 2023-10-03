@@ -1,12 +1,7 @@
-import 'dart:developer';
-
-import 'package:agung_opr/domain/local_failure.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../shared/providers.dart';
-import '../../widgets/alert_helper.dart';
+import '../../../domain/value_objects_copy.dart';
 import '../shared/update_frame_providers.dart';
 import 'update_frame_item_middle.dart';
 
@@ -26,57 +21,26 @@ class _UpdateFrameItemScaffoldState
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(updateFrameNotifierProvider.notifier)
-          .changeIndex(index: widget.index);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => ref
+        .read(updateFrameNotifierProvider.notifier)
+        .changeIndex(index: widget.index));
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<Option<Either<LocalFailure, Unit>>>(
-        updateFrameNotifierProvider.select(
-          (state) => state.FOSOUpdateFrame[widget.index],
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.maybeMap(
-                            storage: (_) =>
-                                'Storage penuh. Tidak bisa menyimpan data UPDATE FRAME',
-                            format: (error) => 'Error format. $error',
-                            orElse: () => '',
-                          ),
-                        ), (_) async {
-                  final updateFrameProvider =
-                      ref.read(updateFrameNotifierProvider);
+    // FORM LISTENER
+    ref.listen<FrameUnit>(
+        updateFrameNotifierProvider
+            .select((value) => value.updateFrameList[widget.index].frame),
+        (prev, __) =>
+            ref.read(updateFrameNotifierProvider.notifier).checkIfValid());
 
-                  final frame = ref.read(frameNotifierProvider
-                      .select((value) => value.frameList[widget.index]));
+    ref.listen<SPPDC>(
+        updateFrameNotifierProvider.select((value) => value.sppdc),
+        (prev, __) =>
+            ref.read(updateFrameNotifierProvider.notifier).checkIfValid());
 
-                  final modeApp = ref.read(modeNotifierProvider);
-
-                  debugger(message: 'called');
-
-                  log('INDEX: ${widget.index}');
-
-                  int idSpk = modeApp.maybeWhen(
-                      checkSheetUnit: () => updateFrameProvider.idSPK,
-                      orElse: () => 0);
-
-                  await ref
-                      .read(frameNotifierProvider.notifier)
-                      .saveFrameIndexedSPK(
-                          idSPK: idSpk,
-                          index: widget.index,
-                          custnm: frame.custnm ?? '',
-                          tglDibuat: frame.tglDibuat ?? '',
-                          newFrame: updateFrameProvider
-                              .updateFrameList[widget.index]);
-                })));
+    //
 
     return Stack(
       children: [

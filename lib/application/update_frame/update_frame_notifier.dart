@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
@@ -18,83 +20,51 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
   final UpdateFrameRepository _repository;
 
+  checkIfValid() {
+    bool isFrameValid() =>
+        List.generate(state.updateFrameList.length, ((index) => isValid(index)))
+                    .firstWhereOrNull((element) => element == false) !=
+                null
+            ? false
+            : true;
+
+    state = state.copyWith(isValid: isFrameValid());
+  }
+
   Future<void> updateAllFrame({
+    required SPPDC sjkb,
     required List<UpdateFrameStateSingle> updateFrameList,
   }) async {
     Either<LocalFailure, Unit>? FOS;
 
+    //  required String idSPK,
+    // required IDUnit idUnit,
+    // required IDKendType idKendType,
+    // required FrameUnit frame,
+    // required EngineUnit engine,
+    // required WarnaUnit warna,
+    // required SPPDC sppdc,
+
     if (updateFrameList.isNotEmpty) {
-      updateFrameList.forEachIndexed((index, item) async {
-        //
-        if (isValid(index)) {
-          state = state.copyWith(isProcessing: true);
-
-          this.changeFOSOUpdateFrame(index: index, FOS: none());
-
-          // debugger(message: 'called');
-
-          FOS = await _repository.updateFrameSPK(
-            idSPK: state.idSPK.toString(),
-            idUnit: item.idUnit,
-            idKendType: item.idKendType,
-            engine: item.engine,
-            frame: item.frame,
-            warna: item.warna,
-            sppdc: item.sppdc,
-          );
-
-          state = state.copyWith(isProcessing: false);
-
-          this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
-        } else {
-          this.changeShowErrorMessage(index: index, isShowError: true);
-
-          state = state.copyWith(isProcessing: false);
-
-          this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
-        }
-      });
-    } else {
       //
-      state = state.copyWith(isProcessing: false);
 
-      //
-    }
-  }
-
-  Future<void> updateFrame({
-    required int index,
-  }) async {
-    Either<LocalFailure, Unit>? FOS;
-
-    final item = state.updateFrameList[index];
-
-    if (isValid(index)) {
-      state = state.copyWith(isProcessing: true);
-
-      this.changeFOSOUpdateFrame(index: index, FOS: none());
+      state = state.copyWith(isProcessing: true, FOSOUpdateFrame: none());
 
       // debugger(message: 'called');
 
       FOS = await _repository.updateFrameSPK(
+        sppdc: sjkb.getOrLeave(''),
         idSPK: state.idSPK.toString(),
-        idUnit: item.idUnit,
-        idKendType: item.idKendType,
-        engine: item.engine,
-        frame: item.frame,
-        warna: item.warna,
-        sppdc: item.sppdc,
+        updateFrameList: updateFrameList,
       );
 
-      state = state.copyWith(isProcessing: false);
-
-      this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+      state =
+          state.copyWith(isProcessing: false, FOSOUpdateFrame: optionOf(FOS));
     } else {
-      this.changeShowErrorMessage(index: index, isShowError: true);
-
+      //
       state = state.copyWith(isProcessing: false);
 
-      this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+      //
     }
   }
 
@@ -104,19 +74,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
   void changeIdSPK({required int idSPK}) {
     state = state.copyWith(idSPK: idSPK);
-  }
-
-  void changeFOSOUpdateFrame(
-      {required Option<Either<LocalFailure, Unit>> FOS, required int index}) {
-    final list = [...state.FOSOUpdateFrame]; // Create a copy of the list
-
-    final Option<Either<LocalFailure, Unit>> updatedElement = FOS;
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(FOSOUpdateFrame: list);
   }
 
   void changeShowErrorMessage({required bool isShowError, required int index}) {
@@ -143,7 +100,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
                   : ''),
               engine: EngineUnit(frame[index].engine ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
-              sppdc: SPPDC(frame[index].sppdc ?? ''),
               isShowError: false,
             ));
 
@@ -173,27 +129,22 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       frameTextController: generateListFrameTextController,
     );
 
-    final generateListSPPDCTextController = List.generate(
-        length,
-        (index) => TextEditingController(
-            text: frame[index].sppdc != null
-                ? frame[index].sppdc.toString()
-                : ''));
+    log('frame list $frame');
 
-    state = state.copyWith(
-      sppdcTextController: generateListSPPDCTextController,
-    );
+    final frameHasSPPDC =
+        frame.firstWhereOrNull((element) => element.sppdc != null);
 
-    Either<LocalFailure, Unit>? initial;
+    if (frameHasSPPDC != null && frameHasSPPDC.sppdc != null) {
+      final sjkbText =
+          TextEditingController(text: frameHasSPPDC.sppdc.toString());
 
-    final generateListFOSOUpdateFrame =
-        List.generate(length, (index) => optionOf(initial));
-
-    // debugger(message: 'called');
-
-    state = state.copyWith(
-      FOSOUpdateFrame: generateListFOSOUpdateFrame,
-    );
+      state = state.copyWith(
+          sjkbTextController: sjkbText, sppdc: SPPDC(frameHasSPPDC.sppdc!));
+    } else {
+      state = state.copyWith(
+          sjkbTextController: TextEditingController(text: ''),
+          sppdc: SPPDC(''));
+    }
   }
 
   void changeIdUnit({required String idUnitStr, required int index}) {
@@ -248,17 +199,8 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(updateFrameList: list);
   }
 
-  void changeNoSPPDC({required String noSPPDCStr, required int index}) {
-    final list = [...state.updateFrameList]; // Create a copy of the list
-
-    final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(sppdc: SPPDC(noSPPDCStr));
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(updateFrameList: list);
+  void changeNoSPPDC({required String noSPPDCStr}) {
+    state = state.copyWith(sppdc: SPPDC(noSPPDCStr));
   }
 
   void changeIdKendType({required String idKendTypeStr, required int index}) {
@@ -279,15 +221,53 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     // HERE
     final values = [
-      // frame.engine,
       frame.frame,
-      frame.idKendType,
+      state.sppdc,
       frame.idUnit,
-      // frame.noReff,
-      frame.sppdc,
       // frame.warna,
+      // frame.engine,
+      // frame.noReff,
+      // frame.idKendType,
     ];
+
+    log('values $values');
 
     return Validator.validate(values);
   }
+
+  // Future<void> updateFrame({
+  //   required int index,
+  // }) async {
+  //   Either<LocalFailure, Unit>? FOS;
+
+  //   final item = state.updateFrameList[index];
+
+  //   if (isValid(index)) {
+  //     state = state.copyWith(isProcessing: true);
+
+  //     this.changeFOSOUpdateFrame(index: index, FOS: none());
+
+  //     // debugger(message: 'called');
+
+  //     FOS = await _repository.updateFrameSPK(
+  //       idSPK: state.idSPK.toString(),
+  //       idUnit: item.idUnit,
+  //       idKendType: item.idKendType,
+  //       engine: item.engine,
+  //       frame: item.frame,
+  //       warna: item.warna,
+  //       sppdc: item.sppdc,
+  //     );
+
+  //     state = state.copyWith(isProcessing: false);
+
+  //     this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+  //   } else {
+  //     this.changeShowErrorMessage(index: index, isShowError: true);
+
+  //     state = state.copyWith(isProcessing: false);
+
+  //     this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
+  //   }
+  // }
 }

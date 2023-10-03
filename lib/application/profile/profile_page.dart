@@ -45,7 +45,7 @@ class ProfilePage extends HookConsumerWidget {
                     asset: Assets.iconCrossed,
                   ),
                 ),
-            (_) => ref.read(userNotifierProvider.notifier).getUser()),
+            (_) {}),
       ),
     );
 

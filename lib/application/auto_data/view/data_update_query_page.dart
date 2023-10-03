@@ -120,7 +120,7 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
     return Stack(
       children: [
         DataUpdateQueryScaffold(),
-        Positioned(top: 15, child: DataUpdateLinearProgress()),
+        Positioned(top: 45, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isSubmitting)
       ],
     );

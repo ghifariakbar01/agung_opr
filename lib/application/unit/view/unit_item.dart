@@ -24,11 +24,21 @@ class UnitItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Palette.primaryColor, width: 2)),
         child: Center(
-          child: Text(
-            '$nomorUnit\n$namaFrame\n$namaCust\n$tglDibuat',
-            textAlign: TextAlign.center,
-            style:
-                Themes.customColor(FontWeight.bold, 15, Palette.primaryColor),
+          child: Column(
+            children: [
+              Text(
+                '$tglDibuat\n$namaCust',
+                textAlign: TextAlign.center,
+                style: Themes.customColor(
+                    FontWeight.bold, 15, Palette.primaryColorDarker),
+              ),
+              Text(
+                '$namaFrame',
+                textAlign: TextAlign.center,
+                style: Themes.customColor(
+                    FontWeight.bold, 15, Palette.primaryColor),
+              ),
+            ],
           ),
         ),
       ),

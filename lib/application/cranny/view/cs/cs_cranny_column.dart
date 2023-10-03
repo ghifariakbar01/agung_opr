@@ -35,37 +35,37 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
 
               await context.pushNamed(RouteNames.spkNameRoute);
             },
-            child: CrannyItem(label: 'LOADING')),
-        TextButton(
-            onPressed: () async {
-              ModeState mode = ModeState.checkSheetLoadingUnloading();
+            child: CrannyItem(label: 'UPDATE UNIT')),
+        // TextButton(
+        //     onPressed: () async {
+        //       ModeState mode = ModeState.checkSheetLoadingUnloading();
 
-              ref.read(frameNotifierProvider.notifier).changeFillInitial();
-              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
-              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
-              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+        //       ref.read(frameNotifierProvider.notifier).changeFillInitial();
+        //       ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+        //       ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+        //       ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
 
-              const int id = 2;
-              ref.read(csItemNotifierProvider.notifier).changeId(id);
+        //       const int id = 2;
+        //       ref.read(csItemNotifierProvider.notifier).changeId(id);
 
-              await context.pushNamed(RouteNames.spkNameRoute);
-            },
-            child: CrannyItem(label: 'LOADING & UNLOADING')),
-        TextButton(
-            onPressed: () async {
-              ModeState mode = ModeState.checkSheetUnloading();
+        //       await context.pushNamed(RouteNames.spkNameRoute);
+        //     },
+        //     child: CrannyItem(label: 'LOADING & UNLOADING')),
+        // TextButton(
+        //     onPressed: () async {
+        //       ModeState mode = ModeState.checkSheetUnloading();
 
-              ref.read(frameNotifierProvider.notifier).changeFillInitial();
-              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
-              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
-              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+        //       ref.read(frameNotifierProvider.notifier).changeFillInitial();
+        //       ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+        //       ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+        //       ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
 
-              const int id = 3;
-              ref.read(csItemNotifierProvider.notifier).changeId(id);
+        //       const int id = 3;
+        //       ref.read(csItemNotifierProvider.notifier).changeId(id);
 
-              await context.pushNamed(RouteNames.spkNameRoute);
-            },
-            child: CrannyItem(label: 'UNLOADING')),
+        //       await context.pushNamed(RouteNames.spkNameRoute);
+        //     },
+        //     child: CrannyItem(label: 'UNLOADING')),
       ],
     );
   }

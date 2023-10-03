@@ -60,7 +60,7 @@ class CheckSheetItemNotifier extends StateNotifier<CSItemState> {
 
     final finalIndex = prevIndexLength + index;
 
-    return finalIndex - 1;
+    return finalIndex;
   }
 
   List<int> getCSId(int id) {
