@@ -54,6 +54,7 @@ class SupirScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
+          context,
           'supir List',
         ),
         body: Padding(

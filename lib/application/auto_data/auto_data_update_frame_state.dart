@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/remote_failure.dart';
+import '../history/history.dart';
 
 part 'auto_data_update_frame_state.freezed.dart';
 
@@ -16,6 +17,8 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
     required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
     required List<CSUIDQuery> csuIdQueries,
     required List<CSIDQuery> csIdQueries,
+    required List<History> histories,
+
     //
     required Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
     //
@@ -25,15 +28,20 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
         FOSOAutoDataLocalUpdateFrameCSU,
     required Option<Either<LocalFailure, List<CSIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCS,
+    required Option<Either<LocalFailure, List<History>>>
+        FOSOAutoDataLocalHistory,
   }) = _AutoDataUpdateFrameState;
 
   factory AutoDataUpdateFrameState.initial() => AutoDataUpdateFrameState(
-      isGetting: false,
-      idSPKMapidTIUnitMapQuery: {},
-      csuIdQueries: [],
-      csIdQueries: [],
-      FOSOAutoDataRemote: none(),
-      FOSOSPKAutoDataLocalUpdateFrame: none(),
-      FOSOAutoDataLocalUpdateFrameCSU: none(),
-      FOSOAutoDataLocalUpdateFrameCS: none());
+        isGetting: false,
+        idSPKMapidTIUnitMapQuery: {},
+        csuIdQueries: [],
+        csIdQueries: [],
+        histories: [],
+        FOSOAutoDataRemote: none(),
+        FOSOAutoDataLocalHistory: none(),
+        FOSOSPKAutoDataLocalUpdateFrame: none(),
+        FOSOAutoDataLocalUpdateFrameCSU: none(),
+        FOSOAutoDataLocalUpdateFrameCS: none(),
+      );
 }

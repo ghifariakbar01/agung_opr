@@ -29,7 +29,7 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
         .select((value) => value.csIdQueries));
 
     return Scaffold(
-        appBar: VAppBar('Data Akan Diupdate'),
+        appBar: VAppBar(context, 'Data Akan Diupdate'),
         bottomNavigationBar: Container(
           height: 63,
           width: MediaQuery.of(context).size.width,

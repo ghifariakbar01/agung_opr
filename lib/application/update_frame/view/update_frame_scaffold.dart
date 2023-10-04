@@ -27,6 +27,7 @@ class UpdateFrameScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
           appBar: VAppBar(
+            context,
             '${modeApp.maybeWhen(
               updateFrameDummy: () => 'Update Frame Dummy',
               checkSheetUnit: () => 'Check Sheet Unit',

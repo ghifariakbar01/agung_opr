@@ -7,24 +7,29 @@ import 'package:intl/intl.dart';
 
 import '../../application/check_sheet/loading/state/update_cs_ng_state.dart';
 import '../../application/check_sheet/shared/state/cs_id_query.dart';
+import '../../application/history/history.dart';
 import '../../application/user/user_model.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
 import '../../domain/value_objects_copy.dart';
+import '../../utils/string_utils.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
+import '../history/history_repository.dart';
 import 'update_cs_remote_service.dart';
 
 class UpdateCSRepository {
   UpdateCSRepository(
-    this._remoteService,
-    this._userModelWithPassword,
     this._storage,
+    this._remoteService,
+    this._historyRepository,
+    this._userModelWithPassword,
   );
 
+  final CredentialsStorage _storage;
+  final HistoryRepository _historyRepository;
   final UpdateCSRemoteService _remoteService;
   final UserModelWithPassword _userModelWithPassword;
-  final CredentialsStorage _storage;
 
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
@@ -55,6 +60,9 @@ class UpdateCSRepository {
           // debugger(message: 'called');
 
           await _removeQueryCSFromSaved(idSPK: idSPK);
+
+          await _historyRepository.clearHistoryFromStorageByIdSPK(
+              idSPK: idSPK.toString());
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
@@ -153,7 +161,11 @@ class UpdateCSRepository {
   }
 
   Future<Either<LocalFailure, Unit>> saveCSQueryOK(
-      {required CSIDQuery queryId, bool isNG = false}) async {
+      {required CSIDQuery queryId,
+      bool isNG = false,
+      required String idUser,
+      required String nama,
+      required String gate}) async {
     try {
       final savedStrings = await _storage.read();
       final isQueryOK = queryId.query.isNotEmpty;
@@ -172,15 +184,25 @@ class UpdateCSRepository {
                   .indexWhere((element) => element.idSPK == queryId.idSPK);
 
               if (index == -1) {
+                debugger();
+
                 final list = [...response, queryId];
 
                 await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+
+                await _saveHistory(
+                    csuIdQuery: queryId,
+                    contentCoant: 'Gate $gate',
+                    idUser: idUser,
+                    nama: nama);
 
                 // debugger(message: 'called');
 
                 log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
               } else {
                 if (!isNG) {
+                  debugger();
+
                   // if not NG, replace list
                   final list = [...response];
 
@@ -189,15 +211,29 @@ class UpdateCSRepository {
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
+                  await _saveHistory(
+                      csuIdQuery: queryId,
+                      contentCoant: 'Gate $gate',
+                      idUser: idUser,
+                      nama: nama);
+
                   // debugger(message: 'called');
 
                   log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
                 } else {
+                  debugger();
+
                   // if NG, coancenate
                   final list = [...response, queryId];
 
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+
+                  await _saveHistory(
+                      csuIdQuery: queryId,
+                      contentCoant: 'Gate $gate',
+                      idUser: idUser,
+                      nama: nama);
 
                   // debugger(message: 'called');
 
@@ -210,9 +246,17 @@ class UpdateCSRepository {
             () async {
               final list = [queryId];
 
+              debugger();
+
               log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
 
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+
+              await _saveHistory(
+                  csuIdQuery: queryId,
+                  contentCoant: 'Gate $gate',
+                  idUser: idUser,
+                  nama: nama);
             }();
         }
       } else {
@@ -229,6 +273,27 @@ class UpdateCSRepository {
     } on PlatformException {
       return left(LocalFailure.storage());
     }
+  }
+
+  Future<Unit> _saveHistory(
+      {required CSIDQuery csuIdQuery,
+      required String idUser,
+      required String nama,
+      required String contentCoant}) async {
+    final tgl = StringUtils.trimmedDate(DateTime.now());
+
+    final history = History(
+        idUser: int.parse(idUser),
+        query: '<TRUNCATED>',
+        content: 'Check Sheet $contentCoant dengan id SPK ${csuIdQuery.idSPK}',
+        cUser: nama,
+        cDate: tgl,
+        sDate: tgl);
+
+    // SAVE To History
+    await _historyRepository.saveHistoryInStorage(history: history);
+
+    return unit;
   }
 
   CSIDQuery getOKSavableQuery({

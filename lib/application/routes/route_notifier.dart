@@ -21,6 +21,7 @@ import '../check_sheet/loading/view/check_sheet_loading_page.dart';
 import '../check_sheet/unit/view/csu_new_page.dart';
 import '../check_sheet/unit/view/csu_result_page.dart';
 import '../gate/view/gate_page.dart';
+import '../history/view/history_page.dart';
 import '../profile/profile_page.dart';
 import '../sign_in_form/view/sign_in_page.dart';
 import '../spk/spk.dart';
@@ -185,6 +186,11 @@ class RouterNotifier extends ChangeNotifier {
               name: RouteNames.dataUpdateQueryName,
               path: RouteNames.dataUpdateQueryNameRoute,
               builder: (context, state) => DataUpdateQueryPage(),
+            ),
+            GoRoute(
+              name: RouteNames.historyName,
+              path: RouteNames.historyNameRoute,
+              builder: (context, state) => HistoryPage(),
             ),
           ]),
     ];

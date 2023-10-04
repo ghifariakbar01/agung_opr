@@ -25,8 +25,6 @@ class FormUpdateSPPDC extends ConsumerWidget {
 
     final modeApp = ref.watch(modeNotifierProvider);
 
-    log('sppdc $sppdc');
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

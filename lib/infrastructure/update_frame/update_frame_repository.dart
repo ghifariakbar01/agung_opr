@@ -2,14 +2,18 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agung_opr/domain/remote_failure.dart';
+import 'package:agung_opr/utils/string_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
+import '../../application/history/history.dart';
 import '../../application/update_frame/update_frame_single_state.dart';
 import '../../domain/local_failure.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
+import '../history/history_repository.dart';
 import 'update_frame_remote_service.dart';
 
 /// [updateFrameSPK] PROCESS LIST OF [Frame]
@@ -38,8 +42,10 @@ class UpdateFrameRepository {
   UpdateFrameRepository(
     this._remoteService,
     this._storage,
+    this._historyRepository,
   );
 
+  final HistoryRepository _historyRepository;
   final UpdateFrameRemoteService _remoteService;
   final CredentialsStorage _storage;
 
@@ -104,6 +110,11 @@ class UpdateFrameRepository {
                   debugger(message: 'called');
 
                   await _removeQueryFromMap(query: query);
+
+                  String idSPK = queryMap.keys.first;
+
+                  await _historyRepository.clearHistoryFromStorageByIdSPK(
+                      idSPK: idSPK);
 
                   return left(RemoteFailure.server(e.errorCode, e.message));
                 } on NoConnectionException {
@@ -195,10 +206,46 @@ class UpdateFrameRepository {
     }
   }
 
-  Future<Either<LocalFailure, Unit>> updateFrameSPK(
-      {required List<UpdateFrameStateSingle> updateFrameList,
-      required String idSPK,
-      required String sppdc}) async {
+  Future<Unit> _saveHistory({
+    required String idSPK,
+    required String sppdc,
+    required String userId,
+    required String nama,
+    required String query,
+    required String gate,
+    required List<UpdateFrameStateSingle> updateFrameList,
+  }) async {
+    final tgl = StringUtils.trimmedDate(DateTime.now());
+
+    final List<String> frame =
+        updateFrameList.map((e) => e.frame.getOrLeave('')).toList();
+
+    String frameString =
+        frame.fold('', (previousValue, element) => '$element, $previousValue');
+
+    final history = History(
+        idUser: int.parse(userId),
+        query: query,
+        content:
+            'Update Frame di Gate $gate dengan No. SPPDC $sppdc dan Frame $frameString dan id SPK $idSPK',
+        cUser: nama,
+        cDate: tgl,
+        sDate: tgl);
+
+    // SAVE To History
+    await _historyRepository.saveHistoryInStorage(history: history);
+
+    return unit;
+  }
+
+  Future<Either<LocalFailure, Unit>> updateFrameSPK({
+    required List<UpdateFrameStateSingle> updateFrameList,
+    required String idSPK,
+    required String sppdc,
+    required String userId,
+    required String nama,
+    required String gate,
+  }) async {
     try {
       final Map<String, String> mapOfCommands = {};
 
@@ -234,6 +281,15 @@ class UpdateFrameRepository {
       // debugger(message: 'called');
 
       await this._GETAndADDFrameSPKInMap(newFrameMap: newMap);
+
+      await this._saveHistory(
+          idSPK: idSPK,
+          sppdc: sppdc,
+          userId: userId,
+          nama: nama,
+          gate: gate,
+          query: mapOfCommands.toString(),
+          updateFrameList: updateFrameList);
 
       return right(unit);
     } on FormatException catch (e) {

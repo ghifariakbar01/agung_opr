@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:collection/collection.dart';
@@ -77,6 +78,11 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
         final idSPK = widget.spk.idSpk;
         ref.read(selectedSPKStateProvider.notifier).state = widget.spk;
         ref.read(updateCSNotifierProvider.notifier).changeidSPK(idSPK);
+        ref
+            .read(updateFrameNotifierProvider.notifier)
+            .changeIdSPK(idSPK: idSPK);
+
+        debugger();
 
         // CS ITEM
         Map<int, List<CSItem>> csItemMap = {};
@@ -166,6 +172,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                       .read(updateCSNotifierProvider.notifier)
                       .changeidSPK(idSPK);
 
+                  ref
+                      .read(updateFrameNotifierProvider.notifier)
+                      .changeIdSPK(idSPK: idSPK);
+
                   // CS ITEM
                   Map<int, List<CSItem>> csItemMap = {};
 
@@ -225,8 +235,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
 
     final isLoading = ref.watch(
             frameNotifierProvider.select((value) => value.isProcessing)) ||
-        ref.watch(
-            updateFrameNotifierProvider.select((value) => value.isProcessing));
+        ref.watch(updateFrameNotifierProvider
+            .select((value) => value.isProcessing)) ||
+        ref.watch(autoDataUpdateFrameNotifierProvider
+            .select((value) => value.isGetting));
 
     return Stack(
       children: [

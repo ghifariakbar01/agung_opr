@@ -54,6 +54,7 @@ class ModelScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
+          context,
           'Model List',
         ),
         body: Padding(

@@ -58,4 +58,7 @@ class RouteNames {
 
   static const dataUpdateQueryNameRoute = 'dataUpdateQuery';
   static const dataUpdateQueryName = 'dataUpdateQuery';
+
+  static const historyNameRoute = 'history';
+  static const historyName = 'history';
 }

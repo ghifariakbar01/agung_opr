@@ -80,6 +80,7 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
+          context,
           'SPK List',
         ),
         body: Padding(

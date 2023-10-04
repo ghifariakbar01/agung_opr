@@ -215,4 +215,31 @@ class SPKRepository {
 
     return unit;
   }
+
+  Future<Unit> clearSPKStorageById({required int idSPK}) async {
+    final spkStorage = await _storage.read();
+
+    // log('SPK STORAGE: $spkStorage');
+
+    // HAS LIST
+    if (spkStorage != null) {
+      // final _getTotalPages = (spkList.length / itemsPerPage).ceil();
+
+      final response = jsonDecode(spkStorage);
+
+      List<SPK> spkList =
+          (response as List).map((data) => SPK.fromJson(data)).toList();
+
+      final responseSPKTosave =
+          spkList.where((element) => element.idSpk != idSPK).toSet().toList();
+
+      final listResponseSPKToSave = SPK.SPKListToJson(responseSPKTosave);
+
+      await _storage.save(listResponseSPKToSave);
+
+      return unit;
+    } else {
+      return unit;
+    }
+  }
 }

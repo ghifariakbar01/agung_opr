@@ -24,6 +24,7 @@ class CustomerScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
+          context,
           'Customer List',
         ),
         body: Padding(

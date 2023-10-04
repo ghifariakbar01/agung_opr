@@ -71,14 +71,12 @@ class UserNotifier extends StateNotifier<UserState> {
     required Function initializeAndCheckData,
     required Function initializeAutoData,
     required Function checkAndUpdateStatus,
-    required Function redirectIfFromSPK,
   }) async {
     setUser(user);
     await initializeDioRequest();
     await initializeAndCheckData();
     await initializeAutoData();
     await checkAndUpdateStatus();
-    await redirectIfFromSPK();
   }
 
   Future<void> logout() async {

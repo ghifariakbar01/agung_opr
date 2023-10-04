@@ -32,6 +32,10 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
   }
 
   Future<void> updateAllFrame({
+    required String idSPK,
+    required String userId,
+    required String nama,
+    required String gate,
     required SPPDC sjkb,
     required List<UpdateFrameStateSingle> updateFrameList,
   }) async {
@@ -53,8 +57,11 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       // debugger(message: 'called');
 
       FOS = await _repository.updateFrameSPK(
+        userId: userId,
+        nama: nama,
+        idSPK: idSPK,
+        gate: gate,
         sppdc: sjkb.getOrLeave(''),
-        idSPK: state.idSPK.toString(),
         updateFrameList: updateFrameList,
       );
 

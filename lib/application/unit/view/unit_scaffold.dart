@@ -27,6 +27,7 @@ class UnitScaffold extends ConsumerWidget {
     return KeyboardDismissOnTap(
       child: Scaffold(
           appBar: VAppBar(
+            context,
             'Check Sheet Unit',
           ),
           bottomNavigationBar: Container(

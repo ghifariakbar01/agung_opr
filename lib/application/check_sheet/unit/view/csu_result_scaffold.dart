@@ -26,7 +26,7 @@ class CSUResultScaffold extends ConsumerWidget {
 
     return KeyboardDismissOnTap(
       child: Scaffold(
-          appBar: VAppBar('Check Sheet Unit'),
+          appBar: VAppBar(context, 'Check Sheet Unit'),
           bottomNavigationBar: VBottomNav(),
           // drawer: Drawer(),
           body: Padding(

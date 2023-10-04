@@ -38,7 +38,7 @@ class CSUNewScaffold extends ConsumerWidget {
       },
       child: KeyboardDismissOnTap(
           child: Scaffold(
-              appBar: VAppBar('Check Sheet Unit New'),
+              appBar: VAppBar(context, 'Check Sheet Unit New'),
               body: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(

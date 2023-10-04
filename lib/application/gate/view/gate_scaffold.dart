@@ -79,6 +79,7 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
+          context,
           'Gate List',
         ),
         body: Padding(

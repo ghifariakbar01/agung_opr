@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -17,8 +18,8 @@ import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../customer/shared/customer_providers.dart';
 import '../../gate/providers/gate_providers.dart';
+import '../../history/history.dart';
 import '../../model/shared/model_providers.dart';
-import '../../routes/route_names.dart';
 import '../../spk/shared/spk_providers.dart';
 import '../../spk/spk.dart';
 import '../../supir/shared/supir_providers.dart';
@@ -49,10 +50,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // GET USER
-      await ref.read(userNotifierProvider.notifier).getUser();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(userNotifierProvider.notifier).getUser());
   }
 
   @override
@@ -68,6 +67,9 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedCSQueryFromRepository();
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedHistoriesFromRepository();
     }
 
     // CS function
@@ -294,23 +296,31 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                             checkAndUpdateStatus: () => ref
                                 .read(authNotifierProvider.notifier)
                                 .checkAndUpdateAuthStatus(),
-                            redirectIfFromSPK: () async {
-                              SPK selectedSPK = ref
-                                  .read(updateCSNotifierProvider)
-                                  .selectedSPK;
-                              selectedSPK != SPK.initial()
-                                  ? () async {
-                                      Map<String, dynamic> spkMap =
-                                          selectedSPK.toJson();
-
-                                      await context.pushNamed(
-                                          RouteNames.checkSheetLoadingNameRoute,
-                                          extra: spkMap);
-                                    }()
-                                  : () {}();
-                            },
                           ));
                 })));
+
+    ref.listen<Option<Either<LocalFailure, List<History>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalHistory,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.maybeMap(
+                            storage: (_) => 'storage penuh',
+                            format: (error) => 'Error Format: $error',
+                            orElse: () => ''),
+                        asset: Assets.iconCrossed,
+                      ),
+                    ),
+                (histories) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedHistories(histories: histories))));
 
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(

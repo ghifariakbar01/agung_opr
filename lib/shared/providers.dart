@@ -6,8 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../application/auth/auth_notifier.dart';
 import '../application/mode/mode_state.dart';
 import '../application/mode/mode_state_notifier.dart';
-import '../application/reminder/reminder_notifier.dart';
-import '../application/reminder/reminder_state.dart';
+
 import '../application/routes/route_notifier.dart';
 import '../application/sign_in_form/sign_in_form_notifier.dart';
 
@@ -19,11 +18,9 @@ import '../application/user/user_state.dart';
 import '../infrastructure/auth_interceptor.dart';
 import '../infrastructure/auth_remote_service.dart';
 import '../infrastructure/auth_repository.dart';
-import '../infrastructure/cache_storage/password_expired_storage.dart';
 import '../infrastructure/credentials_storage.dart';
 import '../infrastructure/credentials_storage/secure_credentials_storage.dart';
 
-import '../infrastructure/password_expired/password_expired_repository.dart';
 import '../utils/string_utils.dart';
 
 // NETWORKING & ROUTER
@@ -81,11 +78,6 @@ final signInFormNotifierProvider =
 // MODE APLIKASI
 final modeNotifierProvider =
     StateNotifierProvider<ModeNotifier, ModeState>((ref) => ModeNotifier());
-
-// REMINDER
-final reminderNotifierProvider =
-    StateNotifierProvider<ReminderNotifier, ReminderState>(
-        (ref) => ReminderNotifier());
 
 // MISC
 final isOfflineStateProvider = StateProvider((ref) => false);

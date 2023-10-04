@@ -53,6 +53,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
 
     return Scaffold(
       appBar: VAppBar(
+        context,
         'Mobile Car Carrier OPR CCR',
       ),
       floatingActionButton: !isOffline
@@ -105,6 +106,10 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     },
                     child: CrannyItem(label: 'DATA AKAN DIUPDATE'))
               ],
+
+              TextButton(
+                  onPressed: () => context.pushNamed(RouteNames.historyName),
+                  child: CrannyItem(label: 'RIWAYAT UPDATE')),
               //
               // TextButton(
               //     onPressed: () async {

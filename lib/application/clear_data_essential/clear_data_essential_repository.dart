@@ -19,35 +19,30 @@ import '../../infrastructure/spk/spk_repository.dart';
 ///
 /// ]
 
-class ClearDataRepository {
-  ClearDataRepository(
-      {required this.csRepository,
-      required this.spkRepository,
-      required this.gateRepository,
-      required this.frameRepository,
-      required this.csItemsRepository,
-      required this.csuFrameRepository,
-      required this.csuItemsRepository,
-      required this.customerRepository,
-      required this.csuJenisPenyebabRepository});
+class ClearDataEssentialRepository {
+  ClearDataEssentialRepository({
+    required this.spkRepository,
+    required this.frameRepository,
+  });
 
-  final CSRepository csRepository;
   final SPKRepository spkRepository;
-  final GateRepository gateRepository;
   final FrameRepository frameRepository;
-  final CSItemsRepository csItemsRepository;
-  final CSUFrameRepository csuFrameRepository;
-  final CSUItemsRepository csuItemsRepository;
-  final CustomerRepository customerRepository;
-  final CSUJenisPenyebabRepository csuJenisPenyebabRepository;
+  // final CSRepository csRepository;
+  // final GateRepository gateRepository;
+  // final CSItemsRepository csItemsRepository;
+  // final CSUFrameRepository csuFrameRepository;
+  // final CSUItemsRepository csuItemsRepository;
+  // final CustomerRepository customerRepository;
+  // final CSUJenisPenyebabRepository csuJenisPenyebabRepository;
 
   // Future<bool> hasOfflineData() => getCSJenisOFFLINE()
   //     .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<LocalFailure, Unit>> clearAllStorage() async {
+  Future<Either<LocalFailure, Unit>> clearAllStorage(
+      {required int idSPK}) async {
     try {
-      await spkRepository.clearSPKStorage();
-      await frameRepository.clearFrameStorage();
+      await spkRepository.clearSPKStorageById(idSPK: idSPK);
+      await frameRepository.removeSPKFromMap(idSPK: idSPK.toString());
 
       // await csuFrameRepository.clearNGStorage();
       // await csRepository.clearCSJenisStorage();

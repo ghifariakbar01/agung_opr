@@ -14,7 +14,7 @@ class CheckSheetUnloadingScaffold extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return KeyboardDismissOnTap(
       child: Scaffold(
-          appBar: VAppBar('Checksheet CCR Unloading'),
+          appBar: VAppBar(context, 'Checksheet CCR Unloading'),
           bottomNavigationBar: Container(
               height: 80,
               color: Palette.greySecondary,

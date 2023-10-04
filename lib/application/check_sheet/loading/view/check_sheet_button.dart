@@ -1,14 +1,13 @@
 import 'dart:developer';
 
-import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/style.dart';
-import '../../../mode/mode_state.dart';
-import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../widgets/v_button.dart';
 import '../../shared/providers/cs_providers.dart';
+import '../../../update_frame/shared/update_frame_providers.dart';
 
 class CheckSheetButton extends ConsumerWidget {
   const CheckSheetButton();
@@ -22,7 +21,9 @@ class CheckSheetButton extends ConsumerWidget {
     final bool isValid =
         ref.watch(updateFrameNotifierProvider.select((value) => value.isValid));
 
-    log('isValid $isValid');
+    final user = ref.watch(userNotifierProvider);
+
+    final updateCS = ref.watch(updateCSNotifierProvider);
 
     return Column(
       children: [
@@ -33,16 +34,21 @@ class CheckSheetButton extends ConsumerWidget {
                 isValid &&
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
-
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
+              final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
+
+              debugger();
 
               await ref
                   .read(updateFrameNotifierProvider.notifier)
                   .updateAllFrame(
+                      idSPK: idSPK.toString(),
+                      nama: user.user.nama!,
                       sjkb: updateProvider.sppdc,
+                      userId: user.user.idUser.toString(),
+                      gate: updateCS.updateCSForm.gate.getOrLeave(''),
                       updateFrameList: updateProvider.updateFrameList);
 
               await ref
@@ -58,16 +64,21 @@ class CheckSheetButton extends ConsumerWidget {
                 isValid &&
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
-
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
+              final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
+
+              debugger();
 
               await ref
                   .read(updateFrameNotifierProvider.notifier)
                   .updateAllFrame(
+                      idSPK: idSPK.toString(),
+                      nama: user.user.nama!,
                       sjkb: updateProvider.sppdc,
+                      userId: user.user.idUser.toString(),
+                      gate: updateCS.updateCSForm.gate.getOrLeave(''),
                       updateFrameList: updateProvider.updateFrameList);
 
               await ref

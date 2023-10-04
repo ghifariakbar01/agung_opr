@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agung_opr/application/user/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,9 +18,11 @@ import '../spk/spk.dart';
 class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
   UpdateCSNotifier(
     this._repository,
+    this._userModelWithPassword,
   ) : super(UpdateCSState.initial());
 
   final UpdateCSRepository _repository;
+  final UserModelWithPassword _userModelWithPassword;
 
   changeModeState(ModeState mode) => state = state.copyWith(modeSelected: mode);
 
@@ -117,10 +120,15 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
               .status,
           tipe: stateCS.tipe);
 
-      // debugger();
+      debugger();
 
       // set isNG to true
-      FOS = await _repository.saveCSQueryOK(queryId: queryId, isNG: true);
+      FOS = await _repository.saveCSQueryOK(
+          idUser: _userModelWithPassword.idUser.toString(),
+          gate: state.updateCSForm.gate.getOrLeave(''),
+          nama: _userModelWithPassword.nama ?? '',
+          queryId: queryId,
+          isNG: true);
 
       state = state.copyWith(
           isProcessing: false,
@@ -150,7 +158,11 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       final queryId = _repository.getNGSavableQuery(
           idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 
-      FOS = await _repository.saveCSQueryOK(queryId: queryId);
+      FOS = await _repository.saveCSQueryOK(
+          idUser: _userModelWithPassword.idUser.toString(),
+          gate: state.updateCSForm.gate.getOrLeave(''),
+          nama: _userModelWithPassword.nama ?? '',
+          queryId: queryId);
 
       state = state.copyWith(
           isProcessing: false,

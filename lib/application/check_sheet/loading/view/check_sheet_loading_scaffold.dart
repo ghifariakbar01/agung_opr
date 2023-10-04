@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
-import '../../../clear_data/clear_data_providers.dart';
+import '../../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../../mode/mode_state.dart';
+import '../../../routes/route_names.dart';
 import '../../../spk/spk.dart';
 import '../../../spk/view/spk_item.dart';
 import '../../../update_frame/frame_state.dart';
@@ -23,11 +27,50 @@ final hideKelengkapanAndButtonProvider = StateProvider<bool>((ref) {
   return true;
 });
 
-class CheckSheetLoadingScaffold extends ConsumerWidget {
+final hideFABProvider = StateProvider<bool>((ref) {
+  return true;
+});
+
+class CheckSheetLoadingScaffold extends ConsumerStatefulWidget {
   const CheckSheetLoadingScaffold();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CheckSheetLoadingScaffold> createState() =>
+      _CheckSheetLoadingScaffoldState();
+}
+
+class _CheckSheetLoadingScaffoldState
+    extends ConsumerState<CheckSheetLoadingScaffold> {
+  final scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((timeStamp) => scrollController.dispose());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      scrollController.addListener(() {
+        final nearOK = scrollController.position.pixels >
+            0.9 * scrollController.position.maxScrollExtent;
+
+        if (nearOK) {
+          ref.read(hideFABProvider.notifier).state = false;
+        } else {
+          ref.read(hideFABProvider.notifier).state = true;
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final SPK selectedSPK = ref.watch(selectedSPKStateProvider);
     final ModeState modeApp = ref.watch(modeNotifierProvider);
     final FrameState frameList = ref.watch(frameNotifierProvider);
@@ -37,28 +80,43 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
 
     final bool hideKelengkapanAndButton =
         ref.watch(hideKelengkapanAndButtonProvider);
+    final bool hideFAB = ref.watch(hideFABProvider);
+
+    final updateFrameNotifier = ref.watch(updateFrameNotifierProvider);
 
     return KeyboardDismissOnTap(
       child: Scaffold(
           appBar: VAppBar(
-            '${modeApp.maybeWhen(
-              checkSheetLoading: () => 'CCR Loading',
-              checkSheetUnloading: () => 'CCR Unloading',
-              checkSheetLoadingUnloading: () => 'CCR Loading & Unloading',
-              orElse: () {},
-            )}',
-          ),
-          floatingActionButton: FloatingActionButton.small(
-            backgroundColor: Colors.white,
-            elevation: 5,
-            child: Icon(
-              Icons.refresh,
-              color: Palette.primaryColor,
-            ),
-            onPressed: () =>
-                ref.read(clearDataNotifierProvider.notifier).clearAllStorage(),
-          ),
+              context,
+              '${modeApp.maybeWhen(
+                checkSheetLoading: () => 'CCR Loading',
+                checkSheetUnloading: () => 'CCR Unloading',
+                checkSheetLoadingUnloading: () => 'CCR Loading & Unloading',
+                orElse: () {},
+              )}',
+              leading: IconButton(
+                  onPressed: () => context.replaceNamed(RouteNames.spkName),
+                  icon: Icon(Icons.arrow_back))),
+          floatingActionButton: hideFAB || hideKelengkapanAndButton
+              ? Container()
+              : FloatingActionButton.extended(
+                  backgroundColor: Colors.white,
+                  elevation: 5,
+                  label: Text(
+                    'Lakukan setelah Pencet OK / NG',
+                    style:
+                        Themes.customColor(FontWeight.normal, 11, Colors.black),
+                  ),
+                  icon: Icon(
+                    Icons.download,
+                    color: Palette.primaryColor,
+                  ),
+                  onPressed: () => ref
+                      .read(clearDataEssentialNotifierProvider.notifier)
+                      .clearAllStorage(idSPK: updateFrameNotifier.idSPK),
+                ),
           body: SingleChildScrollView(
+            controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -171,6 +229,10 @@ class CheckSheetLoadingScaffold extends ConsumerWidget {
                     //
 
                     CheckSheetButton(),
+
+                    SizedBox(
+                      height: 65,
+                    )
                   ]
                 ],
               ),
