@@ -49,6 +49,8 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
 
     final isOffline = ref.watch(isOfflineStateProvider);
 
+    final getBuild = ref.watch(getBuildProvider);
+
     log('isOffline $isOffline');
 
     return Scaffold(
@@ -79,50 +81,54 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
             ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ListView(
+          child: Stack(
             children: [
-              if (isOffline) ...[
-                Center(
-                  child: Text(
-                    '( MODE OFFLINE )',
-                    style: Themes.customColor(
-                        FontWeight.bold, 15, Palette.primaryColor),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-              ],
+              ListView(
+                children: [
+                  if (isOffline) ...[
+                    Center(
+                      child: Text(
+                        '( MODE OFFLINE )',
+                        style: Themes.customColor(
+                            FontWeight.bold, 15, Palette.primaryColor),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                  if (isUpdateAvailable) ...[
+                    TextButton(
+                        onPressed: () async {
+                          ref
+                              .read(modeNotifierProvider.notifier)
+                              .changeModeAplikasi(ModeState.dataUpdateQuery());
 
-              if (isUpdateAvailable) ...[
-                TextButton(
-                    onPressed: () async {
-                      ref
-                          .read(modeNotifierProvider.notifier)
-                          .changeModeAplikasi(ModeState.dataUpdateQuery());
-
-                      await context
-                          .pushNamed(RouteNames.dataUpdateQueryNameRoute);
-                    },
-                    child: CrannyItem(label: 'DATA AKAN DIUPDATE'))
-              ],
-
-              TextButton(
-                  onPressed: () => context.pushNamed(RouteNames.historyName),
-                  child: CrannyItem(label: 'RIWAYAT UPDATE')),
-              //
-              // TextButton(
-              //     onPressed: () async {
-              //       ref.read(modeNotifierProvider.notifier).changeModeAplikasi(
-              //           ModeState.checkSheetUnitWithoutSPK());
-
-              //       await context.pushNamed(RouteNames.unitNameRoute);
-              //     },
-              //     child: CrannyItem(label: 'UPDATE UNIT')),
-              //
-              CSCrannyPage(),
-              //
-              const SizedBox(height: 8),
+                          await context
+                              .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                        },
+                        child: CrannyItem(label: 'DATA AKAN DIUPDATE'))
+                  ],
+                  TextButton(
+                      onPressed: () =>
+                          context.pushNamed(RouteNames.historyName),
+                      child: CrannyItem(label: 'RIWAYAT UPDATE')),
+                  CSCrannyPage(),
+                  const SizedBox(height: 8),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: getBuild.when(
+                    data: (data) => Text(
+                          'Build ${data.version}',
+                          style: Themes.customColor(
+                              FontWeight.normal, 11, Palette.primaryColor),
+                        ),
+                    error: (error, stackTrace) => Text('Error'),
+                    loading: () => Container()),
+              ),
             ],
           )),
       drawer: CrannyDrawer(),

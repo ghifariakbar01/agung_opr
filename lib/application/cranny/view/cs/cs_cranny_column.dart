@@ -20,6 +20,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         TextButton(
             onPressed: () async {

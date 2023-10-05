@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:agung_opr/style/style.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../../constants/assets.dart';

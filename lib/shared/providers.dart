@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../application/auth/auth_notifier.dart';
 import '../application/mode/mode_state.dart';
@@ -86,3 +87,6 @@ final passwordVisibleProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 // SELECTED SPK
 final selectedSPKStateProvider = StateProvider((ref) => SPK.initial());
+
+final getBuildProvider =
+    FutureProvider<PackageInfo>((ref) => PackageInfo.fromPlatform());
