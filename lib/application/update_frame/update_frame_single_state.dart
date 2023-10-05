@@ -18,7 +18,7 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
         isShowError: false,
         idUnit: IDUnit(''),
         frame: FrameUnit(''),
-        warna: WarnaUnit(''),
+        warna: WarnaUnit('Hijau'),
         engine: EngineUnit(''),
         idKendType: IDKendType(''),
       );

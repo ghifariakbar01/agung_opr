@@ -95,10 +95,10 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                   SPK selectedSPK =
                       ref.read(updateCSNotifierProvider).selectedSPK;
                   selectedSPK != SPK.initial()
-                      ? () async {
+                      ? () {
                           Map<String, dynamic> spkMap = selectedSPK.toJson();
 
-                          await context.pushNamed(
+                          context.pushReplacementNamed(
                               RouteNames.checkSheetLoadingNameRoute,
                               extra: spkMap);
                         }()

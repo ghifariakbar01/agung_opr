@@ -106,7 +106,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
                   ? frame[index].idKendType.toString()
                   : ''),
               engine: EngineUnit(frame[index].engine ?? ''),
-              warna: WarnaUnit(frame[index].warna ?? ''),
+              warna: WarnaUnit(frame[index].warna ?? 'Hijau'),
               isShowError: false,
             ));
 

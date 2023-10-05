@@ -35,6 +35,7 @@ class CheckSheetButton extends ConsumerWidget {
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
+              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
               final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
@@ -65,6 +66,7 @@ class CheckSheetButton extends ConsumerWidget {
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
+              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
               final idSPK = ref.read(updateFrameNotifierProvider).idSPK;

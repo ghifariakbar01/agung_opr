@@ -21,6 +21,7 @@ mixin _$UpdateFrameState {
   SPPDC get sppdc => throw _privateConstructorUsedError;
   bool get isValid => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
+  Map<String, dynamic> get basicColors => throw _privateConstructorUsedError;
 
   /// Hack for model value to change after tapping model
   TextEditingController get sjkbTextController =>
@@ -53,6 +54,7 @@ abstract class $UpdateFrameStateCopyWith<$Res> {
       SPPDC sppdc,
       bool isValid,
       bool isProcessing,
+      Map<String, dynamic> basicColors,
       TextEditingController sjkbTextController,
       List<UpdateFrameStateSingle> updateFrameList,
       List<TextEditingController> modelTextController,
@@ -79,6 +81,7 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
     Object? sppdc = null,
     Object? isValid = null,
     Object? isProcessing = null,
+    Object? basicColors = null,
     Object? sjkbTextController = null,
     Object? updateFrameList = null,
     Object? modelTextController = null,
@@ -107,6 +110,10 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      basicColors: null == basicColors
+          ? _value.basicColors
+          : basicColors // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       sjkbTextController: null == sjkbTextController
           ? _value.sjkbTextController
           : sjkbTextController // ignore: cast_nullable_to_non_nullable
@@ -149,6 +156,7 @@ abstract class _$$_UpdateFrameStateCopyWith<$Res>
       SPPDC sppdc,
       bool isValid,
       bool isProcessing,
+      Map<String, dynamic> basicColors,
       TextEditingController sjkbTextController,
       List<UpdateFrameStateSingle> updateFrameList,
       List<TextEditingController> modelTextController,
@@ -173,6 +181,7 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
     Object? sppdc = null,
     Object? isValid = null,
     Object? isProcessing = null,
+    Object? basicColors = null,
     Object? sjkbTextController = null,
     Object? updateFrameList = null,
     Object? modelTextController = null,
@@ -201,6 +210,10 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      basicColors: null == basicColors
+          ? _value._basicColors
+          : basicColors // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
       sjkbTextController: null == sjkbTextController
           ? _value.sjkbTextController
           : sjkbTextController // ignore: cast_nullable_to_non_nullable
@@ -238,13 +251,15 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       required this.sppdc,
       required this.isValid,
       required this.isProcessing,
+      required final Map<String, dynamic> basicColors,
       required this.sjkbTextController,
       required final List<UpdateFrameStateSingle> updateFrameList,
       required final List<TextEditingController> modelTextController,
       required final List<TextEditingController> frameTextController,
       required final List<TextEditingController> customerTextController,
       required this.FOSOUpdateFrame})
-      : _updateFrameList = updateFrameList,
+      : _basicColors = basicColors,
+        _updateFrameList = updateFrameList,
         _modelTextController = modelTextController,
         _frameTextController = frameTextController,
         _customerTextController = customerTextController;
@@ -259,6 +274,13 @@ class _$_UpdateFrameState implements _UpdateFrameState {
   final bool isValid;
   @override
   final bool isProcessing;
+  final Map<String, dynamic> _basicColors;
+  @override
+  Map<String, dynamic> get basicColors {
+    if (_basicColors is EqualUnmodifiableMapView) return _basicColors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_basicColors);
+  }
 
   /// Hack for model value to change after tapping model
   @override
@@ -303,7 +325,7 @@ class _$_UpdateFrameState implements _UpdateFrameState {
 
   @override
   String toString() {
-    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, modelTextController: $modelTextController, frameTextController: $frameTextController, customerTextController: $customerTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
+    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, basicColors: $basicColors, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, modelTextController: $modelTextController, frameTextController: $frameTextController, customerTextController: $customerTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
   }
 
   @override
@@ -317,6 +339,8 @@ class _$_UpdateFrameState implements _UpdateFrameState {
             (identical(other.isValid, isValid) || other.isValid == isValid) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
+            const DeepCollectionEquality()
+                .equals(other._basicColors, _basicColors) &&
             (identical(other.sjkbTextController, sjkbTextController) ||
                 other.sjkbTextController == sjkbTextController) &&
             const DeepCollectionEquality()
@@ -339,6 +363,7 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       sppdc,
       isValid,
       isProcessing,
+      const DeepCollectionEquality().hash(_basicColors),
       sjkbTextController,
       const DeepCollectionEquality().hash(_updateFrameList),
       const DeepCollectionEquality().hash(_modelTextController),
@@ -360,6 +385,7 @@ abstract class _UpdateFrameState implements UpdateFrameState {
           required final SPPDC sppdc,
           required final bool isValid,
           required final bool isProcessing,
+          required final Map<String, dynamic> basicColors,
           required final TextEditingController sjkbTextController,
           required final List<UpdateFrameStateSingle> updateFrameList,
           required final List<TextEditingController> modelTextController,
@@ -378,6 +404,8 @@ abstract class _UpdateFrameState implements UpdateFrameState {
   bool get isValid;
   @override
   bool get isProcessing;
+  @override
+  Map<String, dynamic> get basicColors;
   @override
 
   /// Hack for model value to change after tapping model

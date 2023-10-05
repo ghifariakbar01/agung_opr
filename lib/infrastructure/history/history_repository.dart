@@ -30,12 +30,16 @@ class HistoryRepository {
   // Future<bool> hasOfflineData() => getGatesOFFLINE()
   //     .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, List<History>>> getHistories() async {
+  Future<Either<RemoteFailure, List<History>>> getHistories(
+      {required String startDate, required String endDate}) async {
     try {
       // debugger(message: 'called');
 
       final histories = await _remoteService.getHistories(
-          idUser: _userModelWithPassword.idUser!);
+        idUser: _userModelWithPassword.idUser!,
+        startDate: startDate,
+        endDate: endDate,
+      );
 
       return right(histories);
     } on RestApiException catch (e) {
@@ -193,7 +197,9 @@ class HistoryRepository {
           return right([]);
         }
       } else {
-        return left(LocalFailure.format('LIST EMPTY'));
+        log('historiesStorage : NOT OK');
+
+        return right([]);
       }
     } on FormatException catch (error) {
       return left(LocalFailure.format(error.message));

@@ -175,7 +175,6 @@ class UpdateCSRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
@@ -183,6 +182,7 @@ class UpdateCSRepository {
               final index = response
                   .indexWhere((element) => element.idSPK == queryId.idSPK);
 
+              // index not found
               if (index == -1) {
                 debugger();
 
@@ -199,8 +199,10 @@ class UpdateCSRepository {
                 // debugger(message: 'called');
 
                 log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-              } else {
-                if (!isNG) {
+              }
+              // index found
+              else {
+                if (isNG == false) {
                   debugger();
 
                   // if not NG, replace list

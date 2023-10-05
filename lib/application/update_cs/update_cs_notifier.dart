@@ -153,8 +153,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
       final ngStates = state.updateCSForm.ngStates;
 
-      // debugger();
-//
       final queryId = _repository.getNGSavableQuery(
           idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 

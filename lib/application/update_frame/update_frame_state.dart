@@ -16,6 +16,7 @@ class UpdateFrameState with _$UpdateFrameState {
     required SPPDC sppdc,
     required bool isValid,
     required bool isProcessing,
+    required Map<String, dynamic> basicColors,
 
     /// Hack for model value to change after tapping model
     required TextEditingController sjkbTextController,
@@ -38,5 +39,17 @@ class UpdateFrameState with _$UpdateFrameState {
         frameTextController: [],
         customerTextController: [],
         sjkbTextController: TextEditingController(),
+        basicColors: {
+          'Merah': Colors.red,
+          'Hijau': Colors.green,
+          'Biru': Colors.blue,
+          'Kuning': Colors.yellow,
+          'Oranye': Colors.orange,
+          'Ungu': Colors.purple,
+          'Coklat': Colors.brown,
+          'Abu-abu': Colors.grey,
+          'Hitam': Colors.black,
+          'Putih': Colors.white,
+        },
       );
 }

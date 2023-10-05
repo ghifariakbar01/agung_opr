@@ -22,8 +22,11 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(historyNotifierProvider.notifier).getHistory());
+    WidgetsBinding.instance.addPostFrameCallback((_) => ref
+        .read(historyNotifierProvider.notifier)
+        .getHistory(
+            startDate: DateTime.now(),
+            endDate: DateTime.now().subtract(Duration(days: 1))));
   }
 
   @override

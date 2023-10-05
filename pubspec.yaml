@@ -14,7 +14,7 @@ dependencies:
 
   #* UI
   auto_size_text: ^3.0.0
-  cached_network_image: ^3.2.2
+  # cached_network_image: ^3.2.2
   flash: ^3.0.5+1
   flutter_keyboard_visibility: ^5.4.0
   flutter_svg: ^2.0.0
@@ -47,12 +47,13 @@ dependencies:
   shared_preferences: ^2.2.0
 
   #* UUID
-  uuid: ^3.0.7
+  # uuid: ^3.0.7
 
   #* Misc
   collection: ^1.16.0
   dartz: ^0.10.1
   intl: ^0.18.1
+  package_info_plus: ^4.1.0
   upgrader: ^8.1.0
 
 dev_dependencies:

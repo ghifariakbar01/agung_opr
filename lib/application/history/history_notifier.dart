@@ -1,3 +1,4 @@
+import 'package:agung_opr/utils/string_utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -13,12 +14,15 @@ class HistoryNotifier extends StateNotifier<HistoryState> {
 
   Future<bool> hasOfflineStorage() => _repository.hasOfflineData();
 
-  Future<void> getHistory() async {
+  Future<void> getHistory(
+      {required DateTime startDate, required DateTime endDate}) async {
     Either<RemoteFailure, List<History>?> FOSOHistory;
 
     state = state.copyWith(isGetting: true, FOSOHistory: none());
 
-    FOSOHistory = await _repository.getHistories();
+    FOSOHistory = await _repository.getHistories(
+        startDate: StringUtils.trimmedDate(startDate),
+        endDate: StringUtils.trimmedDate(endDate));
 
     state =
         state.copyWith(isGetting: false, FOSOHistory: optionOf(FOSOHistory));

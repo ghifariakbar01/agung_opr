@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +15,19 @@ class FormUpdateWarna extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final basicColors = ref.watch(
+        updateFrameNotifierProvider.select((value) => value.basicColors));
+
     final warna = ref.watch(updateFrameNotifierProvider.select((value) =>
         value.updateFrameList.length < index
-            ? WarnaUnit('')
+            ? WarnaUnit('Hijau')
             : value.updateFrameList[index].warna));
 
-    final warnaStr = warna.getOrLeave('');
+    final warnaStr = warna.getOrLeave('Hijau');
 
     final modeApp = ref.watch(modeNotifierProvider);
+
+    log('Color ${basicColors.entries.firstWhere((element) => element.key == warnaStr).value}');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,20 +49,36 @@ class FormUpdateWarna extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: IgnorePointer(
-            ignoring: modeApp.maybeWhen(
-                checkSheetUnit: () => true, orElse: () => false),
-            child: TextFormField(
-              initialValue: warnaStr,
-              decoration: Themes.formStyle(warnaStr != ''
-                  ? warnaStr + ' (ketik untuk ubah teks)'
-                  : 'Masukkan warna'),
-              keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeWarna(warnaStr: value, index: index),
-            ),
-          ),
-        )
+              ignoring: modeApp.maybeWhen(
+                  checkSheetUnit: () => true, orElse: () => false),
+              child: DropdownButton<String>(
+                value: warnaStr,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    ref
+                        .read(updateFrameNotifierProvider.notifier)
+                        .changeWarna(warnaStr: value, index: index);
+                  }
+                },
+                items: basicColors.keys.map((String colorName) {
+                  return DropdownMenuItem<String>(
+                    value: colorName,
+                    child: Text(colorName),
+                  );
+                }).toList(),
+              )),
+        ),
+        SizedBox(
+          width: 16,
+        ),
+        Flexible(
+            flex: 1,
+            child: Container(
+                width: 25,
+                height: 25,
+                color: basicColors.entries
+                    .firstWhere((element) => element.key == warnaStr)
+                    .value))
       ],
     );
   }

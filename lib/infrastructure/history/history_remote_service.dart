@@ -14,7 +14,10 @@ class HistoryRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<List<History>> getHistories({required int idUser}) async {
+  Future<List<History>> getHistories(
+      {required int idUser,
+      required String startDate,
+      required String endDate}) async {
     const String dbName = 'mst_historical_transaction_opr';
 
     try {
@@ -22,8 +25,9 @@ class HistoryRemoteService {
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT * FROM $dbName WHERE id_user = $idUser ORDER BY s_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+        "command": "SELECT * FROM $dbName WHERE id_user = $idUser " +
+            " AND s_date BETWEEN '${endDate}' AND '$startDate' " +
+            " ORDER BY s_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY ",
       });
 
       final response = await _dio.post('',

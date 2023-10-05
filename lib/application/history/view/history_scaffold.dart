@@ -1,8 +1,8 @@
-import 'package:agung_opr/application/history/shared/history_providers.dart';
-import 'package:agung_opr/application/widgets/v_appbar.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../shared/history_providers.dart';
 
 class HistoryScaffold extends ConsumerWidget {
   const HistoryScaffold();
@@ -20,6 +20,21 @@ class HistoryScaffold extends ConsumerWidget {
             style: Themes.customColor(FontWeight.bold, 18, Colors.white),
           ),
           elevation: 0,
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  DateTimeRange? picked = await showDateRangePicker(
+                      context: context,
+                      lastDate: DateTime.now(),
+                      firstDate: DateTime(2023));
+
+                  if (picked != null) {
+                    ref.read(historyNotifierProvider.notifier).getHistory(
+                        startDate: picked.end, endDate: picked.start);
+                  }
+                },
+                icon: Icon(Icons.sort))
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

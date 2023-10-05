@@ -204,14 +204,12 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                           assignUnitMerak: () => {},
                           dataUpdateQuery: () => {},
                           // LOADING, UNLOADING, LOADING & UNLOADING
-                          orElse: () async {
+                          orElse: () {
                             Map<String, dynamic> spkMap = spkList[i].toJson();
 
-                            await context.pushNamed(
+                            context.pushReplacementNamed(
                                 RouteNames.checkSheetLoadingNameRoute,
                                 extra: spkMap);
-
-                            return unit;
                           },
                         ),
                         style: ButtonStyle(

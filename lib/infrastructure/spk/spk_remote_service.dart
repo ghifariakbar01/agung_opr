@@ -42,6 +42,7 @@ class SPKRemoteService {
             " AND spk.tiba_sta = 0 " +
             " AND spk.kmbl_sta = 0 " +
             " AND id_spk LIKE '%$search%' OR spk_no LIKE '%$search%' OR supir1_nm LIKE '%$search%' OR supir2_nm LIKE '%$search%' OR nopol LIKE '%$search%' " +
+            " AND spk.spk_tgl >= DATEADD(DAY, -5, GETDATE()) " +
             " ORDER BY " +
             " spk.spk_tgl DESC " +
             " OFFSET " +
@@ -137,6 +138,7 @@ class SPKRemoteService {
             " spk.dc_sta = 1 " +
             " AND spk.tiba_sta = 0 " +
             " AND spk.kmbl_sta = 0 " +
+            " AND spk.spk_tgl >= DATEADD(DAY, -5, GETDATE()) " +
             " ORDER BY " +
             " spk.spk_tgl DESC " +
             " OFFSET " +
