@@ -231,11 +231,11 @@ class UpdateCSRepository {
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
-                  await _saveHistory(
-                      csuIdQuery: queryId,
-                      contentCoant: 'Gate $gate',
-                      idUser: idUser,
-                      nama: nama);
+                  // await _saveHistory(
+                  //     csuIdQuery: queryId,
+                  //     contentCoant: 'Gate $gate',
+                  //     idUser: idUser,
+                  //     nama: nama);
 
                   // debugger(message: 'called');
 
