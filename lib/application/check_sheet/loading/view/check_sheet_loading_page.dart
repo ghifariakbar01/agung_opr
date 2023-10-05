@@ -235,10 +235,8 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
 
     final isLoading = ref.watch(
             frameNotifierProvider.select((value) => value.isProcessing)) ||
-        ref.watch(updateFrameNotifierProvider
-            .select((value) => value.isProcessing)) ||
-        ref.watch(autoDataUpdateFrameNotifierProvider
-            .select((value) => value.isGetting));
+        ref.watch(
+            updateFrameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
       children: [

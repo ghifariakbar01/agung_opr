@@ -60,6 +60,20 @@ class FormUpdateWarna extends ConsumerWidget {
                         .changeWarna(warnaStr: value, index: index);
                   }
                 },
+                icon: Row(
+                  children: [
+                    Icon(Icons.arrow_drop_down_sharp),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                        width: 25,
+                        height: 25,
+                        color: basicColors.entries
+                            .firstWhere((element) => element.key == warnaStr)
+                            .value),
+                  ],
+                ),
                 items: basicColors.keys.map((String colorName) {
                   return DropdownMenuItem<String>(
                     value: colorName,
@@ -68,17 +82,6 @@ class FormUpdateWarna extends ConsumerWidget {
                 }).toList(),
               )),
         ),
-        SizedBox(
-          width: 16,
-        ),
-        Flexible(
-            flex: 1,
-            child: Container(
-                width: 25,
-                height: 25,
-                color: basicColors.entries
-                    .firstWhere((element) => element.key == warnaStr)
-                    .value))
       ],
     );
   }

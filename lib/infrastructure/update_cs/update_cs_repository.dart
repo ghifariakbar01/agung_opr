@@ -250,8 +250,6 @@ class UpdateCSRepository {
 
               debugger();
 
-              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
               await _saveHistory(
@@ -259,6 +257,10 @@ class UpdateCSRepository {
                   contentCoant: 'Gate $gate',
                   idUser: idUser,
                   nama: nama);
+
+              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+
+              debugger();
             }();
         }
       } else {
@@ -294,6 +296,8 @@ class UpdateCSRepository {
 
     // SAVE To History
     await _historyRepository.saveHistoryInStorage(history: history);
+
+    debugger();
 
     return unit;
   }

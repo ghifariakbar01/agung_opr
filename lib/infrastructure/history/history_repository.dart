@@ -112,8 +112,12 @@ class HistoryRepository {
 
       final json = History.HistoryListToJson([...storage, history]);
 
+      debugger();
+
       await _storage.save(json);
     } else {
+      debugger();
+
       final json = History.HistoryListToJson([history]);
 
       await _storage.save(json);

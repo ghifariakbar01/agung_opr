@@ -51,27 +51,6 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
   Widget build(BuildContext context) {
     // Clear Data upon refreshing
     ref.listen<Option<Either<LocalFailure, Unit>>>(
-        clearDataNotifierProvider.select(
-          (state) => state.FOSOSPKClearData,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (context) => VSimpleDialog(
-                          label: 'Error',
-                          labelDescription: failure.maybeMap(
-                              storage: (_) => 'storage penuh',
-                              format: (error) => 'Error Format Clear: $error',
-                              orElse: () => ''),
-                          asset: Assets.iconCrossed,
-                        )),
-                (_) => ref.read(userNotifierProvider.notifier).getUser())));
-
-    // Clear Data upon refreshing
-    ref.listen<Option<Either<LocalFailure, Unit>>>(
         clearDataEssentialNotifierProvider.select(
           (state) => state.FOSOSPKClearDataEssential,
         ),

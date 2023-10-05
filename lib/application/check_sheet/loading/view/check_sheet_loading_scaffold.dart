@@ -9,7 +9,6 @@ import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 import '../../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../../mode/mode_state.dart';
-import '../../../routes/route_names.dart';
 import '../../../spk/spk.dart';
 import '../../../spk/view/spk_item.dart';
 import '../../../update_frame/frame_state.dart';
@@ -24,7 +23,7 @@ import 'form/form_jam.dart';
 import 'form/form_keterangan.dart';
 
 final hideKelengkapanAndButtonProvider = StateProvider<bool>((ref) {
-  return true;
+  return false;
 });
 
 final hideFABProvider = StateProvider<bool>((ref) {
@@ -95,7 +94,7 @@ class _CheckSheetLoadingScaffoldState
                 orElse: () {},
               )}',
               leading: IconButton(
-                  onPressed: () => context.replaceNamed(RouteNames.spkName),
+                  onPressed: () => context.pop(),
                   icon: Icon(Icons.arrow_back))),
           floatingActionButton: hideFAB || hideKelengkapanAndButton
               ? Container()

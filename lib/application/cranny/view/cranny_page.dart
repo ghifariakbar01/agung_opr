@@ -18,6 +18,7 @@ import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
+import '../../clear_data/clear_data_providers.dart';
 import '../../customer/shared/customer_providers.dart';
 import '../../gate/providers/gate_providers.dart';
 import '../../history/history.dart';
@@ -300,6 +301,27 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                                 .checkAndUpdateAuthStatus(),
                           ));
                 })));
+
+    // Clear Data upon refreshing
+    ref.listen<Option<Either<LocalFailure, Unit>>>(
+        clearDataNotifierProvider.select(
+          (state) => state.FOSOSPKClearData,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => VSimpleDialog(
+                          label: 'Error',
+                          labelDescription: failure.maybeMap(
+                              storage: (_) => 'storage penuh',
+                              format: (error) => 'Error Format Clear: $error',
+                              orElse: () => ''),
+                          asset: Assets.iconCrossed,
+                        )),
+                (_) => ref.read(userNotifierProvider.notifier).getUser())));
 
     ref.listen<Option<Either<LocalFailure, List<History>>>>(
         autoDataUpdateFrameNotifierProvider.select(
