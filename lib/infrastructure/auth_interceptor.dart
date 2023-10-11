@@ -14,6 +14,12 @@ class AuthInterceptor extends Interceptor {
 
     final items = response.data?[0];
 
+    final errorNum = items['errornum'] as int?;
+
+    if (errorNum == 3) {
+      _ref.read(userNotifierProvider.notifier).logout();
+    }
+
     if (items != null) {
       _ref.read(isOfflineStateProvider.notifier).state = false;
     }

@@ -100,14 +100,14 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     final generateList = List.generate(
         length,
         (index) => UpdateFrameStateSingle(
-              idUnit: IDUnit(frame[index].idUnit.toString()),
+              isShowError: false,
               frame: FrameUnit(frame[index].frame ?? ''),
+              warna: WarnaUnit(frame[index].warna ?? ''),
+              engine: EngineUnit(frame[index].engine ?? ''),
+              idUnit: IDUnit(frame[index].idUnit.toString()),
               idKendType: IDKendType(frame[index].idKendType != null
                   ? frame[index].idKendType.toString()
                   : ''),
-              engine: EngineUnit(frame[index].engine ?? ''),
-              warna: WarnaUnit(frame[index].warna ?? 'Hijau'),
-              isShowError: false,
             ));
 
     state = state.copyWith(
