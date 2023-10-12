@@ -1,9 +1,5 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
-import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,11 +8,12 @@ import '../../../../domain/local_failure.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
-import '../../../mode/mode_state.dart';
 import '../../../spk/spk.dart';
 import '../../../update_frame/frame.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../widgets/alert_helper.dart';
+import '../../../widgets/loading_overlay.dart';
+import '../../shared/providers/cs_providers.dart';
 import '../../shared/state/cs_item.dart';
 import '../../shared/state/cs_jenis.dart';
 import 'check_sheet_loading_scaffold.dart';
@@ -256,6 +253,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                   ref
                       .read(updateCSNotifierProvider.notifier)
                       .changeFillWithValue(spk: widget.spk);
+                  //
+                  final mode = ref.read(modeNotifierProvider);
+                  ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+                  //
                   ref
                       .read(csItemNotifierProvider.notifier)
                       .changeCSItemsByIDList(csItemMap);

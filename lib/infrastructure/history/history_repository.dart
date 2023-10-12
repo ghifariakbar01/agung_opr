@@ -110,7 +110,8 @@ class HistoryRepository {
       final storage = History.HistoryListFromJson(
           jsonDecode(storageJson!) as List<dynamic>);
 
-      final json = History.HistoryListToJson([...storage, history]);
+      final json =
+          History.HistoryListToJson([...storage, history].toSet().toList());
 
       debugger();
 
