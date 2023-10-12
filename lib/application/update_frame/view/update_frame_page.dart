@@ -135,7 +135,7 @@ class _UpdateFramePageState extends ConsumerState<UpdateFramePage> {
     return Stack(
       children: [
         UpdateFrameScaffold(),
-        Positioned(top: 45, child: DataUpdateLinearProgress()),
+        Positioned(top: 100, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

@@ -137,6 +137,8 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
                           context.pop();
                           Map<String, dynamic> spkMap = spkSelected.toJson();
 
+                          debugger();
+
                           await context.pushNamed(
                               RouteNames.checkSheetLoadingNameRoute,
                               extra: spkMap);

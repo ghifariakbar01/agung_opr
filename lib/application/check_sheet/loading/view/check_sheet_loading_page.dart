@@ -18,6 +18,7 @@ import '../../../update_frame/frame.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../widgets/alert_helper.dart';
 import '../../shared/state/cs_item.dart';
+import '../../shared/state/cs_jenis.dart';
 import 'check_sheet_loading_scaffold.dart';
 
 class CheckSheetLoadingPage extends ConsumerStatefulWidget {
@@ -41,80 +42,56 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       ref.read(updateCSNotifierProvider.notifier).changeSelectedSPK(widget.spk);
 
       //
-      ModeState modeState = ref.read(modeNotifierProvider);
-      await modeState.maybeWhen(checkSheetLoading: () async {
-        final isOffline = ref.watch(isOfflineStateProvider);
 
-        log('isOffline $isOffline');
+      final isOffline = ref.watch(isOfflineStateProvider);
 
-        if (isOffline) {
-          await ref
-              .read(frameOfflineNotifierProvider.notifier)
-              .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+      log('isOffline $isOffline');
 
-          final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
+      if (isOffline) {
+        await ref
+            .read(frameOfflineNotifierProvider.notifier)
+            .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
 
-          await frameOfflineOrOnline.maybeWhen(
-            hasOfflineStorage: () => ref
-                .read(frameNotifierProvider.notifier)
-                .getFrameListOFFLINE(idSPK: widget.spk.idSpk),
-            orElse: () async {
-              await ref
-                  .read(frameNotifierProvider.notifier)
-                  .getFrameList(idSPK: widget.spk.idSpk);
+        final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
 
-              await ref
-                  .read(frameOfflineNotifierProvider.notifier)
-                  .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
-            },
-          );
-        } else {
-          await ref
+        await frameOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => ref
               .read(frameNotifierProvider.notifier)
-              .getFrameList(idSPK: widget.spk.idSpk);
-        }
-      }, orElse: () {
-        //
-        final idSPK = widget.spk.idSpk;
-        ref.read(selectedSPKStateProvider.notifier).state = widget.spk;
-        ref.read(updateCSNotifierProvider.notifier).changeidSPK(idSPK);
-        ref
-            .read(updateFrameNotifierProvider.notifier)
-            .changeIdSPK(idSPK: idSPK);
+              .getFrameListOFFLINE(idSPK: widget.spk.idSpk),
+          orElse: () async {
+            await ref
+                .read(frameNotifierProvider.notifier)
+                .getFrameList(idSPK: widget.spk.idSpk);
 
-        debugger();
+            await ref
+                .read(frameOfflineNotifierProvider.notifier)
+                .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+          },
+        );
+      } else {
+        await ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameList(idSPK: widget.spk.idSpk);
+      }
 
-        // CS ITEM
-        Map<int, List<CSItem>> csItemMap = {};
+      // CS JENIS
+      await ref
+          .read(csJenisOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSJenisOFFLINEStatus();
 
-        final csItem = ref.read(csItemNotifierProvider);
+      final csJenisOfflineOrOnline = ref.watch(csJenisOfflineNotifierProvider);
 
-        final csId = ref
-            .read(csItemNotifierProvider.notifier)
-            .getCSId(csItem.selectedId);
+      await csJenisOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () =>
+            ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
+        orElse: () async {
+          await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
 
-        List<CSItem> csItemsByID = csId.fold([], (previous, cs) {
-          final list =
-              ref.read(csItemNotifierProvider.notifier).getCSItemById(cs);
-
-          csItemMap.addAll({
-            cs: [...list]
-          });
-
-          return previous + list;
-        });
-
-        /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-        ref.read(updateCSNotifierProvider.notifier).changeFillEmptyList(
-              length: csItemsByID.length,
-            );
-        ref
-            .read(updateCSNotifierProvider.notifier)
-            .changeFillWithValue(spk: widget.spk);
-        ref
-            .read(csItemNotifierProvider.notifier)
-            .changeCSItemsByIDList(csItemMap);
-      });
+          await ref
+              .read(csJenisOfflineNotifierProvider.notifier)
+              .checkAndUpdateCSJenisOFFLINEStatus();
+        },
+      );
     });
   }
 
@@ -163,18 +140,91 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                         .changeFillEmptyList(
                             length: responseLEN, frame: frameResponse);
                   }
+                })));
 
-                  // CS LOADING
+    // debugger();
+    // CS JENIS
+    ref.listen<Option<Either<RemoteFailure, List<CSJenis>>>>(
+        csJenisNotifierProvider.select((value) => value.FOSOCSJenis),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                    (failure) => AlertHelper.showSnackBar(
+                          context,
+                          message: failure.map(
+                              noConnection: (value) =>
+                                  'Error Saat Mengambil CS Jenis Tidak Ada Koneksi',
+                              storage: (_) =>
+                                  'Error Storage penuh saat menyimpan CS Jenis',
+                              server: (value) =>
+                                  'Error Saat Mengambil CS Jenis $value',
+                              parse: (value) =>
+                                  'Error Saat Parse CS Jenis $value'),
+                        ), (csJenis) async {
+                  await Future.delayed(
+                      Duration(seconds: 1),
+                      () => ref
+                          .read(csJenisNotifierProvider.notifier)
+                          .changeCSJenisList(csJenis));
+
+                  await ref
+                      .read(csItemOfflineNotifierProvider.notifier)
+                      .checkAndUpdateCSItemOFFLINEStatus();
+
+                  final csItemsOfflineOrOnline =
+                      ref.watch(csItemOfflineNotifierProvider);
+
+                  await csItemsOfflineOrOnline.maybeWhen(
+                    hasOfflineStorage: () => ref
+                        .read(csItemNotifierProvider.notifier)
+                        .getCSItemsOFFLINE(),
+                    orElse: () async {
+                      await ref
+                          .read(csItemNotifierProvider.notifier)
+                          .getCSItem();
+
+                      await ref
+                          .read(csItemOfflineNotifierProvider.notifier)
+                          .checkAndUpdateCSItemOFFLINEStatus();
+                    },
+                  );
+                })));
+
+    // CS ITEMS
+    ref.listen<Option<Either<RemoteFailure, List<CSItem>>>>(
+        csItemNotifierProvider.select((value) => value.FOSOCSItem),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                    (failure) => AlertHelper.showSnackBar(
+                          context,
+                          message: failure.map(
+                              noConnection: (value) =>
+                                  'Error Saat Mengambil CS Items Tidak Ada Koneksi',
+                              storage: (_) =>
+                                  'Error Storage penuh saat menyimpan CS Items',
+                              server: (value) =>
+                                  'Error Saat Mengambil CS Items $value',
+                              parse: (value) =>
+                                  'Error Saat Parse CS Items $value'),
+                        ), (csItems) async {
+                  await Future.delayed(
+                      Duration(seconds: 1),
+                      () => ref
+                          .read(csItemNotifierProvider.notifier)
+                          .changeCSItemsList(csItems));
+
                   final idSPK = widget.spk.idSpk;
                   ref.read(selectedSPKStateProvider.notifier).state =
                       widget.spk;
                   ref
                       .read(updateCSNotifierProvider.notifier)
                       .changeidSPK(idSPK);
-
                   ref
                       .read(updateFrameNotifierProvider.notifier)
                       .changeIdSPK(idSPK: idSPK);
+
+                  // debugger();
 
                   // CS ITEM
                   Map<int, List<CSItem>> csItemMap = {};
@@ -185,11 +235,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                       .read(csItemNotifierProvider.notifier)
                       .getCSId(csItem.selectedId);
 
-                  List<CSItem> csItemsByID =
-                      csId.foldIndexed([], (index, previous, cs) {
+                  List<CSItem> csItemsByID = csId.fold([], (previous, cs) {
                     final list = ref
                         .read(csItemNotifierProvider.notifier)
-                        .getCSItemById(cs);
+                        .getCSItemById(csItem.selectedId);
 
                     csItemMap.addAll({
                       cs: [...list]
@@ -241,7 +290,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
     return Stack(
       children: [
         CheckSheetLoadingScaffold(),
-        Positioned(top: 45, child: DataUpdateLinearProgress()),
+        Positioned(top: 100, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

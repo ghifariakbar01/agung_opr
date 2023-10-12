@@ -1,15 +1,14 @@
 import 'dart:developer';
 
-import 'package:agung_opr/style/style.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../../constants/assets.dart';
 import '../../../constants/constants.dart';
 import '../../../domain/local_failure.dart';
+import '../../../domain/remote_failure.dart';
 import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
@@ -19,10 +18,12 @@ import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../clear_data/clear_data_providers.dart';
+import '../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../customer/shared/customer_providers.dart';
 import '../../gate/providers/gate_providers.dart';
 import '../../history/history.dart';
 import '../../model/shared/model_providers.dart';
+import '../../network_state/network_state_notifier.dart';
 import '../../spk/shared/spk_providers.dart';
 import '../../spk/spk.dart';
 import '../../supir/shared/supir_providers.dart';
@@ -87,52 +88,18 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(csItemOfflineNotifierProvider.notifier)
           .checkAndUpdateCSItemOFFLINEStatus();
-    }
 
-    Future<void> csJenisFunction() async {
       // debugger();
-
-      await ref
-          .read(jenisPenyebabFrameNotifierProvider.notifier)
-          .getCSUJenisItems();
-
-      // JENIS CSU STORAGE
-      await ref
-          .read(jenisPenyebabOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
-    }
-
-    Future<void> csPenyebabFunction() async {
-      await ref
-          .read(jenisPenyebabFrameNotifierProvider.notifier)
-          .getCSUPenyebabItems();
-
-      await ref
-          .read(jenisPenyebabOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
     }
 
     // SPK function get and update offline status
     Future<void> spkFunction() async {
-      // GET [100] LATEST DATA
+      // GET [10] LATEST DATA
       await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
 
       await ref
           .read(spkOfflineNotifierProvider.notifier)
           .checkAndUpdateSPKOFFLINEStatus();
-    }
-
-    Future<void> frameFunction() async {
-      // GET [500] LATEST DATA
-      for (int i = 0; i < 5; i++) {
-        await ref
-            .read(frameNotifierProvider.notifier)
-            .getFrameListWithoutSPK(page: i);
-      }
-
-      await ref
-          .read(frameOfflineNotifierProvider.notifier)
-          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
     }
 
     // MODEL function get and update offline status
@@ -151,16 +118,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(modelOfflineNotifierProvider.notifier)
           .checkAndUpdateModelOFFLINEStatus();
-    }
-
-    // CSU ITEMS
-    Future<void> csuItemsFunction() async {
-      // GET [500] LATEST DATA
-      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
-
-      await ref
-          .read(csuItemsOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSUItemsOFFLINEStatus();
     }
 
     // CUSTOMER function get and update offline status
@@ -201,15 +158,14 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
     Future<void> getAndSaveAllData() async {
       await CSFunction();
       await spkFunction();
-      await frameFunction();
       await modelFunction();
       await supirFunction();
       await gatesFunction();
-      await csJenisFunction();
-      await csuItemsFunction();
       await customerFunction();
-      await csPenyebabFunction();
       await savedQueriesFunction();
+      // await csJenisFunction();
+      // await csuItemsFunction();
+      // await csPenyebabFunction();
     }
 
     //
@@ -254,53 +210,95 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                       (user) => ref
                           .read(userNotifierProvider.notifier)
                           .onUserParsed(
-                            user: user,
-                            initializeDioRequest: () =>
-                                ref.read(dioRequestProvider).addAll({
-                              "username": "${user.nama}",
-                              "password": "${user.password}",
-                            }),
-                            initializeAndCheckData: () => getAndSaveAllData(),
-                            initializeAutoData: () => ref
-                                .read(autoDataTimerNotifierProvider.notifier)
-                                .startTimer(
-                              Constants.dataIntervalTimerInSeconds,
-                              getSavedUpdateFrame: () async {
-                                await ref
-                                    .read(autoDataUpdateFrameNotifierProvider
-                                        .notifier)
-                                    .getSavedQueryFromRepository();
-                                await ref
-                                    .read(updateFrameOfflineNotifierProvider
-                                        .notifier)
-                                    .CUUpdateFrameOFFLINEStatus();
-                              },
-                              getSavedUpdateCSUFrame: () async {
-                                await ref
-                                    .read(autoDataUpdateFrameNotifierProvider
-                                        .notifier)
-                                    .getSavedCSUQueryFromRepository();
-                                await ref
-                                    .read(updateCSUFrameOfflineNotifierProvider
-                                        .notifier)
-                                    .CUUpdateCSUFrameOFFLINEStatus();
-                              },
-                              getSavedUpdateCSFrame: () async {
-                                await ref
-                                    .read(autoDataUpdateFrameNotifierProvider
-                                        .notifier)
-                                    .getSavedCSQueryFromRepository();
-                                await ref
-                                    .read(updateCSOfflineNotifierProvider
-                                        .notifier)
-                                    .CUUpdateCSOFFLINEStatus();
-                              },
-                            ),
-                            checkAndUpdateStatus: () => ref
-                                .read(authNotifierProvider.notifier)
-                                .checkAndUpdateAuthStatus(),
-                          ));
+                              user: user,
+                              initializeDioRequest: () =>
+                                  ref.read(dioRequestProvider).addAll({
+                                    "username": "${user.nama}",
+                                    "password": "${user.password}",
+                                  }),
+                              initializeAndCheckData: () => getAndSaveAllData(),
+                              initializeAutoData: () => ref
+                                      .read(autoDataTimerNotifierProvider
+                                          .notifier)
+                                      .startTimer(
+                                    Constants.dataIntervalTimerInSeconds,
+                                    getSavedUpdateFrame: () async {
+                                      await ref
+                                          .read(
+                                              autoDataUpdateFrameNotifierProvider
+                                                  .notifier)
+                                          .getSavedQueryFromRepository();
+                                      await ref
+                                          .read(
+                                              updateFrameOfflineNotifierProvider
+                                                  .notifier)
+                                          .CUUpdateFrameOFFLINEStatus();
+                                    },
+                                    getSavedUpdateCSUFrame: () async {
+                                      await ref
+                                          .read(
+                                              autoDataUpdateFrameNotifierProvider
+                                                  .notifier)
+                                          .getSavedCSUQueryFromRepository();
+                                      await ref
+                                          .read(
+                                              updateCSUFrameOfflineNotifierProvider
+                                                  .notifier)
+                                          .CUUpdateCSUFrameOFFLINEStatus();
+                                    },
+                                    getSavedUpdateCSFrame: () async {
+                                      await ref
+                                          .read(
+                                              autoDataUpdateFrameNotifierProvider
+                                                  .notifier)
+                                          .getSavedCSQueryFromRepository();
+                                      await ref
+                                          .read(updateCSOfflineNotifierProvider
+                                              .notifier)
+                                          .CUUpdateCSOFFLINEStatus();
+                                    },
+                                  ),
+                              checkAndUpdateStatus: () => ref
+                                  .read(authNotifierProvider.notifier)
+                                  .checkAndUpdateAuthStatus(),
+                              sortData: () => ref
+                                  .read(sortDataFormNotifierProvider.notifier)
+                                  .sortData()));
                 })));
+
+    // Sort Data
+    ref.listen<Option<Either<RemoteFailure, Unit>>>(
+        sortDataFormNotifierProvider.select(
+          (state) => state.FOSOSPKSortData,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => VSimpleDialog(
+                          label: 'Error',
+                          labelDescription: failure.maybeMap(
+                            orElse: () => '',
+                            parse: (value) => 'Error Parse $value',
+                            server: (error) => 'Error Format Sort Data: $error',
+                            storage: (_) =>
+                                'mohon maaf storage anda penuh saat menyimpan frame dan spk',
+                          ),
+                          asset: Assets.iconCrossed,
+                        )),
+                (_) {})));
+    // to update networkStateNotifierProvider
+    ref.watch(networkStateNotifierProvider);
+
+    // Clear Data upon going online
+    ref.listen(isOfflineStateProvider, (previous, next) {
+      if (previous == true && next == false) {
+        debugger();
+        ref.read(userNotifierProvider.notifier).getUser();
+      }
+    });
 
     // Clear Data upon refreshing
     ref.listen<Option<Either<LocalFailure, Unit>>>(
@@ -402,9 +400,10 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .changeSavedCSQuery(csIdQueries: csIdQueries))));
 
-    // final isSubmitting = ref.watch(
-    //   autoDataUpdateFrameNotifierProvider.select((state) => state.isGetting),
-    // );
+    final isSubmitting = ref.watch(autoDataUpdateFrameNotifierProvider
+            .select((state) => state.isGetting)) ||
+        ref.watch(
+            sortDataFormNotifierProvider.select((value) => value.isGetting));
 
     return UpgradeAlert(
       upgrader: Upgrader(
@@ -416,8 +415,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       child: Stack(
         children: [
           CrannyMiddle(),
-          Positioned(top: 45, child: DataUpdateLinearProgress()),
-          LoadingOverlay(isLoading: false),
+          Positioned(top: 100, child: DataUpdateLinearProgress()),
+          LoadingOverlay(isLoading: isSubmitting),
         ],
       ),
     );
@@ -432,3 +431,36 @@ class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => '-';
 }
+
+// // CSU ITEMS
+    // Future<void> csuItemsFunction() async {
+    //   // GET [500] LATEST DATA
+    //   await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+
+    //   await ref
+    //       .read(csuItemsOfflineNotifierProvider.notifier)
+    //       .checkAndUpdateCSUItemsOFFLINEStatus();
+    // }
+
+ // Future<void> csJenisFunction() async {
+    //   // debugger();
+
+    //   await ref
+    //       .read(jenisPenyebabFrameNotifierProvider.notifier)
+    //       .getCSUJenisItems();
+
+    //   // JENIS CSU STORAGE
+    //   await ref
+    //       .read(jenisPenyebabOfflineNotifierProvider.notifier)
+    //       .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
+    // }
+
+    // Future<void> csPenyebabFunction() async {
+    //   await ref
+    //       .read(jenisPenyebabFrameNotifierProvider.notifier)
+    //       .getCSUPenyebabItems();
+
+    //   await ref
+    //       .read(jenisPenyebabOfflineNotifierProvider.notifier)
+    //       .checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus();
+    // }

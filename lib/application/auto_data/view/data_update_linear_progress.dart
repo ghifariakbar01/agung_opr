@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/constants.dart';
+import '../../../shared/providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
@@ -38,17 +39,28 @@ class DataUpdateLinearProgress extends ConsumerWidget {
           orElse: () => false,
         );
 
+    final isOffline = ref.watch(isOfflineStateProvider);
+
     return Visibility(
       visible: hasQueryData,
       child: SizedBox(
-        height: 30,
+        height: isOffline ? 20 : 30,
         width: MediaQuery.of(context).size.width,
-        child: LinearProgressIndicator(
-          color: Palette.secondaryColor,
-          value: double.parse(
-              (time / Constants.dataIntervalTimerInSeconds).toString()),
-          semanticsLabel: 'Linear progress indicator',
-        ),
+        child: isOffline
+            ? Container(
+                color: Palette.secondaryColor,
+                child: Text(
+                  'Data Pending (Offline)',
+                  style:
+                      Themes.customColor(FontWeight.normal, 11, Colors.white),
+                ),
+              )
+            : LinearProgressIndicator(
+                color: Palette.secondaryColor,
+                value: double.parse(
+                    (time / Constants.dataIntervalTimerInSeconds).toString()),
+                semanticsLabel: 'Linear progress indicator',
+              ),
       ),
     );
   }

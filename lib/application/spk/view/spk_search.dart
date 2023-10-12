@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +27,7 @@ class SPKSearch extends ConsumerWidget {
           autofocus: false,
           focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Cari Nopol / Nama Driver',
+            'Cari Nopol (Angka) / Driver',
             icon: SizedBox(
               width: 55,
               child: Row(
@@ -49,6 +51,8 @@ class SPKSearch extends ConsumerWidget {
                                   await ref
                                       .read(spkNotifierProvider.notifier)
                                       .searchSPKListOFFLINE(search: search);
+
+                                  debugger();
                                 }
                               }()
                             : ref
@@ -95,6 +99,8 @@ class SPKSearch extends ConsumerWidget {
                     await ref
                         .read(spkNotifierProvider.notifier)
                         .searchSPKListOFFLINE(search: search);
+
+                    debugger();
                   }
                 }()
               : ref

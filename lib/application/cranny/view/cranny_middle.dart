@@ -10,15 +10,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
 import '../../../domain/local_failure.dart';
-import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
-import '../../clear_data/clear_data_providers.dart';
 import '../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../history/history.dart';
 import '../../routes/route_names.dart';
-import '../../spk/shared/spk_providers.dart';
 import '../../spk/spk.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';

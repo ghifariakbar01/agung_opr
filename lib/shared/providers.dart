@@ -13,7 +13,11 @@ import '../application/sign_in_form/sign_in_form_notifier.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../application/sort_data/sort_data_notifier.dart';
+import '../application/sort_data/sort_data_state.dart';
+import '../application/spk/shared/spk_providers.dart';
 import '../application/spk/spk.dart';
+import '../application/update_frame/shared/update_frame_providers.dart';
 import '../application/user/user_notifier.dart';
 import '../application/user/user_state.dart';
 import '../infrastructure/auth_interceptor.dart';
@@ -22,6 +26,7 @@ import '../infrastructure/auth_repository.dart';
 import '../infrastructure/credentials_storage.dart';
 import '../infrastructure/credentials_storage/secure_credentials_storage.dart';
 
+import '../infrastructure/sort_data/sort_data_repository.dart';
 import '../utils/string_utils.dart';
 
 // NETWORKING & ROUTER
@@ -90,3 +95,15 @@ final selectedSPKStateProvider = StateProvider((ref) => SPK.initial());
 
 final getBuildProvider =
     FutureProvider<PackageInfo>((ref) => PackageInfo.fromPlatform());
+
+// SORT DATA
+
+final sortDataRepositoryProvider = Provider((ref) => SortDataRepository(
+      ref.watch(spkRepositoryProvider),
+      ref.watch(frameRepositoryProvider),
+    ));
+
+final sortDataFormNotifierProvider =
+    StateNotifierProvider.autoDispose<SortDataNotifier, SortDataState>(
+  (ref) => SortDataNotifier(ref.watch(sortDataRepositoryProvider)),
+);

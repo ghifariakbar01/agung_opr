@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../infrastructure/cs/cs_items_repository.dart';
@@ -10,6 +12,8 @@ class CSItemOfflineNotifier extends StateNotifier<CSItemOfflineState> {
 
   Future<void> checkAndUpdateCSItemOFFLINEStatus() async {
     final isOfffline = await _repository.hasOfflineData();
+
+    log('checkAndUpdateCSItemOFFLINEStatus isOfffline $isOfffline');
 
     if (isOfffline) {
       state = const CSItemOfflineState.hasOfflineStorage();

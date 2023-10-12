@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../infrastructure/cs/cs_repository.dart';
@@ -11,6 +13,8 @@ class CSJenisOfflineNotifier extends StateNotifier<CSJenisOfflineState> {
 
   Future<void> checkAndUpdateCSJenisOFFLINEStatus() async {
     final isOfffline = await _repository.hasOfflineData();
+
+    log('checkAndUpdateCSJenisOFFLINEStatus isOfffline $isOfffline');
 
     if (isOfffline) {
       state = const CSJenisOfflineState.hasOfflineStorage();

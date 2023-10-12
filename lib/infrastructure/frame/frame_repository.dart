@@ -52,30 +52,6 @@ class FrameRepository {
       getFrameListOFFLINE(idSPK: idSPK)
           .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<LocalFailure, Unit>> saveFrameIndexedSPK(
-      {required int idSPK, required int index, required Frame newFrame}) async {
-    try {
-      final saveThisMap = {
-        idSPK.toString(): [newFrame]
-      };
-
-      // debugger(message: 'called');
-
-      log('SAVE FRAME INDEXED MAP: ${saveThisMap}');
-
-      await this
-          ._GETAndADDFrameInMap(newFrame: saveThisMap, indexIdUnit: index);
-
-      return right(unit);
-    } on FormatException catch (e) {
-      return left(LocalFailure.format(e.message));
-    } on JsonUnsupportedObjectError {
-      return left(LocalFailure.format('JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(LocalFailure.storage());
-    }
-  }
-
   Future<Either<LocalFailure, Map<String, Map<String, String>>>>
       removeSPKFromMap({required String idSPK}) async {
     try {
@@ -206,7 +182,7 @@ class FrameRepository {
 
   // SAVE MAP IN STORAGE
   Future<Unit> _GETAndADDFrameInMap(
-      {required Map<String, List<Frame>> newFrame, int? indexIdUnit}) async {
+      {required Map<String, List<Frame>> newFrame}) async {
     final savedStrings = await _storage.read();
     final isNewFrameOK = newFrame.values.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -225,25 +201,9 @@ class FrameRepository {
             final key = newFrame.keys.first;
             final newValue = newFrame.values.first;
 
-            if (parsedMap.containsKey(key) && indexIdUnit != null) {
-              final oldValue = parsedMap[key] ?? [];
-
-              final frame = newValue.first;
-
-              // Map<String, dynamic> OF FRAMES
-              final list = [...oldValue];
-
-              list[indexIdUnit] = frame;
-
-              // debugger(message: 'called');
-
-              log('STORAGE FRAME UPDATE: $list');
-
-              parsedMap.update(key, (value) => list);
-            }
             // IF EXISTING KEY EXIST, BUT NOT UPDATE SPECIFIC FRAME,
             // PARAM IS FRAME AS WHOLE
-            else if (parsedMap.containsKey(key) && indexIdUnit == null) {
+            if (parsedMap.containsKey(key)) {
               final frameList = newValue;
 
               // debugger(message: 'called');
@@ -514,3 +474,26 @@ class FrameRepository {
     return unit;
   }
 }
+ // Future<Either<LocalFailure, Unit>> saveFrameIndexedSPK(
+  //     {required int idSPK, required int index, required Frame newFrame}) async {
+  //   try {
+  //     final saveThisMap = {
+  //       idSPK.toString(): [newFrame]
+  //     };
+
+  //     // debugger(message: 'called');
+
+  //     log('SAVE FRAME INDEXED MAP: ${saveThisMap}');
+
+  //     await this
+  //         ._GETAndADDFrameInMap(newFrame: saveThisMap, indexIdUnit: index);
+
+  //     return right(unit);
+  //   } on FormatException catch (e) {
+  //     return left(LocalFailure.format(e.message));
+  //   } on JsonUnsupportedObjectError {
+  //     return left(LocalFailure.format('JsonUnsupportedObjectError'));
+  //   } on PlatformException {
+  //     return left(LocalFailure.storage());
+  //   }
+  // }

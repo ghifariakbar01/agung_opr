@@ -14,6 +14,8 @@ class CheckSheetItemNotifier extends StateNotifier<CSItemState> {
   List<CSItem> getCSItemById(int id) =>
       state.csItemList.where((element) => element.idList == id).toList();
 
+  List<CSItem> getCSItem() => state.csItemList.toList();
+
   Future<void> getCSItems() async {
     final Either<RemoteFailure, List<CSItem>> FOS;
 

@@ -33,6 +33,8 @@ class CSRepository {
 
       await _storage.save(CSJenis.CSJenisListToJson(listCSJenis));
 
+      // debugger();
+
       return right(listCSJenis);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));

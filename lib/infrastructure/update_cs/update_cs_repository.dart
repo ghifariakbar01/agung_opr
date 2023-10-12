@@ -66,7 +66,7 @@ class UpdateCSRepository {
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
-          debugger(message: 'called');
+          // debugger(message: 'called');
 
           // await _removeQueryCSFromSaved(idSPK: idSPK);
 

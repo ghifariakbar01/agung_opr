@@ -80,6 +80,7 @@ class _CheckSheetLoadingScaffoldState
     final bool hideKelengkapanAndButton =
         ref.watch(hideKelengkapanAndButtonProvider);
     final bool hideFAB = ref.watch(hideFABProvider);
+    final bool isOffline = ref.watch(isOfflineStateProvider);
 
     final updateFrameNotifier = ref.watch(updateFrameNotifierProvider);
 
@@ -98,22 +99,33 @@ class _CheckSheetLoadingScaffoldState
                   icon: Icon(Icons.arrow_back))),
           floatingActionButton: hideFAB || hideKelengkapanAndButton
               ? Container()
-              : FloatingActionButton.extended(
-                  backgroundColor: Colors.white,
-                  elevation: 5,
-                  label: Text(
-                    'Lakukan setelah Pencet OK / NG',
-                    style:
-                        Themes.customColor(FontWeight.normal, 11, Colors.black),
-                  ),
-                  icon: Icon(
-                    Icons.download,
-                    color: Palette.primaryColor,
-                  ),
-                  onPressed: () => ref
-                      .read(clearDataEssentialNotifierProvider.notifier)
-                      .clearAllStorage(idSPK: updateFrameNotifier.idSPK),
-                ),
+              : isOffline
+                  ? FloatingActionButton.small(
+                      backgroundColor: Colors.white,
+                      elevation: 5,
+                      child: Icon(
+                        Icons
+                            .signal_cellular_connected_no_internet_0_bar_rounded,
+                        color: Palette.primaryColor,
+                      ),
+                      onPressed: () {},
+                    )
+                  : FloatingActionButton.extended(
+                      backgroundColor: Colors.white,
+                      elevation: 5,
+                      label: Text(
+                        'Lakukan setelah Pencet OK / NG',
+                        style: Themes.customColor(
+                            FontWeight.normal, 11, Colors.black),
+                      ),
+                      icon: Icon(
+                        Icons.download,
+                        color: Palette.primaryColor,
+                      ),
+                      onPressed: () => ref
+                          .read(clearDataEssentialNotifierProvider.notifier)
+                          .clearAllStorage(idSPK: updateFrameNotifier.idSPK),
+                    ),
           body: SingleChildScrollView(
             controller: scrollController,
             child: Padding(

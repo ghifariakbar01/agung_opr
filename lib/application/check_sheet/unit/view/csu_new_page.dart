@@ -295,7 +295,7 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     return Stack(
       children: [
         CSUNewScaffold(),
-        Positioned(top: 45, child: DataUpdateLinearProgress()),
+        Positioned(top: 100, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
     );

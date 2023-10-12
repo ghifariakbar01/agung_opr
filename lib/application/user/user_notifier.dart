@@ -71,12 +71,14 @@ class UserNotifier extends StateNotifier<UserState> {
     required Function initializeAndCheckData,
     required Function initializeAutoData,
     required Function checkAndUpdateStatus,
+    required Function sortData,
   }) async {
     setUser(user);
     await initializeDioRequest();
     await initializeAndCheckData();
     await initializeAutoData();
     await checkAndUpdateStatus();
+    await sortData();
   }
 
   Future<void> logout() async {

@@ -33,6 +33,8 @@ class CSItemsRepository {
 
       await _storage.save(CSItem.CSItemListToJson(listCSItem));
 
+      // debugger();
+
       return right(listCSItem);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));

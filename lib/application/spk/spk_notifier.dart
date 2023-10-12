@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/infrastructure/spk/spk_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -47,6 +49,8 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(isProcessing: true, FOSOSPK: none());
 
     FOS = await _repository.searchSPKListOFFLINE(search: search);
+
+    debugger();
 
     state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
   }

@@ -20,10 +20,11 @@ class AutoDataRepository {
   AutoDataRepository(this._updateFrameRepository, this._historyRepository,
       this._updateCSRepository);
 
-  Future<Either<RemoteFailure, Unit>> runAutoDataFromRepositories(
-      {required Map<String, Map<String, String>> queryMap,
-      required List<CSIDQuery> queryIds,
-      required List<History> histories}) async {
+  Future<Either<RemoteFailure, Unit>> runAutoDataFromRepositories({
+    required List<History> histories,
+    required List<CSIDQuery> queryIds,
+    required Map<String, Map<String, String>> queryMap,
+  }) async {
     try {
       if (queryMap.isNotEmpty)
         await _updateFrameRepository.updateFrameByQuery(queryMap: queryMap);
