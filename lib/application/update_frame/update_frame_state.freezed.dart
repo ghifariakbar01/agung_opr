@@ -28,6 +28,8 @@ mixin _$UpdateFrameState {
       throw _privateConstructorUsedError;
   List<UpdateFrameStateSingle> get updateFrameList =>
       throw _privateConstructorUsedError;
+  List<TextEditingController> get warnaTextController =>
+      throw _privateConstructorUsedError;
   List<TextEditingController> get modelTextController =>
       throw _privateConstructorUsedError;
   List<TextEditingController> get frameTextController =>
@@ -57,6 +59,7 @@ abstract class $UpdateFrameStateCopyWith<$Res> {
       Map<String, dynamic> basicColors,
       TextEditingController sjkbTextController,
       List<UpdateFrameStateSingle> updateFrameList,
+      List<TextEditingController> warnaTextController,
       List<TextEditingController> modelTextController,
       List<TextEditingController> frameTextController,
       List<TextEditingController> customerTextController,
@@ -84,6 +87,7 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
     Object? basicColors = null,
     Object? sjkbTextController = null,
     Object? updateFrameList = null,
+    Object? warnaTextController = null,
     Object? modelTextController = null,
     Object? frameTextController = null,
     Object? customerTextController = null,
@@ -122,6 +126,10 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
           ? _value.updateFrameList
           : updateFrameList // ignore: cast_nullable_to_non_nullable
               as List<UpdateFrameStateSingle>,
+      warnaTextController: null == warnaTextController
+          ? _value.warnaTextController
+          : warnaTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
       modelTextController: null == modelTextController
           ? _value.modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
@@ -159,6 +167,7 @@ abstract class _$$_UpdateFrameStateCopyWith<$Res>
       Map<String, dynamic> basicColors,
       TextEditingController sjkbTextController,
       List<UpdateFrameStateSingle> updateFrameList,
+      List<TextEditingController> warnaTextController,
       List<TextEditingController> modelTextController,
       List<TextEditingController> frameTextController,
       List<TextEditingController> customerTextController,
@@ -184,6 +193,7 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
     Object? basicColors = null,
     Object? sjkbTextController = null,
     Object? updateFrameList = null,
+    Object? warnaTextController = null,
     Object? modelTextController = null,
     Object? frameTextController = null,
     Object? customerTextController = null,
@@ -222,6 +232,10 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
           ? _value._updateFrameList
           : updateFrameList // ignore: cast_nullable_to_non_nullable
               as List<UpdateFrameStateSingle>,
+      warnaTextController: null == warnaTextController
+          ? _value._warnaTextController
+          : warnaTextController // ignore: cast_nullable_to_non_nullable
+              as List<TextEditingController>,
       modelTextController: null == modelTextController
           ? _value._modelTextController
           : modelTextController // ignore: cast_nullable_to_non_nullable
@@ -254,12 +268,14 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       required final Map<String, dynamic> basicColors,
       required this.sjkbTextController,
       required final List<UpdateFrameStateSingle> updateFrameList,
+      required final List<TextEditingController> warnaTextController,
       required final List<TextEditingController> modelTextController,
       required final List<TextEditingController> frameTextController,
       required final List<TextEditingController> customerTextController,
       required this.FOSOUpdateFrame})
       : _basicColors = basicColors,
         _updateFrameList = updateFrameList,
+        _warnaTextController = warnaTextController,
         _modelTextController = modelTextController,
         _frameTextController = frameTextController,
         _customerTextController = customerTextController;
@@ -291,6 +307,15 @@ class _$_UpdateFrameState implements _UpdateFrameState {
     if (_updateFrameList is EqualUnmodifiableListView) return _updateFrameList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_updateFrameList);
+  }
+
+  final List<TextEditingController> _warnaTextController;
+  @override
+  List<TextEditingController> get warnaTextController {
+    if (_warnaTextController is EqualUnmodifiableListView)
+      return _warnaTextController;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_warnaTextController);
   }
 
   final List<TextEditingController> _modelTextController;
@@ -325,7 +350,7 @@ class _$_UpdateFrameState implements _UpdateFrameState {
 
   @override
   String toString() {
-    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, basicColors: $basicColors, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, modelTextController: $modelTextController, frameTextController: $frameTextController, customerTextController: $customerTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
+    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, basicColors: $basicColors, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, warnaTextController: $warnaTextController, modelTextController: $modelTextController, frameTextController: $frameTextController, customerTextController: $customerTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
   }
 
   @override
@@ -345,6 +370,8 @@ class _$_UpdateFrameState implements _UpdateFrameState {
                 other.sjkbTextController == sjkbTextController) &&
             const DeepCollectionEquality()
                 .equals(other._updateFrameList, _updateFrameList) &&
+            const DeepCollectionEquality()
+                .equals(other._warnaTextController, _warnaTextController) &&
             const DeepCollectionEquality()
                 .equals(other._modelTextController, _modelTextController) &&
             const DeepCollectionEquality()
@@ -366,6 +393,7 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       const DeepCollectionEquality().hash(_basicColors),
       sjkbTextController,
       const DeepCollectionEquality().hash(_updateFrameList),
+      const DeepCollectionEquality().hash(_warnaTextController),
       const DeepCollectionEquality().hash(_modelTextController),
       const DeepCollectionEquality().hash(_frameTextController),
       const DeepCollectionEquality().hash(_customerTextController),
@@ -388,6 +416,7 @@ abstract class _UpdateFrameState implements UpdateFrameState {
           required final Map<String, dynamic> basicColors,
           required final TextEditingController sjkbTextController,
           required final List<UpdateFrameStateSingle> updateFrameList,
+          required final List<TextEditingController> warnaTextController,
           required final List<TextEditingController> modelTextController,
           required final List<TextEditingController> frameTextController,
           required final List<TextEditingController> customerTextController,
@@ -412,6 +441,8 @@ abstract class _UpdateFrameState implements UpdateFrameState {
   TextEditingController get sjkbTextController;
   @override
   List<UpdateFrameStateSingle> get updateFrameList;
+  @override
+  List<TextEditingController> get warnaTextController;
   @override
   List<TextEditingController> get modelTextController;
   @override

@@ -20,6 +20,16 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
   final UpdateFrameRepository _repository;
 
+  bool checkIfWarnaExist({
+    required int index,
+  }) {
+    String warnaStr = state.updateFrameList[index].warna.getOrLeave('');
+
+    return state.basicColors.entries
+            .firstWhereOrNull((element) => element.key == warnaStr) !=
+        null;
+  }
+
   checkIfValid() {
     bool isFrameValid() =>
         List.generate(state.updateFrameList.length, ((index) => isValid(index)))
@@ -136,6 +146,17 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       frameTextController: generateListFrameTextController,
     );
 
+    final generateListWarnaTextController = List.generate(
+        length,
+        (index) => TextEditingController(
+            text: frame[index].warna != null
+                ? frame[index].warna.toString()
+                : ''));
+
+    state = state.copyWith(
+      warnaTextController: generateListWarnaTextController,
+    );
+
     log('frame list $frame');
 
     final frameHasSPPDC =
@@ -191,6 +212,18 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
     // Update the state with the new list
     state = state.copyWith(updateFrameList: list);
+  }
+
+  void changeWarnaController({required String warnaStr, required int index}) {
+    final list = [...state.warnaTextController]; // Create a copy of the list
+
+    final TextEditingController element = TextEditingController(text: warnaStr);
+
+    // Update the element at the given index
+    list[index] = element;
+
+    // Update the state with the new list
+    state = state.copyWith(warnaTextController: list);
   }
 
   void changeWarna({required String warnaStr, required int index}) {

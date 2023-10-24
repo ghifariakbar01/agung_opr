@@ -63,9 +63,9 @@ class UpdateFrameItem extends ConsumerWidget {
                 height: 8,
               ),
 
-              FormUpdateEngine(
-                index: index,
-              ),
+              // FormUpdateEngine(
+              //   index: index,
+              // ),
 
               SizedBox(
                 height: 8,
@@ -88,49 +88,49 @@ class UpdateFrameItem extends ConsumerWidget {
               ),
 
               // Button Simpan
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // Update Frame
-                  // Flexible(
-                  //   flex: 1,
-                  //   child: SizedBox(
-                  //     height: 65,
-                  //     child: VButton(
-                  //         label: 'SIMPAN',
-                  //         onPressed: () async {
-                  //           await ref
-                  //               .read(updateFrameNotifierProvider.notifier)
-                  //               .updateFrame(index: index);
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     // Update Frame
+              //     // Flexible(
+              //     //   flex: 1,
+              //     //   child: SizedBox(
+              //     //     height: 65,
+              //     //     child: VButton(
+              //     //         label: 'SIMPAN',
+              //     //         onPressed: () async {
+              //     //           await ref
+              //     //               .read(updateFrameNotifierProvider.notifier)
+              //     //               .updateFrame(index: index);
 
-                  //           await ref
-                  //               .read(
-                  //                   updateFrameOfflineNotifierProvider.notifier)
-                  //               .CUUpdateFrameOFFLINEStatus();
-                  //         }),
-                  //   ),
-                  // ),
+              //     //           await ref
+              //     //               .read(
+              //     //                   updateFrameOfflineNotifierProvider.notifier)
+              //     //               .CUUpdateFrameOFFLINEStatus();
+              //     //         }),
+              //     //   ),
+              //     // ),
 
-                  // CSU
-                  // Flexible(
-                  //   flex: 1,
-                  //   child: SizedBox(
-                  //     height: 65,
-                  //     child: VButton(
-                  //         label: 'CSU',
-                  //         onPressed: () async {
-                  //           if (frame is Frame) {
-                  //             Map<String, dynamic> frameMap = frame.toJson();
+              //     // CSU
+              //     // Flexible(
+              //     //   flex: 1,
+              //     //   child: SizedBox(
+              //     //     height: 65,
+              //     //     child: VButton(
+              //     //         label: 'CSU',
+              //     //         onPressed: () async {
+              //     //           if (frame is Frame) {
+              //     //             Map<String, dynamic> frameMap = frame.toJson();
 
-                  //             await context.pushNamed(
-                  //                 RouteNames.CSUListNameRoute,
-                  //                 extra: frameMap);
-                  //           }
-                  //         }),
-                  //   ),
-                  // ),
-                ],
-              )
+              //     //             await context.pushNamed(
+              //     //                 RouteNames.CSUListNameRoute,
+              //     //                 extra: frameMap);
+              //     //           }
+              //     //         }),
+              //     //   ),
+              //     // ),
+              //   ],
+              // )
             ],
           ),
         ),

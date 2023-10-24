@@ -21,6 +21,7 @@ class UpdateFrameState with _$UpdateFrameState {
     /// Hack for model value to change after tapping model
     required TextEditingController sjkbTextController,
     required List<UpdateFrameStateSingle> updateFrameList,
+    required List<TextEditingController> warnaTextController,
     required List<TextEditingController> modelTextController,
     required List<TextEditingController> frameTextController,
     required List<TextEditingController> customerTextController,
@@ -37,9 +38,11 @@ class UpdateFrameState with _$UpdateFrameState {
         FOSOUpdateFrame: none(),
         modelTextController: [],
         frameTextController: [],
+        warnaTextController: [],
         customerTextController: [],
         sjkbTextController: TextEditingController(),
         basicColors: {
+          '': Colors.transparent,
           'Merah': Colors.red,
           'Hijau': Colors.green,
           'Biru': Colors.blue,
@@ -47,7 +50,7 @@ class UpdateFrameState with _$UpdateFrameState {
           'Oranye': Colors.orange,
           'Ungu': Colors.purple,
           'Coklat': Colors.brown,
-          'Abu-abu': Colors.grey,
+          'Silver': Colors.grey,
           'Hitam': Colors.black,
           'Putih': Colors.white,
         },
