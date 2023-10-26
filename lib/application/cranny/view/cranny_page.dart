@@ -400,10 +400,8 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .changeSavedCSQuery(csIdQueries: csIdQueries))));
 
-    final isSubmitting = ref.watch(autoDataUpdateFrameNotifierProvider
-            .select((state) => state.isGetting)) ||
-        ref.watch(
-            sortDataFormNotifierProvider.select((value) => value.isGetting));
+    final isSubmitting = ref
+        .watch(sortDataFormNotifierProvider.select((value) => value.isGetting));
 
     return UpgradeAlert(
       upgrader: Upgrader(

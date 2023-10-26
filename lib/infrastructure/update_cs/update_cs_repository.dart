@@ -175,12 +175,16 @@ class UpdateCSRepository {
         switch (isStorageSaved) {
           case true:
             () async {
+              debugger();
+
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
 
               final index = response
                   .indexWhere((element) => element.idSPK == queryId.idSPK);
+
+              debugger();
 
               // index not found
               if (index == -1) {
@@ -199,19 +203,47 @@ class UpdateCSRepository {
                 // debugger(message: 'called');
 
                 log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+
+                debugger();
               }
               // index found
               else {
                 if (isNG == false) {
                   debugger();
 
+                  final savedStrings = await _storage.read();
+                  final parsedResponse =
+                      jsonDecode(savedStrings!) as List<dynamic>;
+                  final response =
+                      CSIDQuery.listCSIDQueryFromJson(parsedResponse);
+                  final index = response
+                      .indexWhere((element) => element.idSPK == queryId.idSPK);
+
+                  debugger();
+
                   // if not NG, replace list
                   final list = [...response];
 
-                  list[index] = queryId;
+                  // ALREADY HAS QUERY
+                  if (list[index].query.isNotEmpty) {
+                    final saveList = [...response, queryId];
 
-                  await _storage
-                      .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+                    await _storage
+                        .save(CSIDQuery.listCSIDQueryToJsonSavable(saveList));
+
+                    debugger();
+
+                    log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(saveList)}');
+                  }
+                  // NO QUERY IN LIST
+                  else {
+                    list[index] = queryId;
+
+                    await _storage
+                        .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+
+                    log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                  }
 
                   // await _saveHistory(
                   //     csuIdQuery: queryId,
@@ -221,7 +253,7 @@ class UpdateCSRepository {
 
                   // debugger(message: 'called');
 
-                  log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                  debugger();
                 } else {
                   debugger();
 
@@ -240,6 +272,8 @@ class UpdateCSRepository {
                   // debugger(message: 'called');
 
                   log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+
+                  debugger();
                 }
               }
             }();

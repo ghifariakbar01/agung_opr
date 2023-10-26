@@ -16,8 +16,8 @@ import 'config/configuration.dart';
 import 'shared/providers.dart';
 import 'style/style.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
 
   Themes.initUiOverlayStyle();
 
