@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ModelState {
-  List<Model> get modelList => throw _privateConstructorUsedError;
-  int get idSelected => throw _privateConstructorUsedError;
   int get page => throw _privateConstructorUsedError;
   bool get hasMore => throw _privateConstructorUsedError;
+  int get idSelected => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
+  List<Model> get modelList => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<Model>>> get FOSOModel =>
       throw _privateConstructorUsedError;
 
@@ -36,11 +36,11 @@ abstract class $ModelStateCopyWith<$Res> {
       _$ModelStateCopyWithImpl<$Res, ModelState>;
   @useResult
   $Res call(
-      {List<Model> modelList,
-      int idSelected,
-      int page,
+      {int page,
       bool hasMore,
+      int idSelected,
       bool isProcessing,
+      List<Model> modelList,
       Option<Either<RemoteFailure, List<Model>>> FOSOModel});
 }
 
@@ -57,22 +57,14 @@ class _$ModelStateCopyWithImpl<$Res, $Val extends ModelState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? modelList = null,
-    Object? idSelected = null,
     Object? page = null,
     Object? hasMore = null,
+    Object? idSelected = null,
     Object? isProcessing = null,
+    Object? modelList = null,
     Object? FOSOModel = null,
   }) {
     return _then(_value.copyWith(
-      modelList: null == modelList
-          ? _value.modelList
-          : modelList // ignore: cast_nullable_to_non_nullable
-              as List<Model>,
-      idSelected: null == idSelected
-          ? _value.idSelected
-          : idSelected // ignore: cast_nullable_to_non_nullable
-              as int,
       page: null == page
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
@@ -81,10 +73,18 @@ class _$ModelStateCopyWithImpl<$Res, $Val extends ModelState>
           ? _value.hasMore
           : hasMore // ignore: cast_nullable_to_non_nullable
               as bool,
+      idSelected: null == idSelected
+          ? _value.idSelected
+          : idSelected // ignore: cast_nullable_to_non_nullable
+              as int,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      modelList: null == modelList
+          ? _value.modelList
+          : modelList // ignore: cast_nullable_to_non_nullable
+              as List<Model>,
       FOSOModel: null == FOSOModel
           ? _value.FOSOModel
           : FOSOModel // ignore: cast_nullable_to_non_nullable
@@ -102,11 +102,11 @@ abstract class _$$_ModelStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<Model> modelList,
-      int idSelected,
-      int page,
+      {int page,
       bool hasMore,
+      int idSelected,
       bool isProcessing,
+      List<Model> modelList,
       Option<Either<RemoteFailure, List<Model>>> FOSOModel});
 }
 
@@ -121,22 +121,14 @@ class __$$_ModelStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? modelList = null,
-    Object? idSelected = null,
     Object? page = null,
     Object? hasMore = null,
+    Object? idSelected = null,
     Object? isProcessing = null,
+    Object? modelList = null,
     Object? FOSOModel = null,
   }) {
     return _then(_$_ModelState(
-      modelList: null == modelList
-          ? _value._modelList
-          : modelList // ignore: cast_nullable_to_non_nullable
-              as List<Model>,
-      idSelected: null == idSelected
-          ? _value.idSelected
-          : idSelected // ignore: cast_nullable_to_non_nullable
-              as int,
       page: null == page
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
@@ -145,10 +137,18 @@ class __$$_ModelStateCopyWithImpl<$Res>
           ? _value.hasMore
           : hasMore // ignore: cast_nullable_to_non_nullable
               as bool,
+      idSelected: null == idSelected
+          ? _value.idSelected
+          : idSelected // ignore: cast_nullable_to_non_nullable
+              as int,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      modelList: null == modelList
+          ? _value._modelList
+          : modelList // ignore: cast_nullable_to_non_nullable
+              as List<Model>,
       FOSOModel: null == FOSOModel
           ? _value.FOSOModel
           : FOSOModel // ignore: cast_nullable_to_non_nullable
@@ -161,14 +161,22 @@ class __$$_ModelStateCopyWithImpl<$Res>
 
 class _$_ModelState implements _ModelState {
   const _$_ModelState(
-      {required final List<Model> modelList,
-      required this.idSelected,
-      required this.page,
+      {required this.page,
       required this.hasMore,
+      required this.idSelected,
       required this.isProcessing,
+      required final List<Model> modelList,
       required this.FOSOModel})
       : _modelList = modelList;
 
+  @override
+  final int page;
+  @override
+  final bool hasMore;
+  @override
+  final int idSelected;
+  @override
+  final bool isProcessing;
   final List<Model> _modelList;
   @override
   List<Model> get modelList {
@@ -178,19 +186,11 @@ class _$_ModelState implements _ModelState {
   }
 
   @override
-  final int idSelected;
-  @override
-  final int page;
-  @override
-  final bool hasMore;
-  @override
-  final bool isProcessing;
-  @override
   final Option<Either<RemoteFailure, List<Model>>> FOSOModel;
 
   @override
   String toString() {
-    return 'ModelState(modelList: $modelList, idSelected: $idSelected, page: $page, hasMore: $hasMore, isProcessing: $isProcessing, FOSOModel: $FOSOModel)';
+    return 'ModelState(page: $page, hasMore: $hasMore, idSelected: $idSelected, isProcessing: $isProcessing, modelList: $modelList, FOSOModel: $FOSOModel)';
   }
 
   @override
@@ -198,27 +198,21 @@ class _$_ModelState implements _ModelState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ModelState &&
-            const DeepCollectionEquality()
-                .equals(other._modelList, _modelList) &&
-            (identical(other.idSelected, idSelected) ||
-                other.idSelected == idSelected) &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
+            (identical(other.idSelected, idSelected) ||
+                other.idSelected == idSelected) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
+            const DeepCollectionEquality()
+                .equals(other._modelList, _modelList) &&
             (identical(other.FOSOModel, FOSOModel) ||
                 other.FOSOModel == FOSOModel));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_modelList),
-      idSelected,
-      page,
-      hasMore,
-      isProcessing,
-      FOSOModel);
+  int get hashCode => Object.hash(runtimeType, page, hasMore, idSelected,
+      isProcessing, const DeepCollectionEquality().hash(_modelList), FOSOModel);
 
   @JsonKey(ignore: true)
   @override
@@ -229,24 +223,24 @@ class _$_ModelState implements _ModelState {
 
 abstract class _ModelState implements ModelState {
   const factory _ModelState(
-      {required final List<Model> modelList,
-      required final int idSelected,
-      required final int page,
+      {required final int page,
       required final bool hasMore,
+      required final int idSelected,
       required final bool isProcessing,
+      required final List<Model> modelList,
       required final Option<Either<RemoteFailure, List<Model>>>
           FOSOModel}) = _$_ModelState;
 
-  @override
-  List<Model> get modelList;
-  @override
-  int get idSelected;
   @override
   int get page;
   @override
   bool get hasMore;
   @override
+  int get idSelected;
+  @override
   bool get isProcessing;
+  @override
+  List<Model> get modelList;
   @override
   Option<Either<RemoteFailure, List<Model>>> get FOSOModel;
   @override

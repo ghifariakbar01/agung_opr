@@ -51,11 +51,11 @@ class HistoryScaffold extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Server :  ${history.historyList[index].sDate}',
-                        style: Themes.customColor(
-                            FontWeight.bold, 12, Colors.black),
-                      ),
+                      // Text(
+                      //   'Server :  ${history.historyList[index].sDate}',
+                      //   style: Themes.customColor(
+                      //       FontWeight.bold, 12, Colors.black),
+                      // ),
                       Text(
                         'Local :  ${history.historyList[index].cDate}',
                         style: Themes.customColor(

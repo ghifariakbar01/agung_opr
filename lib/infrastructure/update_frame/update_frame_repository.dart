@@ -267,7 +267,7 @@ class UpdateFrameRepository {
         final idUnitInt = int.parse(idUnitStr);
 
         final command =
-            "UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', warna = '$warnaStr', id_kend_type = '$idKendTypeInt' WHERE id_unit = $idUnitInt";
+            "UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', warna = '$warnaStr', id_kend_type = '$idKendTypeInt', u_user = '$nama' WHERE id_unit = $idUnitInt";
 
         final Map<String, String> newMapOfCommands = {idUnitStr: command};
 

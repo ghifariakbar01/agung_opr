@@ -51,6 +51,7 @@ class UpdateFrameState with _$UpdateFrameState {
           'Ungu': Colors.purple,
           'Coklat': Colors.brown,
           'Silver': Colors.grey,
+          'Abu-abu': Colors.grey.shade600,
           'Hitam': Colors.black,
           'Putih': Colors.white,
         },

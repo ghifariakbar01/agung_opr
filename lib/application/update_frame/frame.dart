@@ -11,21 +11,22 @@ class Frame with _$Frame {
     required String? frame,
     required String? engine,
     required String? warna,
-    @JsonKey(name: 'id_kend_type') required int? idKendType,
-    @JsonKey(name: 'no_invoice') required String? sppdc,
     required String? custnm,
+    @JsonKey(name: 'no_invoice') required String? sppdc,
     @JsonKey(name: 'c_date') required String? tglDibuat,
+    @JsonKey(name: 'id_kend_type') required int? idKendType,
   }) = _Frame;
 
   factory Frame.initial() => Frame(
-      idUnit: 0,
-      frame: '',
-      engine: '',
-      warna: '',
-      idKendType: 0,
-      sppdc: '',
-      custnm: '',
-      tglDibuat: '');
+        idUnit: 0,
+        frame: '',
+        warna: '',
+        sppdc: '',
+        engine: '',
+        custnm: '',
+        tglDibuat: '',
+        idKendType: 0,
+      );
 
   factory Frame.fromJson(Map<String, Object?> json) => _$FrameFromJson(json);
 }

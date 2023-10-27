@@ -9,11 +9,11 @@ part 'model_state.freezed.dart';
 @freezed
 class ModelState with _$ModelState {
   const factory ModelState({
-    required List<Model> modelList,
-    required int idSelected,
     required int page,
     required bool hasMore,
+    required int idSelected,
     required bool isProcessing,
+    required List<Model> modelList,
     required Option<Either<RemoteFailure, List<Model>>> FOSOModel,
   }) = _ModelState;
 

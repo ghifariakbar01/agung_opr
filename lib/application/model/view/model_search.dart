@@ -10,13 +10,15 @@ class ModelSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final page = ref.watch(modelNotifierProvider.select((value) => value.page));
+    final modeNotif = ref.watch(modelNotifierProvider);
 
-    final search = ref
-        .watch(modelSearchNotifierProvider.select((value) => value.searchText));
+    final page = modeNotif.page;
 
-    final focusNode = ref
-        .watch(modelSearchNotifierProvider.select((value) => value.focusNode));
+    final modelSearch = ref.watch(modelSearchNotifierProvider);
+
+    final search = modelSearch.searchText;
+
+    final focusNode = modelSearch.focusNode;
 
     return SizedBox(
       height: 48,
@@ -40,10 +42,6 @@ class ModelSearch extends ConsumerWidget {
                                         .read(isOfflineStateProvider.notifier)
                                         .state ==
                                     false;
-
-                                ref
-                                    .read(modelSearchNotifierProvider.notifier)
-                                    .changeSearchText('');
 
                                 if (isOnline) {
                                   await ref
@@ -74,12 +72,12 @@ class ModelSearch extends ConsumerWidget {
           onTapOutside: (_) => ref
               .read(modelSearchNotifierProvider.notifier)
               .changeIsSearch(false),
-          onChanged: (search) async {
+          onChanged: (value) async {
             ref
                 .read(modelSearchNotifierProvider.notifier)
-                .changeSearchText(search);
+                .changeSearchText(value);
 
-            if (search.isNotEmpty && search.length > 1) {
+            if (value.isNotEmpty && value.length > 1) {
               return;
             } else {
               await ref
@@ -87,7 +85,7 @@ class ModelSearch extends ConsumerWidget {
                   .getModelListOFFLINE(page: 0);
             }
           },
-          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
+          onFieldSubmitted: (value) => value.isNotEmpty && value.length > 1
               ? () async {
                   final isOnline =
                       ref.read(isOfflineStateProvider.notifier).state == false;
@@ -99,11 +97,11 @@ class ModelSearch extends ConsumerWidget {
                   if (isOnline) {
                     await ref
                         .read(modelNotifierProvider.notifier)
-                        .searchModelList(search: search);
+                        .searchModelList(search: value);
                   } else {
                     await ref
                         .read(modelNotifierProvider.notifier)
-                        .searchModelListOFFLINE(search: search);
+                        .searchModelListOFFLINE(search: value);
                   }
                 }()
               : ref
