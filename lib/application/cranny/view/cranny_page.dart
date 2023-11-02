@@ -18,16 +18,17 @@ import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../clear_data/clear_data_providers.dart';
-import '../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../customer/shared/customer_providers.dart';
 import '../../gate/providers/gate_providers.dart';
 import '../../history/history.dart';
 import '../../model/shared/model_providers.dart';
 import '../../network_state/network_state_notifier.dart';
+import '../../spk/application/spk_id_query.dart';
 import '../../spk/shared/spk_providers.dart';
 import '../../spk/spk.dart';
 import '../../supir/shared/supir_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
+import '../../update_spk/providers/update_spk_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/v_dialogs.dart';
@@ -71,6 +72,9 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedCSQueryFromRepository();
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedSPKQueryFromRepository();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedHistoriesFromRepository();
@@ -257,6 +261,17 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                                               .notifier)
                                           .CUUpdateCSOFFLINEStatus();
                                     },
+                                    getSavedUpdateSPK: () async {
+                                      await ref
+                                          .read(
+                                              autoDataUpdateFrameNotifierProvider
+                                                  .notifier)
+                                          .getSavedSPKQueryFromRepository();
+                                      await ref
+                                          .read(updateSPKOfflineNotifierProvider
+                                              .notifier)
+                                          .CUUpdateSPKOFFLINEStatus();
+                                    },
                                   ),
                               checkAndUpdateStatus: () => ref
                                   .read(authNotifierProvider.notifier)
@@ -400,12 +415,31 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .changeSavedCSQuery(csIdQueries: csIdQueries))));
 
+    // SPK
+    ref.listen<Option<Either<LocalFailure, List<SPKIdQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameSPK,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                          storage: (_) => 'storage penuh',
+                          format: (error) => 'Error Format: $error',
+                          orElse: () => ''),
+                    ),
+                (csIdQueries) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedSPKQuery(spkIdQueries: csIdQueries))));
+
     final isSubmitting = ref
         .watch(sortDataFormNotifierProvider.select((value) => value.isGetting));
 
     return UpgradeAlert(
       upgrader: Upgrader(
-        showLater: false,
+        showLater: true,
         showIgnore: false,
         messages: MyUpgraderMessages(),
         dialogStyle: UpgradeDialogStyle.cupertino,
@@ -428,6 +462,9 @@ class MyUpgraderMessages extends UpgraderMessages {
 
   @override
   String get buttonTitleIgnore => '-';
+
+  @override
+  String get buttonTitleLater => 'Nanti Saja';
 }
 
 // // CSU ITEMS

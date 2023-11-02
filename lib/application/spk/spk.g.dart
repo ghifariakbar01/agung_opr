@@ -9,6 +9,9 @@ part of 'spk.dart';
 _$_SPK _$$_SPKFromJson(Map<String, dynamic> json) => _$_SPK(
       idSpk: json['id_spk'] as int,
       spkNo: json['spk_no'] as String,
+      isEdit: json['is_edit'] as bool?,
+      updatedUser: json['u_user'] as String?,
+      updatedDate: json['u_date'] as String?,
       supir1Nm: json['supir1_nm'] as String?,
       supir2Nm: json['supir2_nm'] as String?,
       namaTrayek: json['trayek_nama'] as String?,
@@ -19,6 +22,9 @@ _$_SPK _$$_SPKFromJson(Map<String, dynamic> json) => _$_SPK(
 Map<String, dynamic> _$$_SPKToJson(_$_SPK instance) => <String, dynamic>{
       'id_spk': instance.idSpk,
       'spk_no': instance.spkNo,
+      'is_edit': instance.isEdit,
+      'u_user': instance.updatedUser,
+      'u_date': instance.updatedDate,
       'supir1_nm': instance.supir1Nm,
       'supir2_nm': instance.supir2Nm,
       'trayek_nama': instance.namaTrayek,

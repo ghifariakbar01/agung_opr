@@ -11,6 +11,9 @@ class SPK with _$SPK {
   const factory SPK({
     @JsonKey(name: 'id_spk') required int idSpk,
     @JsonKey(name: 'spk_no') required String spkNo,
+    @JsonKey(name: 'is_edit') required bool? isEdit,
+    @JsonKey(name: 'u_user') required String? updatedUser,
+    @JsonKey(name: 'u_date') required String? updatedDate,
     @JsonKey(name: 'supir1_nm') required String? supir1Nm,
     @JsonKey(name: 'supir2_nm') required String? supir2Nm,
     @JsonKey(name: 'trayek_nama') required String? namaTrayek,
@@ -19,13 +22,17 @@ class SPK with _$SPK {
   }) = _SPK;
 
   factory SPK.initial() => SPK(
-      idSpk: 0,
-      nopol: '',
-      spkNo: '',
-      supir1Nm: '',
-      supir2Nm: '',
-      namaTrayek: '',
-      tglBerangkat: '');
+        idSpk: 0,
+        nopol: '',
+        spkNo: '',
+        supir1Nm: '',
+        supir2Nm: '',
+        namaTrayek: '',
+        isEdit: false,
+        updatedUser: '',
+        updatedDate: '',
+        tglBerangkat: '',
+      );
 
   factory SPK.fromJson(Map<String, Object?> json) => _$SPKFromJson(json);
 

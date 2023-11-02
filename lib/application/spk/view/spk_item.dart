@@ -6,12 +6,19 @@ class SPKItem extends StatelessWidget {
     Key? key,
     this.color,
     this.brdrColor,
+    required this.isEdit,
+    required this.uUser,
+    required this.uDate,
     required this.nomorSpk,
     required this.namaTrayek,
     required this.namaDriver,
     required this.nomorPolisi,
     required this.tglBerangkat,
   }) : super(key: key);
+
+  final bool isEdit;
+  final String uUser;
+  final String uDate;
 
   final Color? color;
   final Color? brdrColor;
@@ -45,6 +52,14 @@ class SPKItem extends StatelessWidget {
                 style: Themes.customColor(
                     FontWeight.bold, 15, color ?? Palette.primaryColor),
               ),
+              if (isEdit == true) ...[
+                Text(
+                  'SPK Sudah Diupdate Oleh : $uUser\n Pada  : $uDate',
+                  textAlign: TextAlign.center,
+                  style: Themes.customColor(
+                      FontWeight.bold, 15, color ?? Palette.yellow),
+                ),
+              ]
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -36,6 +37,7 @@ class CheckSheetButton extends ConsumerWidget {
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
               await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
+              await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
               final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
@@ -67,6 +69,7 @@ class CheckSheetButton extends ConsumerWidget {
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
               await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
+              await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
               final idSPK = ref.read(updateFrameNotifierProvider).idSPK;

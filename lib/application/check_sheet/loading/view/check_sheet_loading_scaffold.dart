@@ -74,6 +74,8 @@ class _CheckSheetLoadingScaffoldState
     final ModeState modeApp = ref.watch(modeNotifierProvider);
     final FrameState frameList = ref.watch(frameNotifierProvider);
 
+    log('selectedSPK.isEdit ${selectedSPK.isEdit}');
+
     final bool isLoading =
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
@@ -132,6 +134,33 @@ class _CheckSheetLoadingScaffoldState
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  // IF EDITED
+                  if (selectedSPK.isEdit == true) ...[
+                    // Header
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Palette.red,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'SPK Sudah Diupdate Oleh : ${selectedSPK.updatedUser}\n Pada : ${selectedSPK.updatedDate}',
+                              style: Themes.customColor(
+                                  FontWeight.bold, 14, Colors.black),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+
+                  SizedBox(
+                    height: 8,
+                  ),
+
                   // Header
                   Container(
                     decoration: BoxDecoration(
@@ -140,13 +169,17 @@ class _CheckSheetLoadingScaffoldState
                     ),
                     child: Center(
                         child: SPKItem(
-                            color: Colors.white,
-                            brdrColor: Colors.transparent,
+                            uUser: '',
+                            uDate: '',
+                            isEdit: false,
+                            color: Colors.black,
                             nomorPolisi: selectedSPK.nopol,
+                            brdrColor: Colors.transparent,
                             nomorSpk: selectedSPK.idSpk.toString(),
                             namaDriver: selectedSPK.supir1Nm ?? '',
                             namaTrayek: selectedSPK.namaTrayek ?? '',
-                            tglBerangkat: selectedSPK.tglBerangkat ?? '')),
+                            tglBerangkat:
+                                'TGL BERANGKAT: ${selectedSPK.tglBerangkat ?? ''}')),
                   ),
 
                   SizedBox(
@@ -253,12 +286,11 @@ class _CheckSheetLoadingScaffoldState
   }
 }
 
-
 // final csItem = ref.watch(csItemNotifierProvider);
-    // final csIdMap = csItem.csItemListByID;
+// final csIdMap = csItem.csItemListByID;
 
-    // final updateCS = ref.watch(updateCSNotifierProvider);
-    // final isNGEmpty = updateCS.updateCSForm.isNG.isEmpty;
+// final updateCS = ref.watch(updateCSNotifierProvider);
+// final isNGEmpty = updateCS.updateCSForm.isNG.isEmpty;
 
-      // final showErrorMessage = ref.watch(
-      //   updateCSNotifierProvider.select((value) => value.showErrorMessages));
+// final showErrorMessage = ref.watch(
+//   updateCSNotifierProvider.select((value) => value.showErrorMessages));

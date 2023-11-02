@@ -12,6 +12,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'application/check_sheet/shared/providers/cs_providers.dart';
 import 'application/spk/shared/spk_providers.dart';
 import 'application/tc/shared/tc_providers.dart';
+import 'application/update_spk/providers/update_spk_providers.dart';
 import 'config/configuration.dart';
 import 'shared/providers.dart';
 import 'style/style.dart';
@@ -120,6 +121,22 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
     hasOfflineStorage: () => ref
         .read(autoDataUpdateFrameNotifierProvider.notifier)
         .getSavedCSQueryFromRepository(),
+    orElse: () {},
+  );
+
+  // UPDATE SPK DATA ONLINE / OFFLINE
+  await ref
+      .read(updateSPKOfflineNotifierProvider.notifier)
+      .CUUpdateSPKOFFLINEStatus();
+
+  final updateSPKOfflineOrOnline = ref.watch(updateSPKOfflineNotifierProvider);
+
+  log('updateSPKOfflineOrOnline $updateSPKOfflineOrOnline');
+
+  await updateSPKOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () => ref
+        .read(autoDataUpdateFrameNotifierProvider.notifier)
+        .getSavedSPKQueryFromRepository(),
     orElse: () {},
   );
 

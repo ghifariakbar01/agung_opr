@@ -20,26 +20,13 @@ import '../../infrastructure/spk/spk_repository.dart';
 /// ]
 
 class ClearDataRepository {
-  ClearDataRepository(
-      {required this.csRepository,
-      required this.spkRepository,
-      required this.gateRepository,
-      required this.frameRepository,
-      required this.csItemsRepository,
-      required this.csuFrameRepository,
-      required this.csuItemsRepository,
-      required this.customerRepository,
-      required this.csuJenisPenyebabRepository});
+  ClearDataRepository({
+    required this.spkRepository,
+    required this.frameRepository,
+  });
 
-  final CSRepository csRepository;
   final SPKRepository spkRepository;
-  final GateRepository gateRepository;
   final FrameRepository frameRepository;
-  final CSItemsRepository csItemsRepository;
-  final CSUFrameRepository csuFrameRepository;
-  final CSUItemsRepository csuItemsRepository;
-  final CustomerRepository customerRepository;
-  final CSUJenisPenyebabRepository csuJenisPenyebabRepository;
 
   // Future<bool> hasOfflineData() => getCSJenisOFFLINE()
   //     .then((credentials) => credentials.fold((_) => false, (_) => true));

@@ -215,6 +215,9 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                         style: ButtonStyle(
                             padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                         child: SPKItem(
+                          isEdit: spkList[i].isEdit ?? false,
+                          uUser: spkList[i].updatedUser ?? '',
+                          uDate: spkList[i].updatedDate ?? '',
                           nomorSpk: spkList[i].spkNo,
                           nomorPolisi: '${spkList[i].nopol}',
                           namaTrayek: spkList[i].namaTrayek ?? '',

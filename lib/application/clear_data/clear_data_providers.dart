@@ -11,15 +11,16 @@ import 'clear_data_repository.dart';
 import 'clear_data_state.dart';
 
 final clearDataRepositoryProvider = Provider((ref) => ClearDataRepository(
-    spkRepository: ref.watch(spkRepositoryProvider),
-    gateRepository: ref.watch(gateRepositoryProvider),
-    csRepository: ref.watch(csJenisRepositoryProvider),
-    frameRepository: ref.watch(frameRepositoryProvider),
-    csItemsRepository: ref.watch(csItemRepositoryProvider),
-    csuFrameRepository: ref.watch(csuFrameRepositoryProvider),
-    csuItemsRepository: ref.watch(csuItemsRepositoryProvider),
-    customerRepository: ref.watch(customerRepositoryProvider),
-    csuJenisPenyebabRepository: ref.watch(jenisPenyebabRepositoryProvider)));
+      spkRepository: ref.watch(spkRepositoryProvider),
+      // gateRepository: ref.watch(gateRepositoryProvider),
+      // csRepository: ref.watch(csJenisRepositoryProvider),
+      frameRepository: ref.watch(frameRepositoryProvider),
+      // csItemsRepository: ref.watch(csItemRepositoryProvider),
+      // csuFrameRepository: ref.watch(csuFrameRepositoryProvider),
+      // csuItemsRepository: ref.watch(csuItemsRepositoryProvider),
+      // customerRepository: ref.watch(customerRepositoryProvider),
+      // csuJenisPenyebabRepository: ref.watch(jenisPenyebabRepositoryProvider)
+    ));
 
 final clearDataNotifierProvider =
     StateNotifierProvider<ClearDataNotifier, ClearDataState>(

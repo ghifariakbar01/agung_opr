@@ -103,7 +103,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
       // NG
 
-      final queryId = _repository.getOKSavableQuery(
+      final queryId = await _repository.getOKSavableQuery(
           idSPK: state.idSPK,
           nopol: stateCS.nopol,
           supir1: stateCS.namaSupir,
@@ -153,7 +153,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
       final ngStates = state.updateCSForm.ngStates;
 
-      final queryId = _repository.getNGSavableQuery(
+      final queryId = await _repository.getNGSavableQuery(
           idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 
       FOS = await _repository.saveCSQueryOK(

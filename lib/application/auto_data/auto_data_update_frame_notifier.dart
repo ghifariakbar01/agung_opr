@@ -1,35 +1,36 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/history/history.dart';
-import 'package:agung_opr/domain/local_failure.dart';
-import 'package:agung_opr/domain/remote_failure.dart';
-import 'package:agung_opr/infrastructure/frame/frame_repository.dart';
-import 'package:agung_opr/infrastructure/update_frame/update_frame_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/local_failure.dart';
+import '../../domain/remote_failure.dart';
 import '../../infrastructure/history/history_repository.dart';
 import '../../infrastructure/update_cs/update_cs_repository.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
+import '../../infrastructure/update_frame/update_frame_repository.dart';
+import '../../infrastructure/update_spk/update_spk_repository.dart';
 import '../check_sheet/shared/state/cs_id_query.dart';
 import '../check_sheet/unit/state/csu_id_query.dart';
+import '../history/history.dart';
+import '../spk/application/spk_id_query.dart';
 import 'auto_data_update_frame_state.dart';
 
 class AutoDataUpdateFrameNotifier
     extends StateNotifier<AutoDataUpdateFrameState> {
   AutoDataUpdateFrameNotifier(
-    this._frameRepository,
     this._historyRepository,
     this._updateCSRepository,
+    this._updateSPKRepository,
     this._updateFrameRepository,
     this._updateCSUFrameRepository,
   ) : super(AutoDataUpdateFrameState.initial());
 
   final HistoryRepository _historyRepository;
   final UpdateCSRepository _updateCSRepository;
-  final UpdateCSUFrameRepository _updateCSUFrameRepository;
+  final UpdateSPKRepository _updateSPKRepository;
   final UpdateFrameRepository _updateFrameRepository;
-  final FrameRepository _frameRepository;
+  final UpdateCSUFrameRepository _updateCSUFrameRepository;
 
   // TO EXECUTE UPDATE FRAME DUMMY
   // 1. Read saved query from UpdateFrameRepository
@@ -63,6 +64,8 @@ class AutoDataUpdateFrameNotifier
     state = state.copyWith(FOSOAutoDataRemote: none());
   }
 
+  bool isSPKQueryEmpty() => state.spkIdQueries.isEmpty;
+
   bool isCSUQueryEmpty() => state.csuIdQueries.isEmpty;
 
   bool isCSQueryEmpty() => state.csIdQueries.isEmpty;
@@ -72,6 +75,10 @@ class AutoDataUpdateFrameNotifier
   void changeSavedQuery(
       {required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery}) {
     state = state.copyWith(idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery);
+  }
+
+  void changeSavedSPKQuery({required List<SPKIdQuery> spkIdQueries}) {
+    state = state.copyWith(spkIdQueries: spkIdQueries);
   }
 
   void changeSavedCSUQuery({required List<CSUIDQuery> csuIdQueries}) {
@@ -185,6 +192,33 @@ class AutoDataUpdateFrameNotifier
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
+
+    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+  }
+
+  // 1.
+  Future<void> getSavedSPKQueryFromRepository() async {
+    Either<LocalFailure, List<SPKIdQuery>>? FOS;
+
+    state = state.copyWith(
+        isGetting: true, FOSOAutoDataLocalUpdateFrameSPK: none());
+
+    // CONVERT ID_CS_NAs to appropriate values
+    FOS = await _updateSPKRepository.getUpdateSPKQueryListOFFLINE();
+
+    state = state.copyWith(
+        isGetting: false, FOSOAutoDataLocalUpdateFrameSPK: optionOf(FOS));
+  }
+
+  // UPDATE SPK TO IS_EDIT
+  Future<void> runSavedSPKQueryFromRepository(
+      {required List<SPKIdQuery> queryIds}) async {
+    Either<RemoteFailure, Unit>? FOS;
+
+    state = state.copyWith(isGetting: true);
+
+    // CONVERT ID_CS_NAs to appropriate values
+    FOS = await _updateSPKRepository.updateSPKByQuery(queryIds: queryIds);
 
     state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
   }

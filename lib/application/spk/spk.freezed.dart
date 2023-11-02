@@ -24,6 +24,12 @@ mixin _$SPK {
   int get idSpk => throw _privateConstructorUsedError;
   @JsonKey(name: 'spk_no')
   String get spkNo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_edit')
+  bool? get isEdit => throw _privateConstructorUsedError;
+  @JsonKey(name: 'u_user')
+  String? get updatedUser => throw _privateConstructorUsedError;
+  @JsonKey(name: 'u_date')
+  String? get updatedDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'supir1_nm')
   String? get supir1Nm => throw _privateConstructorUsedError;
   @JsonKey(name: 'supir2_nm')
@@ -47,6 +53,9 @@ abstract class $SPKCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id_spk') int idSpk,
       @JsonKey(name: 'spk_no') String spkNo,
+      @JsonKey(name: 'is_edit') bool? isEdit,
+      @JsonKey(name: 'u_user') String? updatedUser,
+      @JsonKey(name: 'u_date') String? updatedDate,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
       @JsonKey(name: 'trayek_nama') String? namaTrayek,
@@ -68,6 +77,9 @@ class _$SPKCopyWithImpl<$Res, $Val extends SPK> implements $SPKCopyWith<$Res> {
   $Res call({
     Object? idSpk = null,
     Object? spkNo = null,
+    Object? isEdit = freezed,
+    Object? updatedUser = freezed,
+    Object? updatedDate = freezed,
     Object? supir1Nm = freezed,
     Object? supir2Nm = freezed,
     Object? namaTrayek = freezed,
@@ -83,6 +95,18 @@ class _$SPKCopyWithImpl<$Res, $Val extends SPK> implements $SPKCopyWith<$Res> {
           ? _value.spkNo
           : spkNo // ignore: cast_nullable_to_non_nullable
               as String,
+      isEdit: freezed == isEdit
+          ? _value.isEdit
+          : isEdit // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      updatedUser: freezed == updatedUser
+          ? _value.updatedUser
+          : updatedUser // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedDate: freezed == updatedDate
+          ? _value.updatedDate
+          : updatedDate // ignore: cast_nullable_to_non_nullable
+              as String?,
       supir1Nm: freezed == supir1Nm
           ? _value.supir1Nm
           : supir1Nm // ignore: cast_nullable_to_non_nullable
@@ -116,6 +140,9 @@ abstract class _$$_SPKCopyWith<$Res> implements $SPKCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id_spk') int idSpk,
       @JsonKey(name: 'spk_no') String spkNo,
+      @JsonKey(name: 'is_edit') bool? isEdit,
+      @JsonKey(name: 'u_user') String? updatedUser,
+      @JsonKey(name: 'u_date') String? updatedDate,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
       @JsonKey(name: 'trayek_nama') String? namaTrayek,
@@ -134,6 +161,9 @@ class __$$_SPKCopyWithImpl<$Res> extends _$SPKCopyWithImpl<$Res, _$_SPK>
   $Res call({
     Object? idSpk = null,
     Object? spkNo = null,
+    Object? isEdit = freezed,
+    Object? updatedUser = freezed,
+    Object? updatedDate = freezed,
     Object? supir1Nm = freezed,
     Object? supir2Nm = freezed,
     Object? namaTrayek = freezed,
@@ -149,6 +179,18 @@ class __$$_SPKCopyWithImpl<$Res> extends _$SPKCopyWithImpl<$Res, _$_SPK>
           ? _value.spkNo
           : spkNo // ignore: cast_nullable_to_non_nullable
               as String,
+      isEdit: freezed == isEdit
+          ? _value.isEdit
+          : isEdit // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      updatedUser: freezed == updatedUser
+          ? _value.updatedUser
+          : updatedUser // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedDate: freezed == updatedDate
+          ? _value.updatedDate
+          : updatedDate // ignore: cast_nullable_to_non_nullable
+              as String?,
       supir1Nm: freezed == supir1Nm
           ? _value.supir1Nm
           : supir1Nm // ignore: cast_nullable_to_non_nullable
@@ -179,6 +221,9 @@ class _$_SPK implements _SPK {
   const _$_SPK(
       {@JsonKey(name: 'id_spk') required this.idSpk,
       @JsonKey(name: 'spk_no') required this.spkNo,
+      @JsonKey(name: 'is_edit') required this.isEdit,
+      @JsonKey(name: 'u_user') required this.updatedUser,
+      @JsonKey(name: 'u_date') required this.updatedDate,
       @JsonKey(name: 'supir1_nm') required this.supir1Nm,
       @JsonKey(name: 'supir2_nm') required this.supir2Nm,
       @JsonKey(name: 'trayek_nama') required this.namaTrayek,
@@ -193,6 +238,15 @@ class _$_SPK implements _SPK {
   @override
   @JsonKey(name: 'spk_no')
   final String spkNo;
+  @override
+  @JsonKey(name: 'is_edit')
+  final bool? isEdit;
+  @override
+  @JsonKey(name: 'u_user')
+  final String? updatedUser;
+  @override
+  @JsonKey(name: 'u_date')
+  final String? updatedDate;
   @override
   @JsonKey(name: 'supir1_nm')
   final String? supir1Nm;
@@ -210,7 +264,7 @@ class _$_SPK implements _SPK {
 
   @override
   String toString() {
-    return 'SPK(idSpk: $idSpk, spkNo: $spkNo, supir1Nm: $supir1Nm, supir2Nm: $supir2Nm, namaTrayek: $namaTrayek, tglBerangkat: $tglBerangkat, nopol: $nopol)';
+    return 'SPK(idSpk: $idSpk, spkNo: $spkNo, isEdit: $isEdit, updatedUser: $updatedUser, updatedDate: $updatedDate, supir1Nm: $supir1Nm, supir2Nm: $supir2Nm, namaTrayek: $namaTrayek, tglBerangkat: $tglBerangkat, nopol: $nopol)';
   }
 
   @override
@@ -220,6 +274,11 @@ class _$_SPK implements _SPK {
             other is _$_SPK &&
             (identical(other.idSpk, idSpk) || other.idSpk == idSpk) &&
             (identical(other.spkNo, spkNo) || other.spkNo == spkNo) &&
+            (identical(other.isEdit, isEdit) || other.isEdit == isEdit) &&
+            (identical(other.updatedUser, updatedUser) ||
+                other.updatedUser == updatedUser) &&
+            (identical(other.updatedDate, updatedDate) ||
+                other.updatedDate == updatedDate) &&
             (identical(other.supir1Nm, supir1Nm) ||
                 other.supir1Nm == supir1Nm) &&
             (identical(other.supir2Nm, supir2Nm) ||
@@ -233,8 +292,18 @@ class _$_SPK implements _SPK {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, idSpk, spkNo, supir1Nm, supir2Nm,
-      namaTrayek, tglBerangkat, nopol);
+  int get hashCode => Object.hash(
+      runtimeType,
+      idSpk,
+      spkNo,
+      isEdit,
+      updatedUser,
+      updatedDate,
+      supir1Nm,
+      supir2Nm,
+      namaTrayek,
+      tglBerangkat,
+      nopol);
 
   @JsonKey(ignore: true)
   @override
@@ -254,6 +323,9 @@ abstract class _SPK implements SPK {
   const factory _SPK(
       {@JsonKey(name: 'id_spk') required final int idSpk,
       @JsonKey(name: 'spk_no') required final String spkNo,
+      @JsonKey(name: 'is_edit') required final bool? isEdit,
+      @JsonKey(name: 'u_user') required final String? updatedUser,
+      @JsonKey(name: 'u_date') required final String? updatedDate,
       @JsonKey(name: 'supir1_nm') required final String? supir1Nm,
       @JsonKey(name: 'supir2_nm') required final String? supir2Nm,
       @JsonKey(name: 'trayek_nama') required final String? namaTrayek,
@@ -268,6 +340,15 @@ abstract class _SPK implements SPK {
   @override
   @JsonKey(name: 'spk_no')
   String get spkNo;
+  @override
+  @JsonKey(name: 'is_edit')
+  bool? get isEdit;
+  @override
+  @JsonKey(name: 'u_user')
+  String? get updatedUser;
+  @override
+  @JsonKey(name: 'u_date')
+  String? get updatedDate;
   @override
   @JsonKey(name: 'supir1_nm')
   String? get supir1Nm;

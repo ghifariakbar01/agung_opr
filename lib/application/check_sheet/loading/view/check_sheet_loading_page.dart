@@ -11,6 +11,7 @@ import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../spk/spk.dart';
 import '../../../update_frame/frame.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
+import '../../../update_spk/providers/update_spk_providers.dart';
 import '../../../widgets/alert_helper.dart';
 import '../../../widgets/loading_overlay.dart';
 import '../../shared/providers/cs_providers.dart';
@@ -214,6 +215,10 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                   final idSPK = widget.spk.idSpk;
                   ref.read(selectedSPKStateProvider.notifier).state =
                       widget.spk;
+
+                  ref
+                      .read(updateSPKNotifierProvider.notifier)
+                      .changeFillWithValue(spk: widget.spk);
                   ref
                       .read(updateCSNotifierProvider.notifier)
                       .changeidSPK(idSPK);
@@ -274,7 +279,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                       context,
                       message: failure.map(
                         storage: (_) =>
-                            'Storage penuh. Tidak bisa menyimpan data CS PENYEBAB ITEM',
+                            'Storage penuh. Tidak bisa menyimpan data Update Check Sheet',
                         empty: (_) => 'Data kosong',
                         format: (error) => 'Error format. $error',
                       ),
@@ -282,6 +287,27 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                 (_) => ref
                     .read(updateCSOfflineNotifierProvider.notifier)
                     .CUUpdateCSOFFLINEStatus())));
+
+    // SUCCESS LISTENER
+    ref.listen<Option<Either<LocalFailure, Unit>>>(
+        updateSPKNotifierProvider.select(
+          (state) => state.FOSOUpdateSPK,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.map(
+                        storage: (_) =>
+                            'Storage penuh. Tidak bisa menyimpan data Update Spk',
+                        empty: (_) => 'Data kosong',
+                        format: (error) => 'Error format. $error',
+                      ),
+                    ),
+                (_) => ref
+                    .read(updateSPKOfflineNotifierProvider.notifier)
+                    .CUUpdateSPKOFFLINEStatus())));
 
     final isLoading = ref.watch(
             frameNotifierProvider.select((value) => value.isProcessing)) ||

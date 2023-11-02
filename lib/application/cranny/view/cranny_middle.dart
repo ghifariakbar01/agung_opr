@@ -16,7 +16,9 @@ import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../history/history.dart';
 import '../../routes/route_names.dart';
+import '../../spk/application/spk_id_query.dart';
 import '../../spk/spk.dart';
+import '../../update_spk/providers/update_spk_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
 import 'cranny_scaffold.dart';
@@ -162,42 +164,6 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                         }();
                 })));
 
-    // CSU Items
-    ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (_) => VSimpleDialog(
-                        label: 'Error',
-                        labelDescription: failure.map(
-                            storage: (_) => 'storage penuh',
-                            format: (value) => 'error format $value',
-                            empty: (_) => 'empty'),
-                        asset: Assets.iconCrossed,
-                      ),
-                    ),
-                (queryIds) => ref
-                        .read(autoDataUpdateFrameNotifierProvider.notifier)
-                        .isCSUQueryEmpty()
-                    ? () {}
-                    : () async {
-                        ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .changeSavedCSUQuery(csuIdQueries: queryIds);
-
-                        log('isCSUQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSUQueryEmpty()}');
-                        log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                        await ref
-                            .read(autoDataUpdateFrameNotifierProvider.notifier)
-                            .runSavedCSUQueryFromRepository(queryIds: queryIds);
-                      }())));
-
     // CS Items
     ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
         autoDataUpdateFrameNotifierProvider.select(
@@ -242,6 +208,50 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                           }()
                         : () {})));
 
+    // SPK Items
+    ref.listen<Option<Either<LocalFailure, List<SPKIdQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameSPK,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.map(
+                            storage: (_) => 'storage penuh',
+                            format: (value) => 'error format $value',
+                            empty: (_) => 'empty'),
+                        asset: Assets.iconCrossed,
+                      ),
+                    ),
+                (queryIds) => ref
+                        .read(autoDataUpdateFrameNotifierProvider.notifier)
+                        .isSPKQueryEmpty()
+                    ? () {}
+                    : ref.read(autoDataTimerNotifierProvider
+                            .select((value) => value.isRunning == false))
+                        ? () async {
+                            ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .changeSavedSPKQuery(spkIdQueries: queryIds);
+
+                            // debugger();
+
+                            log('isSPKQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isSPKQueryEmpty()}');
+                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
+                            await ref
+                                .read(autoDataUpdateFrameNotifierProvider
+                                    .notifier)
+                                .runSavedSPKQueryFromRepository(
+                                    queryIds: queryIds);
+                          }()
+                        : () {})));
+
     //
     ref.listen<Option<Either<RemoteFailure, Unit>>>(
         autoDataUpdateFrameNotifierProvider.select(
@@ -273,6 +283,9 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                   await ref
                       .read(updateCSOfflineNotifierProvider.notifier)
                       .CUUpdateCSOFFLINEStatus();
+                  await ref
+                      .read(updateSPKOfflineNotifierProvider.notifier)
+                      .CUUpdateSPKOFFLINEStatus();
                   ref
                       .read(autoDataUpdateFrameNotifierProvider.notifier)
                       .resetAutoDataRemoteFOSO();
@@ -285,3 +298,40 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
 //   await ref
 // .read(updateCSUFrameOfflineNotifierProvider.notifier)
 // .CUUpdateCSUFrameOFFLINEStatus();
+
+
+// // CSU Items
+//     ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
+//         autoDataUpdateFrameNotifierProvider.select(
+//           (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
+//         ),
+//         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+//             () {},
+//             (either) => either.fold(
+//                 (failure) => showDialog(
+//                       context: context,
+//                       barrierDismissible: true,
+//                       builder: (_) => VSimpleDialog(
+//                         label: 'Error',
+//                         labelDescription: failure.map(
+//                             storage: (_) => 'storage penuh',
+//                             format: (value) => 'error format $value',
+//                             empty: (_) => 'empty'),
+//                         asset: Assets.iconCrossed,
+//                       ),
+//                     ),
+//                 (queryIds) => ref
+//                         .read(autoDataUpdateFrameNotifierProvider.notifier)
+//                         .isCSUQueryEmpty()
+//                     ? () {}
+//                     : () async {
+//                         ref
+//                             .read(autoDataUpdateFrameNotifierProvider.notifier)
+//                             .changeSavedCSUQuery(csuIdQueries: queryIds);
+
+//                         log('isCSUQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSUQueryEmpty()}');
+//                         log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
+//                         await ref
+//                             .read(autoDataUpdateFrameNotifierProvider.notifier)
+//                             .runSavedCSUQueryFromRepository(queryIds: queryIds);
+//                       }())));

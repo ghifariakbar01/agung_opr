@@ -20,6 +20,7 @@ mixin _$AutoDataUpdateFrameState {
   Map<String, Map<String, String>> get idSPKMapidTIUnitMapQuery =>
       throw _privateConstructorUsedError;
   List<CSUIDQuery> get csuIdQueries => throw _privateConstructorUsedError;
+  List<SPKIdQuery> get spkIdQueries => throw _privateConstructorUsedError;
   List<CSIDQuery> get csIdQueries => throw _privateConstructorUsedError;
   List<History> get histories => throw _privateConstructorUsedError; //
   Option<Either<RemoteFailure, Unit>> get FOSOAutoDataRemote =>
@@ -28,6 +29,8 @@ mixin _$AutoDataUpdateFrameState {
       get FOSOSPKAutoDataLocalUpdateFrame => throw _privateConstructorUsedError;
   Option<Either<LocalFailure, List<CSUIDQuery>>>
       get FOSOAutoDataLocalUpdateFrameCSU => throw _privateConstructorUsedError;
+  Option<Either<LocalFailure, List<SPKIdQuery>>>
+      get FOSOAutoDataLocalUpdateFrameSPK => throw _privateConstructorUsedError;
   Option<Either<LocalFailure, List<CSIDQuery>>>
       get FOSOAutoDataLocalUpdateFrameCS => throw _privateConstructorUsedError;
   Option<Either<LocalFailure, List<History>>> get FOSOAutoDataLocalHistory =>
@@ -48,6 +51,7 @@ abstract class $AutoDataUpdateFrameStateCopyWith<$Res> {
       {bool isGetting,
       Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
       List<CSUIDQuery> csuIdQueries,
+      List<SPKIdQuery> spkIdQueries,
       List<CSIDQuery> csIdQueries,
       List<History> histories,
       Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
@@ -55,6 +59,8 @@ abstract class $AutoDataUpdateFrameStateCopyWith<$Res> {
           FOSOSPKAutoDataLocalUpdateFrame,
       Option<Either<LocalFailure, List<CSUIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCSU,
+      Option<Either<LocalFailure, List<SPKIdQuery>>>
+          FOSOAutoDataLocalUpdateFrameSPK,
       Option<Either<LocalFailure, List<CSIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCS,
       Option<Either<LocalFailure, List<History>>> FOSOAutoDataLocalHistory});
@@ -77,11 +83,13 @@ class _$AutoDataUpdateFrameStateCopyWithImpl<$Res,
     Object? isGetting = null,
     Object? idSPKMapidTIUnitMapQuery = null,
     Object? csuIdQueries = null,
+    Object? spkIdQueries = null,
     Object? csIdQueries = null,
     Object? histories = null,
     Object? FOSOAutoDataRemote = null,
     Object? FOSOSPKAutoDataLocalUpdateFrame = null,
     Object? FOSOAutoDataLocalUpdateFrameCSU = null,
+    Object? FOSOAutoDataLocalUpdateFrameSPK = null,
     Object? FOSOAutoDataLocalUpdateFrameCS = null,
     Object? FOSOAutoDataLocalHistory = null,
   }) {
@@ -98,6 +106,10 @@ class _$AutoDataUpdateFrameStateCopyWithImpl<$Res,
           ? _value.csuIdQueries
           : csuIdQueries // ignore: cast_nullable_to_non_nullable
               as List<CSUIDQuery>,
+      spkIdQueries: null == spkIdQueries
+          ? _value.spkIdQueries
+          : spkIdQueries // ignore: cast_nullable_to_non_nullable
+              as List<SPKIdQuery>,
       csIdQueries: null == csIdQueries
           ? _value.csIdQueries
           : csIdQueries // ignore: cast_nullable_to_non_nullable
@@ -118,6 +130,10 @@ class _$AutoDataUpdateFrameStateCopyWithImpl<$Res,
           ? _value.FOSOAutoDataLocalUpdateFrameCSU
           : FOSOAutoDataLocalUpdateFrameCSU // ignore: cast_nullable_to_non_nullable
               as Option<Either<LocalFailure, List<CSUIDQuery>>>,
+      FOSOAutoDataLocalUpdateFrameSPK: null == FOSOAutoDataLocalUpdateFrameSPK
+          ? _value.FOSOAutoDataLocalUpdateFrameSPK
+          : FOSOAutoDataLocalUpdateFrameSPK // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, List<SPKIdQuery>>>,
       FOSOAutoDataLocalUpdateFrameCS: null == FOSOAutoDataLocalUpdateFrameCS
           ? _value.FOSOAutoDataLocalUpdateFrameCS
           : FOSOAutoDataLocalUpdateFrameCS // ignore: cast_nullable_to_non_nullable
@@ -143,6 +159,7 @@ abstract class _$$_AutoDataUpdateFrameStateCopyWith<$Res>
       {bool isGetting,
       Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
       List<CSUIDQuery> csuIdQueries,
+      List<SPKIdQuery> spkIdQueries,
       List<CSIDQuery> csIdQueries,
       List<History> histories,
       Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
@@ -150,6 +167,8 @@ abstract class _$$_AutoDataUpdateFrameStateCopyWith<$Res>
           FOSOSPKAutoDataLocalUpdateFrame,
       Option<Either<LocalFailure, List<CSUIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCSU,
+      Option<Either<LocalFailure, List<SPKIdQuery>>>
+          FOSOAutoDataLocalUpdateFrameSPK,
       Option<Either<LocalFailure, List<CSIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCS,
       Option<Either<LocalFailure, List<History>>> FOSOAutoDataLocalHistory});
@@ -170,11 +189,13 @@ class __$$_AutoDataUpdateFrameStateCopyWithImpl<$Res>
     Object? isGetting = null,
     Object? idSPKMapidTIUnitMapQuery = null,
     Object? csuIdQueries = null,
+    Object? spkIdQueries = null,
     Object? csIdQueries = null,
     Object? histories = null,
     Object? FOSOAutoDataRemote = null,
     Object? FOSOSPKAutoDataLocalUpdateFrame = null,
     Object? FOSOAutoDataLocalUpdateFrameCSU = null,
+    Object? FOSOAutoDataLocalUpdateFrameSPK = null,
     Object? FOSOAutoDataLocalUpdateFrameCS = null,
     Object? FOSOAutoDataLocalHistory = null,
   }) {
@@ -191,6 +212,10 @@ class __$$_AutoDataUpdateFrameStateCopyWithImpl<$Res>
           ? _value._csuIdQueries
           : csuIdQueries // ignore: cast_nullable_to_non_nullable
               as List<CSUIDQuery>,
+      spkIdQueries: null == spkIdQueries
+          ? _value._spkIdQueries
+          : spkIdQueries // ignore: cast_nullable_to_non_nullable
+              as List<SPKIdQuery>,
       csIdQueries: null == csIdQueries
           ? _value._csIdQueries
           : csIdQueries // ignore: cast_nullable_to_non_nullable
@@ -211,6 +236,10 @@ class __$$_AutoDataUpdateFrameStateCopyWithImpl<$Res>
           ? _value.FOSOAutoDataLocalUpdateFrameCSU
           : FOSOAutoDataLocalUpdateFrameCSU // ignore: cast_nullable_to_non_nullable
               as Option<Either<LocalFailure, List<CSUIDQuery>>>,
+      FOSOAutoDataLocalUpdateFrameSPK: null == FOSOAutoDataLocalUpdateFrameSPK
+          ? _value.FOSOAutoDataLocalUpdateFrameSPK
+          : FOSOAutoDataLocalUpdateFrameSPK // ignore: cast_nullable_to_non_nullable
+              as Option<Either<LocalFailure, List<SPKIdQuery>>>,
       FOSOAutoDataLocalUpdateFrameCS: null == FOSOAutoDataLocalUpdateFrameCS
           ? _value.FOSOAutoDataLocalUpdateFrameCS
           : FOSOAutoDataLocalUpdateFrameCS // ignore: cast_nullable_to_non_nullable
@@ -230,15 +259,18 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
       {required this.isGetting,
       required final Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
       required final List<CSUIDQuery> csuIdQueries,
+      required final List<SPKIdQuery> spkIdQueries,
       required final List<CSIDQuery> csIdQueries,
       required final List<History> histories,
       required this.FOSOAutoDataRemote,
       required this.FOSOSPKAutoDataLocalUpdateFrame,
       required this.FOSOAutoDataLocalUpdateFrameCSU,
+      required this.FOSOAutoDataLocalUpdateFrameSPK,
       required this.FOSOAutoDataLocalUpdateFrameCS,
       required this.FOSOAutoDataLocalHistory})
       : _idSPKMapidTIUnitMapQuery = idSPKMapidTIUnitMapQuery,
         _csuIdQueries = csuIdQueries,
+        _spkIdQueries = spkIdQueries,
         _csIdQueries = csIdQueries,
         _histories = histories;
 
@@ -261,6 +293,14 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
     if (_csuIdQueries is EqualUnmodifiableListView) return _csuIdQueries;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_csuIdQueries);
+  }
+
+  final List<SPKIdQuery> _spkIdQueries;
+  @override
+  List<SPKIdQuery> get spkIdQueries {
+    if (_spkIdQueries is EqualUnmodifiableListView) return _spkIdQueries;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_spkIdQueries);
   }
 
   final List<CSIDQuery> _csIdQueries;
@@ -290,6 +330,9 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
   final Option<Either<LocalFailure, List<CSUIDQuery>>>
       FOSOAutoDataLocalUpdateFrameCSU;
   @override
+  final Option<Either<LocalFailure, List<SPKIdQuery>>>
+      FOSOAutoDataLocalUpdateFrameSPK;
+  @override
   final Option<Either<LocalFailure, List<CSIDQuery>>>
       FOSOAutoDataLocalUpdateFrameCS;
   @override
@@ -297,7 +340,7 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
 
   @override
   String toString() {
-    return 'AutoDataUpdateFrameState(isGetting: $isGetting, idSPKMapidTIUnitMapQuery: $idSPKMapidTIUnitMapQuery, csuIdQueries: $csuIdQueries, csIdQueries: $csIdQueries, histories: $histories, FOSOAutoDataRemote: $FOSOAutoDataRemote, FOSOSPKAutoDataLocalUpdateFrame: $FOSOSPKAutoDataLocalUpdateFrame, FOSOAutoDataLocalUpdateFrameCSU: $FOSOAutoDataLocalUpdateFrameCSU, FOSOAutoDataLocalUpdateFrameCS: $FOSOAutoDataLocalUpdateFrameCS, FOSOAutoDataLocalHistory: $FOSOAutoDataLocalHistory)';
+    return 'AutoDataUpdateFrameState(isGetting: $isGetting, idSPKMapidTIUnitMapQuery: $idSPKMapidTIUnitMapQuery, csuIdQueries: $csuIdQueries, spkIdQueries: $spkIdQueries, csIdQueries: $csIdQueries, histories: $histories, FOSOAutoDataRemote: $FOSOAutoDataRemote, FOSOSPKAutoDataLocalUpdateFrame: $FOSOSPKAutoDataLocalUpdateFrame, FOSOAutoDataLocalUpdateFrameCSU: $FOSOAutoDataLocalUpdateFrameCSU, FOSOAutoDataLocalUpdateFrameSPK: $FOSOAutoDataLocalUpdateFrameSPK, FOSOAutoDataLocalUpdateFrameCS: $FOSOAutoDataLocalUpdateFrameCS, FOSOAutoDataLocalHistory: $FOSOAutoDataLocalHistory)';
   }
 
   @override
@@ -312,6 +355,8 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
             const DeepCollectionEquality()
                 .equals(other._csuIdQueries, _csuIdQueries) &&
             const DeepCollectionEquality()
+                .equals(other._spkIdQueries, _spkIdQueries) &&
+            const DeepCollectionEquality()
                 .equals(other._csIdQueries, _csIdQueries) &&
             const DeepCollectionEquality()
                 .equals(other._histories, _histories) &&
@@ -325,6 +370,10 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
                     FOSOAutoDataLocalUpdateFrameCSU) ||
                 other.FOSOAutoDataLocalUpdateFrameCSU ==
                     FOSOAutoDataLocalUpdateFrameCSU) &&
+            (identical(other.FOSOAutoDataLocalUpdateFrameSPK,
+                    FOSOAutoDataLocalUpdateFrameSPK) ||
+                other.FOSOAutoDataLocalUpdateFrameSPK ==
+                    FOSOAutoDataLocalUpdateFrameSPK) &&
             (identical(other.FOSOAutoDataLocalUpdateFrameCS,
                     FOSOAutoDataLocalUpdateFrameCS) ||
                 other.FOSOAutoDataLocalUpdateFrameCS ==
@@ -340,11 +389,13 @@ class _$_AutoDataUpdateFrameState implements _AutoDataUpdateFrameState {
       isGetting,
       const DeepCollectionEquality().hash(_idSPKMapidTIUnitMapQuery),
       const DeepCollectionEquality().hash(_csuIdQueries),
+      const DeepCollectionEquality().hash(_spkIdQueries),
       const DeepCollectionEquality().hash(_csIdQueries),
       const DeepCollectionEquality().hash(_histories),
       FOSOAutoDataRemote,
       FOSOSPKAutoDataLocalUpdateFrame,
       FOSOAutoDataLocalUpdateFrameCSU,
+      FOSOAutoDataLocalUpdateFrameSPK,
       FOSOAutoDataLocalUpdateFrameCS,
       FOSOAutoDataLocalHistory);
 
@@ -361,6 +412,7 @@ abstract class _AutoDataUpdateFrameState implements AutoDataUpdateFrameState {
       {required final bool isGetting,
       required final Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
       required final List<CSUIDQuery> csuIdQueries,
+      required final List<SPKIdQuery> spkIdQueries,
       required final List<CSIDQuery> csIdQueries,
       required final List<History> histories,
       required final Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
@@ -369,6 +421,8 @@ abstract class _AutoDataUpdateFrameState implements AutoDataUpdateFrameState {
           FOSOSPKAutoDataLocalUpdateFrame,
       required final Option<Either<LocalFailure, List<CSUIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCSU,
+      required final Option<Either<LocalFailure, List<SPKIdQuery>>>
+          FOSOAutoDataLocalUpdateFrameSPK,
       required final Option<Either<LocalFailure, List<CSIDQuery>>>
           FOSOAutoDataLocalUpdateFrameCS,
       required final Option<Either<LocalFailure, List<History>>>
@@ -381,6 +435,8 @@ abstract class _AutoDataUpdateFrameState implements AutoDataUpdateFrameState {
   @override
   List<CSUIDQuery> get csuIdQueries;
   @override
+  List<SPKIdQuery> get spkIdQueries;
+  @override
   List<CSIDQuery> get csIdQueries;
   @override
   List<History> get histories;
@@ -392,6 +448,9 @@ abstract class _AutoDataUpdateFrameState implements AutoDataUpdateFrameState {
   @override
   Option<Either<LocalFailure, List<CSUIDQuery>>>
       get FOSOAutoDataLocalUpdateFrameCSU;
+  @override
+  Option<Either<LocalFailure, List<SPKIdQuery>>>
+      get FOSOAutoDataLocalUpdateFrameSPK;
   @override
   Option<Either<LocalFailure, List<CSIDQuery>>>
       get FOSOAutoDataLocalUpdateFrameCS;

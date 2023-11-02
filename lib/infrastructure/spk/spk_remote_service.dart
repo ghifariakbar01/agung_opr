@@ -30,6 +30,9 @@ class SPKRemoteService {
             "   spk.supir2_nm," +
             "   spk.nopol," +
             "   spk.tgl_berangkat," +
+            "   spk.u_user, " +
+            "   spk.u_date, " +
+            "   spk.is_edit, " +
             " trayek.nama AS trayek_nama" +
             " FROM " +
             " $dbName AS spk " +
@@ -54,8 +57,8 @@ class SPKRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      // log('data ${jsonEncode(data)}');
-      log('response $response');
+      // log('data spk ${jsonEncode(data)}');
+      log('response spk $response');
 
       final items = response.data?[0];
 
@@ -127,6 +130,9 @@ class SPKRemoteService {
             "   spk.supir2_nm," +
             "   spk.nopol," +
             "   spk.tgl_berangkat," +
+            "   spk.u_user, " +
+            "   spk.u_date, " +
+            "   spk.is_edit, " +
             " trayek.nama AS trayek_nama" +
             " FROM " +
             " $dbName AS spk " +

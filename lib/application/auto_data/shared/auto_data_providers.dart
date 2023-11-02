@@ -6,6 +6,7 @@ import 'package:agung_opr/application/history/shared/history_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../update_spk/providers/update_spk_providers.dart';
 import '../timer/auto_data_timer.dart';
 import '../timer/auto_data_timer_state.dart';
 
@@ -23,9 +24,9 @@ final autoDataTimerNotifierProvider =
 final autoDataUpdateFrameNotifierProvider = StateNotifierProvider<
         AutoDataUpdateFrameNotifier, AutoDataUpdateFrameState>(
     (ref) => AutoDataUpdateFrameNotifier(
-          ref.watch(frameRepositoryProvider),
           ref.watch(historyRepositoryProvider),
           ref.watch(updateCSRepositoryProvider),
+          ref.watch(updateSPKRepositoryProvider),
           ref.watch(updateFrameRepositoryProvider),
           ref.watch(updateCSUFrameRepositoryProvider),
         ));

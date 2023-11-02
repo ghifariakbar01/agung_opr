@@ -9,20 +9,20 @@ import 'package:dio/dio.dart';
 
 import '../exceptions.dart';
 
-class UpdateCSRemoteService {
-  UpdateCSRemoteService(this._dio, this._dioRequestNotifier);
+class UpdateSPKRemoteService {
+  UpdateSPKRemoteService(this._dio, this._dioRequestNotifier);
 
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<Unit> insertCSBYQuery({
+  Future<Unit> updateSPKByQuery({
     required String query,
   }) async {
     try {
       final data = _dioRequestNotifier;
 
       data.addAll({
-        "mode": "INSERT",
+        "mode": "UPDATE",
         "command": "$query",
       });
 
@@ -30,13 +30,13 @@ class UpdateCSRemoteService {
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
       log('data ${jsonEncode(data)}');
-      log('response insertCSBYQuery $response');
+      log('response updateSPKByQuery $response');
 
       final items = response.data?[0];
 
       if (items['status'] == 'Success') {
         // HERE
-        // debugger(message: 'called');
+        debugger(message: 'called');
 
         return unit;
       } else {

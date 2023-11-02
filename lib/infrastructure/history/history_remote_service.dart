@@ -129,6 +129,8 @@ class HistoryRemoteService {
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;
 
+        debugger();
+
         throw RestApiException(errorNum, message);
       }
     } on DioError catch (e) {

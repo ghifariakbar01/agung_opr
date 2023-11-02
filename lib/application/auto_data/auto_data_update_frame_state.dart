@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/check_sheet/shared/state/cs_id_query.dart';
 import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
+import 'package:agung_opr/application/spk/application/spk_id_query.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,6 +17,7 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
     //
     required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
     required List<CSUIDQuery> csuIdQueries,
+    required List<SPKIdQuery> spkIdQueries,
     required List<CSIDQuery> csIdQueries,
     required List<History> histories,
 
@@ -26,6 +28,8 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
         FOSOSPKAutoDataLocalUpdateFrame,
     required Option<Either<LocalFailure, List<CSUIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCSU,
+    required Option<Either<LocalFailure, List<SPKIdQuery>>>
+        FOSOAutoDataLocalUpdateFrameSPK,
     required Option<Either<LocalFailure, List<CSIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCS,
     required Option<Either<LocalFailure, List<History>>>
@@ -36,12 +40,14 @@ class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
         isGetting: false,
         idSPKMapidTIUnitMapQuery: {},
         csuIdQueries: [],
+        spkIdQueries: [],
         csIdQueries: [],
         histories: [],
         FOSOAutoDataRemote: none(),
         FOSOAutoDataLocalHistory: none(),
         FOSOSPKAutoDataLocalUpdateFrame: none(),
         FOSOAutoDataLocalUpdateFrameCSU: none(),
+        FOSOAutoDataLocalUpdateFrameSPK: none(),
         FOSOAutoDataLocalUpdateFrameCS: none(),
       );
 }
