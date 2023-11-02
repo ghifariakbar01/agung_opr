@@ -121,10 +121,16 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                 bottom: 0,
                 left: 0,
                 child: getBuild.when(
-                    data: (data) => Text(
-                          'Build ${data.version}',
-                          style: Themes.customColor(
-                              FontWeight.normal, 11, Palette.primaryColor),
+                    data: (data) => InkWell(
+                          onTap: () =>
+                              context.pushNamed(RouteNames.copyrightNameRoute),
+                          child: Ink(
+                            child: Text(
+                              'Build ${data.version}',
+                              style: Themes.customColor(
+                                  FontWeight.normal, 11, Palette.primaryColor),
+                            ),
+                          ),
                         ),
                     error: (error, stackTrace) => Text('Error'),
                     loading: () => Container()),

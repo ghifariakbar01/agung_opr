@@ -61,4 +61,7 @@ class RouteNames {
 
   static const historyNameRoute = 'history';
   static const historyName = 'history';
+
+  static const copyrightNameRoute = 'copyright';
+  static const copyrightRoute = 'copyright';
 }
