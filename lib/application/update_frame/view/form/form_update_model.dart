@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agung_opr/application/model/model.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
@@ -30,8 +32,8 @@ class FormUpdateModel extends ConsumerWidget {
 
     final modeApp = ref.watch(modeNotifierProvider);
 
-    final modelList =
-        ref.watch(modelNotifierProvider.select((value) => value.modelList));
+    final modelListSaved = ref
+        .watch(modelNotifierProvider.select((value) => value.modelListSaved));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +104,7 @@ class FormUpdateModel extends ConsumerWidget {
         Flexible(
           flex: 1,
           child: Text(
-            modelList
+            modelListSaved
                     .firstWhere(
                       (element) => element.id.toString() == modelStr,
                       orElse: () => Model.initial(),

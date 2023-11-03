@@ -21,6 +21,7 @@ mixin _$ModelState {
   int get idSelected => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   List<Model> get modelList => throw _privateConstructorUsedError;
+  List<Model> get modelListSaved => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<Model>>> get FOSOModel =>
       throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $ModelStateCopyWith<$Res> {
       int idSelected,
       bool isProcessing,
       List<Model> modelList,
+      List<Model> modelListSaved,
       Option<Either<RemoteFailure, List<Model>>> FOSOModel});
 }
 
@@ -62,6 +64,7 @@ class _$ModelStateCopyWithImpl<$Res, $Val extends ModelState>
     Object? idSelected = null,
     Object? isProcessing = null,
     Object? modelList = null,
+    Object? modelListSaved = null,
     Object? FOSOModel = null,
   }) {
     return _then(_value.copyWith(
@@ -85,6 +88,10 @@ class _$ModelStateCopyWithImpl<$Res, $Val extends ModelState>
           ? _value.modelList
           : modelList // ignore: cast_nullable_to_non_nullable
               as List<Model>,
+      modelListSaved: null == modelListSaved
+          ? _value.modelListSaved
+          : modelListSaved // ignore: cast_nullable_to_non_nullable
+              as List<Model>,
       FOSOModel: null == FOSOModel
           ? _value.FOSOModel
           : FOSOModel // ignore: cast_nullable_to_non_nullable
@@ -107,6 +114,7 @@ abstract class _$$_ModelStateCopyWith<$Res>
       int idSelected,
       bool isProcessing,
       List<Model> modelList,
+      List<Model> modelListSaved,
       Option<Either<RemoteFailure, List<Model>>> FOSOModel});
 }
 
@@ -126,6 +134,7 @@ class __$$_ModelStateCopyWithImpl<$Res>
     Object? idSelected = null,
     Object? isProcessing = null,
     Object? modelList = null,
+    Object? modelListSaved = null,
     Object? FOSOModel = null,
   }) {
     return _then(_$_ModelState(
@@ -149,6 +158,10 @@ class __$$_ModelStateCopyWithImpl<$Res>
           ? _value._modelList
           : modelList // ignore: cast_nullable_to_non_nullable
               as List<Model>,
+      modelListSaved: null == modelListSaved
+          ? _value._modelListSaved
+          : modelListSaved // ignore: cast_nullable_to_non_nullable
+              as List<Model>,
       FOSOModel: null == FOSOModel
           ? _value.FOSOModel
           : FOSOModel // ignore: cast_nullable_to_non_nullable
@@ -166,8 +179,10 @@ class _$_ModelState implements _ModelState {
       required this.idSelected,
       required this.isProcessing,
       required final List<Model> modelList,
+      required final List<Model> modelListSaved,
       required this.FOSOModel})
-      : _modelList = modelList;
+      : _modelList = modelList,
+        _modelListSaved = modelListSaved;
 
   @override
   final int page;
@@ -185,12 +200,20 @@ class _$_ModelState implements _ModelState {
     return EqualUnmodifiableListView(_modelList);
   }
 
+  final List<Model> _modelListSaved;
+  @override
+  List<Model> get modelListSaved {
+    if (_modelListSaved is EqualUnmodifiableListView) return _modelListSaved;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_modelListSaved);
+  }
+
   @override
   final Option<Either<RemoteFailure, List<Model>>> FOSOModel;
 
   @override
   String toString() {
-    return 'ModelState(page: $page, hasMore: $hasMore, idSelected: $idSelected, isProcessing: $isProcessing, modelList: $modelList, FOSOModel: $FOSOModel)';
+    return 'ModelState(page: $page, hasMore: $hasMore, idSelected: $idSelected, isProcessing: $isProcessing, modelList: $modelList, modelListSaved: $modelListSaved, FOSOModel: $FOSOModel)';
   }
 
   @override
@@ -206,13 +229,22 @@ class _$_ModelState implements _ModelState {
                 other.isProcessing == isProcessing) &&
             const DeepCollectionEquality()
                 .equals(other._modelList, _modelList) &&
+            const DeepCollectionEquality()
+                .equals(other._modelListSaved, _modelListSaved) &&
             (identical(other.FOSOModel, FOSOModel) ||
                 other.FOSOModel == FOSOModel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, page, hasMore, idSelected,
-      isProcessing, const DeepCollectionEquality().hash(_modelList), FOSOModel);
+  int get hashCode => Object.hash(
+      runtimeType,
+      page,
+      hasMore,
+      idSelected,
+      isProcessing,
+      const DeepCollectionEquality().hash(_modelList),
+      const DeepCollectionEquality().hash(_modelListSaved),
+      FOSOModel);
 
   @JsonKey(ignore: true)
   @override
@@ -228,6 +260,7 @@ abstract class _ModelState implements ModelState {
       required final int idSelected,
       required final bool isProcessing,
       required final List<Model> modelList,
+      required final List<Model> modelListSaved,
       required final Option<Either<RemoteFailure, List<Model>>>
           FOSOModel}) = _$_ModelState;
 
@@ -241,6 +274,8 @@ abstract class _ModelState implements ModelState {
   bool get isProcessing;
   @override
   List<Model> get modelList;
+  @override
+  List<Model> get modelListSaved;
   @override
   Option<Either<RemoteFailure, List<Model>>> get FOSOModel;
   @override

@@ -8,6 +8,7 @@ import '../../../../domain/local_failure.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
+import '../../../model/shared/model_providers.dart';
 import '../../../spk/spk.dart';
 import '../../../update_frame/frame.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
@@ -90,6 +91,11 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
               .checkAndUpdateCSJenisOFFLINEStatus();
         },
       );
+
+      // MODEL
+      await ref
+          .read(modelNotifierProvider.notifier)
+          .getAndChangeModelListOFFLINE();
     });
   }
 

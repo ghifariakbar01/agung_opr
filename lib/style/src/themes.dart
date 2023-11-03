@@ -150,7 +150,8 @@ mixin Themes {
     );
   }
 
-  static InputDecoration searchFormStyle(String hintText, {Widget? icon}) {
+  static InputDecoration searchFormStyle(String hintText,
+      {Widget? icon, Widget? iconPrefix}) {
     return InputDecoration(
       enabledBorder:
           Themes.notFocused(isRadius: false, borderColor: Palette.primaryColor),
@@ -160,6 +161,7 @@ mixin Themes {
       hintStyle: Themes.greyHint(FontWeight.bold, 12),
       hintText: hintText,
       suffixIcon: icon ?? null,
+      prefixIcon: iconPrefix ?? null,
     );
   }
 

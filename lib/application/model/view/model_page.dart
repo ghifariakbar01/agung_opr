@@ -73,12 +73,16 @@ class _ModelPageState extends ConsumerState<ModelPage> {
                               orElse: () => '',
                             ),
                           ),
-                        ), (SPKResponse) {
-                  final oldSPK =
+                        ), (SPKResponse) async {
+                  final oldModel =
                       ref.read(modelNotifierProvider.notifier).state.modelList;
 
                   final page =
                       ref.read(modelNotifierProvider.notifier).state.page;
+
+                  await ref
+                      .read(modelNotifierProvider.notifier)
+                      .getAndChangeModelListOFFLINE();
 
                   ref.read(modelNotifierProvider.notifier).processModelList(
                         newModel: SPKResponse,
@@ -86,7 +90,7 @@ class _ModelPageState extends ConsumerState<ModelPage> {
                         changeModel: () => ref
                             .read(modelNotifierProvider.notifier)
                             .changeModelList(
-                                newModel: SPKResponse, oldModel: oldSPK),
+                                newModel: SPKResponse, oldModel: oldModel),
                         replaceModel: () => ref
                             .read(modelNotifierProvider.notifier)
                             .replaceModelList(SPKResponse),

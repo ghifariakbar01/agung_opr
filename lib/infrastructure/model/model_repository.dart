@@ -43,9 +43,10 @@ class ModelRepository {
   }
 
   Future<Either<RemoteFailure, List<Model>>> searchModelList(
-      {required String search}) async {
+      {required String search, required bool includeParts}) async {
     try {
-      final modelList = await _remoteService.searchModelList(search: search);
+      final modelList = await _remoteService.searchModelList(
+          search: search, includeParts: includeParts);
 
       await this._add(model: modelList);
 
@@ -72,8 +73,7 @@ class ModelRepository {
       final responseModel = Model.ModelListFromJson(response);
 
       if (responseModel.isNotEmpty) {
-        final responseModelTosave =
-            [...responseModel, ...model].toSet().toList();
+        final responseModelTosave = [...responseModel, ...model].toList();
 
         final listResponseModelToSave =
             Model.ModelListToJson(responseModelTosave);
@@ -89,7 +89,7 @@ class ModelRepository {
   ///
   /// process [page] and divide LIST OF [Model]
   Future<Either<RemoteFailure, List<Model>>> getModelListOFFLINE(
-      {required int page}) async {
+      {int? page, bool? allModel}) async {
     try {
       final modelStorage = await _storage.read();
 
@@ -101,26 +101,37 @@ class ModelRepository {
 
         final response = jsonDecode(modelStorage);
 
-        // START PAGINATION
+        if (allModel != null && allModel == true) {
+          List<Model> modelList =
+              (response as List).map((data) => Model.fromJson(data)).toList();
 
-        final int itemsPerPage = 20;
+          return right(modelList);
+        }
 
-        int _startIndex = page * itemsPerPage;
+        if (page != null) {
+          // START PAGINATION
 
-        List<Model> modelList =
-            (response as List).map((data) => Model.fromJson(data)).toList();
+          final int itemsPerPage = 20;
 
-        final _endIndex = (_startIndex + itemsPerPage) <= modelList.length
-            ? (_startIndex + itemsPerPage)
-            : modelList.length;
+          int _startIndex = page * itemsPerPage;
 
-        List<Model> modelPage = modelList.sublist(_startIndex, _endIndex);
+          List<Model> modelList =
+              (response as List).map((data) => Model.fromJson(data)).toList();
 
-        // END PAGINATION
+          final _endIndex = (_startIndex + itemsPerPage) <= modelList.length
+              ? (_startIndex + itemsPerPage)
+              : modelList.length;
 
-        log('modelPage $modelPage');
+          List<Model> modelPage = modelList.sublist(_startIndex, _endIndex);
 
-        return right(modelPage);
+          // END PAGINATION
+
+          log('modelPage $modelPage');
+
+          return right(modelPage);
+        } else {
+          return right([]);
+        }
       } else {
         log('spkPage empty ');
 
@@ -137,7 +148,7 @@ class ModelRepository {
 
   /// SEARCH BY [ID] , [MERK], [NAMA], [CATEGORY], [GROSSWEIGHT], [MEASUREMENT]
   Future<Either<RemoteFailure, List<Model>>> searchModelListOFFLINE(
-      {required String search}) async {
+      {required String search, required bool includeParts}) async {
     try {
       final modelStorage = await _storage.read();
 
@@ -176,7 +187,15 @@ class ModelRepository {
 
         debugger();
 
-        return right(searchedList);
+        if (includeParts) {
+          return right(searchedList);
+        } else {
+          final searchedListWithoutParts = searchedList
+              .where((element) => element.nama!.contains('part') == false)
+              .toList();
+
+          return right(searchedListWithoutParts);
+        }
       } else {
         return right([]);
       }

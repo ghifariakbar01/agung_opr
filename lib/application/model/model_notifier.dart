@@ -46,14 +46,26 @@ class ModelNotifier extends StateNotifier<ModelState> {
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
   }
 
-  Future<void> searchModelList({required String search}) async {
+  Future<void> searchModelList(
+      {required String search, required bool includeParts}) async {
     final Either<RemoteFailure, List<Model>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOModel: none());
 
-    FOS = await _repository.searchModelList(search: search);
+    FOS = await _repository.searchModelList(
+        search: search, includeParts: includeParts);
 
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
+  }
+
+  Future<void> getAndChangeModelListOFFLINE() async {
+    state = state.copyWith(isProcessing: true);
+
+    final list = await _repository
+        .getModelListOFFLINE(allModel: true)
+        .then((value) => value.fold((_) => [] as List<Model>, (r) => r));
+
+    state = state.copyWith(isProcessing: false, modelListSaved: list);
   }
 
   Future<void> getModelListOFFLINE({required int page}) async {
@@ -66,12 +78,14 @@ class ModelNotifier extends StateNotifier<ModelState> {
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
   }
 
-  Future<void> searchModelListOFFLINE({required String search}) async {
+  Future<void> searchModelListOFFLINE(
+      {required String search, required bool includeParts}) async {
     final Either<RemoteFailure, List<Model>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOModel: none());
 
-    FOS = await _repository.searchModelListOFFLINE(search: search);
+    FOS = await _repository.searchModelListOFFLINE(
+        search: search, includeParts: includeParts);
 
     state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
   }
@@ -97,6 +111,10 @@ class ModelNotifier extends StateNotifier<ModelState> {
     state = state.copyWith(modelList: [...oldModel, ...newModel]);
   }
 
+  void changeModelListOffline({required List<Model> model}) {
+    state = state.copyWith(modelListSaved: [...model]);
+  }
+
   void processModelList(
       {required List<Model> newModel,
       required Function changeModel,
@@ -104,15 +122,15 @@ class ModelNotifier extends StateNotifier<ModelState> {
       required Function changeIsMore,
       required int page}) {
     final pageIsZero = page == 0;
-    final ModelEmpty = newModel.isEmpty;
+    final modelEmpty = newModel.isEmpty;
 
-    if (!pageIsZero && !ModelEmpty) {
+    if (!pageIsZero) {
       changeModel();
-    } else if (!pageIsZero && ModelEmpty) {
+    } else if (!pageIsZero && modelEmpty) {
       changeIsMore();
-    } else if (pageIsZero && !ModelEmpty) {
+    } else if (pageIsZero) {
       replaceModel();
-    } else if (pageIsZero && ModelEmpty) {
+    } else if (pageIsZero && modelEmpty) {
       return;
     }
   }

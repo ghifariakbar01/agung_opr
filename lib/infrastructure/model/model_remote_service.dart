@@ -13,23 +13,34 @@ class ModelRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<List<Model>> searchModelList({required String search}) async {
+  Future<List<Model>> searchModelList(
+      {required String search, required bool includeParts}) async {
     try {
       final data = _dioRequestNotifier;
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT arap_mst_kend_type.id_kend_type AS id, arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat WHERE arap_mst_kend_type.nama LIKE '%$search%' OR arap_mst_kend_type.id_kend_type LIKE '%$search%' OR arap_mst_kend_merk.nama LIKE '%$search%' OR arap_mst_kend_type.grossweight LIKE '%$search%' OR arap_mst_kend_type.measurement LIKE '%$search%' OR arap_mst_kend_cat.nama LIKE '%$search%' ORDER BY arap_mst_kend_type.id_kend_type DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+        "command": "SELECT arap_mst_kend_type.id_kend_type AS id, " +
+            " arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, arap_mst_kend_type.grossweight, " +
+            "arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM arap_mst_kend_type " +
+            " LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk " +
+            "LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat " +
+            " WHERE  ${includeParts == false ? " arap_mst_kend_type.nama NOT LIKE '%parts%' AND " : ' '} " +
+            " arap_mst_kend_type.nama LIKE '%$search%'  " +
+            " OR arap_mst_kend_merk.nama LIKE '%$search%' OR arap_mst_kend_type.grossweight LIKE '%$search%' " +
+            " OR arap_mst_kend_type.measurement LIKE '%$search%' OR arap_mst_kend_cat.nama LIKE '%$search%' " +
+            " ORDER BY arap_mst_kend_type.c_date ASC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY ",
       });
 
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data ${jsonEncode(data)}');
-      // log('response $response');
+      log('data PARTS ${jsonEncode(data)}');
+      log('response $response');
 
       final items = response.data?[0];
+
+      log('includeParts $includeParts response part $items');
 
       if (items['status'] == 'Success') {
         final listExist = items['items'] != null && items['items'] is List;
@@ -88,8 +99,11 @@ class ModelRemoteService {
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT arap_mst_kend_type.id_kend_type AS id, arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat ORDER BY arap_mst_kend_type.id_kend_type DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+        "command": " SELECT arap_mst_kend_type.id_kend_type AS id, arap_mst_kend_merk.nama AS merk, arap_mst_kend_type.nama, " +
+            " arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM " +
+            " arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk " +
+            " LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat " +
+            " ORDER BY arap_mst_kend_type.c_date ASC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

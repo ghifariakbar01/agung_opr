@@ -14,14 +14,17 @@ class ModelState with _$ModelState {
     required int idSelected,
     required bool isProcessing,
     required List<Model> modelList,
+    required List<Model> modelListSaved,
     required Option<Either<RemoteFailure, List<Model>>> FOSOModel,
   }) = _ModelState;
 
   factory ModelState.initial() => ModelState(
-      modelList: [],
-      idSelected: 0,
-      page: 0,
-      hasMore: true,
-      isProcessing: false,
-      FOSOModel: none());
+        page: 0,
+        idSelected: 0,
+        hasMore: true,
+        modelList: [],
+        FOSOModel: none(),
+        modelListSaved: [],
+        isProcessing: false,
+      );
 }
