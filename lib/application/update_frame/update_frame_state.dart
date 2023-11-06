@@ -43,6 +43,8 @@ class UpdateFrameState with _$UpdateFrameState {
         sjkbTextController: TextEditingController(),
         basicColors: {
           '': Colors.transparent,
+          'Hitam': Colors.black,
+          'Putih': Colors.white,
           'Merah': Colors.red,
           'Hijau': Colors.green,
           'Biru': Colors.blue,
@@ -50,10 +52,11 @@ class UpdateFrameState with _$UpdateFrameState {
           'Oranye': Colors.orange,
           'Ungu': Colors.purple,
           'Coklat': Colors.brown,
-          'Silver': Colors.grey,
-          'Abu-abu': Colors.grey.shade600,
-          'Hitam': Colors.black,
-          'Putih': Colors.white,
+          //
+          'Gray': Colors.grey.shade500,
+          'Silver': Colors.grey.shade600,
+          'Abu-abu': Colors.grey.shade700,
+          //
         },
       );
 }
