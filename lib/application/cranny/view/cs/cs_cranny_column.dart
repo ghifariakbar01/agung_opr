@@ -1,6 +1,7 @@
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
+import 'package:agung_opr/application/spk/view/spk_scaffold.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
               ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
               ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
               ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+              ref.read(scrollPageProvider.notifier).state = 0;
 
               const int id = 1;
               ref.read(csItemNotifierProvider.notifier).changeId(id);

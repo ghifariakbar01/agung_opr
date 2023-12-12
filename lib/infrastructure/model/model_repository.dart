@@ -28,7 +28,7 @@ class ModelRepository {
     try {
       final modelList = await _remoteService.getModelList(page: page);
 
-      await _storage.save(jsonEncode(modelList));
+      await _add(model: modelList);
 
       return right(modelList);
     } on RestApiException catch (e) {
@@ -80,6 +80,8 @@ class ModelRepository {
 
         await _storage.save(listResponseModelToSave);
       }
+    } else {
+      await _storage.save(Model.ModelListToJson(model));
     }
 
     return unit;
@@ -160,30 +162,35 @@ class ModelRepository {
       if (modelStorage != null) {
         final response = jsonDecode(modelStorage);
 
-        List<Model> modelList =
-            (response as List).map((data) => Model.fromJson(data)).toList();
+        List<Model> modelList = (response as List)
+            .map((data) => Model.fromJson(data))
+            .toSet()
+            .toList();
 
-        final searchedList = modelList.where((model) {
-          if (model.merk != null &&
-              model.nama != null &&
-              model.category != null) {
-            return model.id.toString() == searchLowerCase ||
-                model.merk!.toLowerCase().contains(searchLowerCase) ||
-                model.nama!.toLowerCase().contains(searchLowerCase) ||
-                model.category!.toLowerCase().contains(searchLowerCase);
-          } else if (model.nama != null && model.category != null) {
-            return model.id.toString() == searchLowerCase ||
-                model.nama!.toLowerCase().contains(searchLowerCase) ||
-                model.category!.toLowerCase().contains(searchLowerCase);
-          } else if (model.category != null) {
-            return model.id.toString() == searchLowerCase ||
-                model.category!.toLowerCase().contains(searchLowerCase);
-          }
+        final searchedList = modelList
+            .where((model) {
+              if (model.merk != null &&
+                  model.nama != null &&
+                  model.category != null) {
+                return model.id.toString() == searchLowerCase ||
+                    model.merk!.toLowerCase().contains(searchLowerCase) ||
+                    model.nama!.toLowerCase().contains(searchLowerCase) ||
+                    model.category!.toLowerCase().contains(searchLowerCase);
+              } else if (model.nama != null && model.category != null) {
+                return model.id.toString() == searchLowerCase ||
+                    model.nama!.toLowerCase().contains(searchLowerCase) ||
+                    model.category!.toLowerCase().contains(searchLowerCase);
+              } else if (model.category != null) {
+                return model.id.toString() == searchLowerCase ||
+                    model.category!.toLowerCase().contains(searchLowerCase);
+              }
 
-          return model.id.toString() == searchLowerCase ||
-              model.grossweight.toString().contains(searchLowerCase) ||
-              model.measurement.toString().contains(searchLowerCase);
-        }).toList();
+              return model.id.toString() == searchLowerCase ||
+                  model.grossweight.toString().contains(searchLowerCase) ||
+                  model.measurement.toString().contains(searchLowerCase);
+            })
+            .toSet()
+            .toList();
 
         debugger();
 

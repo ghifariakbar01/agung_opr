@@ -25,25 +25,24 @@ class _SPKPageState extends ConsumerState<SPKPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final spkOfflineOrOnline = ref.watch(spkOfflineNotifierProvider);
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => loadSpkOnlineOrOffline());
+  }
 
-      log('spkOfflineOrOnline $spkOfflineOrOnline');
+  Future<void> loadSpkOnlineOrOffline() async {
+    final isOffline = ref.read(isOfflineStateProvider);
 
-      await spkOfflineOrOnline.maybeWhen(
-        hasOfflineStorage: () =>
-            ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0),
-        orElse: () async {
-          for (int i = 0; i < 5; i++) {
-            ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-          }
+    if (isOffline) {
+      await ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0);
+    } else {
+      for (int i = 0; i < 5; i++) {
+        await ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
+      }
 
-          await ref
-              .read(spkOfflineNotifierProvider.notifier)
-              .checkAndUpdateSPKOFFLINEStatus();
-        },
-      );
-    });
+      await ref
+          .read(spkOfflineNotifierProvider.notifier)
+          .checkAndUpdateSPKOFFLINEStatus();
+    }
   }
 
   @override
@@ -73,8 +72,7 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                   final oldSPK =
                       ref.read(spkNotifierProvider.notifier).state.spkList;
 
-                  final page =
-                      ref.read(spkNotifierProvider.notifier).state.page;
+                  final page = ref.read(scrollPageProvider);
 
                   ref.read(spkNotifierProvider.notifier).processSPKList(
                         newSPK: SPKResponse,

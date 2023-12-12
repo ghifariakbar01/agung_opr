@@ -103,7 +103,7 @@ class ModelRemoteService {
             " arap_mst_kend_type.grossweight, arap_mst_kend_type.measurement, arap_mst_kend_cat.nama AS category FROM " +
             " arap_mst_kend_type LEFT JOIN arap_mst_kend_merk ON arap_mst_kend_merk.id_kend_merk = arap_mst_kend_type.id_kend_merk " +
             " LEFT JOIN arap_mst_kend_cat ON arap_mst_kend_cat.id_kend_cat = arap_mst_kend_type.id_kend_cat " +
-            " ORDER BY arap_mst_kend_type.c_date ASC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+            " ORDER BY arap_mst_kend_type.c_date ASC OFFSET ${page}00 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

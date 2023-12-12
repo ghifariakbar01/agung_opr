@@ -26,11 +26,11 @@ class SupirRepository {
   Future<Either<RemoteFailure, List<Supir>>> getSupirList(
       {required int page}) async {
     try {
-      final modelList = await _remoteService.getSupirList(page: page);
+      final supirList = await _remoteService.getSupirList(page: page);
 
-      await _storage.save(jsonEncode(modelList));
+      await _add(supir: supirList);
 
-      return right(modelList);
+      return right(supirList);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
@@ -54,7 +54,7 @@ class SupirRepository {
 
       // HAS LIST
       if (supirStorage != null) {
-        // final _getTotalPages = (modelList.length / itemsPerPage).ceil();
+        // final _getTotalPages = (supirList.length / itemsPerPage).ceil();
 
         final response = jsonDecode(supirStorage);
 
@@ -90,6 +90,32 @@ class SupirRepository {
     } on FormatException {
       return left(RemoteFailure.parse());
     }
+  }
+
+  /// ADD [Supir] FROM SEARCH
+  ///
+  Future<Unit> _add({required List<Supir> supir}) async {
+    final spkStorage = await _storage.read();
+
+    if (spkStorage != null) {
+      final response = jsonDecode(spkStorage) as List<dynamic>;
+
+      final responseSPK = Supir.SupirListFromJson(response);
+
+      if (responseSPK.isNotEmpty) {
+        final responseSPKTosave = [...responseSPK, ...supir].toSet().toList();
+
+        final listResponseSPKToSave = Supir.SupirListToJson(responseSPKTosave);
+
+        await _storage.save(listResponseSPKToSave);
+      }
+    } else {
+      await _storage.save(Supir.SupirListToJson(supir));
+    }
+
+    log('returned unit');
+
+    return unit;
   }
 
   /// SEARCH BY [ID], [NAMA], [PHONE], [ALAMAT], [KATEGORI]

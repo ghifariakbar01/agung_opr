@@ -17,8 +17,6 @@ class SupirScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supirProvider = ref.watch(supirNotifierProvider);
-
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         _scrollController.position.notifyListeners();
@@ -26,13 +24,11 @@ class SupirScaffold extends ConsumerWidget {
     );
 
     _scrollController.addListener(() async {
+      final supirProviderOnScrolled = ref.read(supirNotifierProvider);
+      final page = supirProviderOnScrolled.page;
+      final isMore = supirProviderOnScrolled.hasMore;
+      final isGetting = supirProviderOnScrolled.isProcessing;
       final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
-
-      final isMore = supirProvider.hasMore;
-
-      final isGetting = supirProvider.isProcessing;
-
-      final page = supirProvider.page;
 
       if (_scrollController.hasClients &&
           _scrollController.position.pixels > nextPageTrigger &&
@@ -45,6 +41,8 @@ class SupirScaffold extends ConsumerWidget {
             .getSupirListOFFLINE(page: page + 1);
       }
     });
+
+    final supirProvider = ref.watch(supirNotifierProvider);
 
     final supirList = supirProvider.supirList;
 

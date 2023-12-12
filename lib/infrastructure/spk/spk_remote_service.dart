@@ -148,7 +148,7 @@ class SPKRemoteService {
             " ORDER BY " +
             " spk.spk_tgl DESC " +
             " OFFSET " +
-            " 0 ROWS " +
+            " ${page}0 ROWS " +
             " FETCH FIRST " +
             " 10 ROWS ONLY"
       });

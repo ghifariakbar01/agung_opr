@@ -2,11 +2,10 @@ import 'dart:developer';
 
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
-import 'package:agung_opr/application/spk/view/spk_search.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,139 +13,91 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../style/style.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
+import 'spk_header.dart';
 import 'spk_item.dart';
 
-final ScrollController _scrollController = ScrollController();
-
-class SPKScaffold extends ConsumerStatefulWidget {
+class SPKScaffold extends StatefulHookConsumerWidget {
   const SPKScaffold();
 
   @override
   ConsumerState<SPKScaffold> createState() => _SPKScaffoldState();
 }
 
+final scrollPageProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
   @override
-  void initState() {
-    super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   _scrollController.addListener(() async {
-    //     final nextPageTrigger =
-    //         0.9 * _scrollController.position.maxScrollExtent;
-
-    //     final isMore =
-    //         ref.watch(spkNotifierProvider.select((value) => value.hasMore));
-    //     ;
-
-    //     final isGetting = ref
-    //         .watch(spkNotifierProvider.select((value) => value.isProcessing));
-
-    //     final page =
-    //         ref.watch(spkNotifierProvider.select((value) => value.page));
-
-    //     if (_scrollController.hasClients &&
-    //         _scrollController.position.pixels > nextPageTrigger &&
-    //         isMore &&
-    //         !isGetting) {
-    //       ref.read(spkNotifierProvider.notifier).changePage(page + 1);
-
-    //       await ref
-    //           .read(spkNotifierProvider.notifier)
-    //           .getSPKListOFFLINE(page: page + 1);
-    //     }
-    //   });
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final hideDone = useState(false);
+
     final modeApp = ref.watch(modeNotifierProvider);
     final spkProvider = ref.watch(spkNotifierProvider);
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (_scrollController.hasClients && _scrollController.hasClients) {
-          _scrollController.position.notifyListeners();
-        }
-      },
-    );
+    final spkList = hideDone.value
+        ? spkProvider.spkList
+            .where(
+                (element) => element.isEdit != null && element.isEdit == true)
+            .toList()
+        : spkProvider.spkList
+            .where(
+                (element) => element.isEdit != null && element.isEdit == false)
+            .toList();
 
-    final spkList = spkProvider.spkList;
+    log('spkList ${spkList.map((e) => e.isEdit).toList()}');
 
     final isSearching = ref
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
+
+    /* --- SCROLL CONTROLLER START ---*/
+    ref.watch(scrollPageProvider);
+    final controller = useScrollController();
+    final isLoading =
+        ref.watch(spkNotifierProvider.select((value) => value.isProcessing));
+
+    void onScrolled() {
+      final page = ref.read(scrollPageProvider);
+
+      if (!isLoading &&
+          page < 6 &&
+          controller.position.pixels >= controller.position.maxScrollExtent) {
+        // debugger();
+
+        ref.read(scrollPageProvider.notifier).state =
+            ref.read(scrollPageProvider.notifier).state + 1;
+
+        loadSpkOnlineOrOffline(page: page);
+
+        // debugger();
+      }
+    }
+
+    useEffect(() {
+      controller.addListener(onScrolled);
+      return () => controller.removeListener(onScrolled);
+    }, [controller]);
+    /* --- SCROLL CONTROLLER END ---*/
+
+    final isOffline = ref.watch(isOfflineStateProvider);
+
+    final hideDoneListenable = useValueNotifier(hideDone);
 
     return KeyboardDismissOnTap(
       child: Scaffold(
         appBar: VAppBar(
           context,
-          'SPK List',
+          'SPK List ${isOffline ? '(Offline)' : ''}',
         ),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
-              controller: _scrollController,
+              controller: controller,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Flexible(flex: 5, child: SPKSearch()),
-                      Flexible(
-                          flex: 1,
-                          child: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: Column(
-                              children: [
-                                Flexible(
-                                  flex: 0,
-                                  child: Text(
-                                    'NO.SPK',
-                                    textAlign: TextAlign.center,
-                                    style: Themes.customColor(
-                                        FontWeight.bold, 9, Colors.black),
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: InkWell(
-                                    onTap: () async {
-                                      log('NOSPK SCAN INIT');
-                                      String? noSPK =
-                                          await FlutterBarcodeScanner
-                                              .scanBarcode("#65B689", "Cancel",
-                                                  false, ScanMode.DEFAULT);
-
-                                      log('NOSPK SCAN $noSPK');
-
-                                      if (noSPK.isNotEmpty && noSPK != '-1') {
-                                        ref
-                                            .read(spkSearchNotifierProvider
-                                                .notifier)
-                                            .changeSearchText(noSPK);
-
-                                        await ref
-                                            .read(spkNotifierProvider.notifier)
-                                            .searchSPKListOFFLINE(
-                                                search: noSPK);
-
-                                        log('NOSPK SCAN 2 $noSPK');
-                                      }
-                                    },
-                                    child: Ink(
-                                      child: Icon(
-                                        Icons.qr_code_2,
-                                        size: 40,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ))
-                    ],
+                  ValueListenableBuilder<ValueNotifier<bool>>(
+                    valueListenable: hideDoneListenable,
+                    builder: (_, value, __) => SpkHeader(value),
                   ),
                   for (int i = 0; i < spkList.length; i++) ...[
                     IgnorePointer(
@@ -264,5 +215,22 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
         ),
       ),
     );
+  }
+
+  //
+  Future<void> loadSpkOnlineOrOffline({required int page}) async {
+    final isOffline = ref.read(isOfflineStateProvider);
+
+    if (isOffline) {
+      return ref
+          .read(spkNotifierProvider.notifier)
+          .getSPKListOFFLINE(page: page);
+    } else {
+      await ref.read(spkNotifierProvider.notifier).getSPKList(page: page);
+
+      await ref
+          .read(spkOfflineNotifierProvider.notifier)
+          .checkAndUpdateSPKOFFLINEStatus();
+    }
   }
 }

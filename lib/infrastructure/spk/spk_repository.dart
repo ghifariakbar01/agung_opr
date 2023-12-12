@@ -28,7 +28,7 @@ class SPKRepository {
     try {
       final spkList = await _remoteService.getSPKList(page: page);
 
-      await _storage.save(jsonEncode(spkList));
+      await _add(spk: spkList);
 
       return right(spkList);
     } on RestApiException catch (e) {
@@ -78,6 +78,8 @@ class SPKRepository {
 
         await _storage.save(listResponseSPKToSave);
       }
+    } else {
+      await _storage.save(SPK.SPKListToJson(spk));
     }
 
     log('returned unit');

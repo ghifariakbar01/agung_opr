@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../../model/shared/model_providers.dart';
 import '../../spk/shared/spk_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../csu_mst_gate.dart';
@@ -27,45 +24,8 @@ class GateScaffold extends ConsumerStatefulWidget {
 
 class _GateScaffoldState extends ConsumerState<GateScaffold> {
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.addListener(() async {
-        final modelProvider = ref.read(modelNotifierProvider);
-
-        final nextPageTrigger =
-            0.9 * _scrollController.position.maxScrollExtent;
-
-        final isMore = modelProvider.hasMore;
-
-        final isGetting = modelProvider.isProcessing;
-
-        final page = modelProvider.page;
-
-        if (_scrollController.hasClients &&
-            _scrollController.position.pixels > nextPageTrigger &&
-            isMore &&
-            !isGetting) {
-          ref.read(modelNotifierProvider.notifier).changePage(page + 1);
-
-          await ref
-              .read(modelNotifierProvider.notifier)
-              .getModelListOFFLINE(page: page + 1);
-        }
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final gateProvider = ref.watch(gateNotifierProvider);
-
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        _scrollController.position.notifyListeners();
-      },
-    );
 
     final gateList = gateProvider.gates
         .where((element) => element != CSUMSTGate.initial())
@@ -85,7 +45,6 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
         body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
-              controller: _scrollController,
               child: Column(
                 children: [
                   GateSearch(),

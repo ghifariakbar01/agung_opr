@@ -20,7 +20,7 @@ class SupirRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_supir AS id, nama, phone_no AS phone, alamat, kategori FROM opr_mst_supir ORDER BY id_supir DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY",
+            "SELECT id_supir AS id, nama, phone_no AS phone, alamat, kategori FROM opr_mst_supir ORDER BY id_supir DESC OFFSET ${page}00 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',

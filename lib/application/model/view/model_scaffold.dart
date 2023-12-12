@@ -17,8 +17,6 @@ class ModelScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final modelProvider = ref.watch(modelNotifierProvider);
-
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         _scrollController.position.notifyListeners();
@@ -26,13 +24,11 @@ class ModelScaffold extends ConsumerWidget {
     );
 
     _scrollController.addListener(() async {
+      final modelScrollProvider = ref.read(modelNotifierProvider);
+      final page = modelScrollProvider.page;
+      final isMore = modelScrollProvider.hasMore;
+      final isGetting = modelScrollProvider.isProcessing;
       final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
-
-      final isMore = modelProvider.hasMore;
-
-      final isGetting = modelProvider.isProcessing;
-
-      final page = modelProvider.page;
 
       if (_scrollController.hasClients &&
           _scrollController.position.pixels > nextPageTrigger &&
@@ -45,6 +41,8 @@ class ModelScaffold extends ConsumerWidget {
             .getModelListOFFLINE(page: page + 1);
       }
     });
+
+    final modelProvider = ref.watch(modelNotifierProvider);
 
     final modelList = modelProvider.modelList;
 

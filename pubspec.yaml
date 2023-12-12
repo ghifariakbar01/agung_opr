@@ -6,7 +6,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.13+18
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -36,6 +36,7 @@ dependencies:
 
   #* State management
   hooks_riverpod: ^2.3.7
+  flutter_hooks: ^0.20.3
 
   #* Logging
   logging: ^1.1.0
@@ -55,6 +56,8 @@ dependencies:
   dartz: ^0.10.1
   intl: ^0.18.1
   package_info_plus: ^4.1.0
+  riverpod_annotation: ^2.3.0
+  flutter_riverpod: ^2.4.5
   upgrader: ^8.1.0
 
 dev_dependencies:
@@ -62,11 +65,12 @@ dev_dependencies:
     sdk: flutter
 
   #* Code generators
-  build_runner: ^2.3.2
-  flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.13
-  freezed: ^2.2.1
-  json_serializable: ^6.5.4
+  build_runner: ^2.4.6
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.2
+  freezed: ^2.4.1
+  riverpod_generator: ^2.1.5
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
