@@ -14,11 +14,9 @@ import '../update_frame/update_frame_repository.dart';
 
 class AutoDataRepository {
   final UpdateFrameRepository _updateFrameRepository;
-  final HistoryRepository _historyRepository;
   final UpdateCSRepository _updateCSRepository;
 
-  AutoDataRepository(this._updateFrameRepository, this._historyRepository,
-      this._updateCSRepository);
+  AutoDataRepository(this._updateFrameRepository, this._updateCSRepository);
 
   Future<Either<RemoteFailure, Unit>> runAutoDataFromRepositories({
     required List<History> histories,
@@ -28,9 +26,6 @@ class AutoDataRepository {
     try {
       if (queryMap.isNotEmpty)
         await _updateFrameRepository.updateFrameByQuery(queryMap: queryMap);
-
-      if (histories.isNotEmpty)
-        await _historyRepository.insertHistories(histories: histories);
 
       if (queryIds.isNotEmpty)
         await _updateCSRepository.updateCSByQuery(queryIds: queryIds);

@@ -7,27 +7,22 @@ import 'package:intl/intl.dart';
 
 import '../../application/check_sheet/loading/state/update_cs_ng_state.dart';
 import '../../application/check_sheet/shared/state/cs_id_query.dart';
-import '../../application/history/history.dart';
 import '../../application/user/user_model.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
 import '../../domain/value_objects_copy.dart';
-import '../../utils/string_utils.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
-import '../history/history_repository.dart';
 import 'update_cs_remote_service.dart';
 
 class UpdateCSRepository {
   UpdateCSRepository(
     this._storage,
     this._remoteService,
-    this._historyRepository,
     this._userModelWithPassword,
   );
 
   final CredentialsStorage _storage;
-  final HistoryRepository _historyRepository;
   final UpdateCSRemoteService _remoteService;
   final UserModelWithPassword _userModelWithPassword;
 
@@ -39,11 +34,12 @@ class UpdateCSRepository {
     final isQueryOK = queryIds.isNotEmpty;
 
     // debugger(message: 'called');
+    final List<CSIDQuery> processedList = queryIds.toSet().toList();
 
     if (isQueryOK) {
-      for (int i = 0; i < queryIds.length; i++) {
-        final query = queryIds[i].query;
-        final idSPK = queryIds[i].idSPK;
+      for (int i = 0; i < processedList.length; i++) {
+        final String query = processedList[i].query;
+        final int idSPK = processedList[i].idSPK;
 
         log('INDEX $i');
 
@@ -54,15 +50,11 @@ class UpdateCSRepository {
 
         try {
           await _remoteService.insertCSBYQuery(query: query);
-
           await _removeQueryCSFromSaved(idSPK: idSPK);
         } on RestApiException catch (e) {
           // debugger(message: 'called');
 
           await _removeQueryCSFromSaved(idSPK: idSPK);
-
-          await _historyRepository.clearHistoryFromStorageByIdSPK(
-              idSPK: idSPK.toString());
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
@@ -87,86 +79,31 @@ class UpdateCSRepository {
 
         // // DELETE SAVED QUERY
       }
-    }
 
-    // debugger(message: 'called');
-
-    return right(unit);
-  }
-
-  Future<Either<LocalFailure, Unit>> saveCSQueryNG(
-      {required CSIDQuery queryId}) async {
-    try {
-      final savedStrings = await _storage.read();
-      final isQueryOK = queryId.query.isNotEmpty;
-      final isStorageSaved = savedStrings != null;
-
-      if (isQueryOK) {
-        switch (isStorageSaved) {
-          case true:
-            () async {
-              // debugger(message: 'CALLED');
-              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
-
-              final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
-
-              final index = response
-                  .indexWhere((element) => element.idSPK == queryId.idSPK);
-
-              if (index == -1) {
-                final list = [...response, queryId];
-
-                await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
-
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-              } else {
-                // if not NG, replace list
-                final list = [...response];
-
-                list[index] = queryId;
-
-                await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
-
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-              }
-            }();
-            break;
-          case false:
-            () async {
-              final list = [queryId];
-
-              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
-              await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
-            }();
-        }
-      } else {
-        throw LocalFailure.empty();
-      }
+      // debugger(message: 'called');
 
       return right(unit);
-    } on RangeError catch (e) {
-      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
-    } on FormatException catch (e) {
-      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
-    } on JsonUnsupportedObjectError {
-      return left(LocalFailure.format('JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(LocalFailure.storage());
+    } else {
+      //
+      return right(unit);
     }
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSQueryOK(
-      {required CSIDQuery queryId,
+  Future<Either<LocalFailure, Unit>> saveCSQuery(
+      {
+      //
+      required CSIDQuery queryId,
       bool isNG = false,
       required String idUser,
       required String nama,
       required String gate}) async {
     try {
+      // Trigger for older devices
+      await _storage.read();
+      await _storage.read();
+      await _storage.read();
+      //
+
       final savedStrings = await _storage.read();
       final isQueryOK = queryId.query.isNotEmpty;
       final isStorageSaved = savedStrings != null;
@@ -175,105 +112,85 @@ class UpdateCSRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              debugger();
-
-              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
-
-              final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
-
-              final index = response
+              final raw = jsonDecode(savedStrings!) as List<dynamic>;
+              final List<CSIDQuery> response =
+                  CSIDQuery.listCSIDQueryFromJson(raw);
+              final int index = response
                   .indexWhere((element) => element.idSPK == queryId.idSPK);
 
-              debugger();
+              // debugger();
+              if (response.isEmpty) {
+                debugger();
 
-              // index not found
+                final List<CSIDQuery> list = [queryId];
+                await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+                ;
+
+                // debugger(message: 'called');
+                log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                debugger();
+                return;
+              }
+
               if (index == -1) {
                 debugger();
 
-                final list = [...response, queryId];
-
+                final List<CSIDQuery> list =
+                    [...response, queryId].toSet().toList();
                 await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
-
-                await _saveHistory(
-                    csuIdQuery: queryId,
-                    contentCoant: 'Gate $gate',
-                    idUser: idUser,
-                    nama: nama);
+                ;
 
                 // debugger(message: 'called');
-
                 log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
                 debugger();
+                return;
               }
-              // index found
+              // index found at variable index
               else {
-                if (isNG == false) {
-                  debugger();
+                final isOK = isNG == false;
 
-                  final savedStrings = await _storage.read();
-                  final parsedResponse =
-                      jsonDecode(savedStrings!) as List<dynamic>;
-                  final response =
-                      CSIDQuery.listCSIDQueryFromJson(parsedResponse);
-                  final index = response
-                      .indexWhere((element) => element.idSPK == queryId.idSPK);
+                if (isOK) {
+                  final List<CSIDQuery> list = [...response];
 
-                  debugger();
-
-                  // if not NG, replace list
-                  final list = [...response];
-
-                  // ALREADY HAS QUERY
                   if (list[index].query.isNotEmpty) {
-                    final saveList = [...response, queryId];
-
+                    //  UPDATE (already has query)
+                    final saveList = [...response, queryId].toSet().toList();
                     await _storage
                         .save(CSIDQuery.listCSIDQueryToJsonSavable(saveList));
 
-                    debugger();
-
                     log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(saveList)}');
-                  }
-                  // NO QUERY IN LIST
-                  else {
+                    debugger();
+                    return;
+                  } else {
+                    //  INSERT (no query found at index, previously damaged or deleted)
                     list[index] = queryId;
 
-                    await _storage
-                        .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
-
-                    log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                    await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(
+                        list.toSet().toList()));
+                    log('STORAGE INSERT CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
+                    debugger();
+                    return;
                   }
+
+                  // Since it's an UPDATE / INSERT
+                  // no history table insertion is needed
 
                   // await _saveHistory(
                   //     csuIdQuery: queryId,
                   //     contentCoant: 'Gate $gate',
                   //     idUser: idUser,
                   //     nama: nama);
-
                   // debugger(message: 'called');
-
-                  debugger();
                 } else {
-                  debugger();
-
-                  // if NG, coancenate
-                  final list = [...response, queryId];
-
+                  // INSERT TO pool_chk_kr_dtl
+                  final list = [...response, queryId].toSet().toList();
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
-                  await _saveHistory(
-                      csuIdQuery: queryId,
-                      contentCoant: 'Gate $gate',
-                      idUser: idUser,
-                      nama: nama);
-
                   // debugger(message: 'called');
-
                   log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
                   debugger();
+                  return;
                 }
               }
             }();
@@ -281,19 +198,9 @@ class UpdateCSRepository {
           case false:
             () async {
               final list = [queryId];
-
-              debugger();
-
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
-              await _saveHistory(
-                  csuIdQuery: queryId,
-                  contentCoant: 'Gate $gate',
-                  idUser: idUser,
-                  nama: nama);
-
               log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
               debugger();
             }();
         }
@@ -313,49 +220,28 @@ class UpdateCSRepository {
     }
   }
 
-  Future<Unit> _saveHistory(
-      {required CSIDQuery csuIdQuery,
-      required String idUser,
-      required String nama,
-      required String contentCoant}) async {
-    final tgl = StringUtils.trimmedDate(DateTime.now());
-
-    final history = History(
-        idUser: int.parse(idUser),
-        query: '<TRUNCATED>',
-        content: 'Check Sheet $contentCoant dengan id SPK ${csuIdQuery.idSPK}',
-        cUser: nama,
-        cDate: tgl,
-        sDate: tgl);
-
-    // SAVE To History
-    await _historyRepository.saveHistoryInStorage(history: history);
-
-    debugger();
-
-    return unit;
-  }
-
   CSIDQuery getOKSavableQuery({
+    required Tipe tipe,
     required int idSPK,
+    required Gate gate,
     required Nopol nopol,
+    required OKorNG status,
+    required Keterangan ket,
     required Supir1 supir1,
     required SupirSDR supir2,
     required JamLoad jamLoad,
-    required Gate gate,
-    required Keterangan ket,
-    required OKorNG status,
-    required Tipe tipe,
   }) {
     // TEST
     const String dbName = 'pool_chk_kr';
 
     final nopolStr = nopol.getOrCrash();
+    final gateStr = gate.getOrCrash();
+
+    final ketStr = ket.getOrLeave('');
     final supir1Str = supir1.getOrLeave('');
     final supir2Str = supir2.getOrLeave('');
-    final gateStr = gate.getOrCrash();
     final jamLoadStr = jamLoad.getOrLeave('');
-    final ketStr = ket.getOrLeave('');
+
     final tgl = DateFormat('yyyy-MM-dd')
         .parse(DateTime.now().toString())
         .toString()
@@ -366,7 +252,9 @@ class UpdateCSRepository {
         .substring(0, DateTime.now().toString().length - 3);
 
     final String insert = "INSERT INTO $dbName " +
-        " (id_kr_chk, id_spk, nopol, driver1, driver2, tgl_berangkat, jamload, gate, status, tipe, ket, c_date, u_date, c_user, u_user) " +
+        " (id_kr_chk, id_spk, nopol, driver1, driver2, tgl_berangkat, "
+            " jamload, gate, status, tipe, ket, "
+            " c_date, u_date, c_user, u_user) " +
         " VALUES " +
         " ( " +
         " (SELECT ISNULL(max(id_kr_chk), 0) + 1 FROM $dbName)," +
@@ -420,8 +308,6 @@ class UpdateCSRepository {
       }
     }
 
-    // debugger();
-
     // CONVERT TO MAP, TO ADD ALL STRING
     Map<int, String> queryMap = {};
 
@@ -450,7 +336,6 @@ class UpdateCSRepository {
 
     // GET QUERY STRING
     String queryString = queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
-
     CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: queryString);
 
     log('QUERY SAVE CS NG: ${csIdQuery.toJson()}');
@@ -523,7 +408,7 @@ class UpdateCSRepository {
       final isStorageSaved = savedStrings != null;
 
       if (isStorageSaved) {
-        final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+        final parsedResponse = jsonDecode(savedStrings) as List<dynamic>;
 
         final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
 

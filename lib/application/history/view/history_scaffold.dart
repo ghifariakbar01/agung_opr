@@ -57,7 +57,7 @@ class HistoryScaffold extends ConsumerWidget {
                       //       FontWeight.bold, 12, Colors.black),
                       // ),
                       Text(
-                        'Local :  ${history.historyList[index].cDate}',
+                        'Date :  ${history.historyList[index].cDate}',
                         style: Themes.customColor(
                             FontWeight.bold, 12, Colors.black),
                       ),
@@ -65,7 +65,7 @@ class HistoryScaffold extends ConsumerWidget {
                         height: 8,
                       ),
                       Text(
-                        history.historyList[index].content,
+                        history.historyList[index].toString(),
                         style: Themes.customColor(
                             FontWeight.normal, 12, Colors.black),
                       ),

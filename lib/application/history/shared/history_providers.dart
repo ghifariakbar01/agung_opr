@@ -21,7 +21,6 @@ final historyRemoteServiceProvider = Provider(
 final historyRepositoryProvider = Provider((ref) => HistoryRepository(
       ref.watch(historyRemoteServiceProvider),
       ref.watch(userNotifierProvider.select((value) => value.user)),
-      ref.watch(historyStorage),
     ));
 
 final historyNotifierProvider =

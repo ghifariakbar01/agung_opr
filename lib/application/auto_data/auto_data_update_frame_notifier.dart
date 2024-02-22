@@ -93,31 +93,12 @@ class AutoDataUpdateFrameNotifier
     state = state.copyWith(histories: histories);
   }
 
-  Future<void> getSavedHistoriesFromRepository() async {
-    Either<LocalFailure, List<History>>? FOS;
-
-    state = state.copyWith(isGetting: true, FOSOAutoDataLocalHistory: none());
-
-    FOS = await _historyRepository.getHistoriesOFFLINE();
-
-    state = state.copyWith(
-        isGetting: false, FOSOAutoDataLocalHistory: optionOf(FOS));
-  }
-
-  // UPDATE FRAME
-  Future<void> runSavedHistoriesFromRepository(
-      {required List<History> histories}) async {
-    Either<RemoteFailure, Unit>? FOS;
-
-    state = state.copyWith(isGetting: true);
-
-    FOS = await _historyRepository.insertHistories(histories: histories);
-
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
-  }
-
   Future<void> getSavedQueryFromRepository() async {
     Either<LocalFailure, Map<String, Map<String, String>>>? FOS;
+
+    if (state.isGetting) {
+      return;
+    }
 
     state = state.copyWith(
         isGetting: true, FOSOSPKAutoDataLocalUpdateFrame: none());
@@ -132,9 +113,21 @@ class AutoDataUpdateFrameNotifier
   Future<void> runSavedQueryFromRepository(
       {required Map<String, Map<String, String>>
           idSPKMapidTIUnitMapQuery}) async {
+    if (state.isGetting) {
+      return;
+    }
+    if (isMapEmpty(idSPKMapidTIUnitMapQuery)) {
+      return;
+    }
+
+    await Future.delayed(
+        Duration(seconds: 1),
+        () => changeSavedQuery(
+            idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery));
+
     Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true);
+    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
 
     FOS = await _updateFrameRepository.updateFrameByQuery(
         queryMap: idSPKMapidTIUnitMapQuery);
@@ -173,6 +166,12 @@ class AutoDataUpdateFrameNotifier
   Future<void> getSavedCSQueryFromRepository() async {
     Either<LocalFailure, List<CSIDQuery>>? FOS;
 
+    if (state.isGetting) {
+      return;
+    }
+
+    log('getSavedCSQueryFromRepository --');
+
     state =
         state.copyWith(isGetting: true, FOSOAutoDataLocalUpdateFrameCS: none());
 
@@ -188,7 +187,19 @@ class AutoDataUpdateFrameNotifier
       {required List<CSIDQuery> queryIds}) async {
     Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true);
+    if (state.isGetting) {
+      return;
+    }
+
+    if (queryIds.isEmpty) {
+      return;
+    }
+
+    debugger();
+
+    changeSavedCSQuery(csIdQueries: queryIds);
+
+    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
@@ -214,8 +225,18 @@ class AutoDataUpdateFrameNotifier
   Future<void> runSavedSPKQueryFromRepository(
       {required List<SPKIdQuery> queryIds}) async {
     Either<RemoteFailure, Unit>? FOS;
+    if (state.isGetting) {
+      return;
+    }
 
-    state = state.copyWith(isGetting: true);
+    if (isSPKQueryEmpty()) {
+      return;
+    }
+
+    await Future.delayed(Duration(seconds: 1),
+        () => changeSavedSPKQuery(spkIdQueries: queryIds));
+
+    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateSPKRepository.updateSPKByQuery(queryIds: queryIds);

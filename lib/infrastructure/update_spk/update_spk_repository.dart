@@ -237,7 +237,7 @@ class UpdateSPKRepository {
       final isStorageSaved = savedStrings != null;
 
       if (isStorageSaved) {
-        final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+        final parsedResponse = jsonDecode(savedStrings) as List<dynamic>;
 
         final response = SPKIdQuery.listSPKIdQueryFromJson(parsedResponse);
 

@@ -29,42 +29,9 @@ class CheckSheetButton extends ConsumerWidget {
     return Column(
       children: [
         VButton(
-            label: 'NG',
-            color: Palette.red,
-            isEnabled: isDefect &&
-                isValid &&
-                ref.read(updateCSNotifierProvider.notifier).isValid(),
-            onPressed: () async {
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
-              await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
-
-              final updateProvider = ref.read(updateFrameNotifierProvider);
-              final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
-
-              debugger();
-
-              await ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .updateAllFrame(
-                      idSPK: idSPK.toString(),
-                      nama: user.user.nama!,
-                      sjkb: updateProvider.sppdc,
-                      userId: user.user.idUser.toString(),
-                      gate: updateCS.updateCSForm.gate.getOrLeave(''),
-                      updateFrameList: updateProvider.updateFrameList);
-
-              await ref
-                  .read(updateFrameOfflineNotifierProvider.notifier)
-                  .CUUpdateFrameOFFLINEStatus();
-
-              // context.pushReplacementNamed(
-              //     RouteNames.dataUpdateQueryName);
-            }),
-        VButton(
-            label: 'OK',
-            isEnabled: !isDefect &&
-                isValid &&
+            label: isDefect ? 'NG' : 'OK',
+            color: isDefect ? Palette.red : null,
+            isEnabled: isValid &&
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();

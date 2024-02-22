@@ -1,13 +1,9 @@
-import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth_failure.dart';
 
-import '../../domain/local_failure.dart';
 import '../../infrastructure/auth_repository.dart';
-import '../../shared/providers.dart';
-import '../user/user_notifier.dart';
 
 part 'auth_notifier.freezed.dart';
 part 'auth_state.dart';

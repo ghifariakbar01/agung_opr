@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:agung_opr/application/check_sheet/unit/state/csu_id_query.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
@@ -37,13 +34,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         .getSavedQueryFromRepository();
     await ref
         .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedCSUQueryFromRepository();
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
         .getSavedCSQueryFromRepository();
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedHistoriesFromRepository();
   }
 
   @override
@@ -83,45 +74,6 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                       : () {}();
                 })));
 
-    // History Items
-    ref.listen<Option<Either<LocalFailure, List<History>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalHistory,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.maybeMap(
-                              storage: (_) => 'storage penuh',
-                              format: (error) => 'Error Format: $error',
-                              orElse: () => ''),
-                        ), (histories) {
-                  ref
-                          .read(autoDataUpdateFrameNotifierProvider.notifier)
-                          .isHistoriesEmpty()
-                      ? () {
-                          log('HISTORIES ARE EMPTY');
-                        }
-                      : () async {
-                          ref
-                              .read(
-                                  autoDataUpdateFrameNotifierProvider.notifier)
-                              .changeSavedHistories(histories: histories);
-
-                          // debugger(message: 'called');
-
-                          log('isHistoriesEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isHistoriesEmpty()}');
-                          log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                          await ref
-                              .read(
-                                  autoDataUpdateFrameNotifierProvider.notifier)
-                              .runSavedHistoriesFromRepository(
-                                  histories: histories);
-                        }();
-                })));
-
     // Frame Items
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(
@@ -130,39 +82,17 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.maybeMap(
-                              storage: (_) => 'storage penuh',
-                              format: (error) => 'Error Format: $error',
-                              orElse: () => ''),
-                        ), (idSPKMapidTIUnitMapQuery) {
-                  ref
-                          .read(autoDataUpdateFrameNotifierProvider.notifier)
-                          .isMapEmpty(idSPKMapidTIUnitMapQuery)
-                      ? () {
-                          log('MAP IS EMPTY');
-                        }
-                      : () async {
-                          ref
-                              .read(
-                                  autoDataUpdateFrameNotifierProvider.notifier)
-                              .changeSavedQuery(
-                                  idSPKMapidTIUnitMapQuery:
-                                      idSPKMapidTIUnitMapQuery);
-
-                          // debugger(message: 'called');
-
-                          log('isMapEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isMapEmpty(idSPKMapidTIUnitMapQuery)}');
-                          log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                          await ref
-                              .read(
-                                  autoDataUpdateFrameNotifierProvider.notifier)
-                              .runSavedQueryFromRepository(
-                                  idSPKMapidTIUnitMapQuery:
-                                      idSPKMapidTIUnitMapQuery);
-                        }();
-                })));
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                          storage: (_) => 'storage penuh',
+                          format: (error) => 'Error Format: $error',
+                          orElse: () => ''),
+                    ),
+                (idSPKMapidTIUnitMapQuery) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .runSavedQueryFromRepository(
+                        idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery))));
 
     // CS Items
     ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
@@ -185,28 +115,8 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                       ),
                     ),
                 (queryIds) => ref
-                        .read(autoDataUpdateFrameNotifierProvider.notifier)
-                        .isCSQueryEmpty()
-                    ? () {}
-                    : ref.read(autoDataTimerNotifierProvider
-                            .select((value) => value.isRunning == false))
-                        ? () async {
-                            ref
-                                .read(autoDataUpdateFrameNotifierProvider
-                                    .notifier)
-                                .changeSavedCSQuery(csIdQueries: queryIds);
-
-                            // debugger();
-
-                            log('isCSQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isCSQueryEmpty()}');
-                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                            await ref
-                                .read(autoDataUpdateFrameNotifierProvider
-                                    .notifier)
-                                .runSavedCSQueryFromRepository(
-                                    queryIds: queryIds);
-                          }()
-                        : () {})));
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .runSavedCSQueryFromRepository(queryIds: queryIds))));
 
     // SPK Items
     ref.listen<Option<Either<LocalFailure, List<SPKIdQuery>>>>(
@@ -229,28 +139,8 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                       ),
                     ),
                 (queryIds) => ref
-                        .read(autoDataUpdateFrameNotifierProvider.notifier)
-                        .isSPKQueryEmpty()
-                    ? () {}
-                    : ref.read(autoDataTimerNotifierProvider
-                            .select((value) => value.isRunning == false))
-                        ? () async {
-                            ref
-                                .read(autoDataUpdateFrameNotifierProvider
-                                    .notifier)
-                                .changeSavedSPKQuery(spkIdQueries: queryIds);
-
-                            // debugger();
-
-                            log('isSPKQueryEmpty ${ref.read(autoDataUpdateFrameNotifierProvider.notifier).isSPKQueryEmpty()}');
-                            log('isRunning ${ref.read(autoDataTimerNotifierProvider.select((value) => value.isRunning == false))}');
-                            await ref
-                                .read(autoDataUpdateFrameNotifierProvider
-                                    .notifier)
-                                .runSavedSPKQueryFromRepository(
-                                    queryIds: queryIds);
-                          }()
-                        : () {})));
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .runSavedSPKQueryFromRepository(queryIds: queryIds))));
 
     //
     ref.listen<Option<Either<RemoteFailure, Unit>>>(

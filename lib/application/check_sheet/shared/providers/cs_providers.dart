@@ -95,7 +95,6 @@ final updateCSRemoteServiceProvider = Provider(
 final updateCSRepositoryProvider = Provider((ref) => UpdateCSRepository(
       ref.watch(updateCSStorage),
       ref.watch(updateCSRemoteServiceProvider),
-      ref.watch(historyRepositoryProvider),
       ref.watch(
         userNotifierProvider.select((value) => value.user),
       ),

@@ -51,34 +51,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
         ));
   }
 
-  // void changeFillNG({required List<CSUNGResult> csuNGResult}) {
-  //   for (final NG in csuNGResult) {
-  //     final index = NG.idItem;
-
-  //     final NGList = [
-  //       ...state.updateFrameList.isNG
-  //     ]; // Create a copy of the list
-
-  //     // Update the element at the given index
-  //     NGList[index] = true;
-
-  //     // Update the state with the new list
-  //     state = state.copyWith(
-  //         updateFrameList: state.updateFrameList.copyWith(isNG: NGList));
-
-  //     final NGItemsList = [...state.updateFrameList.ngStates];
-
-  //     // Update the element at the given index
-  //     NGItemsList[index] = UpdateCSUNGState(
-  //         idCs: NG.idItem, idJenis: NG.idJenis, idPenyebab: NG.idPenyebab);
-
-  //     // Update the state with the new list
-  //     state = state.copyWith(
-  //         updateFrameList:
-  //             state.updateFrameList.copyWith(ngStates: NGItemsList));
-  //   }
-  // }
-
   void changeFillEmptyList({required int length}) {
     final generateNGStates =
         List.generate(length, (index) => UpdateCSNGState.initial());
@@ -100,35 +72,32 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           isProcessing: true, showErrorMessages: false, FOSOUpdateCS: none());
 
       final stateCS = state.updateCSForm;
-
-      // NG
-
       final queryId = await _repository.getOKSavableQuery(
-          idSPK: state.idSPK,
-          nopol: stateCS.nopol,
-          supir1: stateCS.namaSupir,
-          supir2: stateCS.namaAsistenSupir,
-          jamLoad: stateCS.jamLoadUnload,
-          gate: stateCS.gate,
-          ket: stateCS.keterangan,
-          status: stateCS.ngStates
-              .firstWhere(
-                (element) => element.status == OKorNG.NG,
-                orElse: () =>
-                    UpdateCSNGState.initial().copyWith(status: OKorNG.OK),
-              )
-              .status,
-          tipe: stateCS.tipe);
+        idSPK: state.idSPK,
+        nopol: stateCS.nopol,
+        supir1: stateCS.namaSupir,
+        jamLoad: stateCS.jamLoadUnload,
+        supir2: stateCS.namaAsistenSupir,
+        gate: stateCS.gate,
+        tipe: stateCS.tipe,
+        ket: stateCS.keterangan,
+        status: stateCS.ngStates
+            .firstWhere(
+              (element) => element.status == OKorNG.NG,
+              orElse: () =>
+                  UpdateCSNGState.initial().copyWith(status: OKorNG.OK),
+            )
+            .status,
+      );
 
-      debugger();
-
-      // set isNG to true
-      FOS = await _repository.saveCSQueryOK(
-          idUser: _userModelWithPassword.idUser.toString(),
-          gate: state.updateCSForm.gate.getOrLeave(''),
-          nama: _userModelWithPassword.nama ?? '',
-          queryId: queryId,
-          isNG: true);
+      // debugger();
+      FOS = await _repository.saveCSQuery(
+        isNG: false,
+        queryId: queryId,
+        idUser: _userModelWithPassword.idUser.toString(),
+        nama: _userModelWithPassword.nama ?? '',
+        gate: state.updateCSForm.gate.getOrLeave(''),
+      );
 
       state = state.copyWith(
           isProcessing: false,
@@ -136,7 +105,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           FOSOUpdateCS: optionOf(FOS));
     } else {
       // debugger();
-
       state = state.copyWith(
           isProcessing: false,
           showErrorMessages: true,
@@ -156,11 +124,13 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       final queryId = await _repository.getNGSavableQuery(
           idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
 
-      FOS = await _repository.saveCSQueryOK(
-          idUser: _userModelWithPassword.idUser.toString(),
-          gate: state.updateCSForm.gate.getOrLeave(''),
-          nama: _userModelWithPassword.nama ?? '',
-          queryId: queryId);
+      FOS = await _repository.saveCSQuery(
+        isNG: true,
+        queryId: queryId,
+        idUser: _userModelWithPassword.idUser.toString(),
+        gate: state.updateCSForm.gate.getOrLeave(''),
+        nama: _userModelWithPassword.nama ?? '',
+      );
 
       state = state.copyWith(
           isProcessing: false,

@@ -12,17 +12,13 @@ class HistoryNotifier extends StateNotifier<HistoryState> {
 
   final HistoryRepository _repository;
 
-  Future<bool> hasOfflineStorage() => _repository.hasOfflineData();
-
   Future<void> getHistory(
       {required DateTime startDate, required DateTime endDate}) async {
     Either<RemoteFailure, List<History>?> FOSOHistory;
 
     state = state.copyWith(isGetting: true, FOSOHistory: none());
 
-    FOSOHistory = await _repository.getHistories(
-        startDate: StringUtils.trimmedDate(startDate),
-        endDate: StringUtils.trimmedDate(endDate));
+    FOSOHistory = await _repository.getHistories();
 
     state =
         state.copyWith(isGetting: false, FOSOHistory: optionOf(FOSOHistory));

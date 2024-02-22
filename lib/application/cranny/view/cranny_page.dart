@@ -75,9 +75,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedSPKQueryFromRepository();
-      await ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedHistoriesFromRepository();
     }
 
     // CS function
