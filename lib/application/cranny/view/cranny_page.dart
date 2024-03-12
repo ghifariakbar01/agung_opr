@@ -436,8 +436,11 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     return UpgradeAlert(
       upgrader: Upgrader(
+        shouldPopScope: () => false,
         showLater: false,
         showIgnore: false,
+        canDismissDialog: false,
+        minAppVersion: '2.0.0',
         messages: MyUpgraderMessages(),
         dialogStyle: UpgradeDialogStyle.cupertino,
       ),
