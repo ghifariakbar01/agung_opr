@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
-import '../../infrastructure/history/history_repository.dart';
 import '../../infrastructure/update_cs/update_cs_repository.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../infrastructure/update_frame/update_frame_repository.dart';
@@ -19,14 +18,12 @@ import 'auto_data_update_frame_state.dart';
 class AutoDataUpdateFrameNotifier
     extends StateNotifier<AutoDataUpdateFrameState> {
   AutoDataUpdateFrameNotifier(
-    this._historyRepository,
     this._updateCSRepository,
     this._updateSPKRepository,
     this._updateFrameRepository,
     this._updateCSUFrameRepository,
   ) : super(AutoDataUpdateFrameState.initial());
 
-  final HistoryRepository _historyRepository;
   final UpdateCSRepository _updateCSRepository;
   final UpdateSPKRepository _updateSPKRepository;
   final UpdateFrameRepository _updateFrameRepository;
@@ -194,8 +191,6 @@ class AutoDataUpdateFrameNotifier
     if (queryIds.isEmpty) {
       return;
     }
-
-    debugger();
 
     changeSavedCSQuery(csIdQueries: queryIds);
 

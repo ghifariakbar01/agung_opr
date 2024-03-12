@@ -57,7 +57,7 @@ class _CheckSheetLoadingScaffoldState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       scrollController.addListener(() {
         final nearOK = scrollController.position.pixels >
-            0.9 * scrollController.position.maxScrollExtent;
+            0.99 * scrollController.position.maxScrollExtent;
 
         if (nearOK) {
           ref.read(hideFABProvider.notifier).state = false;
@@ -116,7 +116,7 @@ class _CheckSheetLoadingScaffoldState
                       backgroundColor: Colors.white,
                       elevation: 5,
                       label: Text(
-                        'Lakukan setelah Pencet OK / NG',
+                        'Ambil Data Terbaru (Setelah OK/NG)',
                         style: Themes.customColor(
                             FontWeight.normal, 11, Colors.black),
                       ),
@@ -263,17 +263,11 @@ class _CheckSheetLoadingScaffoldState
                             ),
                           ]),
                         )),
-
                     SizedBox(
                       height: 8,
                     ),
-
-                    //
                     CheckSheetKelengkapan(),
-                    //
-
                     CheckSheetButton(),
-
                     SizedBox(
                       height: 65,
                     )

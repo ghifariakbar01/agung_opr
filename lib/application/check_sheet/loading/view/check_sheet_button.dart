@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -34,14 +32,11 @@ class CheckSheetButton extends ConsumerWidget {
             isEnabled: isValid &&
                 ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryOK();
-              await ref.read(updateCSNotifierProvider.notifier).saveQueryNG();
+              await ref.read(updateCSNotifierProvider.notifier).saveQuery();
               await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
 
               final updateProvider = ref.read(updateFrameNotifierProvider);
               final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
-
-              debugger();
 
               await ref
                   .read(updateFrameNotifierProvider.notifier)

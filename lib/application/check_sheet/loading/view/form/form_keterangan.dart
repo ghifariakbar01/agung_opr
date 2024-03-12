@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -58,16 +59,16 @@ class _FormKeteranganState extends ConsumerState<FormKeterangan> {
                       color: Palette.primaryColor,
                     )),
               ),
-              onChanged: (value) => ref
-                  .read(updateCSNotifierProvider.notifier)
-                  .changeKeterangan(value),
-              validator: (_) => keterangan.value.fold(
-                (f) => f.maybeMap(
-                  shortPassword: (_) => 'terlalu pendek',
-                  orElse: () => null,
-                ),
-                (_) => null,
-              ),
+              onChanged: (value) {
+                // insert keterangan to pool_chk_kr and opr_trs_spk
+                ref
+                    .read(updateCSNotifierProvider.notifier)
+                    .changeKeterangan(value);
+
+                ref
+                    .read(updateSPKNotifierProvider.notifier)
+                    .changeKeterangan(keterangan: value);
+              },
               maxLines: 2,
             ),
           ),

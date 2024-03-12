@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/spk/spk.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -69,9 +67,7 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                             ),
                           ),
                         ), (SPKResponse) {
-                  final oldSPK =
-                      ref.read(spkNotifierProvider.notifier).state.spkList;
-
+                  final oldSPK = ref.read(spkNotifierProvider).spkList;
                   final page = ref.read(scrollPageProvider);
 
                   ref.read(spkNotifierProvider.notifier).processSPKList(

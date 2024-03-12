@@ -11,7 +11,6 @@ import '../../auto_data/shared/auto_data_providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../clear_data_essential/clear_data_essential_providers.dart';
-import '../../history/history.dart';
 import '../../routes/route_names.dart';
 import '../../spk/application/spk_id_query.dart';
 import '../../spk/spk.dart';

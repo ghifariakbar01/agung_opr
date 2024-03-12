@@ -13,6 +13,8 @@
 //    "ket": null
 //  }
 
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'cs_result.freezed.dart';
@@ -37,18 +39,19 @@ class CSResult with _$CSResult {
   }) = _CSResult;
 
   factory CSResult.initial() => CSResult(
-      idKrChk: 0,
-      idSPK: 0,
-      gate: '',
-      updatedAt: '',
-      updatedBy: '',
-      driver1: '',
-      driver2: '',
-      jamload: '',
-      nopol: '',
-      status: '',
-      tipe: '',
-      ket: '');
+        idKrChk: 0,
+        idSPK: 0,
+        ket: '',
+        gate: '',
+        tipe: '',
+        nopol: '',
+        status: '',
+        driver1: '',
+        driver2: '',
+        jamload: '',
+        updatedAt: '',
+        updatedBy: '',
+      );
 
   factory CSResult.fromJson(Map<String, Object?> json) =>
       _$CSResultFromJson(json);

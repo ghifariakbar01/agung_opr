@@ -12,6 +12,10 @@ class SPKSearchNotifier extends StateNotifier<SPKSearchState> {
     state = state.copyWith(searchText: searchText);
   }
 
+  bool hasSearchText() {
+    return state.searchText.isNotEmpty;
+  }
+
   String extractNumbers(String input) {
     // Regular expression to extract the numbers before and after the hyphen
     RegExp regex = RegExp(r'\d+(?=-)|(?<=-)\d+');

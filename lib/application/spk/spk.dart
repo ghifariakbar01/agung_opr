@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -18,11 +20,13 @@ class SPK with _$SPK {
     @JsonKey(name: 'supir2_nm') required String? supir2Nm,
     @JsonKey(name: 'trayek_nama') required String? namaTrayek,
     @JsonKey(name: 'tgl_berangkat') required String? tglBerangkat,
+    required String? ket,
     required String nopol,
   }) = _SPK;
 
   factory SPK.initial() => SPK(
         idSpk: 0,
+        ket: '',
         nopol: '',
         spkNo: '',
         supir1Nm: '',

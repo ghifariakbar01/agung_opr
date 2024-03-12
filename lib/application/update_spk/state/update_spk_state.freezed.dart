@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateSPKState {
-  SPK get selectedSPK => throw _privateConstructorUsedError;
+  SPK get selectedSPK => throw _privateConstructorUsedError; //
+  Keterangan get keterangan => throw _privateConstructorUsedError; //
   bool get isProcessing => throw _privateConstructorUsedError;
   Option<Either<LocalFailure, Unit>> get FOSOUpdateSPK =>
       throw _privateConstructorUsedError;
@@ -34,6 +35,7 @@ abstract class $UpdateSPKStateCopyWith<$Res> {
   @useResult
   $Res call(
       {SPK selectedSPK,
+      Keterangan keterangan,
       bool isProcessing,
       Option<Either<LocalFailure, Unit>> FOSOUpdateSPK});
 
@@ -54,6 +56,7 @@ class _$UpdateSPKStateCopyWithImpl<$Res, $Val extends UpdateSPKState>
   @override
   $Res call({
     Object? selectedSPK = null,
+    Object? keterangan = null,
     Object? isProcessing = null,
     Object? FOSOUpdateSPK = null,
   }) {
@@ -62,6 +65,10 @@ class _$UpdateSPKStateCopyWithImpl<$Res, $Val extends UpdateSPKState>
           ? _value.selectedSPK
           : selectedSPK // ignore: cast_nullable_to_non_nullable
               as SPK,
+      keterangan: null == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as Keterangan,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -92,6 +99,7 @@ abstract class _$$_UpdateCSStateCopyWith<$Res>
   @useResult
   $Res call(
       {SPK selectedSPK,
+      Keterangan keterangan,
       bool isProcessing,
       Option<Either<LocalFailure, Unit>> FOSOUpdateSPK});
 
@@ -111,6 +119,7 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedSPK = null,
+    Object? keterangan = null,
     Object? isProcessing = null,
     Object? FOSOUpdateSPK = null,
   }) {
@@ -119,6 +128,10 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
           ? _value.selectedSPK
           : selectedSPK // ignore: cast_nullable_to_non_nullable
               as SPK,
+      keterangan: null == keterangan
+          ? _value.keterangan
+          : keterangan // ignore: cast_nullable_to_non_nullable
+              as Keterangan,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -136,11 +149,16 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
 class _$_UpdateCSState implements _UpdateCSState {
   const _$_UpdateCSState(
       {required this.selectedSPK,
+      required this.keterangan,
       required this.isProcessing,
       required this.FOSOUpdateSPK});
 
   @override
   final SPK selectedSPK;
+//
+  @override
+  final Keterangan keterangan;
+//
   @override
   final bool isProcessing;
   @override
@@ -148,7 +166,7 @@ class _$_UpdateCSState implements _UpdateCSState {
 
   @override
   String toString() {
-    return 'UpdateSPKState(selectedSPK: $selectedSPK, isProcessing: $isProcessing, FOSOUpdateSPK: $FOSOUpdateSPK)';
+    return 'UpdateSPKState(selectedSPK: $selectedSPK, keterangan: $keterangan, isProcessing: $isProcessing, FOSOUpdateSPK: $FOSOUpdateSPK)';
   }
 
   @override
@@ -158,6 +176,8 @@ class _$_UpdateCSState implements _UpdateCSState {
             other is _$_UpdateCSState &&
             (identical(other.selectedSPK, selectedSPK) ||
                 other.selectedSPK == selectedSPK) &&
+            (identical(other.keterangan, keterangan) ||
+                other.keterangan == keterangan) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
             (identical(other.FOSOUpdateSPK, FOSOUpdateSPK) ||
@@ -165,8 +185,8 @@ class _$_UpdateCSState implements _UpdateCSState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, selectedSPK, isProcessing, FOSOUpdateSPK);
+  int get hashCode => Object.hash(
+      runtimeType, selectedSPK, keterangan, isProcessing, FOSOUpdateSPK);
 
   @JsonKey(ignore: true)
   @override
@@ -178,13 +198,16 @@ class _$_UpdateCSState implements _UpdateCSState {
 abstract class _UpdateCSState implements UpdateSPKState {
   const factory _UpdateCSState(
           {required final SPK selectedSPK,
+          required final Keterangan keterangan,
           required final bool isProcessing,
           required final Option<Either<LocalFailure, Unit>> FOSOUpdateSPK}) =
       _$_UpdateCSState;
 
   @override
   SPK get selectedSPK;
-  @override
+  @override //
+  Keterangan get keterangan;
+  @override //
   bool get isProcessing;
   @override
   Option<Either<LocalFailure, Unit>> get FOSOUpdateSPK;

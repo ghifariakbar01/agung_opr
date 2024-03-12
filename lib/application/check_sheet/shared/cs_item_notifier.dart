@@ -48,21 +48,12 @@ class CheckSheetItemNotifier extends StateNotifier<CSItemState> {
     state = state.copyWith(selectedId: id);
   }
 
-  int getIndex({required int index, required int indexPrev}) {
-    final csIdMap = state.csItemListByID;
+  int getIndex({required CSItem item}) {
+    final Map<int, List<CSItem>> csIdMap = state.csItemListByID;
+    final List<CSItem> csIdMapValues =
+        csIdMap.values.fold([], (prev, next) => prev + next);
 
-    if (indexPrev == 0) return index;
-
-    int prevIndexLength = 0;
-
-    for (int i = 0; i < indexPrev; i++) {
-      prevIndexLength =
-          prevIndexLength + csIdMap.entries.elementAt(i).value.length;
-    }
-
-    final finalIndex = prevIndexLength + index;
-
-    return finalIndex;
+    return csIdMapValues.indexOf(item);
   }
 
   List<int> getCSId(int id) {

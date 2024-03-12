@@ -45,8 +45,6 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                 (element) => element.isEdit != null && element.isEdit == false)
             .toList();
 
-    log('spkList ${spkList.map((e) => e.isEdit).toList()}');
-
     final isSearching = ref
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
 
@@ -59,16 +57,19 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
     void onScrolled() {
       final page = ref.read(scrollPageProvider);
 
-      if (!isLoading &&
-          page < 6 &&
+      final spkSearch = ref.read(spkSearchNotifierProvider.notifier);
+      final _isCurrentlySearching = spkSearch.hasSearchText();
+
+      if (page < 6 &&
+          !isLoading &&
+          !_isCurrentlySearching &&
           controller.position.pixels >= controller.position.maxScrollExtent) {
         // debugger();
 
-        ref.read(scrollPageProvider.notifier).state =
-            ref.read(scrollPageProvider.notifier).state + 1;
+        int pageState = ref.read(scrollPageProvider.notifier).state;
+        pageState = pageState + 1;
 
         loadSpkOnlineOrOffline(page: page);
-
         // debugger();
       }
     }
@@ -158,7 +159,7 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                           orElse: () async {
                             Map<String, dynamic> spkMap = spkList[i].toJson();
 
-                            await context.pushNamed(
+                            return context.pushNamed(
                                 RouteNames.checkSheetLoadingNameRoute,
                                 extra: spkMap);
                           },
@@ -220,6 +221,8 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
   //
   Future<void> loadSpkOnlineOrOffline({required int page}) async {
     final isOffline = ref.read(isOfflineStateProvider);
+
+    log('page $page');
 
     if (isOffline) {
       return ref

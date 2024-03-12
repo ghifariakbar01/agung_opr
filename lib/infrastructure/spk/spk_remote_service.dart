@@ -33,6 +33,7 @@ class SPKRemoteService {
             "   spk.u_user, " +
             "   spk.u_date, " +
             "   spk.is_edit, " +
+            "   spk.ket, " +
             " trayek.nama AS trayek_nama" +
             " FROM " +
             " $dbName AS spk " +

@@ -152,7 +152,7 @@ class UpdateSPKRepository {
     }
   }
 
-  SPKIdQuery getSPKSavableQuery({required int idSPK}) {
+  SPKIdQuery getSPKSavableQuery({required int idSPK, required String ket}) {
     // TEST
     const String dbName = 'opr_trs_spk';
 
@@ -161,7 +161,7 @@ class UpdateSPKRepository {
         .substring(0, DateTime.now().toString().length - 3);
 
     final String insert = "UPDATE $dbName " +
-        " SET is_edit = 1, u_user = '${_userModelWithPassword.nama}', u_date = '$cAndUDate' " +
+        " SET is_edit = 1, u_user = '${_userModelWithPassword.nama}', u_date = '$cAndUDate', ket = '$ket' " +
         " WHERE id_spk = $idSPK AND u_date < '$cAndUDate' ";
 
     final SPKIdQuery spkIdQuery = SPKIdQuery(idSPK: idSPK, query: insert);
@@ -194,7 +194,8 @@ class UpdateSPKRepository {
                   response.indexWhere((element) => element.idSPK == idSPK);
 
               if (index == -1) {
-                throw RangeError('ITEM QUERY NOT FOUND');
+                // throw RangeError('ITEM QUERY NOT FOUND');
+                return unit;
               } else {
                 final item = response[index];
                 final list = [...response.where((element) => element != item)];

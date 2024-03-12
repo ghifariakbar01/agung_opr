@@ -47,56 +47,68 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       log('isOffline $isOffline');
 
       if (isOffline) {
-        await ref
-            .read(frameOfflineNotifierProvider.notifier)
-            .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
-
-        final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
-
-        await frameOfflineOrOnline.maybeWhen(
-          hasOfflineStorage: () => ref
-              .read(frameNotifierProvider.notifier)
-              .getFrameListOFFLINE(idSPK: widget.spk.idSpk),
-          orElse: () async {
-            await ref
-                .read(frameNotifierProvider.notifier)
-                .getFrameList(idSPK: widget.spk.idSpk);
-
-            await ref
-                .read(frameOfflineNotifierProvider.notifier)
-                .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
-          },
-        );
+        await _getFrameListBySpkOffline();
       } else {
-        await ref
-            .read(frameNotifierProvider.notifier)
-            .getFrameList(idSPK: widget.spk.idSpk);
+        await _getFrameListBySpkOnline();
       }
 
       // CS JENIS
-      await ref
-          .read(csJenisOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSJenisOFFLINEStatus();
-
-      final csJenisOfflineOrOnline = ref.watch(csJenisOfflineNotifierProvider);
-
-      await csJenisOfflineOrOnline.maybeWhen(
-        hasOfflineStorage: () =>
-            ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
-        orElse: () async {
-          await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
-
-          await ref
-              .read(csJenisOfflineNotifierProvider.notifier)
-              .checkAndUpdateCSJenisOFFLINEStatus();
-        },
-      );
+      await _getCSJenisList();
 
       // MODEL
       await ref
           .read(modelNotifierProvider.notifier)
           .getAndChangeModelListOFFLINE();
     });
+  }
+
+  Future<void> _getFrameListBySpkOnline() async {
+    return ref
+        .read(frameNotifierProvider.notifier)
+        .getFrameList(idSPK: widget.spk.idSpk);
+  }
+
+  Future<void> _getFrameListBySpkOffline() async {
+    await ref
+        .read(frameOfflineNotifierProvider.notifier)
+        .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+
+    final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
+
+    await frameOfflineOrOnline.maybeWhen(
+      hasOfflineStorage: () => ref
+          .read(frameNotifierProvider.notifier)
+          .getFrameListOFFLINE(idSPK: widget.spk.idSpk),
+      orElse: () async {
+        await ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameList(idSPK: widget.spk.idSpk);
+
+        await ref
+            .read(frameOfflineNotifierProvider.notifier)
+            .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
+      },
+    );
+  }
+
+  Future<void> _getCSJenisList() async {
+    await ref
+        .read(csJenisOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSJenisOFFLINEStatus();
+
+    final csJenisOfflineOrOnline = ref.read(csJenisOfflineNotifierProvider);
+
+    await csJenisOfflineOrOnline.maybeWhen(
+      hasOfflineStorage: () =>
+          ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
+      orElse: () async {
+        await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
+
+        await ref
+            .read(csJenisOfflineNotifierProvider.notifier)
+            .checkAndUpdateCSJenisOFFLINEStatus();
+      },
+    );
   }
 
   @override
@@ -239,27 +251,35 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
 
                   final csItem = ref.read(csItemNotifierProvider);
 
-                  final csId = ref
+                  final List<int> csId = ref
                       .read(csItemNotifierProvider.notifier)
                       .getCSId(csItem.selectedId);
 
-                  List<CSItem> csItemsByID = csId.fold([], (previous, cs) {
-                    final list = ref
+                  log('csItemsByID csId $csId');
+
+                  // fill csItemMap
+                  final csValuesUncombined = csId.map((id) {
+                    final List<CSItem> list = ref
                         .read(csItemNotifierProvider.notifier)
-                        .getCSItemById(csItem.selectedId);
+                        .getCSItemById(id);
 
                     csItemMap.addAll({
-                      cs: [...list]
+                      id: [...list]
                     });
 
-                    return previous + list;
-                  });
+                    return list;
+                  }).toList();
+
+                  final List<CSItem> csValuesCombined =
+                      csValuesUncombined.fold([], (prev, next) => prev + next);
+
+                  log('csItemsByID $csValuesUncombined csItemMap $csValuesCombined');
 
                   /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
                   ref
                       .read(updateCSNotifierProvider.notifier)
                       .changeFillEmptyList(
-                        length: csItemsByID.length,
+                        length: csValuesCombined.length,
                       );
                   ref
                       .read(updateCSNotifierProvider.notifier)

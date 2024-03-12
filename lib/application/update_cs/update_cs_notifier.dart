@@ -12,6 +12,7 @@ import '../../utils/validator.dart';
 import '../check_sheet/loading/state/update_cs_form_state.dart';
 import '../check_sheet/loading/state/update_cs_ng_state.dart';
 import '../check_sheet/loading/state/update_cs_state.dart';
+import '../check_sheet/shared/state/cs_id_query.dart';
 import '../mode/mode_state.dart';
 import '../spk/spk.dart';
 
@@ -46,6 +47,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           nopol: Nopol(spk.nopol),
           jamLoadUnload: JamLoad(jam),
           namaSupir: Supir1(spk.supir1Nm ?? ''),
+          keterangan: Keterangan(spk.ket ?? ''),
           namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
           jamLoadUnloadText: TextEditingController(text: jam),
         ));
@@ -64,15 +66,19 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
         updateCSForm: state.updateCSForm.copyWith(isNG: generateIsNG));
   }
 
-  Future<void> saveQueryOK() async {
+  Future<void> saveQuery() async {
     Either<LocalFailure, Unit>? FOS;
 
     if (isValid()) {
       state = state.copyWith(
-          isProcessing: true, showErrorMessages: false, FOSOUpdateCS: none());
+        FOSOUpdateCS: none(),
+        isProcessing: true,
+        showErrorMessages: false,
+      );
 
       final stateCS = state.updateCSForm;
-      final queryId = await _repository.getOKSavableQuery(
+      final CSIDQuery _queryId = await _repository.getOKSavableQuery(
+        //
         idSPK: state.idSPK,
         nopol: stateCS.nopol,
         supir1: stateCS.namaSupir,
@@ -90,43 +96,25 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
             .status,
       );
 
-      // debugger();
-      FOS = await _repository.saveCSQuery(
-        isNG: false,
-        queryId: queryId,
-        idUser: _userModelWithPassword.idUser.toString(),
-        nama: _userModelWithPassword.nama ?? '',
-        gate: state.updateCSForm.gate.getOrLeave(''),
-      );
-
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: false,
-          FOSOUpdateCS: optionOf(FOS));
-    } else {
-      // debugger();
-      state = state.copyWith(
-          isProcessing: false,
-          showErrorMessages: true,
-          FOSOUpdateCS: optionOf(FOS));
-    }
-  }
-
-  Future<void> saveQueryNG() async {
-    Either<LocalFailure, Unit>? FOS;
-
-    if (isValid()) {
-      state = state.copyWith(
-          isProcessing: true, showErrorMessages: false, FOSOUpdateCS: none());
-
       final ngStates = state.updateCSForm.ngStates;
+      debugger();
 
-      final queryId = await _repository.getNGSavableQuery(
-          idSPK: state.idSPK, frameName: state.frameName, ngStates: ngStates);
+      final CSIDQuery _queryIdNg = await _repository.getNGSavableQuery(
+        //
+        idSPK: state.idSPK,
+        ngStates: ngStates,
+        frameName: state.frameName,
+      );
 
+      final idSpk = state.idSPK;
+      final CSIDQuery queryIdToSave =
+          CSIDQuery(idSPK: idSpk, query: _queryId.query + _queryIdNg.query);
+
+      log('queryIdToSave $queryIdToSave');
+
+      debugger();
       FOS = await _repository.saveCSQuery(
-        isNG: true,
-        queryId: queryId,
+        queryId: queryIdToSave,
         idUser: _userModelWithPassword.idUser.toString(),
         gate: state.updateCSForm.gate.getOrLeave(''),
         nama: _userModelWithPassword.nama ?? '',
@@ -136,13 +124,14 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           isProcessing: false,
           showErrorMessages: false,
           FOSOUpdateCS: optionOf(FOS));
+      return;
     } else {
       // debugger();
-
       state = state.copyWith(
           isProcessing: false,
           showErrorMessages: true,
           FOSOUpdateCS: optionOf(FOS));
+      return;
     }
   }
 
@@ -232,10 +221,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
         checkSheetLoading: () => Tipe.loading,
         checkSheetUnloading: () => Tipe.unload,
         checkSheetLoadingUnloading: () => Tipe.loadunload,
-        orElse: () {
-          debugger();
-          return Tipe.Unknown;
-        });
+        orElse: () => Tipe.Unknown);
 
     state = state.copyWith(
       updateCSForm: state.updateCSForm.copyWith(tipe: tipe),

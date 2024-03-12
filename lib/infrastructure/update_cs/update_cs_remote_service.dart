@@ -15,6 +15,37 @@ class UpdateCSRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
+  Future<int> getLastPoolChkKrId() async {
+    try {
+      final data = _dioRequestNotifier;
+
+      final String dbName = 'pool_chk_kr';
+
+      data.addAll({
+        "mode": "SELECT",
+        "command": "SELECT ISNULL(max(id_kr_chk), 0) + 1 FROM $dbName",
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      log('data ${jsonEncode(data)}');
+      log('response getLastPoolChkKrId $response');
+
+      final items = response.data?[0];
+      final resp = items['items'] as List;
+
+      if (resp.isNotEmpty) {
+        // HERE
+        return resp[0]['Column1'];
+      } else {
+        return 0;
+      }
+    } catch (_) {
+      return 0;
+    }
+  }
+
   Future<Unit> insertCSBYQuery({
     required String query,
   }) async {

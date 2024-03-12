@@ -137,8 +137,6 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
                           context.pop();
                           Map<String, dynamic> spkMap = spkSelected.toJson();
 
-                          debugger();
-
                           await context.pushNamed(
                               RouteNames.checkSheetLoadingNameRoute,
                               extra: spkMap);
@@ -202,15 +200,17 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
             height: 8,
           ),
           if (!isNGEmpty) ...[
-            for (int index2 = 0; index2 < csIdMap.keys.length; index2++) ...[
+            for (int indexOuter = 0;
+                indexOuter < csIdMap.keys.length;
+                indexOuter++) ...[
               SizedBox(
                 height: 4,
               ),
               Row(
                 children: [
                   Text(
-                    '${csIdMap.keys.elementAt(index2)}. ' +
-                        '${ref.read(csJenisNotifierProvider.select((value) => value.csJenisList.firstWhere((element) => element.id == csIdMap.keys.elementAt(index2)))).nama}',
+                    '${csIdMap.keys.elementAt(indexOuter)}. ' +
+                        '${ref.read(csJenisNotifierProvider.select((value) => value.csJenisList.firstWhere((element) => element.id == csIdMap.keys.elementAt(indexOuter)))).nama}',
                     style:
                         Themes.customColor(FontWeight.bold, 14, Colors.black),
                   ),
@@ -220,18 +220,24 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
                 height: 4,
               ),
               for (int index = 0;
-                  index < csIdMap.entries.elementAt(index2).value.length;
+                  index < csIdMap.entries.elementAt(indexOuter).value.length;
                   index++) ...[
-                // Body
-                CSItemForm(
-                  index: ref
-                      .read(csItemNotifierProvider.notifier)
-                      .getIndex(index: index, indexPrev: index2),
-                  id: csIdMap.entries.elementAt(index2).value[index].id,
-                  instruction: csIdMap.entries
-                      .elementAt(index2)
-                      .value[index]
-                      .description,
+                Builder(
+                  builder: (context) {
+                    final val = csIdMap.entries.elementAt(indexOuter).value;
+
+                    // Body
+                    return CSItemForm(
+                      index: ref
+                          .read(csItemNotifierProvider.notifier)
+                          .getIndex(item: val[index]),
+                      id: val[index].id,
+                      instruction: csIdMap.entries
+                          .elementAt(indexOuter)
+                          .value[index]
+                          .description,
+                    );
+                  },
                 )
               ]
             ]

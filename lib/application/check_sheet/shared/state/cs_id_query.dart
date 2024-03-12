@@ -15,8 +15,10 @@ part 'cs_id_query.g.dart';
 
 @freezed
 class CSIDQuery with _$CSIDQuery {
-  const factory CSIDQuery({required int idSPK, required String query}) =
-      _CSIDQuery;
+  const factory CSIDQuery({
+    required int idSPK,
+    required String query,
+  }) = _CSIDQuery;
 
   factory CSIDQuery.fromJson(Map<String, Object?> json) =>
       _$CSIDQueryFromJson(json);

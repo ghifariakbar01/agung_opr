@@ -2,7 +2,6 @@ import 'package:agung_opr/application/auto_data/auto_data_update_frame_notifier.
 import 'package:agung_opr/application/auto_data/auto_data_update_frame_state.dart';
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
-import 'package:agung_opr/application/history/shared/history_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,7 +23,6 @@ final autoDataTimerNotifierProvider =
 final autoDataUpdateFrameNotifierProvider = StateNotifierProvider<
         AutoDataUpdateFrameNotifier, AutoDataUpdateFrameState>(
     (ref) => AutoDataUpdateFrameNotifier(
-          ref.watch(historyRepositoryProvider),
           ref.watch(updateCSRepositoryProvider),
           ref.watch(updateSPKRepositoryProvider),
           ref.watch(updateFrameRepositoryProvider),

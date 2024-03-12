@@ -436,7 +436,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     return UpgradeAlert(
       upgrader: Upgrader(
-        showLater: true,
+        showLater: false,
         showIgnore: false,
         messages: MyUpgraderMessages(),
         dialogStyle: UpgradeDialogStyle.cupertino,
