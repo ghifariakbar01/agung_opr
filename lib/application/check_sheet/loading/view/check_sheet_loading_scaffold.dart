@@ -74,7 +74,7 @@ class _CheckSheetLoadingScaffoldState
     final ModeState modeApp = ref.watch(modeNotifierProvider);
     final FrameState frameList = ref.watch(frameNotifierProvider);
 
-    log('selectedSPK.isEdit ${selectedSPK.isEdit}');
+    log('selectedSPK.isEdit ${selectedSPK}');
 
     final bool isLoading =
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));

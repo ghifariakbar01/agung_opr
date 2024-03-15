@@ -27,13 +27,28 @@ class CrannyMiddle extends ConsumerStatefulWidget {
 }
 
 class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
-  Future<void> savedQueriesFunction() async {
+  Future<void> _updateOfflineStorageStatus() async {
+    await ref
+        .read(updateFrameOfflineNotifierProvider.notifier)
+        .CUUpdateFrameOFFLINEStatus();
+    await ref
+        .read(updateCSOfflineNotifierProvider.notifier)
+        .CUUpdateCSOFFLINEStatus();
+    await ref
+        .read(updateSPKOfflineNotifierProvider.notifier)
+        .CUUpdateSPKOFFLINEStatus();
+  }
+
+  Future<void> _savedQueriesFunction() async {
     await ref
         .read(autoDataUpdateFrameNotifierProvider.notifier)
         .getSavedQueryFromRepository();
     await ref
         .read(autoDataUpdateFrameNotifierProvider.notifier)
         .getSavedCSQueryFromRepository();
+    await ref
+        .read(autoDataUpdateFrameNotifierProvider.notifier)
+        .getSavedSPKQueryFromRepository();
   }
 
   @override
@@ -58,17 +73,17 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                   orElse: () => ''),
                               asset: Assets.iconCrossed,
                             )), (_) async {
-                  await savedQueriesFunction();
-
+                  await _savedQueriesFunction();
                   SPK selectedSPK =
                       ref.read(updateCSNotifierProvider).selectedSPK;
                   selectedSPK != SPK.initial()
                       ? () {
                           Map<String, dynamic> spkMap = selectedSPK.toJson();
-
                           context.pushReplacementNamed(
-                              RouteNames.checkSheetLoadingNameRoute,
-                              extra: spkMap);
+                            extra: spkMap,
+                            RouteNames.checkSheetLoadingNameRoute,
+                          );
+                          return context.push(RouteNames.historyNameRoute);
                         }()
                       : () {}();
                 })));
@@ -166,15 +181,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                 asset: Assets.iconCrossed,
                               ),
                             )), (_) async {
-                  await ref
-                      .read(updateFrameOfflineNotifierProvider.notifier)
-                      .CUUpdateFrameOFFLINEStatus();
-                  await ref
-                      .read(updateCSOfflineNotifierProvider.notifier)
-                      .CUUpdateCSOFFLINEStatus();
-                  await ref
-                      .read(updateSPKOfflineNotifierProvider.notifier)
-                      .CUUpdateSPKOFFLINEStatus();
+                  await _updateOfflineStorageStatus();
                   ref
                       .read(autoDataUpdateFrameNotifierProvider.notifier)
                       .resetAutoDataRemoteFOSO();

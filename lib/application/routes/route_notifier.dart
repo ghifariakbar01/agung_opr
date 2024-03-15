@@ -124,11 +124,11 @@ class RouterNotifier extends ChangeNotifier {
               path: RouteNames.modelName,
               builder: (context, state) => ModelPage(),
             ),
-            GoRoute(
-              name: RouteNames.customerNameRoute,
-              path: RouteNames.customerName,
-              builder: (context, state) => CustomerPage(),
-            ),
+            // GoRoute(
+            //   name: RouteNames.customerNameRoute,
+            //   path: RouteNames.customerName,
+            //   builder: (context, state) => CustomerPage(),
+            // ),
             GoRoute(
               name: RouteNames.supirName,
               path: RouteNames.supirNameRoute,

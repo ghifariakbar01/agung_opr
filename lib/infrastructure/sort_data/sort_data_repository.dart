@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
-import '../../application/check_sheet/shared/state/cs_id_query.dart';
 import '../../application/spk/spk.dart';
 import '../../domain/remote_failure.dart';
 import '../exceptions.dart';
@@ -17,7 +16,9 @@ class SortDataRepository {
 
   SortDataRepository(this._spkRepository, this._frameRepository);
 
-  Future<Either<RemoteFailure, Unit>> sortDataSPK() async {
+  // this function get list of saved spk (previously opened by user)
+  // then get newly updated frame list on that spk
+  Future<Either<RemoteFailure, Unit>> sortDataFrameInSPK() async {
     try {
       final List<SPK> listSPK = await _spkRepository
           .getSPKListOFFLINE(page: 0)
@@ -28,11 +29,9 @@ class SortDataRepository {
           log('GETTING FRAME INDEX $i');
           await _frameRepository.getFrameList(idSPK: listSPK[i].idSpk);
         }
-
-        return right(unit);
       }
 
-      return left(RemoteFailure.server(0, 'spk empty sortDataSPK'));
+      return right(unit);
     } on RestApiException catch (e) {
       debugger(message: 'called');
 

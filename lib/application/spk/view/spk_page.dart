@@ -33,10 +33,7 @@ class _SPKPageState extends ConsumerState<SPKPage> {
     if (isOffline) {
       await ref.read(spkNotifierProvider.notifier).getSPKListOFFLINE(page: 0);
     } else {
-      for (int i = 0; i < 5; i++) {
-        await ref.read(spkNotifierProvider.notifier).getSPKList(page: i);
-      }
-
+      await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);
       await ref
           .read(spkOfflineNotifierProvider.notifier)
           .checkAndUpdateSPKOFFLINEStatus();
@@ -91,8 +88,8 @@ class _SPKPageState extends ConsumerState<SPKPage> {
     return Stack(
       children: [
         SPKScaffold(),
+        LoadingOverlay(isLoading: isLoading),
         Positioned(top: 100, child: DataUpdateLinearProgress()),
-        LoadingOverlay(isLoading: isLoading)
       ],
     );
   }

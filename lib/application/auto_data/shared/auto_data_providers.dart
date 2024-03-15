@@ -26,5 +26,5 @@ final autoDataUpdateFrameNotifierProvider = StateNotifierProvider<
           ref.watch(updateCSRepositoryProvider),
           ref.watch(updateSPKRepositoryProvider),
           ref.watch(updateFrameRepositoryProvider),
-          ref.watch(updateCSUFrameRepositoryProvider),
+          // ref.watch(updateCSUFrameRepositoryProvider),
         ));

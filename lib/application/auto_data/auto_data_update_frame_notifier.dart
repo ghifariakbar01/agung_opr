@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
 import '../../infrastructure/update_cs/update_cs_repository.dart';
-import '../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../infrastructure/update_frame/update_frame_repository.dart';
 import '../../infrastructure/update_spk/update_spk_repository.dart';
 import '../check_sheet/shared/state/cs_id_query.dart';
@@ -21,13 +20,13 @@ class AutoDataUpdateFrameNotifier
     this._updateCSRepository,
     this._updateSPKRepository,
     this._updateFrameRepository,
-    this._updateCSUFrameRepository,
+    // this._updateCSUFrameRepository,
   ) : super(AutoDataUpdateFrameState.initial());
 
   final UpdateCSRepository _updateCSRepository;
   final UpdateSPKRepository _updateSPKRepository;
   final UpdateFrameRepository _updateFrameRepository;
-  final UpdateCSUFrameRepository _updateCSUFrameRepository;
+  // final UpdateCSUFrameRepository _updateCSUFrameRepository;
 
   // TO EXECUTE UPDATE FRAME DUMMY
   // 1. Read saved query from UpdateFrameRepository
@@ -133,31 +132,31 @@ class AutoDataUpdateFrameNotifier
   }
 
   // 1.
-  Future<void> getSavedCSUQueryFromRepository() async {
-    Either<LocalFailure, List<CSUIDQuery>>? FOS;
+  // Future<void> getSavedCSUQueryFromRepository() async {
+  //   Either<LocalFailure, List<CSUIDQuery>>? FOS;
 
-    state = state.copyWith(
-        isGetting: true, FOSOAutoDataLocalUpdateFrameCSU: none());
+  //   state = state.copyWith(
+  //       isGetting: true, FOSOAutoDataLocalUpdateFrameCSU: none());
 
-    // CONVERT ID_CS_NAs to appropriate values
-    FOS = await _updateCSUFrameRepository.getUpdateCSUQueryListOFFLINE();
+  //   // CONVERT ID_CS_NAs to appropriate values
+  //   FOS = await _updateCSUFrameRepository.getUpdateCSUQueryListOFFLINE();
 
-    state = state.copyWith(
-        isGetting: false, FOSOAutoDataLocalUpdateFrameCSU: optionOf(FOS));
-  }
+  //   state = state.copyWith(
+  //       isGetting: false, FOSOAutoDataLocalUpdateFrameCSU: optionOf(FOS));
+  // }
 
   // 2.
-  Future<void> runSavedCSUQueryFromRepository(
-      {required List<CSUIDQuery> queryIds}) async {
-    Either<RemoteFailure, Unit>? FOS;
+  // Future<void> runSavedCSUQueryFromRepository(
+  //     {required List<CSUIDQuery> queryIds}) async {
+  //   Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true);
+  //   state = state.copyWith(isGetting: true);
 
-    // CONVERT ID_CS_NAs to appropriate values
-    FOS = await _updateCSUFrameRepository.updateCSUByQuery(queryIds: queryIds);
+  //   // CONVERT ID_CS_NAs to appropriate values
+  //   FOS = await _updateCSUFrameRepository.updateCSUByQuery(queryIds: queryIds);
 
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
-  }
+  //   state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+  // }
 
   // 1.
   Future<void> getSavedCSQueryFromRepository() async {

@@ -29,11 +29,9 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedQueryFromRepository();
-
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSUQueryFromRepository();
-
+          .getSavedSPKQueryFromRepository();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedCSQueryFromRepository();

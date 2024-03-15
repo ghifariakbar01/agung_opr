@@ -40,41 +40,28 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       ref.read(updateCSNotifierProvider.notifier).changeSelectedSPK(widget.spk);
       ref.read(updateCSNotifierProvider.notifier).changeSelectedSPK(widget.spk);
 
-      //
-
-      final isOffline = ref.watch(isOfflineStateProvider);
-
-      log('isOffline $isOffline');
-
-      if (isOffline) {
-        await _getFrameListBySpkOffline();
-      } else {
-        await _getFrameListBySpkOnline();
-      }
-
-      // CS JENIS
+      await _getFrameListBySpk();
       await _getCSJenisList();
-
-      // MODEL
+      await _getCSItemsList();
       await ref
           .read(modelNotifierProvider.notifier)
           .getAndChangeModelListOFFLINE();
     });
   }
 
-  Future<void> _getFrameListBySpkOnline() async {
-    return ref
-        .read(frameNotifierProvider.notifier)
-        .getFrameList(idSPK: widget.spk.idSpk);
-  }
+  Future<void> _getFrameListBySpk() async {
+    final isOffline = ref.read(isOfflineStateProvider);
+    if (isOffline) {
+      return ref
+          .read(frameNotifierProvider.notifier)
+          .getFrameListOFFLINE(idSPK: widget.spk.idSpk);
+    }
 
-  Future<void> _getFrameListBySpkOffline() async {
     await ref
         .read(frameOfflineNotifierProvider.notifier)
         .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
 
-    final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
-
+    final frameOfflineOrOnline = ref.read(frameOfflineNotifierProvider);
     await frameOfflineOrOnline.maybeWhen(
       hasOfflineStorage: () => ref
           .read(frameNotifierProvider.notifier)
@@ -83,7 +70,6 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
         await ref
             .read(frameNotifierProvider.notifier)
             .getFrameList(idSPK: widget.spk.idSpk);
-
         await ref
             .read(frameOfflineNotifierProvider.notifier)
             .checkAndUpdateFrameOFFLINEStatus(idSPK: widget.spk.idSpk);
@@ -92,21 +78,47 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
   }
 
   Future<void> _getCSJenisList() async {
+    final isOffline = ref.read(isOfflineStateProvider);
+    if (isOffline) {
+      return ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE();
+    }
+
     await ref
         .read(csJenisOfflineNotifierProvider.notifier)
         .checkAndUpdateCSJenisOFFLINEStatus();
 
     final csJenisOfflineOrOnline = ref.read(csJenisOfflineNotifierProvider);
-
     await csJenisOfflineOrOnline.maybeWhen(
       hasOfflineStorage: () =>
           ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
       orElse: () async {
         await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
-
         await ref
             .read(csJenisOfflineNotifierProvider.notifier)
             .checkAndUpdateCSJenisOFFLINEStatus();
+      },
+    );
+  }
+
+  Future<void> _getCSItemsList() async {
+    final isOffline = ref.read(isOfflineStateProvider);
+    if (isOffline) {
+      return ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE();
+    }
+
+    await ref
+        .read(csItemOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSItemOFFLINEStatus();
+
+    final csItemsOfflineOrOnline = ref.read(csItemOfflineNotifierProvider);
+    await csItemsOfflineOrOnline.maybeWhen(
+      hasOfflineStorage: () =>
+          ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE(),
+      orElse: () async {
+        await ref.read(csItemNotifierProvider.notifier).getCSItems();
+        await ref
+            .read(csItemOfflineNotifierProvider.notifier)
+            .checkAndUpdateCSItemOFFLINEStatus();
       },
     );
   }

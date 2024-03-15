@@ -16,7 +16,10 @@ PreferredSizeWidget VAppBar(BuildContext context, String title,
       actions: [
         IconButton(
             onPressed: () => context.pushNamed(RouteNames.historyName),
-            icon: Icon(Icons.history))
+            icon: Icon(
+              Icons.history,
+              color: Palette.yellow,
+            ))
       ],
       elevation: 0,
     );

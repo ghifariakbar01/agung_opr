@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/supir/supir.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -27,10 +25,6 @@ class _SupirPageState extends ConsumerState<SupirPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final supirOfflineOrOnline = ref.watch(supirOfflineNotifierProvider);
-
-      log('supirOfflineOrOnline $supirOfflineOrOnline');
-
-      // debugger(message: 'called');
 
       await supirOfflineOrOnline.maybeWhen(
         hasOfflineStorage: () => ref
@@ -75,12 +69,8 @@ class _SupirPageState extends ConsumerState<SupirPage> {
                             ),
                           ),
                         ), (SupirResponse) {
-                  final oldSupir =
-                      ref.read(supirNotifierProvider.notifier).state.supirList;
-
-                  final page =
-                      ref.read(supirNotifierProvider.notifier).state.page;
-
+                  final oldSupir = ref.read(supirNotifierProvider).supirList;
+                  final page = ref.read(supirNotifierProvider).page;
                   ref.read(supirNotifierProvider.notifier).processSupirList(
                         newSupir: SupirResponse,
                         page: page,

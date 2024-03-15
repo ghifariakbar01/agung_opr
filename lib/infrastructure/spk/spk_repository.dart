@@ -75,16 +75,16 @@ class SPKRepository {
         final responseSPKTosave = [...responseSPK, ...spk].toSet().toList();
 
         final listResponseSPKToSave = SPK.SPKListToJson(responseSPKTosave);
-
         await _storage.save(listResponseSPKToSave);
+        return unit;
+      } else {
+        //
+        return unit;
       }
     } else {
       await _storage.save(SPK.SPKListToJson(spk));
+      return unit;
     }
-
-    log('returned unit');
-
-    return unit;
   }
 
   /// PAGINATE DATA LIST OF [SPK] FROM STORAGE

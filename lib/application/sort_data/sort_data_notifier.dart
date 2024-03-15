@@ -12,14 +12,14 @@ class SortDataNotifier extends StateNotifier<SortDataState> {
 
   final SortDataRepository _repository;
 
-  Future<void> sortData() async {
+  Future<void> sortDataFrameInSPK() async {
     Either<RemoteFailure, Unit>? FOS;
 
     state = state.copyWith(
       isGetting: true,
     );
 
-    FOS = await _repository.sortDataSPK();
+    FOS = await _repository.sortDataFrameInSPK();
 
     state = state.copyWith(isGetting: false, FOSOSPKSortData: optionOf(FOS));
   }

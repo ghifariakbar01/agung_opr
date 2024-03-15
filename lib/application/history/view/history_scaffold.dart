@@ -13,32 +13,18 @@ class HistoryScaffold extends ConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Palette.primaryColor,
+          elevation: 0,
           automaticallyImplyLeading: true,
+          backgroundColor: Palette.primaryColor,
           title: Text(
             'Riwayat Update',
             style: Themes.customColor(FontWeight.bold, 18, Colors.white),
           ),
-          elevation: 0,
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  DateTimeRange? picked = await showDateRangePicker(
-                      context: context,
-                      lastDate: DateTime.now(),
-                      firstDate: DateTime(2023));
-
-                  if (picked != null) {
-                    ref.read(historyNotifierProvider.notifier).getHistory(
-                        startDate: picked.end, endDate: picked.start);
-                  }
-                },
-                icon: Icon(Icons.sort))
-          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
+            itemCount: history.historyList.length,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -51,11 +37,6 @@ class HistoryScaffold extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Text(
-                      //   'Server :  ${history.historyList[index].sDate}',
-                      //   style: Themes.customColor(
-                      //       FontWeight.bold, 12, Colors.black),
-                      // ),
                       Text(
                         'Date :  ${history.historyList[index].cDate}',
                         style: Themes.customColor(
@@ -67,14 +48,13 @@ class HistoryScaffold extends ConsumerWidget {
                       Text(
                         history.historyList[index].toString(),
                         style: Themes.customColor(
-                            FontWeight.normal, 12, Colors.black),
+                            FontWeight.w500, 12, Colors.black),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            itemCount: history.historyList.length,
           ),
         ));
   }
