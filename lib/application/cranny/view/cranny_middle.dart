@@ -83,7 +83,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             extra: spkMap,
                             RouteNames.checkSheetLoadingNameRoute,
                           );
-                          return context.push(RouteNames.historyNameRoute);
+                          return context.pushNamed(RouteNames.historyNameRoute);
                         }()
                       : () {}();
                 })));
