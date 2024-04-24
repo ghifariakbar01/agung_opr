@@ -13,8 +13,7 @@ class BuildConfig {
 
   const BuildConfig._development()
       : this._(
-          baseUrl:
-              'http://agunglogisticsapp.co.id:1225/service_mobile.asmx/Perintah',
+          baseUrl: 'http://180.250.79.122:1025/service_mobile.asmx/Perintah',
           socketUrl: '',
           connectTimeout: 20000,
           receiveTimeout: 20000,
@@ -23,8 +22,7 @@ class BuildConfig {
 
   const BuildConfig._staging()
       : this._(
-          baseUrl:
-              'http://agunglogisticsapp.co.id:1225/service_mobile.asmx/Perintah',
+          baseUrl: 'http://180.250.79.122:1025/service_mobile.asmx/Perintah',
           socketUrl: '',
           connectTimeout: 20000,
           receiveTimeout: 20000,
@@ -33,8 +31,7 @@ class BuildConfig {
 
   const BuildConfig._release()
       : this._(
-          baseUrl:
-              'http://agunglogisticsapp.co.id:1225/service_mobile.asmx/Perintah',
+          baseUrl: 'http://180.250.79.122:1025/service_mobile.asmx/Perintah',
           socketUrl: '',
           connectTimeout: 20000,
           receiveTimeout: 20000,
