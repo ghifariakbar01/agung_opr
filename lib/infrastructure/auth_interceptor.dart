@@ -12,16 +12,20 @@ class AuthInterceptor extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     super.onResponse(response, handler);
 
-    final items = response.data?[0];
+    final items = response.data?[0] as Map<String, dynamic>?;
 
-    final errorNum = items['error'] as int?;
-
-    if (errorNum == 3) {
-      _ref.read(userNotifierProvider.notifier).logout();
-    }
-
-    if (items != null) {
+    if (items == null) {
+      _ref.read(isOfflineStateProvider.notifier).state = true;
+      return;
+    } else {
       _ref.read(isOfflineStateProvider.notifier).state = false;
+
+      final errorNum = items['errornum'] as int?;
+
+      if (errorNum == 3) {
+        _ref.read(userNotifierProvider.notifier).logout();
+        _ref.read(authNotifierProvider.notifier).checkAndUpdateAuthStatus();
+      }
     }
   }
 

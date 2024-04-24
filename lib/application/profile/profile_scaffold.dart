@@ -1,3 +1,5 @@
+import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,6 +11,16 @@ class ProfileScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(userNotifierProvider, (__, state) {
+      return state.failureOrSuccessOption.fold(
+          () {},
+          (r) => r.fold(
+              (_) => {},
+              (_) => ref
+                  .read(authNotifierProvider.notifier)
+                  .checkAndUpdateAuthStatus()));
+    });
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -25,6 +37,11 @@ class ProfileScaffold extends ConsumerWidget {
           child: ListView(
             children: [
               const ProfileView(),
+              VButton(
+                  label: 'LOGOUT',
+                  color: Palette.red,
+                  onPressed: () =>
+                      ref.read(userNotifierProvider.notifier).logout())
             ],
           ),
         ),
