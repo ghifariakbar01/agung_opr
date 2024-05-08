@@ -58,8 +58,8 @@ class SPKRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      // log('data spk ${jsonEncode(data)}');
-      log('response spk $response');
+      log('data spk ${jsonEncode(data)}');
+      // log('response spk $response');
 
       final items = response.data?[0];
 
@@ -157,12 +157,12 @@ class SPKRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data spk ${jsonEncode(data)}');
+      log('page $page');
       // log('response $response');
 
       final items = response.data?[0];
 
-      log('item spk ${jsonEncode(data)}');
+      // log('item spk ${jsonEncode(data)}');
 
       if (items['status'] == 'Success') {
         final listExist = items['items'] != null && items['items'] is List;

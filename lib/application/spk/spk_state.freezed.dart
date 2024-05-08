@@ -17,8 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SPKState {
   List<SPK> get spkList => throw _privateConstructorUsedError;
-  int get page => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<SPK>>> get FOSOSPK =>
       throw _privateConstructorUsedError;
@@ -35,8 +33,6 @@ abstract class $SPKStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<SPK> spkList,
-      int page,
-      bool hasMore,
       bool isProcessing,
       Option<Either<RemoteFailure, List<SPK>>> FOSOSPK});
 }
@@ -55,8 +51,6 @@ class _$SPKStateCopyWithImpl<$Res, $Val extends SPKState>
   @override
   $Res call({
     Object? spkList = null,
-    Object? page = null,
-    Object? hasMore = null,
     Object? isProcessing = null,
     Object? FOSOSPK = null,
   }) {
@@ -65,14 +59,6 @@ class _$SPKStateCopyWithImpl<$Res, $Val extends SPKState>
           ? _value.spkList
           : spkList // ignore: cast_nullable_to_non_nullable
               as List<SPK>,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -94,8 +80,6 @@ abstract class _$$_SPKStateCopyWith<$Res> implements $SPKStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<SPK> spkList,
-      int page,
-      bool hasMore,
       bool isProcessing,
       Option<Either<RemoteFailure, List<SPK>>> FOSOSPK});
 }
@@ -112,8 +96,6 @@ class __$$_SPKStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? spkList = null,
-    Object? page = null,
-    Object? hasMore = null,
     Object? isProcessing = null,
     Object? FOSOSPK = null,
   }) {
@@ -122,14 +104,6 @@ class __$$_SPKStateCopyWithImpl<$Res>
           ? _value._spkList
           : spkList // ignore: cast_nullable_to_non_nullable
               as List<SPK>,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -147,8 +121,6 @@ class __$$_SPKStateCopyWithImpl<$Res>
 class _$_SPKState implements _SPKState {
   const _$_SPKState(
       {required final List<SPK> spkList,
-      required this.page,
-      required this.hasMore,
       required this.isProcessing,
       required this.FOSOSPK})
       : _spkList = spkList;
@@ -162,17 +134,13 @@ class _$_SPKState implements _SPKState {
   }
 
   @override
-  final int page;
-  @override
-  final bool hasMore;
-  @override
   final bool isProcessing;
   @override
   final Option<Either<RemoteFailure, List<SPK>>> FOSOSPK;
 
   @override
   String toString() {
-    return 'SPKState(spkList: $spkList, page: $page, hasMore: $hasMore, isProcessing: $isProcessing, FOSOSPK: $FOSOSPK)';
+    return 'SPKState(spkList: $spkList, isProcessing: $isProcessing, FOSOSPK: $FOSOSPK)';
   }
 
   @override
@@ -181,21 +149,14 @@ class _$_SPKState implements _SPKState {
         (other.runtimeType == runtimeType &&
             other is _$_SPKState &&
             const DeepCollectionEquality().equals(other._spkList, _spkList) &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
             (identical(other.FOSOSPK, FOSOSPK) || other.FOSOSPK == FOSOSPK));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_spkList),
-      page,
-      hasMore,
-      isProcessing,
-      FOSOSPK);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_spkList), isProcessing, FOSOSPK);
 
   @JsonKey(ignore: true)
   @override
@@ -207,18 +168,12 @@ class _$_SPKState implements _SPKState {
 abstract class _SPKState implements SPKState {
   const factory _SPKState(
           {required final List<SPK> spkList,
-          required final int page,
-          required final bool hasMore,
           required final bool isProcessing,
           required final Option<Either<RemoteFailure, List<SPK>>> FOSOSPK}) =
       _$_SPKState;
 
   @override
   List<SPK> get spkList;
-  @override
-  int get page;
-  @override
-  bool get hasMore;
   @override
   bool get isProcessing;
   @override

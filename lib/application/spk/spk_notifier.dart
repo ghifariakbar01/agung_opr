@@ -55,14 +55,6 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
   }
 
-  void changeIsMore(bool hasMore) {
-    state = state.copyWith(hasMore: hasMore);
-  }
-
-  void changePage(int page) {
-    state = state.copyWith(page: page);
-  }
-
   void replaceSPKList(List<SPK> spkList) {
     state = state.copyWith(spkList: [...spkList]);
   }
@@ -75,7 +67,6 @@ class SPKNotifier extends StateNotifier<SPKState> {
       {required List<SPK> newSPK,
       required Function changeSPK,
       required Function replaceSPK,
-      required Function changeIsMore,
       required int page}) {
     final pageIsZero = page == 0;
     final SPKEmpty = newSPK.isEmpty;
@@ -83,7 +74,7 @@ class SPKNotifier extends StateNotifier<SPKState> {
     if (!pageIsZero && !SPKEmpty) {
       changeSPK();
     } else if (!pageIsZero && SPKEmpty) {
-      changeIsMore();
+      // changeIsMore();
     } else if (pageIsZero && !SPKEmpty) {
       replaceSPK();
     } else if (pageIsZero && SPKEmpty) {

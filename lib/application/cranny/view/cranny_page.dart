@@ -240,22 +240,24 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
     final isSubmitting = ref
         .watch(sortDataFormNotifierProvider.select((value) => value.isGetting));
 
-    return UpgradeAlert(
-      upgrader: Upgrader(
-        shouldPopScope: () => false,
-        showLater: false,
-        showIgnore: false,
-        canDismissDialog: false,
-        minAppVersion: '2.0.0',
-        messages: MyUpgraderMessages(),
-        dialogStyle: UpgradeDialogStyle.cupertino,
-      ),
-      child: Stack(
-        children: [
-          CrannyMiddle(),
-          Positioned(top: 100, child: DataUpdateLinearProgress()),
-          LoadingOverlay(isLoading: isSubmitting),
-        ],
+    return SafeArea(
+      child: UpgradeAlert(
+        key: UniqueKey(),
+        upgrader: Upgrader(
+          showLater: false,
+          showIgnore: false,
+          canDismissDialog: false,
+          minAppVersion: '2.0.0',
+          messages: MyUpgraderMessages(),
+          dialogStyle: UpgradeDialogStyle.cupertino,
+        ),
+        child: Stack(
+          children: [
+            CrannyMiddle(),
+            Positioned(top: 100, child: DataUpdateLinearProgress()),
+            LoadingOverlay(isLoading: isSubmitting),
+          ],
+        ),
       ),
     );
   }

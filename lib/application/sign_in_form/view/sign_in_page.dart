@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -39,32 +38,34 @@ class SignInPage extends HookConsumerWidget {
       signInFormNotifierProvider.select((state) => state.isSubmitting),
     );
 
-    return Stack(
-      children: [
-        const SignInScaffold(),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: VButton(
-              onPressed: () async {
-                FocusScope.of(context).unfocus();
-                await ref
-                    .read(signInFormNotifierProvider.notifier)
-                    .signInAndRemember(
-                      signIn: () => ref
-                          .read(signInFormNotifierProvider.notifier)
-                          .signInWithUserIdEmailAndPassword(),
-                      remember: () => ref
-                          .read(signInFormNotifierProvider.notifier)
-                          .rememberInfo(),
-                      clear: () => ref
-                          .read(signInFormNotifierProvider.notifier)
-                          .clearInfo(),
-                    );
-              },
-              label: 'LOGIN',
-            )),
-        LoadingOverlay(isLoading: isSubmitting),
-      ],
+    return SafeArea(
+      child: Stack(
+        children: [
+          const SignInScaffold(),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: VButton(
+                onPressed: () async {
+                  FocusScope.of(context).unfocus();
+                  await ref
+                      .read(signInFormNotifierProvider.notifier)
+                      .signInAndRemember(
+                        signIn: () => ref
+                            .read(signInFormNotifierProvider.notifier)
+                            .signInWithUserIdEmailAndPassword(),
+                        remember: () => ref
+                            .read(signInFormNotifierProvider.notifier)
+                            .rememberInfo(),
+                        clear: () => ref
+                            .read(signInFormNotifierProvider.notifier)
+                            .clearInfo(),
+                      );
+                },
+                label: 'LOGIN',
+              )),
+          LoadingOverlay(isLoading: isSubmitting),
+        ],
+      ),
     );
   }
 }

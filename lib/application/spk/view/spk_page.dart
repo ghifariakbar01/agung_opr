@@ -42,6 +42,10 @@ class _SPKPageState extends ConsumerState<SPKPage> {
 
   @override
   Widget build(BuildContext context) {
+    void _isNotAtBottom() {
+      ref.read(isBottomSPK.notifier).state = false;
+    }
+
     ref.listen<Option<Either<RemoteFailure, List<SPK>>>>(
         spkNotifierProvider.select(
           (state) => state.FOSOSPK,
@@ -63,22 +67,21 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                               orElse: () => '',
                             ),
                           ),
-                        ), (SPKResponse) {
+                        ), (response) async {
+                  _isNotAtBottom();
+
                   final oldSPK = ref.read(spkNotifierProvider).spkList;
                   final page = ref.read(scrollPageProvider);
 
                   ref.read(spkNotifierProvider.notifier).processSPKList(
-                        newSPK: SPKResponse,
+                        newSPK: response,
                         page: page,
                         changeSPK: () => ref
                             .read(spkNotifierProvider.notifier)
-                            .changeSPKList(newSPK: SPKResponse, oldSPK: oldSPK),
+                            .changeSPKList(newSPK: response, oldSPK: oldSPK),
                         replaceSPK: () => ref
                             .read(spkNotifierProvider.notifier)
-                            .replaceSPKList(SPKResponse),
-                        changeIsMore: () => ref
-                            .read(spkNotifierProvider.notifier)
-                            .changeIsMore(false),
+                            .replaceSPKList(response),
                       );
                 })));
 
