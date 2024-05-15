@@ -21,6 +21,7 @@ import 'check_sheet_kelengkapan.dart';
 import 'form/form_gate.dart';
 import 'form/form_jam.dart';
 import 'form/form_keterangan.dart';
+import 'widgets/check_sheet_mode.dart';
 
 final hideKelengkapanAndButtonProvider = StateProvider<bool>((ref) {
   return false;
@@ -185,6 +186,8 @@ class _CheckSheetLoadingScaffoldState
                   SizedBox(
                     height: 16,
                   ),
+
+                  CSMode(),
 
                   // UNIT LIST
                   modeApp.maybeWhen(

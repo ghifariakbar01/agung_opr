@@ -1,10 +1,8 @@
+import '../../application/check_sheet/unit/state/csu_items/csu_items.dart';
 import '../credentials_storage.dart';
 import '../update_csu/update_csu_remote_service.dart';
 
 import 'dart:convert';
-import 'dart:developer';
-
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
 
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
@@ -52,8 +50,6 @@ class CSUItemsRepository {
 
   Future<Either<RemoteFailure, List<CSUItems>>> getCSUItems() async {
     try {
-      // debugger(message: 'called');
-
       final listCSUItems = await _remoteService.getCSUItems();
 
       await this._SAVECSUItems(csuItemsParam: listCSUItems);
@@ -77,47 +73,26 @@ class CSUItemsRepository {
   /// get [CSUItems]
   Future<Either<RemoteFailure, List<CSUItems>>> getCSUItemsOffline() async {
     try {
-      final csuItemStorage = await _storage.read();
-
-      log('CSU ITEM STORAGE: $csuItemStorage');
+      final String? csuItemStorage = await _storage.read();
 
       // HAS MAP
       if (csuItemStorage != null) {
-        // debugger(message: 'called');
-
         final responsMap = jsonDecode(csuItemStorage) as List<dynamic>;
-
         final List<CSUItems> response = listCSUItemsFromJson(responsMap);
 
-        // debugger(message: 'called');
-
-        log('CSU STORAGE RESPONSE: $response');
-
         if (response.isNotEmpty) {
-          // debugger(message: 'called');
-
           return right(response);
         } else {
-          // debugger(message: 'called');
-
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        // debugger(message: 'called');
-
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
     }
   }
@@ -146,8 +121,6 @@ class CSUItemsRepository {
         return left(LocalFailure.empty());
       }
 
-      // debugger(message: 'called');
-
       return right(storedCredentials);
     } on FormatException {
       return left(LocalFailure.format('Error while parsing'));
@@ -164,7 +137,6 @@ class CSUItemsRepository {
     }
 
     await _storage.clear();
-
     return unit;
   }
 }

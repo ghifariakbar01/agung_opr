@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/check_sheet/loading/state/update_cs_ng_state.dart';
 import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +98,6 @@ class _CSItemOKOrNGState extends ConsumerState<CSItemOKOrNG> {
                     ref
                         .read(updateCSNotifierProvider.notifier)
                         .changeIsNG(isNG: true, index: widget.index);
-
-                    log('NG ID CS : ${widget.id} INDEX: ${widget.index}');
                   },
                   child: Ink(
                     width: 40,

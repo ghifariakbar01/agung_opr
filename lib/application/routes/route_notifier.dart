@@ -1,13 +1,11 @@
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unloading/view/check_sheet_unloading_page.dart';
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/model/view/model_page.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
-import 'package:agung_opr/application/spk/view/spk_scan.dart';
+
 import 'package:agung_opr/application/supir/view/supir_page.dart';
-import 'package:agung_opr/application/update_frame/view/update_frame_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,8 +15,6 @@ import '../../shared/providers.dart';
 import '../auth/auth_notifier.dart';
 import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
-import '../check_sheet/unit/view/csu_new_page.dart';
-import '../check_sheet/unit/view/csu_result_page.dart';
 import '../copyright/copyright_page.dart';
 import '../gate/view/gate_page.dart';
 import '../history/view/history_page.dart';
@@ -28,8 +24,6 @@ import '../spk/spk.dart';
 import '../tc/shared/tc_providers.dart';
 import '../tc/tc_page.dart';
 import '../tc/tc_state.dart';
-import '../unit/view/unit_page.dart';
-import '../update_frame/frame.dart';
 import 'route_names.dart';
 
 class RouterNotifier extends ChangeNotifier {
@@ -108,60 +102,23 @@ class RouterNotifier extends ChangeNotifier {
               path: RouteNames.spkName,
               builder: (context, state) => SPKPage(),
             ),
-            GoRoute(
-              name: RouteNames.unitNameRoute,
-              path: RouteNames.unitName,
-              builder: (context, state) => UnitPage(),
-            ),
+
             GoRoute(
               name: RouteNames.gateNameRoute,
               path: RouteNames.gateName,
               builder: (context, state) => GatePage(),
             ),
+
             GoRoute(
               name: RouteNames.modelNameRoute,
               path: RouteNames.modelName,
               builder: (context, state) => ModelPage(),
             ),
-            // GoRoute(
-            //   name: RouteNames.customerNameRoute,
-            //   path: RouteNames.customerName,
-            //   builder: (context, state) => CustomerPage(),
-            // ),
             GoRoute(
-              name: RouteNames.supirName,
               path: RouteNames.supirNameRoute,
+              name: RouteNames.supirName,
               builder: (context, state) => SupirPage(),
             ),
-            GoRoute(
-              name: RouteNames.scanSPKNameRoute,
-              path: RouteNames.scanSPKRoute,
-              builder: (context, state) => SPKScan(),
-            ),
-            GoRoute(
-              name: RouteNames.updateFrameNameRoute,
-              path: RouteNames.updateFrameName,
-              builder: (context, state) {
-                int idSPK = state.extra as int;
-                return UpdateFramePage(idSPK: idSPK);
-              },
-            ),
-            GoRoute(
-                name: RouteNames.CSUListNameRoute,
-                path: RouteNames.CSUListName,
-                builder: (context, state) {
-                  Map<String, dynamic> frameMap =
-                      state.extra as Map<String, dynamic>;
-                  Frame item = Frame.fromJson(frameMap);
-                  return CSUResultPage(frame: item);
-                }),
-            GoRoute(
-                name: RouteNames.CSUNewNameRoute,
-                path: RouteNames.CSUNewName,
-                builder: (context, state) {
-                  int idCS = state.extra as int;
-                  return CSUNewPage(idCS: idCS);
-                }),
             GoRoute(
               name: RouteNames.checkSheetLoadingNameRoute,
               path: RouteNames.checkSheetLoadingName,
@@ -171,11 +128,6 @@ class RouterNotifier extends ChangeNotifier {
                 SPK spk = SPK.fromJson(spkMap);
                 return CheckSheetLoadingPage(spk: spk);
               },
-            ),
-            GoRoute(
-              name: RouteNames.checkSheetUnloadingNameRoute,
-              path: RouteNames.checkSheetUnloadingName,
-              builder: (context, state) => CheckSheetUnloadingPage(),
             ),
             GoRoute(
               name: RouteNames.profileNameRoute,
@@ -197,6 +149,34 @@ class RouterNotifier extends ChangeNotifier {
               path: RouteNames.copyrightRoute,
               builder: (context, state) => CopyRightPage(),
             ),
+
+            // GoRoute(
+            //   name: RouteNames.unitNameRoute,
+            //   path: RouteNames.unitName,
+            //   builder: (context, state) => UnitPage(),
+            // ),
+            // GoRoute(
+            //     name: RouteNames.CSUListNameRoute,
+            //     path: RouteNames.CSUListName,
+            //     builder: (context, state) {
+            //       Map<String, dynamic> frameMap =
+            //           state.extra as Map<String, dynamic>;
+            //       Frame item = Frame.fromJson(frameMap);
+            //       return CSUResultPage(frame: item);
+            //     }),
+            // GoRoute(
+            //     name: RouteNames.CSUNewNameRoute,
+            //     path: RouteNames.CSUNewName,
+            //     builder: (context, state) {
+            //       int idCS = state.extra as int;
+            //       return CSUNewPage(idCS: idCS);
+            //     }),
+
+            // GoRoute(
+            //   name: RouteNames.checkSheetUnloadingNameRoute,
+            //   path: RouteNames.checkSheetUnloadingName,
+            //   builder: (context, state) => CheckSheetUnloadingPage(),
+            // ),
           ]),
     ];
   }

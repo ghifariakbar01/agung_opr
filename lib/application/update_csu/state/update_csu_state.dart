@@ -24,7 +24,7 @@ class UpdateCSUState with _$UpdateCSUState {
         isProcessing: false,
         showErrorMessages: false,
         frameName: '',
-        updateFrameList: UpdateCSUFrameStateSingle.initial(),
         FOSOUpdateCSU: none(),
+        updateFrameList: UpdateCSUFrameStateSingle.initial(),
       );
 }

@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_ng_result.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
-import '../../application/check_sheet/unit/state/csu_ng_result_by_id.dart';
+import '../../application/check_sheet/unit/state/csu_ng/csu_ng_result.dart';
+import '../../application/check_sheet/unit/state/csu_ng/csu_ng_result_by_id.dart';
 import '../../application/check_sheet/unit/state/csu_result.dart';
-import '../../application/check_sheet/unit/state/csu_trips.dart';
+
+import '../../application/check_sheet/unit/state/csu_trips/csu_trips.dart';
 import '../../application/check_sheet/unit/state/spk_csu_result.dart';
 import '../../application/check_sheet/unit/state/unit_csu_trips.dart';
 import '../../domain/local_failure.dart';
@@ -164,8 +165,6 @@ class CSUFrameRepository {
       final listFrameNameCSUNGResult =
           await _remoteService.getCSUNGByIdCS(idCS: idCS);
 
-      debugger();
-
       await this._GETAndREPLACECsuNGSInList(
           idCS: idCS, newCSUNGList: listFrameNameCSUNGResult);
 
@@ -218,7 +217,6 @@ class CSUFrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<CSUNGResultByID> parsedListCSUSNG =
@@ -276,14 +274,11 @@ class CSUFrameRepository {
               log('STORAGE CSU NG RESULT BY ID CS W/O ID-CS : ${CSUNGResultByID.CSUNGResultListToJson(list)}');
             }
 
-            // debugger(message: 'called');
-
             return unit;
           }();
           break;
         case false:
           () async {
-            // debugger(message: 'called');
             final CSUNGResultByID newElement =
                 CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
 
@@ -314,7 +309,6 @@ class CSUFrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<UnitCSUTrips> parsedListCSUSPK =
@@ -374,15 +368,11 @@ class CSUFrameRepository {
               log('STORAGE CSU RESULT TRIP UPDATE ID-UNIT N/A: ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
             }
 
-            // debugger(message: 'called');
-
             return unit;
           }();
           break;
         case false:
           () async {
-            // debugger(message: 'called');
-
             // SAVE LIST
             await _storageTrips
                 .save(UnitCSUTrips.listCSUResultTripsToJson([newCSUTrips]));
@@ -410,7 +400,6 @@ class CSUFrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as List<dynamic>;
 
             final List<FrameNameCSUResult> parsedListCSUSPK =
@@ -474,15 +463,11 @@ class CSUFrameRepository {
               debugger();
             }
 
-            // debugger(message: 'called');
-
             return unit;
           }();
           break;
         case false:
           () async {
-            // debugger(message: 'called');
-
             final element =
                 FrameNameCSUResult(frameName: frameName, csuResult: newCSU);
 
@@ -509,20 +494,14 @@ class CSUFrameRepository {
     try {
       final frameStorage = await _storage.read();
 
-      // debugger(message: 'called');
-
       log('CSU NG BY ID STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {
-        // debugger(message: 'called');
-
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<CSUNGResultByID> response =
             CSUNGResultByID.CSUNGResultListFromJson(responsMap);
-
-        // debugger(message: 'called');
 
         log('CSU NG BY ID STORAGE RESPONSE: $response');
 
@@ -531,8 +510,6 @@ class CSUFrameRepository {
             response.firstWhereOrNull((element) => element.idCS == idCS);
 
         if (key != null) {
-          // debugger(message: 'called');
-
           return right(key.csuNGResult);
         } else {
           debugger(message: 'called');
@@ -545,16 +522,10 @@ class CSUFrameRepository {
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
     }
   }
@@ -567,20 +538,14 @@ class CSUFrameRepository {
     try {
       final frameStorage = await _storage.read();
 
-      // debugger(message: 'called');
-
       log('FRAME STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {
-        // debugger(message: 'called');
-
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<FrameNameCSUResult> response =
             listFrameNameCSUResultFromJson(responsMap);
-
-        // debugger(message: 'called');
 
         log('FRAME STORAGE RESPONSE: $response');
 
@@ -589,30 +554,18 @@ class CSUFrameRepository {
             .firstWhereOrNull((element) => element.frameName == frameName);
 
         if (key != null) {
-          // debugger(message: 'called');
-
           return right(key.csuResult);
         } else {
-          // debugger(message: 'called');
-
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        // debugger(message: 'called');
-
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
     }
   }
@@ -625,20 +578,14 @@ class CSUFrameRepository {
     try {
       final frameStorage = await _storageTrips.read();
 
-      // debugger(message: 'called');
-
       log('FRAME TRIPS STORAGE: $frameStorage');
 
       // HAS MAP
       if (frameStorage != null) {
-        // debugger(message: 'called');
-
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<UnitCSUTrips> response =
             UnitCSUTrips.listCSUResultTripsFromJson(responsMap);
-
-        // debugger(message: 'called');
 
         log('FRAME TRIPS STORAGE RESPONSE: $response');
 
@@ -647,39 +594,24 @@ class CSUFrameRepository {
             response.firstWhereOrNull((element) => element.idUnit == idUnit);
 
         if (key != null) {
-          // debugger(message: 'called');
           final csuResults = key.csuResult;
 
           if (csuResults.isNotEmpty) {
-            // debugger(message: 'called');
-
             return right(csuResults);
           } else {
-            // debugger(message: 'called');
-
             return right([]);
           }
         } else {
-          // debugger(message: 'called');
-
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        // debugger(message: 'called');
-
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
     }
   }

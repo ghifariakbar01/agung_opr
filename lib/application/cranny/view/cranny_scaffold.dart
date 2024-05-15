@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
-import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ import '../../update_frame/shared/update_frame_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'cranny_drawer.dart';
 import 'cranny_item.dart';
-import 'cs/cs_cranny_page.dart';
+import 'cs/cs_cranny_column.dart';
 
 class CrannyScaffold extends ConsumerStatefulWidget {
   const CrannyScaffold();
@@ -100,10 +99,6 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                   if (isUpdateAvailable) ...[
                     TextButton(
                         onPressed: () async {
-                          ref
-                              .read(modeNotifierProvider.notifier)
-                              .changeModeAplikasi(ModeState.dataUpdateQuery());
-
                           await context
                               .pushNamed(RouteNames.dataUpdateQueryNameRoute);
                         },
@@ -113,7 +108,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                       onPressed: () =>
                           context.pushNamed(RouteNames.historyName),
                       child: CrannyItem(label: 'RIWAYAT UPDATE')),
-                  CSCrannyPage(),
+                  CSCrannyColumn(),
                   const SizedBox(height: 8),
                 ],
               ),

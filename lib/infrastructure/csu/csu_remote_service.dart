@@ -5,9 +5,9 @@ import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:agung_opr/infrastructure/exceptions.dart';
 import 'package:dio/dio.dart';
 
-import '../../application/check_sheet/unit/state/csu_ng_result.dart';
+import '../../application/check_sheet/unit/state/csu_ng/csu_ng_result.dart';
 import '../../application/check_sheet/unit/state/csu_result.dart';
-import '../../application/check_sheet/unit/state/csu_trips.dart';
+import '../../application/check_sheet/unit/state/csu_trips/csu_trips.dart';
 
 class CSUFrameRemoteService {
   CSUFrameRemoteService(this._dio, this._dioRequestNotifier);
@@ -26,7 +26,10 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "select *, (select count(id_item) from $dbCSDtl where id_cs = $dbName.id_cs) as defectAmount, (select nama from cs_mst_gate where id_gate = $dbName.id_gate) as gate from $dbName where frame like '$frameName' ORDER BY u_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+            " SELECT *, (SELECT COUNT(id_item) FROM $dbCSDtl WHERE id_cs = $dbName.id_cs) as defectAmount, "
+                " (SELECT nama FROM cs_mst_gate WHERE id_gate = $dbName.id_gate) as gate "
+                " FROM $dbName WHERE frame LIKE '%$frameName%' "
+                " ORDER BY u_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',
@@ -48,23 +51,15 @@ class CSUFrameRemoteService {
               List<CSUResult> csuList =
                   (list).map((data) => CSUResult.fromJson(data)).toList();
 
-              log('LIST CSU FRAME BY NAME: $csuList');
-
               return csuList;
             } catch (e) {
-              log('list error $e');
-
               throw FormatException(
                   'error while iterating list getCSUByFrameName');
             }
           } else {
-            log('list empty');
-
             return [];
           }
         } else {
-          log('list empty');
-
           return [];
         }
       } else {
@@ -98,7 +93,8 @@ class CSUFrameRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command":
-            "SELECT id_cs, id_item AS idItem, id_jns_defect AS idJenis, id_p_defect AS idPenyebab FROM $dbName WHERE id_cs = '$idCS'",
+            "SELECT id_cs, id_item AS idItem, id_jns_defect AS idJenis, id_p_defect "
+                " AS idPenyebab FROM $dbName WHERE id_cs = '$idCS'",
       });
 
       final response = await _dio.post('',
@@ -120,22 +116,14 @@ class CSUFrameRemoteService {
               List<CSUNGResult> csuList =
                   (list).map((data) => CSUNGResult.fromJson(data)).toList();
 
-              log('LIST CSU NG: $list');
-
               return csuList;
             } catch (e) {
-              log('list error $e');
-
               throw FormatException('error while iterating list CSU NG');
             }
           } else {
-            log('list empty');
-
             return [];
           }
         } else {
-          log('list empty');
-
           return [];
         }
       } else {
@@ -172,8 +160,10 @@ class CSUFrameRemoteService {
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT (SELECT nama FROM $dbSlsCostnalatis WHERE id_costanalis = B.id_costanalis) AS costanalis, (SELECT nama FROM $dbMstCust WHERE id_cust = B.id_cust) AS custnm FROM $dbOprTiUnit AS A INNER JOIN $dbOprTi AS B ON A.id_do = B.id_do WHERE A.frame LIKE '$frameName' ORDER BY A.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
+        "command": " SELECT (SELECT nama FROM $dbSlsCostnalatis WHERE id_costanalis = B.id_costanalis) AS costanalis, "
+            " (SELECT nama FROM $dbMstCust WHERE id_cust = B.id_cust) AS custnm FROM $dbOprTiUnit AS "
+            " A INNER JOIN $dbOprTi AS B ON A.id_do = B.id_do WHERE A.frame LIKE '$frameName' "
+            " ORDER BY A.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY",
       });
 
       final response = await _dio.post('',
@@ -195,22 +185,14 @@ class CSUFrameRemoteService {
               List<CSUTrips> csuList =
                   (list).map((data) => CSUTrips.fromJson(data)).toList();
 
-              log('LIST CSUTrips: $list');
-
               return csuList;
             } catch (e) {
-              log('list error $e');
-
               throw FormatException('error while iterating list model');
             }
           } else {
-            log('list empty');
-
             return [];
           }
         } else {
-          log('list empty');
-
           return [];
         }
       } else {

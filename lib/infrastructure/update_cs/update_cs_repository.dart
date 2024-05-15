@@ -89,13 +89,12 @@ class UpdateCSRepository {
     }
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSQuery(
-      {
-      //
-      required CSIDQuery queryId,
-      required String idUser,
-      required String nama,
-      required String gate}) async {
+  Future<Either<LocalFailure, Unit>> saveCSQuery({
+    required String idUser,
+    required String nama,
+    required String gate,
+    required CSIDQuery queryId,
+  }) async {
     try {
       // Trigger for older devices
       await _storage.read();
@@ -112,6 +111,7 @@ class UpdateCSRepository {
           case true:
             () async {
               final raw = jsonDecode(savedStrings!) as List<dynamic>;
+
               final List<CSIDQuery> response =
                   CSIDQuery.listCSIDQueryFromJson(raw);
 

@@ -42,25 +42,24 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
         '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
 
     state = state.copyWith(
-        idSPK: spk.idSpk,
         updateCSForm: state.updateCSForm.copyWith(
-          nopol: Nopol(spk.nopol),
-          jamLoadUnload: JamLoad(jam),
-          namaSupir: Supir1(spk.supir1Nm ?? ''),
-          keterangan: Keterangan(spk.ket ?? ''),
-          namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
-          jamLoadUnloadText: TextEditingController(text: jam),
-        ));
+      nopol: Nopol(spk.nopol),
+      jamLoadUnload: JamLoad(jam),
+      namaSupir: Supir1(spk.supir1Nm ?? ''),
+      keterangan: Keterangan(spk.ket ?? ''),
+      namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
+      jamLoadUnloadText: TextEditingController(text: jam),
+    ));
   }
 
-  void changeFillEmptyList({required int length}) {
+  void changeFillEmptyList({required int isNGLength}) {
     final generateNGStates =
-        List.generate(length, (index) => UpdateCSNGState.initial());
+        List.generate(isNGLength, (index) => UpdateCSNGState.initial());
 
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(ngStates: generateNGStates));
 
-    final generateIsNG = List.generate(length, (index) => false);
+    final generateIsNG = List.generate(isNGLength, (index) => false);
 
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(isNG: generateIsNG));
@@ -78,8 +77,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
       final stateCS = state.updateCSForm;
       final CSIDQuery _queryId = await _repository.getOKSavableQuery(
-        //
-        idSPK: state.idSPK,
+        idSPK: state.selectedSPK.idSpk,
         nopol: stateCS.nopol,
         supir1: stateCS.namaSupir,
         jamLoad: stateCS.jamLoadUnload,
@@ -97,22 +95,17 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       );
 
       final ngStates = state.updateCSForm.ngStates;
-      debugger();
 
       final CSIDQuery _queryIdNg = await _repository.getNGSavableQuery(
-        //
-        idSPK: state.idSPK,
         ngStates: ngStates,
         frameName: state.frameName,
+        idSPK: state.selectedSPK.idSpk,
       );
 
-      final idSpk = state.idSPK;
+      final idSpk = state.selectedSPK.idSpk;
       final CSIDQuery queryIdToSave =
           CSIDQuery(idSPK: idSpk, query: _queryId.query + _queryIdNg.query);
 
-      log('queryIdToSave $queryIdToSave');
-
-      debugger();
       FOS = await _repository.saveCSQuery(
         queryId: queryIdToSave,
         idUser: _userModelWithPassword.idUser.toString(),
@@ -186,13 +179,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
     // Update the state with the new list
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(ngStates: list));
-  }
-
-  void changeidSPK(int idSPK) {
-    state = state.copyWith(
-      idSPK: idSPK,
-      FOSOUpdateCS: none(),
-    );
   }
 
   void changeIdCS(int idCS) {

@@ -18,53 +18,35 @@ import 'update_csu_remote_service.dart';
 class UpdateCSUFrameRepository {
   UpdateCSUFrameRepository(
     this._remoteService,
-    this._userModelWithPassword,
     this._storage,
+    this._userModelWithPassword,
   );
 
+  final CredentialsStorage _storage;
   final UpdateCSUFrameRemoteService _remoteService;
   final UserModelWithPassword _userModelWithPassword;
-  final CredentialsStorage _storage;
 
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<Either<RemoteFailure, Unit>> updateCSUByQuery(
       {required List<CSUIDQuery> queryIds}) async {
-    final isQueryOK = queryIds.isNotEmpty;
-
-    // debugger(message: 'called');
-
-    if (isQueryOK) {
+    if (queryIds.isNotEmpty) {
       for (int i = 0; i < queryIds.length; i++) {
         final query = queryIds[i].query;
         final idUnit = queryIds[i].idUnit;
-
-        log('INDEX $i');
-
-        // GET ID_CS
-        // debugger(message: 'called');
-
-        log('STORAGE UPDATE CSU QUERY: $query');
 
         try {
           await _remoteService.insertFrameCSUByQuery(query: query);
 
           await _removeQueryCSUFromSaved(idUnit: idUnit);
         } on RestApiException catch (e) {
-          debugger(message: 'called');
-
           await _removeQueryCSUFromSaved(idUnit: idUnit);
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
-          debugger(message: 'called');
-
-          // await _removeQueryCSUFromSaved(idUnit: idUnit);
-
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {
-          debugger(message: 'called');
           return left(RemoteFailure.parse(message: e.message));
         } on FormatException catch (e) {
           return left(RemoteFailure.parse(message: e.message));
@@ -74,88 +56,15 @@ class UpdateCSUFrameRepository {
         } on PlatformException {
           return left(RemoteFailure.storage());
         }
-
-        // debugger(message: 'called');
-
-        // // DELETE SAVED QUERY
       }
+    } else {
+      log('updateCSUByQuery : querId empty');
     }
-
-    debugger(message: 'called');
 
     return right(unit);
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSUQueryNG(
-      {required CSUIDQuery queryId}) async {
-    try {
-      final savedStrings = await _storage.read();
-      final isQueryOK = queryId.query.isNotEmpty;
-      final isStorageSaved = savedStrings != null;
-
-      if (isQueryOK) {
-        switch (isStorageSaved) {
-          case true:
-            () async {
-              // debugger(message: 'CALLED');
-              final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
-
-              final response =
-                  CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
-
-              final index = response
-                  .indexWhere((element) => element.idUnit == queryId.idUnit);
-
-              if (index == -1) {
-                final list = [...response, queryId];
-
-                await _storage
-                    .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
-
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-              } else {
-                // if not NG, replace list
-                final list = [...response];
-
-                list[index] = queryId;
-
-                await _storage
-                    .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
-
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-              }
-            }();
-            break;
-          case false:
-            () async {
-              final list = [queryId];
-
-              log('STORAGE SAVE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-
-              await _storage.save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
-            }();
-        }
-      } else {
-        throw LocalFailure.empty();
-      }
-
-      return right(unit);
-    } on RangeError catch (e) {
-      return left(LocalFailure.format('RANGE ERROR: ' + e.message));
-    } on FormatException catch (e) {
-      return left(LocalFailure.format('FORMAT ERROR: ' + e.message));
-    } on JsonUnsupportedObjectError {
-      return left(LocalFailure.format('JsonUnsupportedObjectError'));
-    } on PlatformException {
-      return left(LocalFailure.storage());
-    }
-  }
-
-  Future<Either<LocalFailure, Unit>> saveCSUQueryOK(
+  Future<Either<LocalFailure, Unit>> saveCSUQuery(
       {required CSUIDQuery queryId, bool isNG = false}) async {
     try {
       final savedStrings = await _storage.read();
@@ -166,58 +75,56 @@ class UpdateCSUFrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
-              final response =
+              final List<CSUIDQuery> response =
                   CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
 
-              final index = response
+              final int index = response
                   .indexWhere((element) => element.idUnit == queryId.idUnit);
 
-              if (index == -1) {
-                final list = [...response, queryId];
+              final bool indexNotFound = index == -1;
 
-                await _storage
-                    .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+              if (indexNotFound) {
+                if (response.isNotEmpty) {
+                  final List<CSUIDQuery> list =
+                      [...response, queryId].toSet().toList();
 
-                // debugger(message: 'called');
-
-                log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-              } else {
-                if (!isNG) {
-                  // if not NG, replace list
-                  final list = [...response];
-
-                  list[index] = queryId;
-
-                  await _storage
-                      .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+                  final _list = CSUIDQuery.listCSUIDQueryToJsonSavable(list);
+                  await _storage.save(_list);
 
                   // debugger(message: 'called');
+                  log('saveCSUQuery : STORAGE UPDATE CSU QUERY: ${_list}');
 
-                  log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+                  return;
                 } else {
-                  // if NG, coancenate
-                  final list = [...response, queryId];
+                  final _list = [queryId];
+                  final _finalized =
+                      CSUIDQuery.listCSUIDQueryToJsonSavable(_list);
 
-                  await _storage
-                      .save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
+                  await _storage.save(_finalized);
 
-                  // debugger(message: 'called');
-
-                  log('STORAGE UPDATE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
+                  log('STORAGE SAVE CSU QUERY: ${_finalized}');
                 }
+              } else {
+                List<CSUIDQuery> _list = [...response];
+
+                _list[index] = queryId;
+                final _res = _list.toSet().toList();
+                final _finalized = CSUIDQuery.listCSUIDQueryToJsonSavable(_res);
+                await _storage.save(_finalized);
+                log('STORAGE INSERT CSU QUERY: ${_finalized}');
+
+                return;
               }
             }();
             break;
           case false:
             () async {
               final list = [queryId];
+              await _storage.save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
 
               log('STORAGE SAVE CSU QUERY: ${CSUIDQuery.listCSUIDQueryToJsonSavable(list)}');
-
-              await _storage.save(CSUIDQuery.listCSUIDQueryToJsonSavable(list));
             }();
         }
       } else {
@@ -256,8 +163,10 @@ class UpdateCSUFrameRepository {
 
     // supir1, supir2,
 
-    final String insert =
-        'INSERT INTO $dbName (id_cs, frame, inout, id_user, c_user, u_user, tgl, c_date, u_date, id_gate, posisi, no_defect, supir_sdr, tgl_kirim_unit, tgl_terima_unit, ket)';
+    final String insert = 'INSERT INTO $dbName '
+        '(id_cs, frame, inout, id_user, c_user, u_user,'
+        'tgl, c_date, u_date, id_gate, posisi, no_defect, '
+        'supir_sdr, tgl_kirim_unit, tgl_terima_unit, ket)';
 
     final idUser = _userModelWithPassword.idUser;
     final nameUser = _userModelWithPassword.nama;
@@ -314,8 +223,9 @@ class UpdateCSUFrameRepository {
     const String dbName = 'cs_trs_cs_dtl';
     const String dbNameCS = 'cs_trs_cs';
 
-    final String insert =
-        'INSERT INTO $dbName (id_cs, frame, c_date, u_date, c_user,  u_user, id_item, id_jns_defect, id_p_defect)';
+    final String insert = ' INSERT INTO $dbName '
+        '(id_cs, frame, c_date, u_date, c_user, '
+        ' u_user, id_item, id_jns_defect, id_p_defect)';
 
     final nameUser = _userModelWithPassword.nama;
 
@@ -360,8 +270,6 @@ class UpdateCSUFrameRepository {
 
     log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
 
-    debugger(message: 'called');
-
     return csuIdQuery;
   }
 
@@ -376,7 +284,6 @@ class UpdateCSUFrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response =
@@ -392,8 +299,6 @@ class UpdateCSUFrameRepository {
                 final list = [...response.where((element) => element != item)];
 
                 await _storage.save(jsonEncode(list));
-
-                // debugger(message: 'called');
 
                 log('STORAGE UPDATE CSU FRAME DELETE: ${jsonEncode(list)}');
 
@@ -429,14 +334,12 @@ class UpdateCSUFrameRepository {
       final isStorageSaved = savedStrings != null;
 
       if (isStorageSaved) {
-        final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
+        final parsedResponse = jsonDecode(savedStrings) as List<dynamic>;
 
         final response = CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
 
         return right(response);
       } else {
-        // debugger(message: 'CALLED');
-
         return right([]);
       }
     } on FormatException catch (e) {
@@ -453,7 +356,6 @@ class UpdateCSUFrameRepository {
       if (storedCredentials == null || storedCredentials == '[]') {
         return left(LocalFailure.empty());
       } else {
-        // debugger(message: 'called');
         log('storedCredentials $storedCredentials');
       }
 

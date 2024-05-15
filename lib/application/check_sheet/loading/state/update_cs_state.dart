@@ -12,7 +12,6 @@ part 'update_cs_state.freezed.dart';
 class UpdateCSState with _$UpdateCSState {
   const factory UpdateCSState({
     required int idCS,
-    required int idSPK,
     required SPK selectedSPK,
     required String frameName,
     required bool isProcessing,
@@ -25,7 +24,6 @@ class UpdateCSState with _$UpdateCSState {
 
   factory UpdateCSState.initial() => UpdateCSState(
         idCS: 0,
-        idSPK: 0,
         selectedSPK: SPK.initial(),
         isProcessing: false,
         showErrorMessages: false,

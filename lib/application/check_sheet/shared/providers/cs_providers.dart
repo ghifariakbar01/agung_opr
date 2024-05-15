@@ -1,15 +1,11 @@
 import 'package:agung_opr/application/check_sheet/shared/cs_jenis_offline_notifier.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis_offline_state.dart';
-import 'package:agung_opr/application/history/shared/history_providers.dart';
 import 'package:agung_opr/infrastructure/cs/cs_repository.dart';
 import 'package:agung_opr/infrastructure/update_cs/update_cs_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../infrastructure/cache_storage/cs/cs_final_inspection_storage.dart';
 import '../../../../infrastructure/cache_storage/cs/cs_item_storage.dart';
 import '../../../../infrastructure/cache_storage/cs/cs_jenis_storage.dart';
-import '../../../../infrastructure/cache_storage/cs/cs_loading_storage.dart';
-import '../../../../infrastructure/cache_storage/cs/cs_unloading_storage.dart';
 import '../../../../infrastructure/cache_storage/queries/update_cs_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/cs/cs_items_repository.dart';
@@ -23,9 +19,13 @@ import '../../loading/state/update_cs_state.dart';
 import '../cs_item_notifier.dart';
 import '../cs_item_offline_notifier.dart';
 import '../cs_jenis_notifier.dart';
+import '../state/cs_item.dart';
 import '../state/cs_item_offline_state.dart';
 import '../state/cs_item_state.dart';
 import '../state/cs_jenis_state.dart';
+
+final csRemoteServiceProvider = Provider((ref) =>
+    CSRemoteService(ref.watch(dioProvider), ref.watch(dioRequestProvider)));
 
 // CS JENIS
 final csJenisStorage = Provider<CredentialsStorage>(
@@ -42,6 +42,10 @@ final csJenisNotifierProvider =
   (ref) => CheckSheetJenisNotifier(ref.watch(csJenisRepositoryProvider)),
 );
 
+final csJenisOfflineNotifierProvider =
+    StateNotifierProvider<CSJenisOfflineNotifier, CSJenisOfflineState>(
+        (ref) => CSJenisOfflineNotifier(ref.watch(csJenisRepositoryProvider)));
+
 // CS ITEM
 final csItemStorage = Provider<CredentialsStorage>(
   (ref) => CheckSheetItemStorage(ref.watch(flutterSecureStorageProvider)),
@@ -56,27 +60,6 @@ final csItemNotifierProvider =
     StateNotifierProvider<CheckSheetItemNotifier, CSItemState>(
   (ref) => CheckSheetItemNotifier(ref.watch(csItemRepositoryProvider)),
 );
-
-//
-final csRemoteServiceProvider = Provider((ref) =>
-    CSRemoteService(ref.watch(dioProvider), ref.watch(dioRequestProvider)));
-
-final csLoadingStorage = Provider<CredentialsStorage>(
-  (ref) => CheckSheetLoadingStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final csUnloadingStorage = Provider(
-  (ref) => CheckSheetUnloadingStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final csFinalInspectionStorage = Provider(
-  (ref) =>
-      CheckSheetFinalInspectionStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final csJenisOfflineNotifierProvider =
-    StateNotifierProvider<CSJenisOfflineNotifier, CSJenisOfflineState>(
-        (ref) => CSJenisOfflineNotifier(ref.watch(csJenisRepositoryProvider)));
 
 final csItemOfflineNotifierProvider =
     StateNotifierProvider<CSItemOfflineNotifier, CSItemOfflineState>(
@@ -114,3 +97,85 @@ final updateCSOfflineNotifierProvider =
     StateNotifierProvider<UpdateCSOfflineNotifier, UpdateCSOfflineState>(
         (ref) =>
             UpdateCSOfflineNotifier(ref.watch(updateCSRepositoryProvider)));
+
+/* 
+  FUTURE PROVIDERS
+*/
+
+final fillCSJenisFutureProvider = FutureProvider<void>((ref) async {
+  final isOffline = ref.read(isOfflineStateProvider);
+  if (isOffline) {
+    return ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE();
+  }
+
+  await ref
+      .read(csJenisOfflineNotifierProvider.notifier)
+      .checkAndUpdateCSJenisOFFLINEStatus();
+
+  final csJenisOfflineOrOnline = ref.read(csJenisOfflineNotifierProvider);
+  await csJenisOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () =>
+        ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
+    orElse: () async {
+      await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
+      await ref
+          .read(csJenisOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSJenisOFFLINEStatus();
+    },
+  );
+});
+
+final fillCSItemsFutureProvider = FutureProvider<void>((ref) async {
+  final isOffline = ref.read(isOfflineStateProvider);
+  if (isOffline) {
+    return ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE();
+  }
+
+  await ref
+      .read(csItemOfflineNotifierProvider.notifier)
+      .checkAndUpdateCSItemOFFLINEStatus();
+
+  final csItemsOfflineOrOnline = ref.read(csItemOfflineNotifierProvider);
+  await csItemsOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () =>
+        ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE(),
+    orElse: () async {
+      await ref.read(csItemNotifierProvider.notifier).getCSItems();
+      await ref
+          .read(csItemOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSItemOFFLINEStatus();
+    },
+  );
+});
+
+final fillCSItemsCombinedProvider = FutureProvider<void>((ref) async {
+  Map<int, List<CSItem>> csItemMap = {};
+  ref.read(csItemNotifierProvider.notifier).changeCSItemsByIDList(csItemMap);
+
+  final int _csID = ref.read(csItemNotifierProvider).selectedId;
+
+  final List<int> csId =
+      ref.read(csItemNotifierProvider.notifier).getCSId(_csID);
+
+  // fill csItemMap
+  final csValuesUncombined = csId.map((id) {
+    final List<CSItem> list =
+        ref.read(csItemNotifierProvider.notifier).getCSItemById(id);
+
+    csItemMap.addAll({
+      id: [...list]
+    });
+
+    return list;
+  }).toList();
+
+  final List<CSItem> csValuesCombined =
+      csValuesUncombined.fold([], (prev, next) => prev + next);
+
+  /// RUN [changeFillEmptyList] TO UPDATE PLACEHOLDERS
+  ref.read(updateCSNotifierProvider.notifier).changeFillEmptyList(
+        isNGLength: csValuesCombined.length,
+      );
+
+  return;
+});

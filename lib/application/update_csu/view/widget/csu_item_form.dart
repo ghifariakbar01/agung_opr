@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
+
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../check_sheet/unit/state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
 import '../../../check_sheet/unit/view/widget/csu_item_ok_or_ng.dart';
 
 class CheckSheetUnitItemForm extends ConsumerWidget {

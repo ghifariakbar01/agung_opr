@@ -29,7 +29,6 @@ class UpdateFrameScaffold extends ConsumerWidget {
           appBar: VAppBar(
             context,
             '${modeApp.maybeWhen(
-              updateFrameDummy: () => 'Update Frame Dummy',
               checkSheetUnit: () => 'Check Sheet Unit',
               orElse: () {},
             )}',

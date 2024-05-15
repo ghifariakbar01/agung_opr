@@ -55,8 +55,6 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
                         onPressed: () {
                           String gateParam = modeState.maybeWhen(
                               checkSheetUnit: () => gateList[i].id.toString(),
-                              checkSheetUnitWithoutSPK: () =>
-                                  gateList[i].id.toString(),
                               orElse: () => gateList[i].nama.toString());
 
                           context.pop(gateParam);

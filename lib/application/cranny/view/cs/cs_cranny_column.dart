@@ -27,11 +27,7 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
             onPressed: () async {
               ModeState mode = ModeState.checkSheetLoading();
 
-              ref.read(frameNotifierProvider.notifier).changeFillInitial();
-              ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
-              ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
-              ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
-              ref.read(scrollPageProvider.notifier).state = 0;
+              _changeInitialAndMode(mode);
 
               const int id = 1;
               ref.read(csItemNotifierProvider.notifier).changeId(id);
@@ -71,5 +67,13 @@ class _CSCrannyColumnState extends ConsumerState<CSCrannyColumn> {
         //     child: CrannyItem(label: 'UNLOADING')),
       ],
     );
+  }
+
+  void _changeInitialAndMode(ModeState mode) {
+    ref.read(frameNotifierProvider.notifier).changeFillInitial();
+    ref.read(updateCSNotifierProvider.notifier).changeFillInitial();
+    ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+    ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
+    ref.read(scrollPageProvider.notifier).state = 0;
   }
 }

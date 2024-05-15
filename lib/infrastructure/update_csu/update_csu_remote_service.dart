@@ -3,13 +3,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
-
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import '../../application/check_sheet/unit/state/csu_items.dart';
+import '../../application/check_sheet/unit/state/csu_items/csu_items.dart';
+import '../../application/check_sheet/unit/state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
 import '../exceptions.dart';
 
 class UpdateCSUFrameRemoteService {

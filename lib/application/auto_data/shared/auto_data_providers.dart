@@ -1,11 +1,10 @@
-import 'package:agung_opr/application/auto_data/auto_data_update_frame_notifier.dart';
-import 'package:agung_opr/application/auto_data/auto_data_update_frame_state.dart';
-import 'package:agung_opr/application/check_sheet/shared/providers/cs_providers.dart';
-import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
-import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../check_sheet/shared/providers/cs_providers.dart';
+import '../../update_frame/shared/update_frame_providers.dart';
 import '../../update_spk/providers/update_spk_providers.dart';
+import '../auto_data_update_frame_notifier.dart';
+import '../auto_data_update_frame_state.dart';
 import '../timer/auto_data_timer.dart';
 import '../timer/auto_data_timer_state.dart';
 

@@ -1,7 +1,7 @@
 import 'package:agung_opr/infrastructure/csu/csu_items_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'unit/state/csu_items_offline_state.dart';
+import 'unit/state/csu_items/csu_items_offline_state.dart';
 
 class CSUItemsOfflineNotifier extends StateNotifier<CSUItemsOfflineState> {
   CSUItemsOfflineNotifier(this._repository)

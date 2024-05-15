@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../infrastructure/csu/csu_jenis_penyebab_repository.dart';
-import 'state/csu_jenis_penyebab_offline_state.dart';
+import 'state/csu_jenis_penyebab/csu_jenis_penyebab_offline_state.dart';
 
 class CSUJenisPenyebabOfflineNotifier
     extends StateNotifier<CSUJenisPenyebabOfflineState> {

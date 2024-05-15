@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UpdateCSState {
   int get idCS => throw _privateConstructorUsedError;
-  int get idSPK => throw _privateConstructorUsedError;
   SPK get selectedSPK => throw _privateConstructorUsedError;
   String get frameName => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
@@ -41,7 +40,6 @@ abstract class $UpdateCSStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int idCS,
-      int idSPK,
       SPK selectedSPK,
       String frameName,
       bool isProcessing,
@@ -70,7 +68,6 @@ class _$UpdateCSStateCopyWithImpl<$Res, $Val extends UpdateCSState>
   @override
   $Res call({
     Object? idCS = null,
-    Object? idSPK = null,
     Object? selectedSPK = null,
     Object? frameName = null,
     Object? isProcessing = null,
@@ -84,10 +81,6 @@ class _$UpdateCSStateCopyWithImpl<$Res, $Val extends UpdateCSState>
       idCS: null == idCS
           ? _value.idCS
           : idCS // ignore: cast_nullable_to_non_nullable
-              as int,
-      idSPK: null == idSPK
-          ? _value.idSPK
-          : idSPK // ignore: cast_nullable_to_non_nullable
               as int,
       selectedSPK: null == selectedSPK
           ? _value.selectedSPK
@@ -159,7 +152,6 @@ abstract class _$$_UpdateCSStateCopyWith<$Res>
   @useResult
   $Res call(
       {int idCS,
-      int idSPK,
       SPK selectedSPK,
       String frameName,
       bool isProcessing,
@@ -189,7 +181,6 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? idCS = null,
-    Object? idSPK = null,
     Object? selectedSPK = null,
     Object? frameName = null,
     Object? isProcessing = null,
@@ -203,10 +194,6 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
       idCS: null == idCS
           ? _value.idCS
           : idCS // ignore: cast_nullable_to_non_nullable
-              as int,
-      idSPK: null == idSPK
-          ? _value.idSPK
-          : idSPK // ignore: cast_nullable_to_non_nullable
               as int,
       selectedSPK: null == selectedSPK
           ? _value.selectedSPK
@@ -249,7 +236,6 @@ class __$$_UpdateCSStateCopyWithImpl<$Res>
 class _$_UpdateCSState implements _UpdateCSState {
   const _$_UpdateCSState(
       {required this.idCS,
-      required this.idSPK,
       required this.selectedSPK,
       required this.frameName,
       required this.isProcessing,
@@ -262,8 +248,6 @@ class _$_UpdateCSState implements _UpdateCSState {
 
   @override
   final int idCS;
-  @override
-  final int idSPK;
   @override
   final SPK selectedSPK;
   @override
@@ -289,7 +273,7 @@ class _$_UpdateCSState implements _UpdateCSState {
 
   @override
   String toString() {
-    return 'UpdateCSState(idCS: $idCS, idSPK: $idSPK, selectedSPK: $selectedSPK, frameName: $frameName, isProcessing: $isProcessing, showErrorMessages: $showErrorMessages, modeSelected: $modeSelected, modeList: $modeList, updateCSForm: $updateCSForm, FOSOUpdateCS: $FOSOUpdateCS)';
+    return 'UpdateCSState(idCS: $idCS, selectedSPK: $selectedSPK, frameName: $frameName, isProcessing: $isProcessing, showErrorMessages: $showErrorMessages, modeSelected: $modeSelected, modeList: $modeList, updateCSForm: $updateCSForm, FOSOUpdateCS: $FOSOUpdateCS)';
   }
 
   @override
@@ -298,7 +282,6 @@ class _$_UpdateCSState implements _UpdateCSState {
         (other.runtimeType == runtimeType &&
             other is _$_UpdateCSState &&
             (identical(other.idCS, idCS) || other.idCS == idCS) &&
-            (identical(other.idSPK, idSPK) || other.idSPK == idSPK) &&
             (identical(other.selectedSPK, selectedSPK) ||
                 other.selectedSPK == selectedSPK) &&
             (identical(other.frameName, frameName) ||
@@ -320,7 +303,6 @@ class _$_UpdateCSState implements _UpdateCSState {
   int get hashCode => Object.hash(
       runtimeType,
       idCS,
-      idSPK,
       selectedSPK,
       frameName,
       isProcessing,
@@ -340,7 +322,6 @@ class _$_UpdateCSState implements _UpdateCSState {
 abstract class _UpdateCSState implements UpdateCSState {
   const factory _UpdateCSState(
           {required final int idCS,
-          required final int idSPK,
           required final SPK selectedSPK,
           required final String frameName,
           required final bool isProcessing,
@@ -353,8 +334,6 @@ abstract class _UpdateCSState implements UpdateCSState {
 
   @override
   int get idCS;
-  @override
-  int get idSPK;
   @override
   SPK get selectedSPK;
   @override

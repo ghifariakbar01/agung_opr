@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../domain/remote_failure.dart';
 import '../../../infrastructure/csu/csu_jenis_penyebab_repository.dart';
-import 'state/csu_jenis_penyebab_item.dart';
-import 'state/csu_jenis_penyebab_state.dart';
+import 'state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
+import 'state/csu_jenis_penyebab/csu_jenis_penyebab_state.dart';
 
 class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
   CSUJenisPenyebabNotifier(
@@ -18,8 +18,6 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
 
-    // debugger(message: 'called');
-
     FOS = await _repository.getJenisItemsOFFLINE();
 
     state = state.copyWith(
@@ -30,8 +28,6 @@ class CSUJenisPenyebabNotifier extends StateNotifier<CSUJenisPenyebabState> {
     Either<RemoteFailure, List<CSUJenisPenyebabItem>>? FOS;
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUJenisItems: none());
-
-    // debugger(message: 'called');
 
     FOS = await _repository.getCSUJenisItems();
 

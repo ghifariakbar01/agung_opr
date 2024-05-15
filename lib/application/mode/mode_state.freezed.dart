@@ -19,91 +19,59 @@ mixin _$ModeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -164,15 +132,10 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) {
     return initial();
   }
@@ -181,15 +144,10 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) {
     return initial?.call();
   }
@@ -198,15 +156,10 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -219,17 +172,11 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) {
     return initial(this);
   }
@@ -238,17 +185,11 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) {
     return initial?.call(this);
   }
@@ -257,16 +198,11 @@ class _$_Initial implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -278,473 +214,6 @@ class _$_Initial implements _Initial {
 
 abstract class _Initial implements ModeState {
   const factory _Initial() = _$_Initial;
-}
-
-/// @nodoc
-abstract class _$$_UpdateFrameDummyCopyWith<$Res> {
-  factory _$$_UpdateFrameDummyCopyWith(
-          _$_UpdateFrameDummy value, $Res Function(_$_UpdateFrameDummy) then) =
-      __$$_UpdateFrameDummyCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_UpdateFrameDummyCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_UpdateFrameDummy>
-    implements _$$_UpdateFrameDummyCopyWith<$Res> {
-  __$$_UpdateFrameDummyCopyWithImpl(
-      _$_UpdateFrameDummy _value, $Res Function(_$_UpdateFrameDummy) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_UpdateFrameDummy implements _UpdateFrameDummy {
-  const _$_UpdateFrameDummy();
-
-  @override
-  String toString() {
-    return 'ModeState.updateFrameDummy()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_UpdateFrameDummy);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
-    required TResult Function() checkSheetLoading,
-    required TResult Function() checkSheetUnloading,
-    required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
-  }) {
-    return updateFrameDummy();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
-    TResult? Function()? checkSheetLoading,
-    TResult? Function()? checkSheetUnloading,
-    TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
-  }) {
-    return updateFrameDummy?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
-    TResult Function()? checkSheetLoading,
-    TResult Function()? checkSheetUnloading,
-    TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (updateFrameDummy != null) {
-      return updateFrameDummy();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
-    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
-    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
-    required TResult Function(_CheckSheetLoadingUnloading value)
-        checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
-  }) {
-    return updateFrameDummy(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
-    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult? Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
-  }) {
-    return updateFrameDummy?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
-    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (updateFrameDummy != null) {
-      return updateFrameDummy(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdateFrameDummy implements ModeState {
-  const factory _UpdateFrameDummy() = _$_UpdateFrameDummy;
-}
-
-/// @nodoc
-abstract class _$$_CheckSheetUnitCopyWith<$Res> {
-  factory _$$_CheckSheetUnitCopyWith(
-          _$_CheckSheetUnit value, $Res Function(_$_CheckSheetUnit) then) =
-      __$$_CheckSheetUnitCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_CheckSheetUnitCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetUnit>
-    implements _$$_CheckSheetUnitCopyWith<$Res> {
-  __$$_CheckSheetUnitCopyWithImpl(
-      _$_CheckSheetUnit _value, $Res Function(_$_CheckSheetUnit) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_CheckSheetUnit implements _CheckSheetUnit {
-  const _$_CheckSheetUnit();
-
-  @override
-  String toString() {
-    return 'ModeState.checkSheetUnit()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_CheckSheetUnit);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
-    required TResult Function() checkSheetLoading,
-    required TResult Function() checkSheetUnloading,
-    required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
-  }) {
-    return checkSheetUnit();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
-    TResult? Function()? checkSheetLoading,
-    TResult? Function()? checkSheetUnloading,
-    TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
-  }) {
-    return checkSheetUnit?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
-    TResult Function()? checkSheetLoading,
-    TResult Function()? checkSheetUnloading,
-    TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (checkSheetUnit != null) {
-      return checkSheetUnit();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
-    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
-    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
-    required TResult Function(_CheckSheetLoadingUnloading value)
-        checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
-  }) {
-    return checkSheetUnit(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
-    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult? Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
-  }) {
-    return checkSheetUnit?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
-    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (checkSheetUnit != null) {
-      return checkSheetUnit(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CheckSheetUnit implements ModeState {
-  const factory _CheckSheetUnit() = _$_CheckSheetUnit;
-}
-
-/// @nodoc
-abstract class _$$_CheckSheetUnitWithoutSPKCopyWith<$Res> {
-  factory _$$_CheckSheetUnitWithoutSPKCopyWith(
-          _$_CheckSheetUnitWithoutSPK value,
-          $Res Function(_$_CheckSheetUnitWithoutSPK) then) =
-      __$$_CheckSheetUnitWithoutSPKCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_CheckSheetUnitWithoutSPKCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetUnitWithoutSPK>
-    implements _$$_CheckSheetUnitWithoutSPKCopyWith<$Res> {
-  __$$_CheckSheetUnitWithoutSPKCopyWithImpl(_$_CheckSheetUnitWithoutSPK _value,
-      $Res Function(_$_CheckSheetUnitWithoutSPK) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_CheckSheetUnitWithoutSPK implements _CheckSheetUnitWithoutSPK {
-  const _$_CheckSheetUnitWithoutSPK();
-
-  @override
-  String toString() {
-    return 'ModeState.checkSheetUnitWithoutSPK()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_CheckSheetUnitWithoutSPK);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
-    required TResult Function() checkSheetLoading,
-    required TResult Function() checkSheetUnloading,
-    required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
-  }) {
-    return checkSheetUnitWithoutSPK();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
-    TResult? Function()? checkSheetLoading,
-    TResult? Function()? checkSheetUnloading,
-    TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
-  }) {
-    return checkSheetUnitWithoutSPK?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
-    TResult Function()? checkSheetLoading,
-    TResult Function()? checkSheetUnloading,
-    TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (checkSheetUnitWithoutSPK != null) {
-      return checkSheetUnitWithoutSPK();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
-    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
-    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
-    required TResult Function(_CheckSheetLoadingUnloading value)
-        checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
-  }) {
-    return checkSheetUnitWithoutSPK(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
-    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult? Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
-  }) {
-    return checkSheetUnitWithoutSPK?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
-    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (checkSheetUnitWithoutSPK != null) {
-      return checkSheetUnitWithoutSPK(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CheckSheetUnitWithoutSPK implements ModeState {
-  const factory _CheckSheetUnitWithoutSPK() = _$_CheckSheetUnitWithoutSPK;
 }
 
 /// @nodoc
@@ -786,15 +255,10 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) {
     return checkSheetLoading();
   }
@@ -803,15 +267,10 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) {
     return checkSheetLoading?.call();
   }
@@ -820,15 +279,10 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetLoading != null) {
@@ -841,17 +295,11 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) {
     return checkSheetLoading(this);
   }
@@ -860,17 +308,11 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) {
     return checkSheetLoading?.call(this);
   }
@@ -879,16 +321,11 @@ class _$_CheckSheetLoading implements _CheckSheetLoading {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetLoading != null) {
@@ -941,15 +378,10 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) {
     return checkSheetUnloading();
   }
@@ -958,15 +390,10 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) {
     return checkSheetUnloading?.call();
   }
@@ -975,15 +402,10 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetUnloading != null) {
@@ -996,17 +418,11 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) {
     return checkSheetUnloading(this);
   }
@@ -1015,17 +431,11 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) {
     return checkSheetUnloading?.call(this);
   }
@@ -1034,16 +444,11 @@ class _$_CheckSheetUnloading implements _CheckSheetUnloading {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetUnloading != null) {
@@ -1099,15 +504,10 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) {
     return checkSheetLoadingUnloading();
   }
@@ -1116,15 +516,10 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) {
     return checkSheetLoadingUnloading?.call();
   }
@@ -1133,15 +528,10 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetLoadingUnloading != null) {
@@ -1154,17 +544,11 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) {
     return checkSheetLoadingUnloading(this);
   }
@@ -1173,17 +557,11 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) {
     return checkSheetLoadingUnloading?.call(this);
   }
@@ -1192,16 +570,11 @@ class _$_CheckSheetLoadingUnloading implements _CheckSheetLoadingUnloading {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
     required TResult orElse(),
   }) {
     if (checkSheetLoadingUnloading != null) {
@@ -1216,35 +589,35 @@ abstract class _CheckSheetLoadingUnloading implements ModeState {
 }
 
 /// @nodoc
-abstract class _$$_CheckSheetGateMerakCopyWith<$Res> {
-  factory _$$_CheckSheetGateMerakCopyWith(_$_CheckSheetGateMerak value,
-          $Res Function(_$_CheckSheetGateMerak) then) =
-      __$$_CheckSheetGateMerakCopyWithImpl<$Res>;
+abstract class _$$_CheckSheetUnitCopyWith<$Res> {
+  factory _$$_CheckSheetUnitCopyWith(
+          _$_CheckSheetUnit value, $Res Function(_$_CheckSheetUnit) then) =
+      __$$_CheckSheetUnitCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_CheckSheetGateMerakCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetGateMerak>
-    implements _$$_CheckSheetGateMerakCopyWith<$Res> {
-  __$$_CheckSheetGateMerakCopyWithImpl(_$_CheckSheetGateMerak _value,
-      $Res Function(_$_CheckSheetGateMerak) _then)
+class __$$_CheckSheetUnitCopyWithImpl<$Res>
+    extends _$ModeStateCopyWithImpl<$Res, _$_CheckSheetUnit>
+    implements _$$_CheckSheetUnitCopyWith<$Res> {
+  __$$_CheckSheetUnitCopyWithImpl(
+      _$_CheckSheetUnit _value, $Res Function(_$_CheckSheetUnit) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
-  const _$_CheckSheetGateMerak();
+class _$_CheckSheetUnit implements _CheckSheetUnit {
+  const _$_CheckSheetUnit();
 
   @override
   String toString() {
-    return 'ModeState.checkSheetGateMerak()';
+    return 'ModeState.checkSheetUnit()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_CheckSheetGateMerak);
+        (other.runtimeType == runtimeType && other is _$_CheckSheetUnit);
   }
 
   @override
@@ -1254,53 +627,38 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
     required TResult Function() checkSheetLoading,
     required TResult Function() checkSheetUnloading,
     required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
+    required TResult Function() checkSheetUnit,
   }) {
-    return checkSheetGateMerak();
+    return checkSheetUnit();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
     TResult? Function()? checkSheetLoading,
     TResult? Function()? checkSheetUnloading,
     TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
+    TResult? Function()? checkSheetUnit,
   }) {
-    return checkSheetGateMerak?.call();
+    return checkSheetUnit?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
     TResult Function()? checkSheetLoading,
     TResult Function()? checkSheetUnloading,
     TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
+    TResult Function()? checkSheetUnit,
     required TResult orElse(),
   }) {
-    if (checkSheetGateMerak != null) {
-      return checkSheetGateMerak();
+    if (checkSheetUnit != null) {
+      return checkSheetUnit();
     }
     return orElse();
   }
@@ -1309,373 +667,46 @@ class _$_CheckSheetGateMerak implements _CheckSheetGateMerak {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
     required TResult Function(_CheckSheetLoading value) checkSheetLoading,
     required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
     required TResult Function(_CheckSheetLoadingUnloading value)
         checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
+    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
   }) {
-    return checkSheetGateMerak(this);
+    return checkSheetUnit(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
     TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult? Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
+    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
   }) {
-    return checkSheetGateMerak?.call(this);
+    return checkSheetUnit?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
     TResult Function(_CheckSheetLoading value)? checkSheetLoading,
     TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
     TResult Function(_CheckSheetLoadingUnloading value)?
         checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (checkSheetGateMerak != null) {
-      return checkSheetGateMerak(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CheckSheetGateMerak implements ModeState {
-  const factory _CheckSheetGateMerak() = _$_CheckSheetGateMerak;
-}
-
-/// @nodoc
-abstract class _$$_AssignUnitMerakCopyWith<$Res> {
-  factory _$$_AssignUnitMerakCopyWith(
-          _$_AssignUnitMerak value, $Res Function(_$_AssignUnitMerak) then) =
-      __$$_AssignUnitMerakCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_AssignUnitMerakCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_AssignUnitMerak>
-    implements _$$_AssignUnitMerakCopyWith<$Res> {
-  __$$_AssignUnitMerakCopyWithImpl(
-      _$_AssignUnitMerak _value, $Res Function(_$_AssignUnitMerak) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_AssignUnitMerak implements _AssignUnitMerak {
-  const _$_AssignUnitMerak();
-
-  @override
-  String toString() {
-    return 'ModeState.assignUnitMerak()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_AssignUnitMerak);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
-    required TResult Function() checkSheetLoading,
-    required TResult Function() checkSheetUnloading,
-    required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
-  }) {
-    return assignUnitMerak();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
-    TResult? Function()? checkSheetLoading,
-    TResult? Function()? checkSheetUnloading,
-    TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
-  }) {
-    return assignUnitMerak?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
-    TResult Function()? checkSheetLoading,
-    TResult Function()? checkSheetUnloading,
-    TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (assignUnitMerak != null) {
-      return assignUnitMerak();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
-    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
-    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
-    required TResult Function(_CheckSheetLoadingUnloading value)
-        checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
-  }) {
-    return assignUnitMerak(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
-    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult? Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
-  }) {
-    return assignUnitMerak?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
     TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
-    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
     required TResult orElse(),
   }) {
-    if (assignUnitMerak != null) {
-      return assignUnitMerak(this);
+    if (checkSheetUnit != null) {
+      return checkSheetUnit(this);
     }
     return orElse();
   }
 }
 
-abstract class _AssignUnitMerak implements ModeState {
-  const factory _AssignUnitMerak() = _$_AssignUnitMerak;
-}
-
-/// @nodoc
-abstract class _$$_DataUpdateQueryCopyWith<$Res> {
-  factory _$$_DataUpdateQueryCopyWith(
-          _$_DataUpdateQuery value, $Res Function(_$_DataUpdateQuery) then) =
-      __$$_DataUpdateQueryCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_DataUpdateQueryCopyWithImpl<$Res>
-    extends _$ModeStateCopyWithImpl<$Res, _$_DataUpdateQuery>
-    implements _$$_DataUpdateQueryCopyWith<$Res> {
-  __$$_DataUpdateQueryCopyWithImpl(
-      _$_DataUpdateQuery _value, $Res Function(_$_DataUpdateQuery) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_DataUpdateQuery implements _DataUpdateQuery {
-  const _$_DataUpdateQuery();
-
-  @override
-  String toString() {
-    return 'ModeState.dataUpdateQuery()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DataUpdateQuery);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() updateFrameDummy,
-    required TResult Function() checkSheetUnit,
-    required TResult Function() checkSheetUnitWithoutSPK,
-    required TResult Function() checkSheetLoading,
-    required TResult Function() checkSheetUnloading,
-    required TResult Function() checkSheetLoadingUnloading,
-    required TResult Function() checkSheetGateMerak,
-    required TResult Function() assignUnitMerak,
-    required TResult Function() dataUpdateQuery,
-  }) {
-    return dataUpdateQuery();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? updateFrameDummy,
-    TResult? Function()? checkSheetUnit,
-    TResult? Function()? checkSheetUnitWithoutSPK,
-    TResult? Function()? checkSheetLoading,
-    TResult? Function()? checkSheetUnloading,
-    TResult? Function()? checkSheetLoadingUnloading,
-    TResult? Function()? checkSheetGateMerak,
-    TResult? Function()? assignUnitMerak,
-    TResult? Function()? dataUpdateQuery,
-  }) {
-    return dataUpdateQuery?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? updateFrameDummy,
-    TResult Function()? checkSheetUnit,
-    TResult Function()? checkSheetUnitWithoutSPK,
-    TResult Function()? checkSheetLoading,
-    TResult Function()? checkSheetUnloading,
-    TResult Function()? checkSheetLoadingUnloading,
-    TResult Function()? checkSheetGateMerak,
-    TResult Function()? assignUnitMerak,
-    TResult Function()? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (dataUpdateQuery != null) {
-      return dataUpdateQuery();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_UpdateFrameDummy value) updateFrameDummy,
-    required TResult Function(_CheckSheetUnit value) checkSheetUnit,
-    required TResult Function(_CheckSheetUnitWithoutSPK value)
-        checkSheetUnitWithoutSPK,
-    required TResult Function(_CheckSheetLoading value) checkSheetLoading,
-    required TResult Function(_CheckSheetUnloading value) checkSheetUnloading,
-    required TResult Function(_CheckSheetLoadingUnloading value)
-        checkSheetLoadingUnloading,
-    required TResult Function(_CheckSheetGateMerak value) checkSheetGateMerak,
-    required TResult Function(_AssignUnitMerak value) assignUnitMerak,
-    required TResult Function(_DataUpdateQuery value) dataUpdateQuery,
-  }) {
-    return dataUpdateQuery(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult? Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult? Function(_CheckSheetUnitWithoutSPK value)?
-        checkSheetUnitWithoutSPK,
-    TResult? Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult? Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult? Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult? Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult? Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult? Function(_DataUpdateQuery value)? dataUpdateQuery,
-  }) {
-    return dataUpdateQuery?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_UpdateFrameDummy value)? updateFrameDummy,
-    TResult Function(_CheckSheetUnit value)? checkSheetUnit,
-    TResult Function(_CheckSheetUnitWithoutSPK value)? checkSheetUnitWithoutSPK,
-    TResult Function(_CheckSheetLoading value)? checkSheetLoading,
-    TResult Function(_CheckSheetUnloading value)? checkSheetUnloading,
-    TResult Function(_CheckSheetLoadingUnloading value)?
-        checkSheetLoadingUnloading,
-    TResult Function(_CheckSheetGateMerak value)? checkSheetGateMerak,
-    TResult Function(_AssignUnitMerak value)? assignUnitMerak,
-    TResult Function(_DataUpdateQuery value)? dataUpdateQuery,
-    required TResult orElse(),
-  }) {
-    if (dataUpdateQuery != null) {
-      return dataUpdateQuery(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _DataUpdateQuery implements ModeState {
-  const factory _DataUpdateQuery() = _$_DataUpdateQuery;
+abstract class _CheckSheetUnit implements ModeState {
+  const factory _CheckSheetUnit() = _$_CheckSheetUnit;
 }

@@ -1,11 +1,8 @@
-import 'dart:developer';
-
+import '../../application/check_sheet/unit/state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
 import '../credentials_storage.dart';
 import '../update_csu/update_csu_remote_service.dart';
 
 import 'dart:convert';
-
-import 'package:agung_opr/application/check_sheet/unit/state/csu_jenis_penyebab_item.dart';
 
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
@@ -30,8 +27,6 @@ class CSUJenisPenyebabRepository {
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getCSUJenisItems() async {
     try {
-      // debugger(message: 'called');
-
       final listCSUJenisItems = await _remoteService.getCSUJenisItems();
 
       await this._SAVECSUJenisItems(csuJenisItemsParam: listCSUJenisItems);
@@ -53,8 +48,6 @@ class CSUJenisPenyebabRepository {
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getCSUPenyebabItems() async {
     try {
-      // debugger(message: 'called');
-
       final listCsuPenyebabItemsParam =
           await _remoteService.getCSUPenyebabItems();
 
@@ -116,18 +109,11 @@ class CSUJenisPenyebabRepository {
     try {
       final csJenisStorage = await _jenisStorage.read();
 
-      // debugger(message: 'called');
-
-      log('CS JENIS ITEMS STORAGE: $csJenisStorage');
-
-      // HAS MAP
       if (csJenisStorage != null) {
-        final responsMap = jsonDecode(csJenisStorage) as List<dynamic>;
-
         final List<CSUJenisPenyebabItem> response =
-            responsMap.map((e) => CSUJenisPenyebabItem.fromJson(e)).toList();
-
-        log('CS JENIS ITEMS STORAGE RESPONSE: $response');
+            (jsonDecode(csJenisStorage) as List<dynamic>)
+                .map((e) => CSUJenisPenyebabItem.fromJson(e))
+                .toList();
 
         if (response.isNotEmpty) {
           return right(response);
@@ -153,18 +139,11 @@ class CSUJenisPenyebabRepository {
     try {
       final csPenyebabStorage = await _penyebabStorage.read();
 
-      // debugger(message: 'called');
-
-      log('CS PENYEBAB ITEMS STORAGE: $csPenyebabStorage');
-
-      // HAS MAP
       if (csPenyebabStorage != null) {
-        final responsMap = jsonDecode(csPenyebabStorage) as List<dynamic>;
-
         final List<CSUJenisPenyebabItem> response =
-            responsMap.map((e) => CSUJenisPenyebabItem.fromJson(e)).toList();
-
-        log('CS PENYEBAB ITEMS STORAGE RESPONSE: $response');
+            (jsonDecode(csPenyebabStorage) as List<dynamic>)
+                .map((e) => CSUJenisPenyebabItem.fromJson(e))
+                .toList();
 
         if (response.isNotEmpty) {
           return right(response);
@@ -191,7 +170,6 @@ class CSUJenisPenyebabRepository {
     }
 
     await _jenisStorage.clear();
-
     return unit;
   }
 
@@ -203,7 +181,6 @@ class CSUJenisPenyebabRepository {
     }
 
     await _penyebabStorage.clear();
-
     return unit;
   }
 }

@@ -5,6 +5,8 @@
 //  "isDefect": 0,
 //  "updatedAt": "2019-10-09 09:39:34"
 
+// ignore_for_file: invalid_annotation_target
+
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';

@@ -12,8 +12,6 @@ class SPKSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final page = ref.watch(spkNotifierProvider.select((value) => value.page));
-
     final search = ref
         .watch(spkSearchNotifierProvider.select((value) => value.searchText));
 
@@ -57,7 +55,7 @@ class SPKSearch extends ConsumerWidget {
                               }()
                             : ref
                                 .read(spkNotifierProvider.notifier)
-                                .getSPKListOFFLINE(page: page);
+                                .getSPKListOFFLINE(page: 0);
                       },
                       child: Ink(child: Icon(Icons.search))),
                   Text(
@@ -105,7 +103,7 @@ class SPKSearch extends ConsumerWidget {
                 }()
               : ref
                   .read(spkNotifierProvider.notifier)
-                  .getSPKListOFFLINE(page: page)),
+                  .getSPKListOFFLINE(page: 0)),
     );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 //  "id": 119886,
 //  "frame": "DUMMY 324",
 //  "gate": "TAM CCY CIBITUNG",
@@ -7,7 +9,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
-import 'csu_trips.dart';
+
+import 'csu_trips/csu_trips.dart';
 
 part 'unit_csu_trips.freezed.dart';
 part 'unit_csu_trips.g.dart';
@@ -17,7 +20,7 @@ class UnitCSUTrips with _$UnitCSUTrips {
   const factory UnitCSUTrips(
       {required int idUnit,
       @JsonKey(toJson: UnitCSUTrips.listToJson)
-          required List<CSUTrips> csuResult}) = _UnitCSUTrips;
+      required List<CSUTrips> csuResult}) = _UnitCSUTrips;
 
   factory UnitCSUTrips.fromJson(Map<String, Object?> json) =>
       _$UnitCSUTripsFromJson(json);

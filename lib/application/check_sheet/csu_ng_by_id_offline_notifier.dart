@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../infrastructure/csu/csu_repository.dart';
-import 'unit/state/csu_ng_by_id_offline_state.dart';
+import 'unit/state/csu_ng/csu_ng_by_id_offline_state.dart';
 
 class CSUNGByIDOfflineNotifier extends StateNotifier<CSUNGByIDfflineState> {
   CSUNGByIDOfflineNotifier(this._repository)

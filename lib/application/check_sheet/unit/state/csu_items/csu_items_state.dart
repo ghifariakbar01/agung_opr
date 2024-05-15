@@ -1,9 +1,9 @@
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../domain/remote_failure.dart';
+import '../../../../../domain/remote_failure.dart';
+import 'csu_items.dart';
 
 part 'csu_items_state.freezed.dart';
 

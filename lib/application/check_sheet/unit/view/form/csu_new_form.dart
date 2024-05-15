@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../style/style.dart';
 
+import '../../../../update_frame/frame.dart';
 import '../../shared/csu_providers.dart';
 import '../form/form_insert_deck.dart';
 import '../form/form_insert_gate.dart';
@@ -12,13 +13,12 @@ import '../form/form_insert_tgl_terima.dart';
 import '../widget/csu_row_item.dart';
 
 class CSUNewForm extends ConsumerWidget {
-  const CSUNewForm();
+  const CSUNewForm(this.frame);
+
+  final Frame frame;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame =
-        ref.watch(csuFrameNotifierProvider.select((value) => value.frame));
-
     final showErrorMessage = ref.watch(updateCSUFrameNotifierProvider
         .select((value) => value.showErrorMessages));
 

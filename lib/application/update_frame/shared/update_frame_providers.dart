@@ -71,3 +71,35 @@ final frameOfflineNotifierProvider =
 final frameSearchNotifierProvider =
     StateNotifierProvider<FrameSearchNotifier, FrameSearchState>(
         (ref) => FrameSearchNotifier());
+
+/*
+  FUTURE PROVIDERS
+*/
+
+final fillFrameFutureProvider =
+    FutureProvider.family<void, int>((ref, idSpk) async {
+  final isOffline = ref.read(isOfflineStateProvider);
+
+  if (isOffline) {
+    return ref
+        .read(frameNotifierProvider.notifier)
+        .getFrameListOFFLINE(idSPK: idSpk);
+  }
+
+  await ref
+      .read(frameOfflineNotifierProvider.notifier)
+      .checkAndUpdateFrameOFFLINEStatus(idSPK: idSpk);
+
+  final frameOfflineOrOnline = ref.read(frameOfflineNotifierProvider);
+  await frameOfflineOrOnline.maybeWhen(
+    hasOfflineStorage: () => ref
+        .read(frameNotifierProvider.notifier)
+        .getFrameListOFFLINE(idSPK: idSpk),
+    orElse: () async {
+      await ref.read(frameNotifierProvider.notifier).getFrameList(idSPK: idSpk);
+      await ref
+          .read(frameOfflineNotifierProvider.notifier)
+          .checkAndUpdateFrameOFFLINEStatus(idSPK: idSpk);
+    },
+  );
+});

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -116,8 +114,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                       .changeGate(id);
 
                   ref
-                      .read(updateCSUFrameNotifierProvider.notifier)
-                      .state
+                      .read(updateCSUFrameNotifierProvider)
                       .updateFrameList
                       .gateTextController
                       .text = id;

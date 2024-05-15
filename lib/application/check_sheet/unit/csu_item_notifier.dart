@@ -1,10 +1,10 @@
-import 'package:agung_opr/application/check_sheet/unit/state/csu_items.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../domain/remote_failure.dart';
 import '../../../infrastructure/csu/csu_items_repository.dart';
-import 'state/csu_items_state.dart';
+import 'state/csu_items/csu_items.dart';
+import 'state/csu_items/csu_items_state.dart';
 
 class CSUItemsNotifier extends StateNotifier<CSUItemsState> {
   CSUItemsNotifier(
@@ -18,8 +18,6 @@ class CSUItemsNotifier extends StateNotifier<CSUItemsState> {
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
 
-    // debugger(message: 'called');
-
     FOS = await _repository.getCSUItems();
 
     state =
@@ -30,8 +28,6 @@ class CSUItemsNotifier extends StateNotifier<CSUItemsState> {
     Either<RemoteFailure, List<CSUItems>>? FOS;
 
     state = state.copyWith(isProcessing: true, FOSOUpdateCSUItems: none());
-
-    // debugger(message: 'called');
 
     FOS = await _repository.getCSUItemsOffline();
 
