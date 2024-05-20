@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/application/update_frame/frame_state.dart';
-import 'package:agung_opr/application/update_frame/update_frame_single_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/frame/frame_repository.dart';
 
 class FrameNotifier extends StateNotifier<FrameState> {
@@ -30,14 +26,24 @@ class FrameNotifier extends StateNotifier<FrameState> {
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
 
-  Future<void> getFrameListWithoutSPK({required int page}) async {
+  Future<void> getFrameListByPage({required int page}) async {
     final Either<RemoteFailure, List<Frame>> FOS;
 
     state = state.copyWith(isProcessing: true, FOSOFrame: none());
 
-    FOS = await _repository.getFrameListWithoutSPK(page: page);
+    FOS = await _repository.getFrameListByPage(page: page);
 
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
+  }
+
+  Future<Frame> getFrameByName({required String frame}) async {
+    state = state.copyWith(isProcessing: true);
+
+    final _frame = await _repository.getFrameByName(frame: frame);
+
+    state = state.copyWith(isProcessing: false);
+
+    return _frame;
   }
 
   Future<void> searchFrameListWithoutSPK({required String frame}) async {
@@ -71,6 +77,16 @@ class FrameNotifier extends StateNotifier<FrameState> {
     state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
   }
 
+  Future<void> getFrameListOFFLINEByPage({required int page}) async {
+    final Either<RemoteFailure, List<Frame>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOFrame: none());
+
+    FOS = await _repository.getFrameListOFFLINEByPage(page: page);
+
+    state = state.copyWith(isProcessing: false, FOSOFrame: optionOf(FOS));
+  }
+
   void changeFrameList(List<Frame> frameList) {
     state = state.copyWith(frameList: [...frameList]);
   }
@@ -81,19 +97,6 @@ class FrameNotifier extends StateNotifier<FrameState> {
     final generateList = List.generate(length, (index) => optionOf(FOS));
 
     state = state.copyWith(FOSOSaveFrame: generateList);
-  }
-
-  void _changeFOSOSaveFrame(
-      {required Option<Either<LocalFailure, Unit>> FOS, required int index}) {
-    final list = [...state.FOSOSaveFrame]; // Create a copy of the list
-
-    final Option<Either<LocalFailure, Unit>> updatedElement = FOS;
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(FOSOSaveFrame: list);
   }
 
   void resetFOSOSaveFrame() {

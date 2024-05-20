@@ -26,7 +26,6 @@ class SortDataRepository {
 
       if (listSPK.isNotEmpty) {
         for (int i = 0; i < listSPK.length; i++) {
-          log('GETTING FRAME INDEX $i');
           await _frameRepository.getFrameList(idSPK: listSPK[i].idSpk);
         }
       }

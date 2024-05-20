@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,35 +23,37 @@ class _SignInFormState extends ConsumerState<SignInForm> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final _resp = prefs.getString('remember_me');
 
-      final rememberMe = prefs.getString('remember_me');
-
-      if (rememberMe != null) {
-        ref.read(signInFormNotifierProvider.notifier).changeRemember(true);
-
+      if (_resp != null) {
+        final _item = jsonDecode(_resp);
+        final _respState = RememberMeState.fromJson(_item);
         ref.read(passwordVisibleProvider.notifier).state = false;
 
-        final rememberMeState =
-            RememberMeState.fromJson(jsonDecode(rememberMe));
-
         ref.read(signInFormNotifierProvider.notifier).changeAllData(
-            idKaryawanStr: rememberMeState.nik,
-            passwordStr: rememberMeState.password,
-            userStr: rememberMeState.nama);
+              userStr: _respState.nama,
+              idKaryawanStr: _respState.nik,
+              jobdeskStr: _respState.jobdesk,
+              passwordStr: _respState.password,
+            );
       }
-
-      log('rememberMe ${rememberMe != null}');
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final jobdesk = [
+      'Cranny',
+      'Driver',
+    ];
+
     final signInForm = ref.watch(signInFormNotifierProvider);
 
     final passwordVisible = ref.watch(passwordVisibleProvider);
 
     final userId = signInForm.userId.getOrLeave('');
     final password = signInForm.password.getOrLeave('');
+    final jobdeskUser = signInForm.jobdesk.getOrLeave('Cranny');
 
     return Form(
       autovalidateMode: signInForm.showErrorMessages
@@ -85,6 +86,38 @@ class _SignInFormState extends ConsumerState<SignInForm> {
                       (_) => null,
                     ),
           ),
+          const SizedBox(height: 16),
+          ProfileLabel(icon: Icons.location_city_outlined, label: 'Jobdesk'),
+          SizedBox(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              child: DropdownButton<String>(
+                value: jobdesk.firstWhere(
+                  (element) => element == jobdeskUser,
+                  orElse: () => jobdesk.first,
+                ),
+                elevation: 16,
+                onChanged: (String? value) async {
+                  if (value != null)
+                    ref
+                        .read(signInFormNotifierProvider.notifier)
+                        .changeJobdesk(value);
+                },
+                items: jobdesk.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Row(
+                      children: [
+                        Text(
+                          value,
+                          style: Themes.customColor(
+                              FontWeight.normal, 14, Colors.black),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              )),
           const SizedBox(height: 16),
           ProfileLabel(icon: Icons.lock_rounded, label: 'Password'),
           SizedBox(
@@ -119,25 +152,6 @@ class _SignInFormState extends ConsumerState<SignInForm> {
                     ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Checkbox(
-                  key: UniqueKey(),
-                  checkColor: Colors.white,
-                  fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: signInForm.isChecked,
-                  onChanged: (_) => ref
-                      .read(signInFormNotifierProvider.notifier)
-                      .changeRemember(toggleBool(signInForm.isChecked))),
-              SizedBox(
-                width: 4,
-              ),
-              Text(
-                'Remember Me',
-                style: Themes.blue(FontWeight.normal, 14),
-              )
-            ],
-          )
         ],
       ),
     );

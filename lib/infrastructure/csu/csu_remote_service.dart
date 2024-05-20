@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import '../../application/check_sheet/unit/state/csu_ng/csu_ng_result.dart';
 import '../../application/check_sheet/unit/state/csu_result.dart';
 import '../../application/check_sheet/unit/state/csu_trips/csu_trips.dart';
+import '../../constants/constants.dart';
 
 class CSUFrameRemoteService {
   CSUFrameRemoteService(this._dio, this._dioRequestNotifier);
@@ -15,11 +16,11 @@ class CSUFrameRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<List<CSUResult>> getCSUByFrameName({required String frameName}) async {
-    // TEST
-    const String dbName = 'cs_trs_cs';
-    const String dbCSDtl = 'cs_trs_cs_dtl';
+  // TEST
+  String dbName = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
+  String dbCSDtl = Constants.isTesting ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_dtl';
 
+  Future<List<CSUResult>> getCSUByFrameName({required String frameName}) async {
     try {
       final data = _dioRequestNotifier;
 
@@ -85,8 +86,6 @@ class CSUFrameRemoteService {
   }
 
   Future<List<CSUNGResult>> getCSUNGByIdCS({required int idCS}) async {
-    const String dbName = 'cs_trs_cs_dtl';
-
     try {
       final data = _dioRequestNotifier;
 
@@ -94,7 +93,7 @@ class CSUFrameRemoteService {
         "mode": "SELECT",
         "command":
             "SELECT id_cs, id_item AS idItem, id_jns_defect AS idJenis, id_p_defect "
-                " AS idPenyebab FROM $dbName WHERE id_cs = '$idCS'",
+                " AS idPenyebab FROM $dbCSDtl WHERE id_cs = '$idCS'",
       });
 
       final response = await _dio.post('',

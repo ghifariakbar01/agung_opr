@@ -1,4 +1,5 @@
 class Constants {
+  static bool isTesting = true;
   static const int passExpCode = 4;
   static const int passWrongCode = 3;
   static const String passWrong = 'Password Wrong';

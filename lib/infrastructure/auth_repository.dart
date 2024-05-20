@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
@@ -41,58 +40,22 @@ class AuthRepository {
   Future<Either<AuthFailure, Unit>> signInWithUsernameAndPassword({
     required UserId userId,
     required Password password,
+    required Jobdesk jobdesk,
   }) async {
     try {
       final userIdStr = userId.getOrCrash();
       final passwordStr = password.getOrCrash();
+      final jobdeskStr = jobdesk.getOrCrash();
 
       final authResponse = await _remoteService.signIn(
         userId: userIdStr,
+        jobdesk: jobdeskStr,
         password: passwordStr,
       );
 
       return authResponse.when(
         withUser: (user) async {
           final userSave = jsonEncode(user);
-
-          log('jsonEncode(user) ${jsonEncode(user)}');
-
-          await _credentialsStorage.save(userSave);
-
-          return right(unit);
-        },
-        failure: (errorCode, message) => left(AuthFailure.server(
-          errorCode,
-          message,
-        )),
-      );
-    } on RestApiException catch (e) {
-      return left(AuthFailure.server(e.errorCode));
-    } on NoConnectionException {
-      return left(const AuthFailure.noConnection());
-    }
-  }
-
-  Future<Either<AuthFailure, Unit>> saveUserAfterUpdate({
-    required IdKaryawan idKaryawan,
-    required UserId userId,
-    required Password password,
-  }) async {
-    try {
-      final userIdStr = userId.getOrCrash();
-      final passwordStr = password.getOrCrash();
-
-      final authResponse = await _remoteService.signIn(
-        userId: userIdStr.toString(),
-        password: passwordStr,
-      );
-
-      return authResponse.when(
-        withUser: (user) async {
-          final userSave = jsonEncode(user);
-
-          log('jsonEncode(user) ${jsonEncode(user)}');
-
           await _credentialsStorage.save(userSave);
 
           return right(unit);

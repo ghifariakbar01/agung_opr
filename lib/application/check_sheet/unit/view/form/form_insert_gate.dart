@@ -57,15 +57,13 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                             ),
                           ),
                         ), (gateResponse) {
-                  /// SET [gateResponse] from GOT gateList
-                  // debugger(message: 'called');
-                  // log('GATE RESPONSE: $gateResponse');
                   if (gateResponse != []) {
                     ref
                         .read(gateNotifierProvider.notifier)
                         .changeGateList(gateResponse);
                   }
                 })));
+
     final gates = ref.watch(gateNotifierProvider);
 
     final gateTextController = ref.watch(updateCSUFrameNotifierProvider
@@ -99,10 +97,10 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
           flex: 1,
           child: Container(
             height: 50,
-            width: 50,
             decoration: BoxDecoration(
-                border: Border.all(color: Palette.primaryColor, width: 2),
-                borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Palette.primaryColor, width: 2),
+            ),
             child: TextButton(
               onPressed: () async {
                 final String? id =

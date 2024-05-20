@@ -157,8 +157,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       warnaTextController: generateListWarnaTextController,
     );
 
-    log('frame list $frame');
-
     final frameHasSPPDC =
         frame.firstWhereOrNull((element) => element.sppdc != null);
 

@@ -12,9 +12,9 @@ import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
+import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../model/shared/model_providers.dart';
-import '../../network_state/network_state_notifier.dart';
 import '../../spk/application/spk_id_query.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
@@ -62,6 +62,9 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedCSQueryFromRepository();
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedCSUQueryFromRepository();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
           .getSavedSPKQueryFromRepository();
@@ -153,13 +156,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                         )),
                 (_) {})));
 
-    ref.listen(networkStateNotifierProvider, (__, _) {});
-    ref.listen(isOfflineStateProvider, (previous, next) {
-      if (previous == true && next == false) {
-        ref.read(userNotifierProvider.notifier).getUser();
-      }
-    });
-
     ref.listen<Option<Either<LocalFailure, Unit>>>(
         clearDataNotifierProvider.select(
           (state) => state.FOSOSPKClearData,
@@ -180,6 +176,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                         )),
                 (_) => ref.read(userNotifierProvider.notifier).getUser())));
 
+    // Frame Queries
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(
           (state) => state.FOSOSPKAutoDataLocalUpdateFrame,
@@ -199,7 +196,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     .changeSavedQuery(
                         idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery))));
 
-    // CS
+    // CheckSheet Queries
     ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
         autoDataUpdateFrameNotifierProvider.select(
           (state) => state.FOSOAutoDataLocalUpdateFrameCS,
@@ -218,7 +215,26 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .changeSavedCSQuery(csIdQueries: csIdQueries))));
 
-    // SPK
+    // CheckSheet Unit Queries
+    ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                          storage: (_) => 'storage penuh',
+                          format: (error) => 'Error Format: $error',
+                          orElse: () => ''),
+                    ),
+                (csuIdQueries) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedCSUQuery(csuIdQueries: csuIdQueries))));
+
+    // SPK Queries
     ref.listen<Option<Either<LocalFailure, List<SPKIdQuery>>>>(
         autoDataUpdateFrameNotifierProvider.select(
           (state) => state.FOSOAutoDataLocalUpdateFrameSPK,

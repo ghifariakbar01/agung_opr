@@ -56,9 +56,6 @@ class SignInPage extends HookConsumerWidget {
                         remember: () => ref
                             .read(signInFormNotifierProvider.notifier)
                             .rememberInfo(),
-                        clear: () => ref
-                            .read(signInFormNotifierProvider.notifier)
-                            .clearInfo(),
                       );
                 },
                 label: 'LOGIN',

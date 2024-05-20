@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/frame.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -48,6 +47,10 @@ class FrameRepository {
   final FrameRemoteService _remoteService;
   final CredentialsStorage _storage;
 
+  Future<bool> hasOfflineDataByPage({required int page}) =>
+      getFrameListOFFLINEByPage(page: page)
+          .then((credentials) => credentials.fold((_) => false, (_) => true));
+
   Future<bool> hasOfflineDataIndex(int idSPK) =>
       getFrameListOFFLINE(idSPK: idSPK)
           .then((credentials) => credentials.fold((_) => false, (_) => true));
@@ -63,7 +66,6 @@ class FrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse =
                   jsonDecode(savedStrings!) as Map<String, dynamic>;
 
@@ -75,14 +77,7 @@ class FrameRepository {
               final newFrameMap =
                   convertListFrameToListMap(parsedMap: parsedMap);
 
-              log('STORAGE FRAME UPDATE: ${jsonEncode(newFrameMap)}');
-
               await _storage.save(jsonEncode(newFrameMap));
-
-              // debugger(message: 'called');
-
-              log('STORAGE UPDATE FRAME DELETE: ${jsonEncode(newFrameMap)}');
-
               return {};
             }();
             break;
@@ -128,6 +123,11 @@ class FrameRepository {
     }
   }
 
+  Future<Frame> getFrameByName({required String frame}) async {
+    final item = await _remoteService.getFrameByName(frame: frame);
+    return item;
+  }
+
   Future<Either<RemoteFailure, List<Frame>>> searchFrameListWithoutSPK(
       {required String search}) async {
     try {
@@ -154,11 +154,10 @@ class FrameRepository {
     }
   }
 
-  Future<Either<RemoteFailure, List<Frame>>> getFrameListWithoutSPK(
+  Future<Either<RemoteFailure, List<Frame>>> getFrameListByPage(
       {required int page, int? idSPK = 0}) async {
     try {
-      final modelMapList =
-          await _remoteService.getFrameListWithoutSPK(page: page);
+      final modelMapList = await _remoteService.getFrameListByPage(page: page);
 
       await this._GETAndADDFrameInMap(newFrame: modelMapList);
 
@@ -191,7 +190,6 @@ class FrameRepository {
       switch (isStorageSaved) {
         case true:
           () async {
-            // debugger(message: 'CALLED');
             final parsed = jsonDecode(savedStrings!) as Map<String, dynamic>;
 
             final Map<String, List<Frame>> parsedMap =
@@ -204,27 +202,26 @@ class FrameRepository {
             // IF EXISTING KEY EXIST, BUT NOT UPDATE SPECIFIC FRAME,
             // PARAM IS FRAME AS WHOLE
             if (parsedMap.containsKey(key)) {
-              final frameList = newValue;
+              if (key == '0') {
+                final _list = [
+                  ...parsedMap.entries
+                      .where((element) => element.key == '0')
+                      .first
+                      .value,
+                  ...newValue
+                ].toSet().toList();
 
-              // debugger(message: 'called');
-
-              log('STORAGE FRAME GET: $frameList');
-
-              parsedMap.update(key, (value) => frameList);
+                parsedMap.update(key, (value) => _list);
+              } else {
+                parsedMap.update(key, (value) => newValue);
+              }
             }
             // IF EXISTING KEY NULL
             else {
-              // debugger(message: 'called');
-
               parsedMap.addAll({key: newValue});
             }
 
-            // debugger(message: 'called');
-
             final newFrameMap = convertListFrameToListMap(parsedMap: parsedMap);
-
-            log('STORAGE FRAME UPDATE: ${jsonEncode(newFrameMap)}');
-
             await _storage.save(jsonEncode(newFrameMap));
 
             return unit;
@@ -232,13 +229,8 @@ class FrameRepository {
           break;
         case false:
           () async {
-            // debugger(message: 'called');
-
             final jsonFrames = convertFrameToListMap(listMap: newFrame);
-
             final newFrameMap = {'${newFrame.keys.first}': jsonFrames};
-
-            log('STORAGE FRAME SAVE: ${jsonEncode(newFrameMap)}');
 
             await _storage.save(jsonEncode(newFrameMap));
 
@@ -261,18 +253,10 @@ class FrameRepository {
       final frameStorage = jsonDecode(savedStrings!) as Map<String, dynamic>;
       final searchUpperCase = search.toUpperCase();
 
-      log('FRAME STORAGE: $frameStorage');
-
       // HAS LIST
       if (frameStorage.isNotEmpty) {
         final Map<String, List<Frame>> parsedMap =
             convertMaptoListMap(map: frameStorage);
-
-        // FIRST, CHECK IF EXISTING KEY EXIST
-
-        // List<SPK> spkList =
-
-        //     (response as List).map((data) => SPK.fromJson(data)).toList();
 
         final frameEntries = parsedMap.entries.firstWhereOrNull(
           (element) => element.key == idSPK,
@@ -323,50 +307,72 @@ class FrameRepository {
     try {
       final frameStorage = await _storage.read();
 
-      // debugger(message: 'called');
-
-      log('FRAME STORAGE: $frameStorage');
-
       // HAS MAP
       if (frameStorage != null) {
-        // debugger(message: 'called');
-
         final responsMap = jsonDecode(frameStorage) as Map<String, dynamic>;
 
         final response = convertMaptoListMap(map: responsMap);
 
-        // debugger(message: 'called');
-
         final key = idSPK.toString();
 
         if (response.containsKey(key)) {
-          // debugger(message: 'called');
-
           final frames = response[key] ?? [];
 
           return right(frames);
         } else {
-          // debugger(message: 'called');
-
           return left(RemoteFailure.parse(message: 'LIST EMPTY'));
         }
       } else {
-        // debugger(message: 'called');
-
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
       }
     } on RestApiException catch (e) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on FormatException catch (error) {
-      // debugger(message: 'called');
-
       return left(RemoteFailure.parse(message: error.message));
+    }
+  }
+
+  /// PAGINATE DATA LIST OF [Frame] FROM STORAGE
+  ///
+  /// process [page] and divide LIST OF [Frame]
+  Future<Either<RemoteFailure, List<Frame>>> getFrameListOFFLINEByPage(
+      {required int page}) async {
+    try {
+      final frameStorage = await _storage.read();
+
+      if (frameStorage != null) {
+        final response = jsonDecode(frameStorage) as Map<String, dynamic>;
+
+        final int itemsPerPage = 10;
+        int _startIndex = page * itemsPerPage;
+
+        final _responseValues = response.entries
+            .firstWhere(
+              (element) => element.key == '0',
+              orElse: () => response.entries.first,
+            )
+            .value as List;
+
+        List<Frame> frameList =
+            _responseValues.map((data) => Frame.fromJson(data)).toList();
+
+        final _endIndex = (_startIndex + itemsPerPage) <= frameList.length
+            ? (_startIndex + itemsPerPage)
+            : frameList.length;
+
+        List<Frame> frame = frameList.sublist(_startIndex, _endIndex);
+        return right(frame);
+      } else {
+        return right([]);
+      }
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
     }
   }
 
@@ -377,8 +383,6 @@ class FrameRepository {
       if (storedCredentials == null) {
         return left(LocalFailure.empty());
       }
-
-      // debugger(message: 'called');
 
       return right(storedCredentials);
     } on FormatException {
@@ -436,8 +440,6 @@ class FrameRepository {
       {required Map<String, List<Frame>> listMap}) {
     final List<Map<String, dynamic>> jsonFrames = [];
 
-    // debugger(message: 'called');
-
     listMap.values.forEach((element) {
       final json = element;
 
@@ -452,8 +454,6 @@ class FrameRepository {
   List<Frame> decodeMapToFrame(
       {required List<Map<String, dynamic>> jsonFrames}) {
     final List<Frame> frame = [];
-
-    // debugger(message: 'called');
 
     jsonFrames.forEach((element) {
       frame.add(Frame.fromJson(element));
@@ -481,7 +481,7 @@ class FrameRepository {
   //       idSPK.toString(): [newFrame]
   //     };
 
-  //     // debugger(message: 'called');
+  //     
 
   //     log('SAVE FRAME INDEXED MAP: ${saveThisMap}');
 

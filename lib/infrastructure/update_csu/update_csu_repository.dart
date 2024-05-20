@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../application/check_sheet/unit/state/csu_id_query.dart';
+import '../../constants/constants.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/value_objects_copy.dart';
 import '../credentials_storage.dart';
@@ -146,6 +147,7 @@ class UpdateCSUFrameRepository {
   CSUIDQuery getOKSavableQuery({
     required int idUnit,
     required int inOut,
+    required int noDefect,
     required String frameName,
     required Gate gate,
     required Deck posisi,
@@ -156,10 +158,9 @@ class UpdateCSUFrameRepository {
     required TglTerima tglTerima,
     required Keterangan keterangan,
     String idCS = 'ID_CS_NA',
-    int noDefect = 0,
   }) {
     // TEST
-    const String dbName = 'cs_trs_cs';
+    String dbName = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
 
     // supir1, supir2,
 
@@ -206,9 +207,7 @@ class UpdateCSUFrameRepository {
         idUnit: idUnit,
         query: insert + ' VALUES ' + '(${requiredQuery} ${csuQuery})');
 
-    log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
-
-    debugger();
+    log('QUERY SAVE CSU OK : ${csuIdQuery.toJson()}');
 
     return csuIdQuery;
   }
@@ -220,8 +219,9 @@ class UpdateCSUFrameRepository {
     String idCS = 'ID_CS_NA',
   }) {
     // TEST
-    const String dbName = 'cs_trs_cs_dtl';
-    const String dbNameCS = 'cs_trs_cs';
+    String dbName =
+        Constants.isTesting ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_dtl';
+    String dbNameCS = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
 
     final String insert = ' INSERT INTO $dbName '
         '(id_cs, frame, c_date, u_date, c_user, '
@@ -268,7 +268,7 @@ class UpdateCSUFrameRepository {
     final CSUIDQuery csuIdQuery =
         CSUIDQuery(idUnit: idUnit, query: queryString);
 
-    log('QUERY SAVE CSU : ${csuIdQuery.toJson()}');
+    log('QUERY SAVE CS NG : ${csuIdQuery.toJson()}');
 
     return csuIdQuery;
   }

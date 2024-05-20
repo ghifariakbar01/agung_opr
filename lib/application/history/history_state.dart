@@ -11,13 +11,13 @@ part 'history_state.freezed.dart';
 class HistoryState with _$HistoryState {
   const factory HistoryState({
     required bool isGetting,
-    required List<History> historyList,
-    required Option<Either<RemoteFailure, List<History>?>> FOSOHistory,
+    required History history,
+    required Option<Either<RemoteFailure, History?>> FOSOHistory,
   }) = _UserState;
 
   factory HistoryState.initial() => HistoryState(
-        historyList: [],
         isGetting: false,
         FOSOHistory: none(),
+        history: History.initial(),
       );
 }

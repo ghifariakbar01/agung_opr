@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../../application/spk/application/spk_id_query.dart';
 import '../../application/user/user_model.dart';
+import '../../constants/constants.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
 import '../credentials_storage.dart';
@@ -154,7 +155,7 @@ class UpdateSPKRepository {
 
   SPKIdQuery getSPKSavableQuery({required int idSPK, required String ket}) {
     // TEST
-    const String dbName = 'opr_trs_spk';
+    String dbName = Constants.isTesting ? 'opr_trs_spk_test' : 'opr_trs_spk';
 
     final cAndUDate = DateTime.now()
         .toString()

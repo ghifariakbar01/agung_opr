@@ -117,12 +117,16 @@ import 'csu_remote_service.dart';
 
 class CSUFrameRepository {
   CSUFrameRepository(
-      this._remoteService, this._storage, this._storageTrips, this._storageNG);
+    this._storage,
+    this._storageTrips,
+    this._storageNG,
+    this._remoteService,
+  );
 
-  final CSUFrameRemoteService _remoteService;
   final CredentialsStorage _storage;
   final CredentialsStorage _storageNG;
   final CredentialsStorage _storageTrips;
+  final CSUFrameRemoteService _remoteService;
 
   Future<bool> hasOfflineCSUNGResultIndex(int idCS) =>
       getCSUNGResultByIDOFFLINE(idCS: idCS)
@@ -335,8 +339,6 @@ class CSUFrameRepository {
 
                 list[indexIdUnit] = element;
 
-                log('STORAGE CSU RESULT TRIP UPDATE: ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
-
                 // SAVE LIST
                 await _storageTrips
                     .save(UnitCSUTrips.listCSUResultTripsToJson(list));
@@ -350,8 +352,6 @@ class CSUFrameRepository {
 
                 await _storageTrips
                     .save(UnitCSUTrips.listCSUResultTripsToJson(list));
-
-                log('STORAGE CSU RESULT TRIP UPDATE W/O ID-UNIT : ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
               }
             }
             // THEN, HANDLE WHERE [ID-UNIT] NOT EXIST,
@@ -364,8 +364,6 @@ class CSUFrameRepository {
               // SAVE LIST
               await _storageTrips
                   .save(UnitCSUTrips.listCSUResultTripsToJson(list));
-
-              log('STORAGE CSU RESULT TRIP UPDATE ID-UNIT N/A: ${UnitCSUTrips.listCSUResultTripsToJson(list)}');
             }
 
             return unit;
@@ -376,10 +374,6 @@ class CSUFrameRepository {
             // SAVE LIST
             await _storageTrips
                 .save(UnitCSUTrips.listCSUResultTripsToJson([newCSUTrips]));
-
-            log('STORAGE CSU RESULT TRIP UPDATE NEW: ${UnitCSUTrips.listCSUResultTripsToJson([
-                  newCSUTrips
-                ])}');
 
             return unit;
           }();
@@ -422,15 +416,11 @@ class CSUFrameRepository {
 
                 // LIST OF PARSED LIST CSU
                 final list = [...parsedListCSUSPK];
-
                 list[indexIdUnit] = element;
-
-                log('STORAGE CSU SPK UPDATE: ${listFrameNameCSUResultToJson(list)}');
-
-                debugger();
+                final _list = listFrameNameCSUResultToJson(list);
 
                 // SAVE LIST
-                await _storage.save(listFrameNameCSUResultToJson(list));
+                await _storage.save(_list);
               }
 
               // [FRAME-NAME] NEW
@@ -538,16 +528,12 @@ class CSUFrameRepository {
     try {
       final frameStorage = await _storage.read();
 
-      log('FRAME STORAGE: $frameStorage');
-
       // HAS MAP
       if (frameStorage != null) {
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<FrameNameCSUResult> response =
             listFrameNameCSUResultFromJson(responsMap);
-
-        log('FRAME STORAGE RESPONSE: $response');
 
         // FIRST, CHECK IF EXISTING KEY [ID-SPK] EXIST
         final key = response

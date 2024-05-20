@@ -60,7 +60,6 @@ class _FormKeteranganState extends ConsumerState<FormKeterangan> {
                     )),
               ),
               onChanged: (value) {
-                // insert keterangan to pool_chk_kr and opr_trs_spk
                 ref
                     .read(updateCSNotifierProvider.notifier)
                     .changeKeterangan(value);

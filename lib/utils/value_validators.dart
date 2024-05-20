@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 
 import '../domain/failures.dart';
@@ -72,6 +71,14 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
     return right(input);
   } else {
     return left(ValueFailure.shortPassword(failedValue: input));
+  }
+}
+
+Either<ValueFailure<String>, String> validateJobdesk(String input) {
+  if (input.isNotEmpty) {
+    return right(input);
+  } else {
+    return left(ValueFailure.invalidJobdesk(failedValue: input));
   }
 }
 

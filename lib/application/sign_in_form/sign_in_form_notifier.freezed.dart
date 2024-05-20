@@ -20,6 +20,7 @@ mixin _$SignInFormState {
   Email get email => throw _privateConstructorUsedError;
   IdKaryawan get idKaryawan => throw _privateConstructorUsedError;
   Password get password => throw _privateConstructorUsedError;
+  Jobdesk get jobdesk => throw _privateConstructorUsedError;
   bool get showErrorMessages => throw _privateConstructorUsedError;
   bool get isSubmitting => throw _privateConstructorUsedError;
   bool get isChecked => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $SignInFormStateCopyWith<$Res> {
       Email email,
       IdKaryawan idKaryawan,
       Password password,
+      Jobdesk jobdesk,
       bool showErrorMessages,
       bool isSubmitting,
       bool isChecked,
@@ -65,6 +67,7 @@ class _$SignInFormStateCopyWithImpl<$Res, $Val extends SignInFormState>
     Object? email = null,
     Object? idKaryawan = null,
     Object? password = null,
+    Object? jobdesk = null,
     Object? showErrorMessages = null,
     Object? isSubmitting = null,
     Object? isChecked = null,
@@ -87,6 +90,10 @@ class _$SignInFormStateCopyWithImpl<$Res, $Val extends SignInFormState>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as Password,
+      jobdesk: null == jobdesk
+          ? _value.jobdesk
+          : jobdesk // ignore: cast_nullable_to_non_nullable
+              as Jobdesk,
       showErrorMessages: null == showErrorMessages
           ? _value.showErrorMessages
           : showErrorMessages // ignore: cast_nullable_to_non_nullable
@@ -120,6 +127,7 @@ abstract class _$$_SignInFormStateCopyWith<$Res>
       Email email,
       IdKaryawan idKaryawan,
       Password password,
+      Jobdesk jobdesk,
       bool showErrorMessages,
       bool isSubmitting,
       bool isChecked,
@@ -141,6 +149,7 @@ class __$$_SignInFormStateCopyWithImpl<$Res>
     Object? email = null,
     Object? idKaryawan = null,
     Object? password = null,
+    Object? jobdesk = null,
     Object? showErrorMessages = null,
     Object? isSubmitting = null,
     Object? isChecked = null,
@@ -163,6 +172,10 @@ class __$$_SignInFormStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as Password,
+      jobdesk: null == jobdesk
+          ? _value.jobdesk
+          : jobdesk // ignore: cast_nullable_to_non_nullable
+              as Jobdesk,
       showErrorMessages: null == showErrorMessages
           ? _value.showErrorMessages
           : showErrorMessages // ignore: cast_nullable_to_non_nullable
@@ -191,6 +204,7 @@ class _$_SignInFormState implements _SignInFormState {
       required this.email,
       required this.idKaryawan,
       required this.password,
+      required this.jobdesk,
       required this.showErrorMessages,
       required this.isSubmitting,
       required this.isChecked,
@@ -205,6 +219,8 @@ class _$_SignInFormState implements _SignInFormState {
   @override
   final Password password;
   @override
+  final Jobdesk jobdesk;
+  @override
   final bool showErrorMessages;
   @override
   final bool isSubmitting;
@@ -215,7 +231,7 @@ class _$_SignInFormState implements _SignInFormState {
 
   @override
   String toString() {
-    return 'SignInFormState(userId: $userId, email: $email, idKaryawan: $idKaryawan, password: $password, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, isChecked: $isChecked, failureOrSuccessOption: $failureOrSuccessOption)';
+    return 'SignInFormState(userId: $userId, email: $email, idKaryawan: $idKaryawan, password: $password, jobdesk: $jobdesk, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, isChecked: $isChecked, failureOrSuccessOption: $failureOrSuccessOption)';
   }
 
   @override
@@ -229,6 +245,7 @@ class _$_SignInFormState implements _SignInFormState {
                 other.idKaryawan == idKaryawan) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.jobdesk, jobdesk) || other.jobdesk == jobdesk) &&
             (identical(other.showErrorMessages, showErrorMessages) ||
                 other.showErrorMessages == showErrorMessages) &&
             (identical(other.isSubmitting, isSubmitting) ||
@@ -246,6 +263,7 @@ class _$_SignInFormState implements _SignInFormState {
       email,
       idKaryawan,
       password,
+      jobdesk,
       showErrorMessages,
       isSubmitting,
       isChecked,
@@ -264,6 +282,7 @@ abstract class _SignInFormState implements SignInFormState {
       required final Email email,
       required final IdKaryawan idKaryawan,
       required final Password password,
+      required final Jobdesk jobdesk,
       required final bool showErrorMessages,
       required final bool isSubmitting,
       required final bool isChecked,
@@ -278,6 +297,8 @@ abstract class _SignInFormState implements SignInFormState {
   IdKaryawan get idKaryawan;
   @override
   Password get password;
+  @override
+  Jobdesk get jobdesk;
   @override
   bool get showErrorMessages;
   @override

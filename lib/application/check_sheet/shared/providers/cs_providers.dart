@@ -19,7 +19,6 @@ import '../../loading/state/update_cs_state.dart';
 import '../cs_item_notifier.dart';
 import '../cs_item_offline_notifier.dart';
 import '../cs_jenis_notifier.dart';
-import '../state/cs_item.dart';
 import '../state/cs_item_offline_state.dart';
 import '../state/cs_item_state.dart';
 import '../state/cs_jenis_state.dart';
@@ -97,85 +96,3 @@ final updateCSOfflineNotifierProvider =
     StateNotifierProvider<UpdateCSOfflineNotifier, UpdateCSOfflineState>(
         (ref) =>
             UpdateCSOfflineNotifier(ref.watch(updateCSRepositoryProvider)));
-
-/* 
-  FUTURE PROVIDERS
-*/
-
-final fillCSJenisFutureProvider = FutureProvider<void>((ref) async {
-  final isOffline = ref.read(isOfflineStateProvider);
-  if (isOffline) {
-    return ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE();
-  }
-
-  await ref
-      .read(csJenisOfflineNotifierProvider.notifier)
-      .checkAndUpdateCSJenisOFFLINEStatus();
-
-  final csJenisOfflineOrOnline = ref.read(csJenisOfflineNotifierProvider);
-  await csJenisOfflineOrOnline.maybeWhen(
-    hasOfflineStorage: () =>
-        ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
-    orElse: () async {
-      await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
-      await ref
-          .read(csJenisOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSJenisOFFLINEStatus();
-    },
-  );
-});
-
-final fillCSItemsFutureProvider = FutureProvider<void>((ref) async {
-  final isOffline = ref.read(isOfflineStateProvider);
-  if (isOffline) {
-    return ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE();
-  }
-
-  await ref
-      .read(csItemOfflineNotifierProvider.notifier)
-      .checkAndUpdateCSItemOFFLINEStatus();
-
-  final csItemsOfflineOrOnline = ref.read(csItemOfflineNotifierProvider);
-  await csItemsOfflineOrOnline.maybeWhen(
-    hasOfflineStorage: () =>
-        ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE(),
-    orElse: () async {
-      await ref.read(csItemNotifierProvider.notifier).getCSItems();
-      await ref
-          .read(csItemOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSItemOFFLINEStatus();
-    },
-  );
-});
-
-final fillCSItemsCombinedProvider = FutureProvider<void>((ref) async {
-  Map<int, List<CSItem>> csItemMap = {};
-  ref.read(csItemNotifierProvider.notifier).changeCSItemsByIDList(csItemMap);
-
-  final int _csID = ref.read(csItemNotifierProvider).selectedId;
-
-  final List<int> csId =
-      ref.read(csItemNotifierProvider.notifier).getCSId(_csID);
-
-  // fill csItemMap
-  final csValuesUncombined = csId.map((id) {
-    final List<CSItem> list =
-        ref.read(csItemNotifierProvider.notifier).getCSItemById(id);
-
-    csItemMap.addAll({
-      id: [...list]
-    });
-
-    return list;
-  }).toList();
-
-  final List<CSItem> csValuesCombined =
-      csValuesUncombined.fold([], (prev, next) => prev + next);
-
-  /// RUN [changeFillEmptyList] TO UPDATE PLACEHOLDERS
-  ref.read(updateCSNotifierProvider.notifier).changeFillEmptyList(
-        isNGLength: csValuesCombined.length,
-      );
-
-  return;
-});

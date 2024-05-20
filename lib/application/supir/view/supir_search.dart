@@ -1,5 +1,5 @@
-
 import 'package:agung_opr/application/supir/shared/supir_providers.dart';
+import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,52 +10,13 @@ class SupirSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final page = ref.watch(supirNotifierProvider.select((value) => value.page));
-
-    final search = ref
-        .watch(supirSearchNotifierProvider.select((value) => value.searchText));
-
-    final focusNode = ref
-        .watch(supirSearchNotifierProvider.select((value) => value.focusNode));
-
     return SizedBox(
-      height: 48,
+      height: 50,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
           autofocus: false,
-          focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Input ID/NAMA/NO. HP/ALAMAT/KATEGORI',
-            icon: SizedBox(
-              width: 55,
-              child: Row(
-                children: [
-                  InkWell(
-                      onTap: () async {
-                        focusNode.unfocus();
-
-                        await search.isNotEmpty && search.length > 1
-                            ? () async {
-                                await ref
-                                    .read(supirNotifierProvider.notifier)
-                                    .searchSupirListOFFLINE(search: search);
-
-                                ref
-                                    .read(supirSearchNotifierProvider.notifier)
-                                    .changeSearchText('');
-                              }()
-                            : await ref
-                                .read(supirNotifierProvider.notifier)
-                                .getSupirListOFFLINE(page: page);
-                      },
-                      child: Ink(child: Icon(Icons.search))),
-                  Text(
-                    'Cari',
-                    style: Themes.greyHint(FontWeight.bold, 11),
-                  )
-                ],
-              ),
-            ),
+            ' Cari berdasarkan nama ',
           ),
           onTap: () => ref
               .read(supirSearchNotifierProvider.notifier)
@@ -73,22 +34,35 @@ class SupirSearch extends ConsumerWidget {
             } else {
               await ref
                   .read(supirNotifierProvider.notifier)
-                  .getSupirListOFFLINE(page: page);
+                  .getSupirListOFFLINE(page: 0);
             }
           },
-          onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
-              ? () {
-                  ref
-                      .read(supirNotifierProvider.notifier)
-                      .searchSupirListOFFLINE(search: search);
-
-                  ref
-                      .read(supirSearchNotifierProvider.notifier)
-                      .changeSearchText('');
-                }()
-              : ref
-                  .read(supirNotifierProvider.notifier)
-                  .getSupirListOFFLINE(page: page)),
+          onFieldSubmitted: (search) => _searchSupir(search, ref, 0)),
     );
+  }
+
+  Future<void> _searchSupir(String search, WidgetRef ref, int page) async {
+    await search.isNotEmpty && search.length > 1
+        ? () async {
+            final isOnline = ref.read(isOfflineStateProvider) == false;
+            if (isOnline) {
+              await ref
+                  .read(supirNotifierProvider.notifier)
+                  .searchSupirList(search: search);
+
+              await ref
+                  .read(supirOfflineNotifierProvider.notifier)
+                  .checkAndUpdateSupirOFFLINEStatus();
+            } else {
+              await ref
+                  .read(supirNotifierProvider.notifier)
+                  .searchSupirListOFFLINE(search: search);
+            }
+
+            ref.read(supirSearchNotifierProvider.notifier).changeSearchText('');
+          }()
+        : await ref
+            .read(supirNotifierProvider.notifier)
+            .getSupirListOFFLINE(page: page);
   }
 }

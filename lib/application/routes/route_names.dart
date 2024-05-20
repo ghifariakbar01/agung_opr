@@ -23,8 +23,8 @@ class RouteNames {
   static const checkSheetUnitNameRoute = 'checkSheetUnit';
   static const checkSheetUnitName = 'checkSheetUnit';
 
-  static const CSUListNameRoute = 'CSUList';
-  static const CSUListName = 'CSUList';
+  static const CSUResultNameRoute = 'CSUResult';
+  static const CSUResultRoute = 'CSUResult';
 
   static const CSUNewNameRoute = 'CSUNew';
   static const CSUNewName = 'CSUNew';

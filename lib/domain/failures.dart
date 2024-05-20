@@ -29,6 +29,9 @@ class ValueFailure<T> with _$ValueFailure<T> {
   const factory ValueFailure.shortPassword({
     required T failedValue,
   }) = ShortPassword<T>;
+  const factory ValueFailure.invalidJobdesk({
+    required T failedValue,
+  }) = InvalidJobDesk<T>;
   const factory ValueFailure.invalidJam({
     required T failedValue,
   }) = InvalidJam<T>;

@@ -6,19 +6,21 @@ import 'package:agung_opr/infrastructure/exceptions.dart';
 import 'package:dio/dio.dart';
 
 import '../../application/update_frame/frame.dart';
+import '../../constants/constants.dart';
 
 class FrameRemoteService {
   FrameRemoteService(this._dio, this._dioRequestNotifier);
 
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
+  // TEST
+  String dbName =
+      Constants.isTesting ? 'opr_trs_ti_unit_test' : 'opr_trs_ti_unit';
+  String dbOprTrsSpk =
+      Constants.isTesting ? 'opr_trs_spk_unit_test' : 'opr_trs_spk_unit';
+  String dbCustomer = 'sls_mst_cust';
 
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
-    // TEST
-    const String dbName = 'opr_trs_ti_unit';
-    const String dbOprTrsSpk = 'opr_trs_spk_unit';
-    const String dbCustomer = 'sls_mst_cust';
-
     try {
       final data = _dioRequestNotifier;
 
@@ -46,11 +48,6 @@ class FrameRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data ${jsonEncode(data)}');
-      log('response $response');
-
-      // debugger();
-
       final items = response.data?[0];
 
       if (items['status'] == 'Success') {
@@ -64,26 +61,16 @@ class FrameRemoteService {
               List<Frame> frameList =
                   (list).map((data) => Frame.fromJson(data)).toList();
 
-              log('LIST FRAME: $list');
-
               frameMap.update('$idSPK', (value) => frameList);
-
-              log('LIST MAP: $frameMap');
 
               return frameMap;
             } catch (e) {
-              log('list error $e');
-
               throw FormatException('error while iterating list model');
             }
           } else {
-            log('list empty');
-
             return frameMap;
           }
         } else {
-          log('list empty');
-
           return frameMap;
         }
       } else {
@@ -108,12 +95,8 @@ class FrameRemoteService {
     }
   }
 
-  Future<Map<String, List<Frame>>> getFrameListWithoutSPK(
+  Future<Map<String, List<Frame>>> getFrameListByPage(
       {required int page}) async {
-    // TEST
-    const String dbName = 'opr_trs_ti_unit';
-    const String dbCustomer = 'sls_mst_cust';
-
     try {
       final data = _dioRequestNotifier;
 
@@ -129,19 +112,17 @@ class FrameRemoteService {
             " T.engine," +
             " T.warna," +
             " T.id_kend_type," +
+            " T.last_spk," +
             " T.no_invoice," +
             " T.c_date," +
-            "(SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
+            " (SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +
             " $dbName AS T" +
-            " ORDER BY T.id_unit DESC OFFSET $page ROWS FETCH FIRST 100 ROWS ONLY"
+            " ORDER BY T.id_unit DESC OFFSET ${page}0 ROWS FETCH FIRST 10 ROWS ONLY"
       });
 
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      log('response $response');
 
       final items = response.data?[0];
 
@@ -156,11 +137,7 @@ class FrameRemoteService {
               List<Frame> frameList =
                   (list).map((data) => Frame.fromJson(data)).toList();
 
-              log('LIST FRAME: $list');
-
               frameMap.update('0', (value) => frameList);
-
-              log('LIST MAP: $frameMap');
 
               return frameMap;
             } catch (e) {
@@ -169,13 +146,9 @@ class FrameRemoteService {
               throw FormatException('error while iterating list model');
             }
           } else {
-            log('list empty');
-
             return frameMap;
           }
         } else {
-          log('list empty');
-
           return frameMap;
         }
       } else {
@@ -202,10 +175,6 @@ class FrameRemoteService {
 
   Future<Map<String, List<Frame>>> searchFrameListWithoutSPK(
       {required String search}) async {
-    // TEST
-    const String dbName = 'opr_trs_ti_unit';
-    const String dbCustomer = 'sls_mst_cust';
-
     try {
       final data = _dioRequestNotifier;
 
@@ -222,6 +191,7 @@ class FrameRemoteService {
             " T.warna," +
             " T.id_kend_type," +
             " T.no_invoice," +
+            " T.last_spk," +
             " T.c_date," +
             "(SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +
@@ -233,9 +203,6 @@ class FrameRemoteService {
 
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      log('response $response');
 
       final items = response.data?[0];
 
@@ -250,11 +217,7 @@ class FrameRemoteService {
               List<Frame> frameList =
                   (list).map((data) => Frame.fromJson(data)).toList();
 
-              log('LIST FRAME: $list');
-
               frameMap.update('0', (value) => frameList);
-
-              log('LIST MAP: $frameMap');
 
               return frameMap;
             } catch (e) {
@@ -263,14 +226,78 @@ class FrameRemoteService {
               throw FormatException('error while iterating list model');
             }
           } else {
-            log('list empty');
-
             return frameMap;
           }
         } else {
-          log('list empty');
-
           return frameMap;
+        }
+      } else {
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError || e.isConnectionTimeout) {
+        throw NoConnectionException();
+      } else if (e.response != null) {
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<Frame> getFrameByName({required String frame}) async {
+    try {
+      final data = _dioRequestNotifier;
+
+      data.addAll({
+        "mode": "SELECT",
+        "command": "SELECT" +
+            " T.id_unit," +
+            " T.frame," +
+            " T.engine," +
+            " T.warna," +
+            " T.id_kend_type," +
+            " T.last_spk," +
+            " T.no_invoice," +
+            " T.c_date," +
+            " (SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
+            " FROM " +
+            " $dbName AS T" +
+            " WHERE T.frame = '$frame' "
+                " ORDER BY T.id_unit DESC OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY"
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      final items = response.data?[0];
+
+      if (items['status'] == 'Success') {
+        final listExist = items['items'] != null && items['items'] is List;
+
+        if (listExist) {
+          final list = items['items'] as List<dynamic>;
+
+          if (list.isNotEmpty) {
+            try {
+              final data = list.first as Map<String, dynamic>;
+              return Frame.fromJson(data);
+            } catch (e) {
+              throw FormatException('list empty');
+            }
+          } else {
+            throw AssertionError('frame not found');
+          }
+        } else {
+          throw AssertionError('list not exist');
         }
       } else {
         final message = items['error'] as String?;

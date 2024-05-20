@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../domain/local_failure.dart';
 import '../../domain/value_objects_copy.dart';
@@ -22,8 +25,6 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   final UpdateCSUFrameRepository _repository;
 
   void changeFillInitial() {
-    // debugger(message: 'called');
-
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(
       inOut: false,
@@ -43,22 +44,29 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   }
 
   void changeFillWithValue({required CSUResult csuResult}) {
+    final _tglKirim =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglKirim!));
+    final _tglTerima =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglTerima!));
+
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(
       inOut: csuResult.inout == false ? true : false,
       gate: Gate(csuResult.idGate.toString()),
       deck: Deck(csuResult.posisi ?? ''),
       supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
-      tglKirim: TglKirim(''),
-      tglTerima: TglTerima(''),
-      keterangan: Keterangan(''),
+      tglKirim: TglKirim(csuResult.tglKirim == null ? '' : _tglKirim),
+      tglTerima: TglTerima(csuResult.tglTerima == null ? '' : _tglTerima),
+      keterangan: Keterangan(csuResult.keterangan ?? ''),
       gateTextController:
           TextEditingController(text: csuResult.idGate.toString()),
       deckTextController: TextEditingController(text: csuResult.posisi ?? ''),
       supirSDRTextController:
           TextEditingController(text: csuResult.supirSDR ?? ''),
-      tglTerimaTextController: TextEditingController(),
-      tglKirimTextController: TextEditingController(),
+      tglTerimaTextController: TextEditingController(
+          text: csuResult.tglTerima == null ? '' : _tglTerima),
+      tglKirimTextController: TextEditingController(
+          text: csuResult.tglKirim == null ? '' : _tglKirim),
       keteranganTextController:
           TextEditingController(text: csuResult.keterangan ?? ''),
     ));
@@ -153,7 +161,9 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     );
 
     final CSUIDQuery csuIdQuery = CSUIDQuery(
-        idUnit: state.idUnit, query: queryId.query + queryIdNG.query);
+      query: queryIdNG.query + queryId.query,
+      idUnit: state.idUnit,
+    );
 
     FOS = await _repository.saveCSUQuery(queryId: csuIdQuery, isNG: isNG);
 

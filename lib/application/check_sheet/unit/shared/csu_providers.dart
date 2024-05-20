@@ -19,17 +19,28 @@ import '../../../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../../../shared/providers.dart';
 import '../../../update_csu/state/update_csu_state.dart';
 import '../../../update_csu/update_csu_notifier.dart';
+import '../../../update_frame/frame.dart';
 import '../../csu_items_offline_notifier.dart';
 import '../../csu_ng_by_id_offline_notifier.dart';
 
+import '../../csu_result_offline_notifier.dart';
+import '../../csu_trips_offline_notifier.dart';
 import '../csu_item_notifier.dart';
 import '../csu_jenis_penyebab_notifier.dart';
 import '../csu_jenis_penyebab_offline_notifier.dart';
+import '../csu_result_notifier.dart';
 import '../state/csu_items/csu_items_offline_state.dart';
 import '../state/csu_items/csu_items_state.dart';
 import '../state/csu_jenis_penyebab/csu_jenis_penyebab_offline_state.dart';
 import '../state/csu_jenis_penyebab/csu_jenis_penyebab_state.dart';
 import '../state/csu_ng/csu_ng_by_id_offline_state.dart';
+import '../state/csu_result_offline_state.dart';
+import '../state/csu_result_state.dart';
+import '../state/csu_trips_offline_state.dart';
+
+final csuLastPageProvider = StateProvider<Frame>((ref) {
+  return Frame.initial();
+});
 
 /* 
     --
@@ -50,10 +61,21 @@ final csuFrameRemoteServiceProvider = Provider(
 );
 
 final csuFrameRepositoryProvider = Provider((ref) => CSUFrameRepository(
-    ref.watch(csuFrameRemoteServiceProvider),
-    ref.watch(csuFrameStorage),
-    ref.watch(csuFrameTripsStorage),
-    ref.watch(csuNGByIDFrameStorage)));
+      ref.watch(csuFrameStorage),
+      ref.watch(csuFrameTripsStorage),
+      ref.watch(csuNGByIDFrameStorage),
+      ref.watch(csuFrameRemoteServiceProvider),
+    ));
+
+final csuFrameNotifierProvider =
+    StateNotifierProvider<CSUFrameResultNotifier, CSUResultState>(
+  (ref) => CSUFrameResultNotifier(ref.watch(csuFrameRepositoryProvider)),
+);
+
+final csuResultOfflineNotifierProvider =
+    StateNotifierProvider<CSUResultOfflineNotifier, CSUResultOfflineState>(
+        (ref) =>
+            CSUResultOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
 
 final csuNGByIDOfflineNotifierProvider =
     StateNotifierProvider<CSUNGByIDOfflineNotifier, CSUNGByIDfflineState>(
@@ -99,6 +121,11 @@ final updateCSUFrameOfflineNotifierProvider = StateNotifierProvider<
 final csuFrameTripsStorage = Provider<CredentialsStorage>(
   (ref) => CSUFTripsFrameStorage(ref.watch(flutterSecureStorageProvider)),
 );
+
+final csuTripsOfflineNotifierProvider =
+    StateNotifierProvider<CSUTripsOfflineNotifier, CSUTripsOfflineState>(
+        (ref) =>
+            CSUTripsOfflineNotifier(ref.watch(csuFrameRepositoryProvider)));
 
 /* 
     --

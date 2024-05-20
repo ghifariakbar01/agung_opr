@@ -1,13 +1,14 @@
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CrannyItem extends StatelessWidget {
+class CrannyItem extends ConsumerWidget {
   const CrannyItem({Key? key, required this.label}) : super(key: key);
 
   final String label;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       child: Container(

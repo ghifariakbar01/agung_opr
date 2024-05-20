@@ -23,6 +23,16 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
   }
 
+  Future<SPK> getSPKById({required int idSpk}) async {
+    state = state.copyWith(isProcessing: true);
+
+    final _spk = await _repository.getSPKById(idSpk: idSpk);
+
+    state = state.copyWith(isProcessing: false);
+
+    return _spk;
+  }
+
   Future<void> getSPKListOFFLINE({required int page}) async {
     final Either<RemoteFailure, List<SPK>> FOS;
 

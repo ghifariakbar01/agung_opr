@@ -27,6 +27,7 @@ mixin _$ValueFailure<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) =>
       throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ mixin _$ValueFailure<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) =>
       throw _privateConstructorUsedError;
@@ -53,6 +55,7 @@ mixin _$ValueFailure<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) =>
@@ -67,6 +70,7 @@ mixin _$ValueFailure<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) =>
       throw _privateConstructorUsedError;
@@ -80,6 +84,7 @@ mixin _$ValueFailure<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) =>
       throw _privateConstructorUsedError;
@@ -93,6 +98,7 @@ mixin _$ValueFailure<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) =>
@@ -221,6 +227,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return exceedingLength(failedValue, max);
@@ -237,6 +244,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return exceedingLength?.call(failedValue, max);
@@ -253,6 +261,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -273,6 +282,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return exceedingLength(this);
@@ -289,6 +299,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return exceedingLength?.call(this);
@@ -305,6 +316,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -403,6 +415,7 @@ class _$Empty<T> implements Empty<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return empty(failedValue);
@@ -419,6 +432,7 @@ class _$Empty<T> implements Empty<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return empty?.call(failedValue);
@@ -435,6 +449,7 @@ class _$Empty<T> implements Empty<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -455,6 +470,7 @@ class _$Empty<T> implements Empty<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return empty(this);
@@ -471,6 +487,7 @@ class _$Empty<T> implements Empty<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return empty?.call(this);
@@ -487,6 +504,7 @@ class _$Empty<T> implements Empty<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -584,6 +602,7 @@ class _$Multiline<T> implements Multiline<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return multiline(failedValue);
@@ -600,6 +619,7 @@ class _$Multiline<T> implements Multiline<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return multiline?.call(failedValue);
@@ -616,6 +636,7 @@ class _$Multiline<T> implements Multiline<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -636,6 +657,7 @@ class _$Multiline<T> implements Multiline<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return multiline(this);
@@ -652,6 +674,7 @@ class _$Multiline<T> implements Multiline<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return multiline?.call(this);
@@ -668,6 +691,7 @@ class _$Multiline<T> implements Multiline<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -765,6 +789,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return invalidEmail(failedValue);
@@ -781,6 +806,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return invalidEmail?.call(failedValue);
@@ -797,6 +823,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -817,6 +844,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return invalidEmail(this);
@@ -833,6 +861,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return invalidEmail?.call(this);
@@ -849,6 +878,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -948,6 +978,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return invalidIdKaryawan(failedValue);
@@ -964,6 +995,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return invalidIdKaryawan?.call(failedValue);
@@ -980,6 +1012,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1000,6 +1033,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return invalidIdKaryawan(this);
@@ -1016,6 +1050,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return invalidIdKaryawan?.call(this);
@@ -1032,6 +1067,7 @@ class _$InvalidIdKaryawan<T> implements InvalidIdKaryawan<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1130,6 +1166,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return invalidNoHP(failedValue);
@@ -1146,6 +1183,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return invalidNoHP?.call(failedValue);
@@ -1162,6 +1200,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1182,6 +1221,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return invalidNoHP(this);
@@ -1198,6 +1238,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return invalidNoHP?.call(this);
@@ -1214,6 +1255,7 @@ class _$InvalidNoHP<T> implements InvalidNoHP<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1311,6 +1353,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return invalidName(failedValue);
@@ -1327,6 +1370,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return invalidName?.call(failedValue);
@@ -1343,6 +1387,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1363,6 +1408,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return invalidName(this);
@@ -1379,6 +1425,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return invalidName?.call(this);
@@ -1395,6 +1442,7 @@ class _$InvalidName<T> implements InvalidName<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1492,6 +1540,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return shortPassword(failedValue);
@@ -1508,6 +1557,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return shortPassword?.call(failedValue);
@@ -1524,6 +1574,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1544,6 +1595,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return shortPassword(this);
@@ -1560,6 +1612,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return shortPassword?.call(this);
@@ -1576,6 +1629,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1595,6 +1649,194 @@ abstract class ShortPassword<T> implements ValueFailure<T> {
   @override
   @JsonKey(ignore: true)
   _$$ShortPasswordCopyWith<T, _$ShortPassword<T>> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$InvalidJobDeskCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory _$$InvalidJobDeskCopyWith(
+          _$InvalidJobDesk<T> value, $Res Function(_$InvalidJobDesk<T>) then) =
+      __$$InvalidJobDeskCopyWithImpl<T, $Res>;
+  @override
+  @useResult
+  $Res call({T failedValue});
+}
+
+/// @nodoc
+class __$$InvalidJobDeskCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res, _$InvalidJobDesk<T>>
+    implements _$$InvalidJobDeskCopyWith<T, $Res> {
+  __$$InvalidJobDeskCopyWithImpl(
+      _$InvalidJobDesk<T> _value, $Res Function(_$InvalidJobDesk<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? failedValue = freezed,
+  }) {
+    return _then(_$InvalidJobDesk<T>(
+      failedValue: freezed == failedValue
+          ? _value.failedValue
+          : failedValue // ignore: cast_nullable_to_non_nullable
+              as T,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$InvalidJobDesk<T> implements InvalidJobDesk<T> {
+  const _$InvalidJobDesk({required this.failedValue});
+
+  @override
+  final T failedValue;
+
+  @override
+  String toString() {
+    return 'ValueFailure<$T>.invalidJobdesk(failedValue: $failedValue)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InvalidJobDesk<T> &&
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InvalidJobDeskCopyWith<T, _$InvalidJobDesk<T>> get copyWith =>
+      __$$InvalidJobDeskCopyWithImpl<T, _$InvalidJobDesk<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T failedValue, int max) exceedingLength,
+    required TResult Function(T failedValue) empty,
+    required TResult Function(T failedValue) multiline,
+    required TResult Function(T failedValue) invalidEmail,
+    required TResult Function(T failedValue) invalidIdKaryawan,
+    required TResult Function(T failedValue) invalidNoHP,
+    required TResult Function(T failedValue) invalidName,
+    required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
+    required TResult Function(T failedValue) invalidJam,
+  }) {
+    return invalidJobdesk(failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T failedValue, int max)? exceedingLength,
+    TResult? Function(T failedValue)? empty,
+    TResult? Function(T failedValue)? multiline,
+    TResult? Function(T failedValue)? invalidEmail,
+    TResult? Function(T failedValue)? invalidIdKaryawan,
+    TResult? Function(T failedValue)? invalidNoHP,
+    TResult? Function(T failedValue)? invalidName,
+    TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
+    TResult? Function(T failedValue)? invalidJam,
+  }) {
+    return invalidJobdesk?.call(failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T failedValue, int max)? exceedingLength,
+    TResult Function(T failedValue)? empty,
+    TResult Function(T failedValue)? multiline,
+    TResult Function(T failedValue)? invalidEmail,
+    TResult Function(T failedValue)? invalidIdKaryawan,
+    TResult Function(T failedValue)? invalidNoHP,
+    TResult Function(T failedValue)? invalidName,
+    TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
+    TResult Function(T failedValue)? invalidJam,
+    required TResult orElse(),
+  }) {
+    if (invalidJobdesk != null) {
+      return invalidJobdesk(failedValue);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ExceedingLength<T> value) exceedingLength,
+    required TResult Function(Empty<T> value) empty,
+    required TResult Function(Multiline<T> value) multiline,
+    required TResult Function(InvalidEmail<T> value) invalidEmail,
+    required TResult Function(InvalidIdKaryawan<T> value) invalidIdKaryawan,
+    required TResult Function(InvalidNoHP<T> value) invalidNoHP,
+    required TResult Function(InvalidName<T> value) invalidName,
+    required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
+    required TResult Function(InvalidJam<T> value) invalidJam,
+  }) {
+    return invalidJobdesk(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ExceedingLength<T> value)? exceedingLength,
+    TResult? Function(Empty<T> value)? empty,
+    TResult? Function(Multiline<T> value)? multiline,
+    TResult? Function(InvalidEmail<T> value)? invalidEmail,
+    TResult? Function(InvalidIdKaryawan<T> value)? invalidIdKaryawan,
+    TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
+    TResult? Function(InvalidName<T> value)? invalidName,
+    TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
+    TResult? Function(InvalidJam<T> value)? invalidJam,
+  }) {
+    return invalidJobdesk?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ExceedingLength<T> value)? exceedingLength,
+    TResult Function(Empty<T> value)? empty,
+    TResult Function(Multiline<T> value)? multiline,
+    TResult Function(InvalidEmail<T> value)? invalidEmail,
+    TResult Function(InvalidIdKaryawan<T> value)? invalidIdKaryawan,
+    TResult Function(InvalidNoHP<T> value)? invalidNoHP,
+    TResult Function(InvalidName<T> value)? invalidName,
+    TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
+    TResult Function(InvalidJam<T> value)? invalidJam,
+    required TResult orElse(),
+  }) {
+    if (invalidJobdesk != null) {
+      return invalidJobdesk(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidJobDesk<T> implements ValueFailure<T> {
+  const factory InvalidJobDesk({required final T failedValue}) =
+      _$InvalidJobDesk<T>;
+
+  @override
+  T get failedValue;
+  @override
+  @JsonKey(ignore: true)
+  _$$InvalidJobDeskCopyWith<T, _$InvalidJobDesk<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1674,6 +1916,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     required TResult Function(T failedValue) invalidNoHP,
     required TResult Function(T failedValue) invalidName,
     required TResult Function(T failedValue) shortPassword,
+    required TResult Function(T failedValue) invalidJobdesk,
     required TResult Function(T failedValue) invalidJam,
   }) {
     return invalidJam(failedValue);
@@ -1690,6 +1933,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     TResult? Function(T failedValue)? invalidNoHP,
     TResult? Function(T failedValue)? invalidName,
     TResult? Function(T failedValue)? shortPassword,
+    TResult? Function(T failedValue)? invalidJobdesk,
     TResult? Function(T failedValue)? invalidJam,
   }) {
     return invalidJam?.call(failedValue);
@@ -1706,6 +1950,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     TResult Function(T failedValue)? invalidNoHP,
     TResult Function(T failedValue)? invalidName,
     TResult Function(T failedValue)? shortPassword,
+    TResult Function(T failedValue)? invalidJobdesk,
     TResult Function(T failedValue)? invalidJam,
     required TResult orElse(),
   }) {
@@ -1726,6 +1971,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     required TResult Function(InvalidNoHP<T> value) invalidNoHP,
     required TResult Function(InvalidName<T> value) invalidName,
     required TResult Function(ShortPassword<T> value) shortPassword,
+    required TResult Function(InvalidJobDesk<T> value) invalidJobdesk,
     required TResult Function(InvalidJam<T> value) invalidJam,
   }) {
     return invalidJam(this);
@@ -1742,6 +1988,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     TResult? Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult? Function(InvalidName<T> value)? invalidName,
     TResult? Function(ShortPassword<T> value)? shortPassword,
+    TResult? Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult? Function(InvalidJam<T> value)? invalidJam,
   }) {
     return invalidJam?.call(this);
@@ -1758,6 +2005,7 @@ class _$InvalidJam<T> implements InvalidJam<T> {
     TResult Function(InvalidNoHP<T> value)? invalidNoHP,
     TResult Function(InvalidName<T> value)? invalidName,
     TResult Function(ShortPassword<T> value)? shortPassword,
+    TResult Function(InvalidJobDesk<T> value)? invalidJobdesk,
     TResult Function(InvalidJam<T> value)? invalidJam,
     required TResult orElse(),
   }) {

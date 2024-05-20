@@ -36,6 +36,7 @@ class AuthRemoteService {
   Future<AuthResponse> signIn({
     required String userId,
     required String password,
+    required String jobdesk,
   }) async {
     try {
       final data = _dioRequestNotifier;
@@ -67,6 +68,9 @@ class AuthRemoteService {
 
               final UserModelWithPassword user = UserModelWithPassword(
                 idUser: listSelected['id_user'] ?? '',
+                password: password,
+                jobdesk: jobdesk,
+                //
                 idKary: listSelected['IdKary'] ?? '',
                 company: listSelected['comp'] ?? '',
                 deptList: listSelected['dept'] ?? '',
@@ -81,7 +85,6 @@ class AuthRemoteService {
                 noTelp2: listSelected['no_telp2'] ?? '',
                 photo: listSelected['picture'],
                 passwordUpdate: listSelected['pass_update'] ?? '',
-                password: password,
               );
 
               return AuthResponse.withUser(user);

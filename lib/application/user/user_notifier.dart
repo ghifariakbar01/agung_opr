@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth_failure.dart';
 import '../../domain/user_failure.dart';
-import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/auth_repository.dart';
 import 'user_model.dart';
 import 'user_state.dart';
@@ -27,24 +26,6 @@ class UserNotifier extends StateNotifier<UserState> {
 
     state = state.copyWith(
         isGetting: false, failureOrSuccessOption: optionOf(failureOrSuccess));
-  }
-
-  Future<void> saveUserAfterUpdate({
-    required IdKaryawan idKaryawan,
-    required UserId userId,
-    required Password password,
-  }) async {
-    Either<AuthFailure, Unit?> failureOrSuccess;
-
-    state =
-        state.copyWith(isGetting: true, failureOrSuccessOptionUpdate: none());
-
-    failureOrSuccess = await _repository.saveUserAfterUpdate(
-        idKaryawan: idKaryawan, password: password, userId: userId);
-
-    state = state.copyWith(
-        isGetting: false,
-        failureOrSuccessOptionUpdate: optionOf(failureOrSuccess));
   }
 
   Either<UserFailure, UserModelWithPassword> parseUser(String? user) {

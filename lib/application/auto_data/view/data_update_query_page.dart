@@ -8,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../constants/assets.dart';
 import '../../../domain/local_failure.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
-import '../../history/history.dart';
 import '../../widgets/v_dialogs.dart';
 import 'data_update_linear_progress.dart';
 import 'data_update_query_scaffold.dart';
@@ -31,38 +30,18 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
           .getSavedQueryFromRepository();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedSPKQueryFromRepository();
+          .getSavedCSQueryFromRepository();
       await ref
           .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSQueryFromRepository();
+          .getSavedCSUQueryFromRepository();
+      await ref
+          .read(autoDataUpdateFrameNotifierProvider.notifier)
+          .getSavedSPKQueryFromRepository();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<Option<Either<LocalFailure, List<History>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalHistory,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (_) => VSimpleDialog(
-                        label: 'Error',
-                        labelDescription: failure.maybeMap(
-                            storage: (_) => 'storage penuh',
-                            format: (error) => 'Error Format: $error',
-                            orElse: () => ''),
-                        asset: Assets.iconCrossed,
-                      ),
-                    ),
-                (histories) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .changeSavedHistories(histories: histories))));
-
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(
           (state) => state.FOSOSPKAutoDataLocalUpdateFrame,
@@ -134,6 +113,30 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
                 (csIdQueries) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .changeSavedCSQuery(csIdQueries: csIdQueries))));
+
+    // CSU
+    ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
+        autoDataUpdateFrameNotifierProvider.select(
+          (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => VSimpleDialog(
+                        label: 'Error',
+                        labelDescription: failure.maybeMap(
+                            storage: (_) => 'storage penuh',
+                            format: (error) => 'Error Format: $error',
+                            orElse: () => ''),
+                        asset: Assets.iconCrossed,
+                      ),
+                    ),
+                (csuIdQueries) => ref
+                    .read(autoDataUpdateFrameNotifierProvider.notifier)
+                    .changeSavedCSUQuery(csuIdQueries: csuIdQueries))));
 
     final isSubmitting = ref.watch(
       autoDataUpdateFrameNotifierProvider.select((state) => state.isGetting),

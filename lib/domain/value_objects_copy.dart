@@ -80,6 +80,19 @@ class Password extends ValueObject<String> {
   final Either<ValueFailure<String>, String> value;
 }
 
+class Jobdesk extends ValueObject<String> {
+  factory Jobdesk(String input) {
+    return Jobdesk._(
+      validateJobdesk(input),
+    );
+  }
+
+  const Jobdesk._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
 class UserToken extends ValueObject<String> {
   factory UserToken(String input) {
     return UserToken._(

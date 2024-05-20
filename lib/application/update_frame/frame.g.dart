@@ -13,6 +13,7 @@ _$_Frame _$$_FrameFromJson(Map<String, dynamic> json) => _$_Frame(
       warna: json['warna'] as String?,
       custnm: json['custnm'] as String?,
       sppdc: json['no_invoice'] as String?,
+      lastSpk: json['last_spk'] as String?,
       tglDibuat: json['c_date'] as String?,
       idKendType: json['id_kend_type'] as int?,
     );
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$_FrameToJson(_$_Frame instance) => <String, dynamic>{
       'warna': instance.warna,
       'custnm': instance.custnm,
       'no_invoice': instance.sppdc,
+      'last_spk': instance.lastSpk,
       'c_date': instance.tglDibuat,
       'id_kend_type': instance.idKendType,
     };

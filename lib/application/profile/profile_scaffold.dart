@@ -40,8 +40,10 @@ class ProfileScaffold extends ConsumerWidget {
               VButton(
                   label: 'LOGOUT',
                   color: Palette.red,
-                  onPressed: () =>
-                      ref.read(userNotifierProvider.notifier).logout())
+                  onPressed: () async {
+                    await ref.read(flutterSecureStorageProvider).deleteAll();
+                    await ref.read(userNotifierProvider.notifier).logout();
+                  })
             ],
           ),
         ),

@@ -14,8 +14,6 @@ class ClearDataEssentialNotifier
 
   Future<void> clearAllStorage({required int idSPK}) async {
     Either<LocalFailure, Unit> FOSOClear;
-    //
-
     state = state.copyWith(isClearing: true, FOSOSPKClearDataEssential: none());
 
     FOSOClear = await _repository.clearAllStorage(idSPK: idSPK);

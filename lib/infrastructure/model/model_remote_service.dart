@@ -35,12 +35,7 @@ class ModelRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data PARTS ${jsonEncode(data)}');
-      log('response $response');
-
       final items = response.data?[0];
-
-      log('includeParts $includeParts response part $items');
 
       if (items['status'] == 'Success') {
         final listExist = items['items'] != null && items['items'] is List;
@@ -108,9 +103,6 @@ class ModelRemoteService {
 
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      // log('response $response');
 
       final items = response.data?[0];
 

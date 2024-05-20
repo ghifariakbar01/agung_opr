@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -26,6 +24,10 @@ class CrannyScaffold extends ConsumerStatefulWidget {
 class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
   @override
   Widget build(BuildContext context) {
+    final jobdesk =
+        ref.watch(userNotifierProvider.select((value) => value.user.jobdesk));
+    final _isCranny = jobdesk!.toLowerCase() == 'cranny';
+
     final updateFrameOfflineOrOnline =
         ref.watch(updateFrameOfflineNotifierProvider);
 
@@ -33,9 +35,6 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
         ref.watch(updateCSUFrameOfflineNotifierProvider);
 
     final updateCSfflineOrOnline = ref.watch(updateCSOfflineNotifierProvider);
-
-    log('updateFrameOfflineOrOnline $updateFrameOfflineOrOnline');
-    log('updateCSfflineOrOnline $updateCSfflineOrOnline');
 
     final isUpdateAvailable = updateFrameOfflineOrOnline.maybeWhen(
             hasOfflineStorage: () => true, orElse: () => false) ||
@@ -47,10 +46,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     hasOfflineStorage: () => true, orElse: () => false));
 
     final isOffline = ref.watch(isOfflineStateProvider);
-
     final getBuild = ref.watch(getBuildProvider);
-
-    log('isOffline $isOffline');
 
     return Scaffold(
       appBar: VAppBar(
@@ -108,8 +104,15 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                       onPressed: () =>
                           context.pushNamed(RouteNames.historyName),
                       child: CrannyItem(label: 'RIWAYAT UPDATE')),
-                  CSCrannyColumn(),
-                  const SizedBox(height: 8),
+                  if (_isCranny) ...[
+                    CSCrannyColumn(),
+                    const SizedBox(height: 8),
+                  ],
+                  if (_isCranny == false) ...[
+                    TextButton(
+                        onPressed: () => context.pushNamed(RouteNames.unitName),
+                        child: CrannyItem(label: 'CHECK SHEET UNIT')),
+                  ]
                 ],
               ),
               Positioned(

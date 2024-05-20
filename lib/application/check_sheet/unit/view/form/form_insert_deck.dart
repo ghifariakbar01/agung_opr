@@ -27,15 +27,10 @@ class FormInsertDeck extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deck = ref.watch(updateCSUFrameNotifierProvider
-        .select((value) => value.updateFrameList.deck));
-
-    final deckTextController = ref.watch(updateCSUFrameNotifierProvider
-        .select((value) => value.updateFrameList.deckTextController));
-
-    final deckStr = deck.getOrLeave('');
-
-    final width = MediaQuery.of(context).size.width;
+    final deck = ref
+        .watch(updateCSUFrameNotifierProvider
+            .select((value) => value.updateFrameList.deck))
+        .getOrLeave('');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +64,7 @@ class FormInsertDeck extends ConsumerWidget {
             padding: EdgeInsets.all(4),
             child: DropdownButton<String>(
               value: deckList.firstWhere(
-                (element) => element == deckStr,
+                (element) => element == deck,
                 orElse: () => '',
               ),
               elevation: 16,
@@ -84,10 +79,13 @@ class FormInsertDeck extends ConsumerWidget {
               items: deckList.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(
-                    '${value}',
-                    style:
-                        Themes.customColor(FontWeight.normal, 14, Colors.black),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '${value}',
+                      style: Themes.customColor(
+                          FontWeight.normal, 14, Colors.black),
+                    ),
                   ),
                 );
               }).toList(),

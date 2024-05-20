@@ -15,6 +15,8 @@ import '../../shared/providers.dart';
 import '../auth/auth_notifier.dart';
 import '../auto_data/view/data_update_query_page.dart';
 import '../check_sheet/loading/view/check_sheet_loading_page.dart';
+import '../check_sheet/unit/view/csu_new_page.dart';
+import '../check_sheet/unit/view/csu_result_page.dart';
 import '../copyright/copyright_page.dart';
 import '../gate/view/gate_page.dart';
 import '../history/view/history_page.dart';
@@ -24,6 +26,8 @@ import '../spk/spk.dart';
 import '../tc/shared/tc_providers.dart';
 import '../tc/tc_page.dart';
 import '../tc/tc_state.dart';
+import '../unit/view/unit_page.dart';
+import '../update_frame/frame.dart';
 import 'route_names.dart';
 
 class RouterNotifier extends ChangeNotifier {
@@ -150,27 +154,28 @@ class RouterNotifier extends ChangeNotifier {
               builder: (context, state) => CopyRightPage(),
             ),
 
-            // GoRoute(
-            //   name: RouteNames.unitNameRoute,
-            //   path: RouteNames.unitName,
-            //   builder: (context, state) => UnitPage(),
-            // ),
-            // GoRoute(
-            //     name: RouteNames.CSUListNameRoute,
-            //     path: RouteNames.CSUListName,
-            //     builder: (context, state) {
-            //       Map<String, dynamic> frameMap =
-            //           state.extra as Map<String, dynamic>;
-            //       Frame item = Frame.fromJson(frameMap);
-            //       return CSUResultPage(frame: item);
-            //     }),
-            // GoRoute(
-            //     name: RouteNames.CSUNewNameRoute,
-            //     path: RouteNames.CSUNewName,
-            //     builder: (context, state) {
-            //       int idCS = state.extra as int;
-            //       return CSUNewPage(idCS: idCS);
-            //     }),
+            GoRoute(
+              name: RouteNames.unitNameRoute,
+              path: RouteNames.unitName,
+              builder: (context, state) => UnitPage(),
+            ),
+            GoRoute(
+                name: RouteNames.CSUResultNameRoute,
+                path: RouteNames.CSUResultRoute,
+                builder: (context, state) {
+                  Map<String, dynamic> frameMap =
+                      state.extra as Map<String, dynamic>;
+
+                  Frame item = Frame.fromJson(frameMap);
+                  return CSUResultPage(frame: item);
+                }),
+            GoRoute(
+                name: RouteNames.CSUNewNameRoute,
+                path: RouteNames.CSUNewName,
+                builder: (context, state) {
+                  int idCS = state.extra as int;
+                  return CSUNewPage(idCS: idCS);
+                }),
 
             // GoRoute(
             //   name: RouteNames.checkSheetUnloadingNameRoute,

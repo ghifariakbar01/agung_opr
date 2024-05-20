@@ -73,8 +73,9 @@ class CSMode extends ConsumerWidget {
                           Map<String, dynamic> spkMap = spkSelected.toJson();
 
                           await context.pushNamed(
-                              RouteNames.checkSheetLoadingNameRoute,
-                              extra: spkMap);
+                            extra: spkMap,
+                            RouteNames.checkSheetLoadingNameRoute,
+                          );
                         },
                         checkSheetLoadingUnloading: () async {
                           ModeState mode =
@@ -93,8 +94,9 @@ class CSMode extends ConsumerWidget {
                           Map<String, dynamic> spkMap = spkSelected.toJson();
 
                           await context.pushNamed(
-                              RouteNames.checkSheetLoadingNameRoute,
-                              extra: spkMap);
+                            extra: spkMap,
+                            RouteNames.checkSheetLoadingNameRoute,
+                          );
                         },
                         checkSheetUnloading: () async {
                           ModeState mode = ModeState.checkSheetUnloading();
@@ -112,8 +114,9 @@ class CSMode extends ConsumerWidget {
                           Map<String, dynamic> spkMap = spkSelected.toJson();
 
                           await context.pushNamed(
-                              RouteNames.checkSheetLoadingNameRoute,
-                              extra: spkMap);
+                            extra: spkMap,
+                            RouteNames.checkSheetLoadingNameRoute,
+                          );
                         },
                         orElse: () {});
                 },

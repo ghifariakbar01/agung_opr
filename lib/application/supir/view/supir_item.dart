@@ -29,19 +29,19 @@ class SupirItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'NAMA: ${supir.nama}',
+                        'Nama: ${supir.nama}',
                         style: Themes.customColor(
                             FontWeight.bold, 14, Palette.primaryColor),
                       ),
                       Text(
                         'NO. HP: ${supir.phone ?? '-'}',
                         style: Themes.customColor(
-                            FontWeight.bold, 12, Palette.primaryColor),
+                            FontWeight.w500, 12, Palette.primaryColor),
                       ),
                       Text(
                         'ALAMAT: ${supir.alamat ?? '-'}',
                         style: Themes.customColor(
-                            FontWeight.bold, 12, Palette.primaryColor),
+                            FontWeight.w500, 12, Palette.primaryColor),
                         maxLines: 5,
                       ),
                     ],
@@ -58,7 +58,7 @@ class SupirItem extends StatelessWidget {
                       Text(
                         'KATEGORI: ${supir.kategori ?? '-'}',
                         style: Themes.customColor(
-                            FontWeight.bold, 12, Palette.primaryColor),
+                            FontWeight.w500, 12, Palette.primaryColor),
                       ),
                     ],
                   ),

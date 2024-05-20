@@ -7,10 +7,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
 import '../../application/update_frame/update_frame_single_state.dart';
+import '../../constants/constants.dart';
 import '../../domain/local_failure.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
-import '../history/history_repository.dart';
 import 'update_frame_remote_service.dart';
 
 /// [updateFrameSPK] PROCESS LIST OF [Frame]
@@ -39,10 +39,8 @@ class UpdateFrameRepository {
   UpdateFrameRepository(
     this._remoteService,
     this._storage,
-    this._historyRepository,
   );
 
-  final HistoryRepository _historyRepository;
   final UpdateFrameRemoteService _remoteService;
   final CredentialsStorage _storage;
 
@@ -210,7 +208,8 @@ class UpdateFrameRepository {
 
       updateFrameList.forEach((UpdateFrameStateSingle element) {
         // TEST
-        const String dbName = 'opr_trs_ti_unit';
+        String dbName =
+            Constants.isTesting ? 'opr_trs_ti_unit_test' : 'opr_trs_ti_unit';
 
         final idKendTypeStr = element.idKendType.getOrLeave('');
         final idKendTypeInt =

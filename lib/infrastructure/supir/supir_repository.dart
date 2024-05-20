@@ -42,6 +42,25 @@ class SupirRepository {
     }
   }
 
+  Future<Either<RemoteFailure, List<Supir>>> searchSupirList(
+      {required String search}) async {
+    try {
+      final supirList = await _remoteService.searchSupirList(search: search);
+
+      await _add(supir: supirList);
+
+      return right(supirList);
+    } on RestApiException catch (e) {
+      return left(RemoteFailure.server(e.errorCode, e.message));
+    } on NoConnectionException {
+      return left(RemoteFailure.noConnection());
+    } on FormatException {
+      return left(RemoteFailure.parse());
+    } on PlatformException {
+      return left(RemoteFailure.storage());
+    }
+  }
+
   /// PAGINATE DATA LIST OF [Supir] FROM STORAGE
   ///
   /// process [page] and divide LIST OF [Supir]

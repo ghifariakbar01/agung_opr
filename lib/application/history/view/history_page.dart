@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/history/shared/history_providers.dart';
 import 'package:agung_opr/application/history/view/history_scaffold.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<Option<Either<RemoteFailure, List<History>?>>>(
+    ref.listen<Option<Either<RemoteFailure, History?>>>(
         historyNotifierProvider.select(
           (state) => state.FOSOHistory,
         ),
@@ -44,19 +45,21 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                       builder: (_) => VSimpleDialog(
                         label: 'Error',
                         labelDescription: failure.maybeMap(
-                            noConnection: (value) => 'No connection',
-                            server: (value) => 'Server $value',
-                            storage: (_) => 'storage penuh',
-                            orElse: () => ''),
+                          orElse: () => '',
+                          storage: (_) => 'storage penuh',
+                          server: (value) => 'Server $value',
+                          noConnection: (value) => 'No connection',
+                        ),
                         asset: Assets.iconCrossed,
                       ),
                     ),
-                (histories) => ref
+                (history) => ref
                     .read(historyNotifierProvider.notifier)
-                    .changeHistoryList(histories ?? []))));
+                    .changeHistory(history ?? History.initial()))));
 
-    final isLoading =
-        ref.watch(historyNotifierProvider.select((value) => value.isGetting));
+    final isLoading = ref.watch(
+            historyNotifierProvider.select((value) => value.isGetting)) ||
+        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
       children: [HistoryScaffold(), LoadingOverlay(isLoading: isLoading)],

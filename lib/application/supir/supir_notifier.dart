@@ -32,6 +32,16 @@ class SupirNotifier extends StateNotifier<SupirState> {
     state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
   }
 
+  Future<void> searchSupirList({required String search}) async {
+    final Either<RemoteFailure, List<Supir>> FOS;
+
+    state = state.copyWith(isProcessing: true, FOSOSupir: none());
+
+    FOS = await _repository.searchSupirList(search: search);
+
+    state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
+  }
+
   Future<void> searchSupirListOFFLINE({required String search}) async {
     final Either<RemoteFailure, List<Supir>> FOS;
 

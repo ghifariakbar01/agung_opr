@@ -9,58 +9,13 @@ class GateSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final search = ref
-        .watch(gateSearchNotifierProvider.select((value) => value.searchText));
-
-    final focusNode = ref
-        .watch(gateSearchNotifierProvider.select((value) => value.focusNode));
-
     return SizedBox(
       height: 48,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
           autofocus: false,
-          focusNode: focusNode,
           decoration: Themes.searchFormStyle(
             'Cari Gate',
-            icon: SizedBox(
-              width: 55,
-              child: Row(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        focusNode.unfocus();
-
-                        search.isNotEmpty && search.length > 0
-                            ? () async {
-                                ref
-                                    .read(gateSearchNotifierProvider.notifier)
-                                    .changeSearchText('');
-
-                                // if (isOnline) {
-
-                                // } else {
-                                //   await ref
-                                //       .read(gateNotifierProvider.notifier)
-                                //       .searchGateListOFFLINE(search: search);
-                                // }
-
-                                await ref
-                                    .read(gateNotifierProvider.notifier)
-                                    .searchGateListOFFLINE(search: search);
-                              }()
-                            : ref
-                                .read(gateNotifierProvider.notifier)
-                                .getGatesOFFLINE();
-                      },
-                      child: Ink(child: Icon(Icons.search))),
-                  Text(
-                    'Cari',
-                    style: Themes.greyHint(FontWeight.bold, 11),
-                  )
-                ],
-              ),
-            ),
           ),
           onTap: () => ref
               .read(gateSearchNotifierProvider.notifier)
@@ -84,14 +39,6 @@ class GateSearch extends ConsumerWidget {
                   ref
                       .read(gateSearchNotifierProvider.notifier)
                       .changeSearchText('');
-
-                  // if (isOnline) {
-
-                  // } else {
-                  //   await ref
-                  //       .read(gateNotifierProvider.notifier)
-                  //       .searchGateListOFFLINE(search: search);
-                  // }
 
                   await ref
                       .read(gateNotifierProvider.notifier)

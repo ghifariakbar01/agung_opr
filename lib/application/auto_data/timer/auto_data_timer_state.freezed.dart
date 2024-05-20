@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AutoDataTimerState {
-  int get durationInSeconds => throw _privateConstructorUsedError;
   bool get isRunning => throw _privateConstructorUsedError;
+  int get durationInSeconds => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AutoDataTimerStateCopyWith<AutoDataTimerState> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $AutoDataTimerStateCopyWith<$Res> {
           AutoDataTimerState value, $Res Function(AutoDataTimerState) then) =
       _$AutoDataTimerStateCopyWithImpl<$Res, AutoDataTimerState>;
   @useResult
-  $Res call({int durationInSeconds, bool isRunning});
+  $Res call({bool isRunning, int durationInSeconds});
 }
 
 /// @nodoc
@@ -46,18 +46,18 @@ class _$AutoDataTimerStateCopyWithImpl<$Res, $Val extends AutoDataTimerState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? durationInSeconds = null,
     Object? isRunning = null,
+    Object? durationInSeconds = null,
   }) {
     return _then(_value.copyWith(
-      durationInSeconds: null == durationInSeconds
-          ? _value.durationInSeconds
-          : durationInSeconds // ignore: cast_nullable_to_non_nullable
-              as int,
       isRunning: null == isRunning
           ? _value.isRunning
           : isRunning // ignore: cast_nullable_to_non_nullable
               as bool,
+      durationInSeconds: null == durationInSeconds
+          ? _value.durationInSeconds
+          : durationInSeconds // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$_AutoDataTimerStateCopyWith<$Res>
       __$$_AutoDataTimerStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int durationInSeconds, bool isRunning});
+  $Res call({bool isRunning, int durationInSeconds});
 }
 
 /// @nodoc
@@ -84,18 +84,18 @@ class __$$_AutoDataTimerStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? durationInSeconds = null,
     Object? isRunning = null,
+    Object? durationInSeconds = null,
   }) {
     return _then(_$_AutoDataTimerState(
-      durationInSeconds: null == durationInSeconds
-          ? _value.durationInSeconds
-          : durationInSeconds // ignore: cast_nullable_to_non_nullable
-              as int,
       isRunning: null == isRunning
           ? _value.isRunning
           : isRunning // ignore: cast_nullable_to_non_nullable
               as bool,
+      durationInSeconds: null == durationInSeconds
+          ? _value.durationInSeconds
+          : durationInSeconds // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -106,16 +106,16 @@ class _$_AutoDataTimerState
     with DiagnosticableTreeMixin
     implements _AutoDataTimerState {
   const _$_AutoDataTimerState(
-      {required this.durationInSeconds, required this.isRunning});
+      {required this.isRunning, required this.durationInSeconds});
 
   @override
-  final int durationInSeconds;
-  @override
   final bool isRunning;
+  @override
+  final int durationInSeconds;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AutoDataTimerState(durationInSeconds: $durationInSeconds, isRunning: $isRunning)';
+    return 'AutoDataTimerState(isRunning: $isRunning, durationInSeconds: $durationInSeconds)';
   }
 
   @override
@@ -123,8 +123,8 @@ class _$_AutoDataTimerState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AutoDataTimerState'))
-      ..add(DiagnosticsProperty('durationInSeconds', durationInSeconds))
-      ..add(DiagnosticsProperty('isRunning', isRunning));
+      ..add(DiagnosticsProperty('isRunning', isRunning))
+      ..add(DiagnosticsProperty('durationInSeconds', durationInSeconds));
   }
 
   @override
@@ -132,14 +132,14 @@ class _$_AutoDataTimerState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AutoDataTimerState &&
-            (identical(other.durationInSeconds, durationInSeconds) ||
-                other.durationInSeconds == durationInSeconds) &&
             (identical(other.isRunning, isRunning) ||
-                other.isRunning == isRunning));
+                other.isRunning == isRunning) &&
+            (identical(other.durationInSeconds, durationInSeconds) ||
+                other.durationInSeconds == durationInSeconds));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, durationInSeconds, isRunning);
+  int get hashCode => Object.hash(runtimeType, isRunning, durationInSeconds);
 
   @JsonKey(ignore: true)
   @override
@@ -151,13 +151,13 @@ class _$_AutoDataTimerState
 
 abstract class _AutoDataTimerState implements AutoDataTimerState {
   const factory _AutoDataTimerState(
-      {required final int durationInSeconds,
-      required final bool isRunning}) = _$_AutoDataTimerState;
+      {required final bool isRunning,
+      required final int durationInSeconds}) = _$_AutoDataTimerState;
 
   @override
-  int get durationInSeconds;
-  @override
   bool get isRunning;
+  @override
+  int get durationInSeconds;
   @override
   @JsonKey(ignore: true)
   _$$_AutoDataTimerStateCopyWith<_$_AutoDataTimerState> get copyWith =>

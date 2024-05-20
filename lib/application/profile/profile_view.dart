@@ -76,14 +76,14 @@ class ProfileView extends ConsumerWidget {
               label: 'Company',
             ),
             ProfileItem(
+              text: userProvider.user.jobdesk ?? '',
+              icon: Icons.location_city_sharp,
+              label: 'Jobdesk',
+            ),
+            ProfileItem(
               icon: Icons.business_center,
               text: userProvider.user.jabatan ?? '',
               label: 'Jabatan',
-            ),
-            ProfileItem(
-              text: userProvider.user.imeiHp ?? '',
-              icon: Icons.numbers,
-              label: 'Installation ID',
             ),
             SizedBox(
               height: 8,

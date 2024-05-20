@@ -6,7 +6,6 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/remote_failure.dart';
-import '../history/history.dart';
 
 part 'auto_data_update_frame_state.freezed.dart';
 
@@ -14,40 +13,31 @@ part 'auto_data_update_frame_state.freezed.dart';
 class AutoDataUpdateFrameState with _$AutoDataUpdateFrameState {
   const factory AutoDataUpdateFrameState({
     required bool isGetting,
-    //
     required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
-    required List<CSUIDQuery> csuIdQueries,
     required List<SPKIdQuery> spkIdQueries,
+    required List<CSUIDQuery> csuIdQueries,
     required List<CSIDQuery> csIdQueries,
-    required List<History> histories,
-
-    //
     required Option<Either<RemoteFailure, Unit>> FOSOAutoDataRemote,
-    //
     required Option<Either<LocalFailure, Map<String, Map<String, String>>>>
         FOSOSPKAutoDataLocalUpdateFrame,
     required Option<Either<LocalFailure, List<CSUIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCSU,
-    required Option<Either<LocalFailure, List<SPKIdQuery>>>
-        FOSOAutoDataLocalUpdateFrameSPK,
     required Option<Either<LocalFailure, List<CSIDQuery>>>
         FOSOAutoDataLocalUpdateFrameCS,
-    required Option<Either<LocalFailure, List<History>>>
-        FOSOAutoDataLocalHistory,
+    required Option<Either<LocalFailure, List<SPKIdQuery>>>
+        FOSOAutoDataLocalUpdateFrameSPK,
   }) = _AutoDataUpdateFrameState;
 
   factory AutoDataUpdateFrameState.initial() => AutoDataUpdateFrameState(
         isGetting: false,
         idSPKMapidTIUnitMapQuery: {},
         csuIdQueries: [],
-        spkIdQueries: [],
         csIdQueries: [],
-        histories: [],
+        spkIdQueries: [],
         FOSOAutoDataRemote: none(),
-        FOSOAutoDataLocalHistory: none(),
         FOSOSPKAutoDataLocalUpdateFrame: none(),
         FOSOAutoDataLocalUpdateFrameCSU: none(),
-        FOSOAutoDataLocalUpdateFrameSPK: none(),
         FOSOAutoDataLocalUpdateFrameCS: none(),
+        FOSOAutoDataLocalUpdateFrameSPK: none(),
       );
 }

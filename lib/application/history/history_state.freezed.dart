@@ -17,8 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HistoryState {
   bool get isGetting => throw _privateConstructorUsedError;
-  List<History> get historyList => throw _privateConstructorUsedError;
-  Option<Either<RemoteFailure, List<History>?>> get FOSOHistory =>
+  History get history => throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, History?>> get FOSOHistory =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,8 +34,10 @@ abstract class $HistoryStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isGetting,
-      List<History> historyList,
-      Option<Either<RemoteFailure, List<History>?>> FOSOHistory});
+      History history,
+      Option<Either<RemoteFailure, History?>> FOSOHistory});
+
+  $HistoryCopyWith<$Res> get history;
 }
 
 /// @nodoc
@@ -52,7 +54,7 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
   @override
   $Res call({
     Object? isGetting = null,
-    Object? historyList = null,
+    Object? history = null,
     Object? FOSOHistory = null,
   }) {
     return _then(_value.copyWith(
@@ -60,15 +62,23 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
           ? _value.isGetting
           : isGetting // ignore: cast_nullable_to_non_nullable
               as bool,
-      historyList: null == historyList
-          ? _value.historyList
-          : historyList // ignore: cast_nullable_to_non_nullable
-              as List<History>,
+      history: null == history
+          ? _value.history
+          : history // ignore: cast_nullable_to_non_nullable
+              as History,
       FOSOHistory: null == FOSOHistory
           ? _value.FOSOHistory
           : FOSOHistory // ignore: cast_nullable_to_non_nullable
-              as Option<Either<RemoteFailure, List<History>?>>,
+              as Option<Either<RemoteFailure, History?>>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $HistoryCopyWith<$Res> get history {
+    return $HistoryCopyWith<$Res>(_value.history, (value) {
+      return _then(_value.copyWith(history: value) as $Val);
+    });
   }
 }
 
@@ -82,8 +92,11 @@ abstract class _$$_UserStateCopyWith<$Res>
   @useResult
   $Res call(
       {bool isGetting,
-      List<History> historyList,
-      Option<Either<RemoteFailure, List<History>?>> FOSOHistory});
+      History history,
+      Option<Either<RemoteFailure, History?>> FOSOHistory});
+
+  @override
+  $HistoryCopyWith<$Res> get history;
 }
 
 /// @nodoc
@@ -98,7 +111,7 @@ class __$$_UserStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isGetting = null,
-    Object? historyList = null,
+    Object? history = null,
     Object? FOSOHistory = null,
   }) {
     return _then(_$_UserState(
@@ -106,14 +119,14 @@ class __$$_UserStateCopyWithImpl<$Res>
           ? _value.isGetting
           : isGetting // ignore: cast_nullable_to_non_nullable
               as bool,
-      historyList: null == historyList
-          ? _value._historyList
-          : historyList // ignore: cast_nullable_to_non_nullable
-              as List<History>,
+      history: null == history
+          ? _value.history
+          : history // ignore: cast_nullable_to_non_nullable
+              as History,
       FOSOHistory: null == FOSOHistory
           ? _value.FOSOHistory
           : FOSOHistory // ignore: cast_nullable_to_non_nullable
-              as Option<Either<RemoteFailure, List<History>?>>,
+              as Option<Either<RemoteFailure, History?>>,
     ));
   }
 }
@@ -123,26 +136,19 @@ class __$$_UserStateCopyWithImpl<$Res>
 class _$_UserState implements _UserState {
   const _$_UserState(
       {required this.isGetting,
-      required final List<History> historyList,
-      required this.FOSOHistory})
-      : _historyList = historyList;
+      required this.history,
+      required this.FOSOHistory});
 
   @override
   final bool isGetting;
-  final List<History> _historyList;
   @override
-  List<History> get historyList {
-    if (_historyList is EqualUnmodifiableListView) return _historyList;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_historyList);
-  }
-
+  final History history;
   @override
-  final Option<Either<RemoteFailure, List<History>?>> FOSOHistory;
+  final Option<Either<RemoteFailure, History?>> FOSOHistory;
 
   @override
   String toString() {
-    return 'HistoryState(isGetting: $isGetting, historyList: $historyList, FOSOHistory: $FOSOHistory)';
+    return 'HistoryState(isGetting: $isGetting, history: $history, FOSOHistory: $FOSOHistory)';
   }
 
   @override
@@ -152,15 +158,13 @@ class _$_UserState implements _UserState {
             other is _$_UserState &&
             (identical(other.isGetting, isGetting) ||
                 other.isGetting == isGetting) &&
-            const DeepCollectionEquality()
-                .equals(other._historyList, _historyList) &&
+            (identical(other.history, history) || other.history == history) &&
             (identical(other.FOSOHistory, FOSOHistory) ||
                 other.FOSOHistory == FOSOHistory));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isGetting,
-      const DeepCollectionEquality().hash(_historyList), FOSOHistory);
+  int get hashCode => Object.hash(runtimeType, isGetting, history, FOSOHistory);
 
   @JsonKey(ignore: true)
   @override
@@ -171,17 +175,17 @@ class _$_UserState implements _UserState {
 
 abstract class _UserState implements HistoryState {
   const factory _UserState(
-      {required final bool isGetting,
-      required final List<History> historyList,
-      required final Option<Either<RemoteFailure, List<History>?>>
-          FOSOHistory}) = _$_UserState;
+          {required final bool isGetting,
+          required final History history,
+          required final Option<Either<RemoteFailure, History?>> FOSOHistory}) =
+      _$_UserState;
 
   @override
   bool get isGetting;
   @override
-  List<History> get historyList;
+  History get history;
   @override
-  Option<Either<RemoteFailure, List<History>?>> get FOSOHistory;
+  Option<Either<RemoteFailure, History?>> get FOSOHistory;
   @override
   @JsonKey(ignore: true)
   _$$_UserStateCopyWith<_$_UserState> get copyWith =>

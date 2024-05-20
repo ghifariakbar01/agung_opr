@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import 'application/network_state/network_state_notifier.dart';
 import 'application/tc/shared/tc_providers.dart';
 import 'config/configuration.dart';
 import 'shared/providers.dart';
@@ -20,7 +21,9 @@ void main() async {
 }
 
 final initializationProvider = FutureProvider<Unit>((ref) async {
+  // await ref.read(flutterSecureStorageProvider).deleteAll();
   // await ref.read(hiveProvider).init();
+
   ref.read(dioProvider)
     ..options = BaseOptions(
       connectTimeout: BuildConfig.get().connectTimeout,
@@ -50,6 +53,13 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializationProvider, (_, __) {});
+    ref.listen(networkStateNotifierProvider, (__, _) {});
+
+    ref.listen(isOfflineStateProvider, (previous, next) {
+      if (previous == true && next == false) {
+        ref.read(userNotifierProvider.notifier).getUser();
+      }
+    });
 
     final router = ref.watch(routerProvider);
 
@@ -60,7 +70,7 @@ class MyApp extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
     );

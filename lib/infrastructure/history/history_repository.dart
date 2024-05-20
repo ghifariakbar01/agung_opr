@@ -1,16 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
 import '../../application/history/history.dart';
 import '../../application/user/user_model.dart';
-import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
-import '../../utils/string_utils.dart';
-import '../credentials_storage.dart';
 import '../exceptions.dart';
 import 'history_remote_service.dart';
 
@@ -28,15 +23,31 @@ class HistoryRepository {
   // Future<bool> hasOfflineData() => getGatesOFFLINE()
   //     .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, List<History>>> getHistories() async {
+  Future<Either<RemoteFailure, History>> getHistories() async {
     try {
-      // debugger(message: 'called');
+      final history = History.initial();
 
-      final histories = await _remoteService.getHistories(
+      final List<HistoryCheckSheet> historyCheckSheet =
+          await _remoteService.getHistoryCheckSheet(
         cUser: _userModelWithPassword.nama!,
       );
 
-      return right(histories);
+      final List<HistoryCSUOk> historyCSUOk =
+          await _remoteService.getHistoryCSUOk(
+        cUser: _userModelWithPassword.nama!,
+      );
+
+      final List<HistoryCSUNg> historyCSUNg =
+          await _remoteService.getHistoryCSUNg(
+        cUser: _userModelWithPassword.nama!,
+      );
+
+      final _history = history.copyWith(
+          historyCheckSheet: historyCheckSheet,
+          historyCSUOk: historyCSUOk,
+          historyCSUNg: historyCSUNg);
+
+      return right(_history);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {

@@ -95,12 +95,8 @@ class ModelRepository {
     try {
       final modelStorage = await _storage.read();
 
-      // log('MODEL STORAGE: $modelStorage');
-
       // HAS LIST
       if (modelStorage != null) {
-        // final _getTotalPages = (modelList.length / itemsPerPage).ceil();
-
         final response = jsonDecode(modelStorage);
 
         if (allModel != null && allModel == true) {
@@ -111,8 +107,6 @@ class ModelRepository {
         }
 
         if (page != null) {
-          // START PAGINATION
-
           final int itemsPerPage = 20;
 
           int _startIndex = page * itemsPerPage;
@@ -125,10 +119,6 @@ class ModelRepository {
               : modelList.length;
 
           List<Model> modelPage = modelList.sublist(_startIndex, _endIndex);
-
-          // END PAGINATION
-
-          log('modelPage $modelPage');
 
           return right(modelPage);
         } else {

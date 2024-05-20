@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -25,36 +23,48 @@ class _UnitPageState extends ConsumerState<UnitPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _resetFrame();
+      _getFrame();
+    });
+  }
+
+  void _resetFrame() {
+    ref.read(frameNotifierProvider.notifier).changeFrameList([]);
+  }
+
+  Future<void> _getFrame() async {
+    final isOffline = ref.read(isOfflineStateProvider);
+    if (!isOffline) {
+      await _getFrameOnline();
+    } else {
       await ref
           .read(frameOfflineNotifierProvider.notifier)
-          .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
+          .checkAndUpdateFrameOFFLINEStatusByPage(page: 0);
 
-      final frameOfflineOrOnline = ref.watch(frameOfflineNotifierProvider);
-
-      log('frameOfflineOrOnline $frameOfflineOrOnline');
-
+      final frameOfflineOrOnline = ref.read(frameOfflineNotifierProvider);
       await frameOfflineOrOnline.maybeWhen(
         hasOfflineStorage: () => ref
             .read(frameNotifierProvider.notifier)
-            .getFrameListOFFLINE(idSPK: 0),
-        orElse: () async {
-          for (int i = 0; i < 5; i++) {
-            ref
-                .read(frameNotifierProvider.notifier)
-                .getFrameListWithoutSPK(page: i);
-          }
-
-          await ref
-              .read(frameOfflineNotifierProvider.notifier)
-              .checkAndUpdateFrameOFFLINEStatus(idSPK: 0);
-        },
+            .getFrameListOFFLINEByPage(page: 0),
+        orElse: () => _getFrameOnline(),
       );
-    });
+    }
+  }
+
+  Future<void> _getFrameOnline() async {
+    await ref.read(frameNotifierProvider.notifier).getFrameListByPage(page: 0);
+    await ref
+        .read(frameOfflineNotifierProvider.notifier)
+        .checkAndUpdateFrameOFFLINEStatusByPage(page: 0);
   }
 
   @override
   Widget build(BuildContext context) {
+    /*
+      FRAME listener
+      to change frame response
+    */
     ref.listen<Option<Either<RemoteFailure, List<Frame>>>>(
         frameNotifierProvider.select(
           (state) => state.FOSOFrame,
@@ -78,25 +88,8 @@ class _UnitPageState extends ConsumerState<UnitPage> {
                             ),
                           ),
                         ), (frameResponse) {
-                  /// SET [frameResponse] from GOT frameList
-                  // debugger(message: 'called');
-                  log('FRAME RESPONSE: $frameResponse');
                   if (frameResponse != []) {
-                    ref
-                        .read(frameNotifierProvider.notifier)
-                        .changeFrameList(frameResponse);
-
-                    final responseLEN = frameResponse.length;
-
-                    ref
-                        .read(frameNotifierProvider.notifier)
-                        .changeFillEmptyFOSOSaveFrameList(length: responseLEN);
-
-                    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-                    ref
-                        .read(updateFrameNotifierProvider.notifier)
-                        .changeFillEmptyList(
-                            length: responseLEN, frame: frameResponse);
+                    _changeFrame(frameResponse);
                   }
                 })));
 
@@ -110,5 +103,22 @@ class _UnitPageState extends ConsumerState<UnitPage> {
         LoadingOverlay(isLoading: isLoading)
       ],
     );
+  }
+
+  void _changeFrame(List<Frame> frameResponse) {
+    final _prev = ref.read(frameNotifierProvider).frameList;
+    ref
+        .read(frameNotifierProvider.notifier)
+        .changeFrameList([..._prev, ...frameResponse]);
+
+    final int _len = _prev.length + frameResponse.length;
+    ref
+        .read(frameNotifierProvider.notifier)
+        .changeFillEmptyFOSOSaveFrameList(length: _len);
+
+    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+    ref
+        .read(updateFrameNotifierProvider.notifier)
+        .changeFillEmptyList(length: _len, frame: [..._prev, ...frameResponse]);
   }
 }

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../application/check_sheet/loading/state/update_cs_ng_state.dart';
 import '../../application/check_sheet/shared/state/cs_id_query.dart';
 import '../../application/user/user_model.dart';
+import '../../constants/constants.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
 import '../../domain/value_objects_copy.dart';
@@ -187,7 +188,7 @@ class UpdateCSRepository {
     required JamLoad jamLoad,
   }) {
     // TEST
-    const String dbName = 'pool_chk_kr';
+    String dbName = Constants.isTesting ? 'pool_chk_kr_test' : 'pool_chk_kr';
 
     final nopolStr = nopol.getOrCrash();
     final gateStr = gate.getOrCrash();
@@ -242,8 +243,9 @@ class UpdateCSRepository {
     required List<UpdateCSNGState> ngStates,
   }) {
     // TEST
-    const String dbName = 'pool_chk_kr_dtl';
-    const String dbNamechk = 'pool_chk_kr';
+    String dbName =
+        Constants.isTesting ? 'pool_chk_kr_dtl_test' : 'pool_chk_kr_dtl';
+    String dbNamechk = Constants.isTesting ? 'pool_chk_kr_test' : 'pool_chk_kr';
 
     final cAndUDate = DateTime.now()
         .toString()

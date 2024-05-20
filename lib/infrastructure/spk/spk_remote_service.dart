@@ -13,12 +13,13 @@ class SPKRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
+  // TEST
+  String dbName = "opr_trs_spk";
+  String dbTrayekName = "opr_mst_trayek";
+
   Future<List<SPK>> searchSPKList({required String search}) async {
     try {
       final data = _dioRequestNotifier;
-      // TEST
-      const String dbName = "opr_trs_spk";
-      const String dbTrayekName = "opr_mst_trayek";
 
       data.addAll({
         "mode": "SELECT",
@@ -117,9 +118,6 @@ class SPKRemoteService {
   Future<List<SPK>> getSPKList({required int page}) async {
     try {
       final data = _dioRequestNotifier;
-      // TEST
-      const String dbName = "opr_trs_spk";
-      const String dbTrayekName = "opr_mst_trayek";
 
       data.addAll({
         "mode": "SELECT",
@@ -192,6 +190,82 @@ class SPKRemoteService {
           log('list empty');
 
           return [];
+        }
+      } else {
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError || e.isConnectionTimeout) {
+        throw NoConnectionException();
+      } else if (e.response != null) {
+        final items = e.response?.data?[0];
+
+        final message = items['error'] as String?;
+        final errorNum = items['errornum'] as int?;
+
+        throw RestApiException(errorNum, message);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<SPK> getSPKById({required int idSpk}) async {
+    try {
+      final data = _dioRequestNotifier;
+
+      data.addAll({
+        "mode": "SELECT",
+        "command": "SELECT " +
+            "spk.id_spk," +
+            "spk.id_trayek," +
+            "spk.spk_no," +
+            "   spk.supir1_nm," +
+            "   spk.supir2_nm," +
+            "   spk.nopol," +
+            "   spk.tgl_berangkat," +
+            "   spk.u_user, " +
+            "   spk.u_date, " +
+            "   spk.is_edit, " +
+            " trayek.nama AS trayek_nama" +
+            " FROM " +
+            " $dbName AS spk " +
+            " JOIN " +
+            " $dbTrayekName AS trayek " +
+            " ON " +
+            " spk.id_trayek = trayek.id_trayek " +
+            " WHERE " +
+            " spk.id_spk = $idSpk "
+      });
+
+      final response = await _dio.post('',
+          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+
+      final items = response.data?[0];
+
+      if (items['status'] == 'Success') {
+        final listExist = items['items'] != null && items['items'] is List;
+
+        if (listExist) {
+          final list = items['items'] as List<dynamic>;
+
+          if (list.isNotEmpty) {
+            try {
+              final _data = list.first;
+              return SPK.fromJson(_data);
+            } catch (e) {
+              log('list error $e');
+
+              throw FormatException('error while iterating list');
+            }
+          } else {
+            throw AssertionError('spk not found');
+          }
+        } else {
+          throw AssertionError('list empty');
         }
       } else {
         final message = items['error'] as String?;

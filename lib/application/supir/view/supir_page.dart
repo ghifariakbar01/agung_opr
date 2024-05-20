@@ -24,25 +24,31 @@ class _SupirPageState extends ConsumerState<SupirPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final supirOfflineOrOnline = ref.watch(supirOfflineNotifierProvider);
+      final isOnline = ref.read(isOfflineStateProvider) == false;
+      if (isOnline) {
+        await _getSupirOnline();
+      }
 
+      final supirOfflineOrOnline = ref.read(supirOfflineNotifierProvider);
       await supirOfflineOrOnline.maybeWhen(
         hasOfflineStorage: () => ref
             .read(supirNotifierProvider.notifier)
             .getSupirListOFFLINE(page: 0),
         orElse: () async {
-          for (int i = 0; i < 5; i++) {
-            await ref
-                .read(supirNotifierProvider.notifier)
-                .getSupirList(page: i);
-          }
-
-          await ref
-              .read(supirOfflineNotifierProvider.notifier)
-              .checkAndUpdateSupirOFFLINEStatus();
+          await _getSupirOnline();
         },
       );
     });
+  }
+
+  Future<void> _getSupirOnline() async {
+    for (int i = 0; i < 1; i++) {
+      await ref.read(supirNotifierProvider.notifier).getSupirList(page: i);
+    }
+
+    await ref
+        .read(supirOfflineNotifierProvider.notifier)
+        .checkAndUpdateSupirOFFLINEStatus();
   }
 
   @override

@@ -23,11 +23,13 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
     required String idKaryawanStr,
     required String userStr,
     required String passwordStr,
+    required String jobdeskStr,
   }) {
     state = state.copyWith(
-      idKaryawan: IdKaryawan(idKaryawanStr),
       userId: UserId(userStr),
+      jobdesk: Jobdesk(jobdeskStr),
       password: Password(passwordStr),
+      idKaryawan: IdKaryawan(idKaryawanStr),
       failureOrSuccessOption: none(),
     );
   }
@@ -60,6 +62,13 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
     );
   }
 
+  void changeJobdesk(String jobdeskStr) {
+    state = state.copyWith(
+      jobdesk: Jobdesk(jobdeskStr),
+      failureOrSuccessOption: none(),
+    );
+  }
+
   Future<void> initializeAndRedirect({
     required Function startAutoData,
     required Function redirect,
@@ -71,41 +80,25 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   Future<void> signInAndRemember({
     required Function signIn,
     required Function remember,
-    required Function clear,
   }) async {
     await signIn();
-    if (state.isChecked) {
-      await remember();
-    } else {
-      await clear();
-    }
+    await remember();
   }
 
   void changeRemember(bool isChecked) {
     state = state.copyWith(isChecked: isChecked);
   }
 
-  /// [rememberInfo] and [clearInfo] should use [Either] and handle error when thrown
-
   Future<void> rememberInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     await prefs.setString(
         'remember_me',
         jsonEncode(RememberMeState(
-            nik: state.idKaryawan.getOrLeave(''),
-            nama: state.userId.getOrLeave(''),
-            password: state.password.getOrLeave(''))));
-  }
-
-  Future<void> clearInfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString('remember_me') != null) {
-      await prefs.remove(
-        'remember_me',
-      );
-    }
+          nama: state.userId.getOrLeave(''),
+          nik: state.idKaryawan.getOrLeave(''),
+          jobdesk: state.jobdesk.getOrLeave(''),
+          password: state.password.getOrLeave(''),
+        )));
   }
 
   Future<void> signInWithUserIdEmailAndPassword() async {
@@ -118,6 +111,7 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
       );
 
       signInFailureOrSuccess = await _repository.signInWithUsernameAndPassword(
+        jobdesk: state.jobdesk,
         userId: state.userId,
         password: state.password,
       );
@@ -133,6 +127,7 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   bool get isValid {
     final values = [
       state.userId,
+      state.jobdesk,
       state.password,
     ];
 

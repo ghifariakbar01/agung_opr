@@ -50,64 +50,67 @@ class SupirScaffold extends ConsumerWidget {
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
 
     return KeyboardDismissOnTap(
-      child: Scaffold(
-        appBar: VAppBar(
-          context,
-          'supir List',
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  SupirSearch(),
-                  for (int i = 0; i < supirList.length; i++) ...[
-                    IgnorePointer(
-                      ignoring: isSearching,
-                      child: TextButton(
-                        onPressed: () {
-                          final supirName = supirList[i].nama.toString();
-                          context.pop(supirName);
-                        },
-                        style: ButtonStyle(
-                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-                        child: SupirItem(
-                          supir: supirList[i],
+      child: SafeArea(
+        child: Scaffold(
+          appBar: VAppBar(
+            context,
+            'Supir List',
+          ),
+          body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    SupirSearch(),
+                    for (int i = 0; i < supirList.length; i++) ...[
+                      IgnorePointer(
+                        ignoring: isSearching,
+                        child: TextButton(
+                          onPressed: () {
+                            final supirName = supirList[i].nama.toString();
+                            context.pop(supirName);
+                          },
+                          child: SupirItem(
+                            supir: supirList[i],
+                          ),
+                          style: ButtonStyle(
+                              padding:
+                                  MaterialStatePropertyAll(EdgeInsets.zero)),
                         ),
-                      ),
-                    )
-                  ]
+                      )
+                    ]
+                  ],
+                ),
+              )),
+          bottomNavigationBar: Container(
+            height: 63,
+            width: MediaQuery.of(context).size.width,
+            color: Palette.greySecondary,
+            child: TextButton(
+              style: ButtonStyle(
+                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              onPressed: () => context.pop(),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'BACK',
+                    style:
+                        Themes.customColor(FontWeight.bold, 14, Colors.black),
+                  )
                 ],
               ),
-            )),
-        // drawer: Drawer(),
-        bottomNavigationBar: Container(
-          height: 63,
-          width: MediaQuery.of(context).size.width,
-          color: Palette.greySecondary,
-          child: TextButton(
-            style:
-                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-            onPressed: () => context.pop(),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 8,
-                ),
-                Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                  size: 24,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'BACK',
-                  style: Themes.customColor(FontWeight.bold, 14, Colors.black),
-                )
-              ],
             ),
           ),
         ),

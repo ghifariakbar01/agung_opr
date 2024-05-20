@@ -16,4 +16,15 @@ class FrameOfflineNotifier extends StateNotifier<FrameOfflineState> {
       state = const FrameOfflineState.empty();
     }
   }
+
+  Future<void> checkAndUpdateFrameOFFLINEStatusByPage(
+      {required int page}) async {
+    final isOfffline = await _repository.hasOfflineDataByPage(page: page);
+
+    if (isOfffline) {
+      state = const FrameOfflineState.hasOfflineStorage();
+    } else {
+      state = const FrameOfflineState.empty();
+    }
+  }
 }

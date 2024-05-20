@@ -5,13 +5,13 @@ class AlertHelper {
   static void showSnackBar(BuildContext context, {required String message}) {
     showFlash(
       context: context,
-      persistent: false,
+      persistent: true,
       barrierDismissible: true,
       duration: Duration(seconds: 3),
       builder: (context, controller) {
         return FlashBar(
           controller: controller,
-          position: FlashPosition.bottom,
+          position: FlashPosition.top,
           behavior: FlashBehavior.floating,
           content: Text(message),
         );

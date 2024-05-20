@@ -28,8 +28,6 @@ class SPKRepository {
     try {
       final spkList = await _remoteService.getSPKList(page: page);
 
-      await _add(spk: spkList);
-
       return right(spkList);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));
@@ -40,6 +38,11 @@ class SPKRepository {
     } on PlatformException {
       return left(RemoteFailure.storage());
     }
+  }
+
+  Future<SPK> getSPKById({required int idSpk}) async {
+    final item = await _remoteService.getSPKById(idSpk: idSpk);
+    return item;
   }
 
   Future<Either<RemoteFailure, List<SPK>>> searchSPKList(
@@ -103,10 +106,7 @@ class SPKRepository {
 
         final response = jsonDecode(spkStorage);
 
-        // START PAGINATION
-
         final int itemsPerPage = 10;
-
         int _startIndex = page * itemsPerPage;
 
         List<SPK> spkList =
@@ -117,15 +117,8 @@ class SPKRepository {
             : spkList.length;
 
         List<SPK> spkPage = spkList.sublist(_startIndex, _endIndex);
-
-        // END PAGINATION
-
-        log('spkPage $spkPage');
-
         return right(spkPage);
       } else {
-        log('spkPage empty ');
-
         return right([]);
       }
     } on RestApiException catch (e) {
