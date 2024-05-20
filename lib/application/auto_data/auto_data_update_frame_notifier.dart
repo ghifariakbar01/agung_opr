@@ -11,7 +11,6 @@ import '../../infrastructure/update_frame/update_frame_repository.dart';
 import '../../infrastructure/update_spk/update_spk_repository.dart';
 import '../check_sheet/shared/state/cs_id_query.dart';
 import '../check_sheet/unit/state/csu_id_query.dart';
-import '../history/history.dart';
 import '../spk/application/spk_id_query.dart';
 import 'auto_data_update_frame_state.dart';
 

@@ -11,8 +11,10 @@ class ProfileScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(userNotifierProvider, (__, state) {
-      return state.failureOrSuccessOption.fold(
+    ref.listen(
+        userNotifierProvider.select(
+            (value) => value.failureOrSuccessOptionUpdate), (__, state) {
+      return state.fold(
           () {},
           (r) => r.fold(
               (_) => {},

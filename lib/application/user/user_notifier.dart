@@ -46,13 +46,18 @@ class UserNotifier extends StateNotifier<UserState> {
 
   Future<void> onUserParsed({
     required UserModelWithPassword user,
+    required Function checkAndUpdateStatus,
     required Function initializeDioRequest,
     required Function initializeAndCheckData,
     required Function initializeAutoData,
-    required Function checkAndUpdateStatus,
     required Function sortDataFrameInSPK,
   }) async {
     setUser(user);
+
+    if (user.jobdesk == null) {
+      await logout();
+    }
+
     await checkAndUpdateStatus();
     await initializeDioRequest();
     await initializeAndCheckData();

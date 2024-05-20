@@ -81,7 +81,8 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                                       'Error Format Clear: $error',
                                   orElse: () => ''),
                               asset: Assets.iconCrossed,
-                            )), (_) async {
+                            )).then((_) => _updateOfflineStorageStatus()),
+                    (_) async {
                   await _savedQueriesFunction();
                   SPK selectedSPK =
                       ref.read(updateCSNotifierProvider).selectedSPK;
@@ -104,18 +105,21 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
-            (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (idSPKMapidTIUnitMapQuery) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .runSavedQueryFromRepository(
-                        idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery))));
+            (either) => either.fold((failure) async {
+                  await _updateOfflineStorageStatus();
+                  return AlertHelper.showSnackBar(
+                    context,
+                    message: failure.maybeMap(
+                        storage: (_) => 'storage penuh',
+                        format: (error) => 'Error Format: $error',
+                        orElse: () => ''),
+                  );
+                },
+                    (idSPKMapidTIUnitMapQuery) => ref
+                        .read(autoDataUpdateFrameNotifierProvider.notifier)
+                        .runSavedQueryFromRepository(
+                            idSPKMapidTIUnitMapQuery:
+                                idSPKMapidTIUnitMapQuery))));
 
     // CheckSheet Queries
     ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
@@ -136,7 +140,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             empty: (_) => 'empty'),
                         asset: Assets.iconCrossed,
                       ),
-                    ),
+                    ).then((_) => _updateOfflineStorageStatus()),
                 (queryIds) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .runSavedCSQueryFromRepository(queryIds: queryIds))));
@@ -160,7 +164,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             empty: (_) => 'empty'),
                         asset: Assets.iconCrossed,
                       ),
-                    ),
+                    ).then((_) => _updateOfflineStorageStatus()),
                 (queryIds) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .runSavedCSUQueryFromRepository(queryIds: queryIds))));
@@ -184,7 +188,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             empty: (_) => 'empty'),
                         asset: Assets.iconCrossed,
                       ),
-                    ),
+                    ).then((_) => _updateOfflineStorageStatus()),
                 (queryIds) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
                     .runSavedSPKQueryFromRepository(queryIds: queryIds))));
@@ -196,24 +200,26 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
-            (either) => either.fold(
-                    (failure) => failure.maybeWhen(
-                        noConnection: () => {},
-                        orElse: () => showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (_) => VSimpleDialog(
-                                label: 'Error',
-                                labelDescription: failure.map(
-                                  storage: (_) => 'storage penuh',
-                                  noConnection: (_) => 'tidak ada koneksi',
-                                  parse: (error) => 'error parse $error',
-                                  server: (error) =>
-                                      '${error.errorCode} ${error.message}',
-                                ),
-                                asset: Assets.iconCrossed,
+            (either) => either.fold((failure) async {
+                  await _updateOfflineStorageStatus();
+                  await failure.maybeWhen(
+                      noConnection: () => {},
+                      orElse: () => showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (_) => VSimpleDialog(
+                              label: 'Error',
+                              asset: Assets.iconCrossed,
+                              labelDescription: failure.maybeMap(
+                                orElse: () => '',
+                                storage: (_) => 'storage penuh',
+                                parse: (error) => 'error parse $error',
+                                server: (error) =>
+                                    '${error.errorCode} ${error.message}',
                               ),
-                            )), (_) async {
+                            ),
+                          ));
+                }, (_) async {
                   await _readCsuLastPage(context);
                   await _updateOfflineStorageStatus();
                   ref

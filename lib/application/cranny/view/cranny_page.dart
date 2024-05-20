@@ -16,6 +16,7 @@ import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../model/shared/model_providers.dart';
 import '../../spk/application/spk_id_query.dart';
+import '../../user/user_model.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/v_dialogs.dart';
@@ -90,25 +91,13 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                                 orElse: () => ''),
                             asset: Assets.iconCrossed,
                           ),
-                        ), (userString) async {
-                  final userParsed = ref
-                      .read(userNotifierProvider.notifier)
-                      .parseUser(userString);
+                        ), (_str) async {
+                  Either<UserFailure, UserModelWithPassword> userParsed =
+                      ref.read(userNotifierProvider.notifier).parseUser(_str);
+
                   // GET RECENT USER VALUES FROM DB
                   return userParsed.fold(
-                      (failure) => showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (_) => VSimpleDialog(
-                              label: 'Error',
-                              asset: Assets.iconCrossed,
-                              labelDescription: failure.maybeMap(
-                                orElse: () => '',
-                                errorParsing: (error) =>
-                                    'Error while parsing user. ${error.message}',
-                              ),
-                            ),
-                          ),
+                      (failure) => _errGetUser(context, failure),
                       (user) => ref
                           .read(userNotifierProvider.notifier)
                           .onUserParsed(
@@ -273,6 +262,21 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
             Positioned(top: 100, child: DataUpdateLinearProgress()),
             LoadingOverlay(isLoading: isSubmitting),
           ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _errGetUser(BuildContext context, UserFailure failure) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => VSimpleDialog(
+        label: 'Error',
+        asset: Assets.iconCrossed,
+        labelDescription: failure.maybeMap(
+          orElse: () => '',
+          errorParsing: (error) => 'Error while parsing user. ${error.message}',
         ),
       ),
     );
