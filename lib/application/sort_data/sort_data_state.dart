@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/remote_failure.dart';
-import '../spk/spk.dart';
 
 part 'sort_data_state.freezed.dart';
 

@@ -77,13 +77,9 @@ class _CustomerPageState extends ConsumerState<CustomerPage> {
                             ),
                           ),
                         ), (customerResponse) {
-                  final oldCustomerResponse = ref
-                      .read(customerNotifierProvider.notifier)
-                      .state
-                      .customerList;
-
-                  final page =
-                      ref.read(customerNotifierProvider.notifier).state.page;
+                  final oldCustomerResponse =
+                      ref.read(customerNotifierProvider).customerList;
+                  final page = ref.read(customerNotifierProvider).page;
 
                   ref.read(customerNotifierProvider.notifier).processModelList(
                         newCustomer: customerResponse,

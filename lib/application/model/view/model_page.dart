@@ -74,11 +74,8 @@ class _ModelPageState extends ConsumerState<ModelPage> {
                             ),
                           ),
                         ), (SPKResponse) async {
-                  final oldModel =
-                      ref.read(modelNotifierProvider.notifier).state.modelList;
-
-                  final page =
-                      ref.read(modelNotifierProvider.notifier).state.page;
+                  final oldModel = ref.read(modelNotifierProvider).modelList;
+                  final page = ref.read(modelNotifierProvider).page;
 
                   await ref
                       .read(modelNotifierProvider.notifier)

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/model/model.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/routes/route_names.dart';

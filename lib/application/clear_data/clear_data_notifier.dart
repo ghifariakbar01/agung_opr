@@ -12,7 +12,6 @@ class ClearDataNotifier extends StateNotifier<ClearDataState> {
 
   Future<void> clearAllStorage() async {
     Either<LocalFailure, Unit> FOSOClear;
-    //
 
     state = state.copyWith(isClearing: true, FOSOSPKClearData: none());
 

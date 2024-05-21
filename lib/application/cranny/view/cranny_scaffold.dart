@@ -9,8 +9,7 @@ import '../../../style/style.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
-import '../../widgets/v_appbar.dart';
-import 'cranny_drawer.dart';
+import 'cranny_appbar.dart';
 import 'cranny_item.dart';
 import 'cs/cs_cranny_column.dart';
 
@@ -49,10 +48,7 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
     final getBuild = ref.watch(getBuildProvider);
 
     return Scaffold(
-      appBar: VAppBar(
-        context,
-        'Mobile Car Carrier OPR CCR',
-      ),
+      appBar: CrannyAppBar(),
       floatingActionButton: !isOffline
           ? FloatingActionButton.small(
               backgroundColor: Colors.white,
@@ -135,7 +131,6 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
               ),
             ],
           )),
-      drawer: CrannyDrawer(),
     );
   }
 }

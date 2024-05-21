@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:dartz/dartz.dart';
@@ -25,24 +23,26 @@ class _GatePageState extends ConsumerState<GatePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // GATE STORAGE
+      final isOffline = ref.read(isOfflineStateProvider);
+      if (!isOffline) {
+        await ref.read(gateNotifierProvider.notifier).getGates();
+        await ref
+            .read(gateOfflineNotifierProvider.notifier)
+            .checkAndUpdateGateOFFLINEStatus();
+        return;
+      }
+
       await ref
           .read(gateOfflineNotifierProvider.notifier)
           .checkAndUpdateGateOFFLINEStatus();
 
       final gateOfflineOrOnline = ref.watch(gateOfflineNotifierProvider);
 
-      log('gateOfflineOrOnline $gateOfflineOrOnline');
-
-      // debugger(message: 'called');
-
       await gateOfflineOrOnline.maybeWhen(
         hasOfflineStorage: () =>
             ref.read(gateNotifierProvider.notifier).getGatesOFFLINE(),
         orElse: () async {
           await ref.read(gateNotifierProvider.notifier).getGates();
-
-          // GATE STORAGE
           await ref
               .read(gateOfflineNotifierProvider.notifier)
               .checkAndUpdateGateOFFLINEStatus();

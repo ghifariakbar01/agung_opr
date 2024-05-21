@@ -8,7 +8,6 @@ import '../../application/check_sheet/shared/state/cs_id_query.dart';
 import '../../application/history/history.dart';
 import '../../domain/remote_failure.dart';
 import '../exceptions.dart';
-import '../history/history_repository.dart';
 import '../update_cs/update_cs_repository.dart';
 import '../update_frame/update_frame_repository.dart';
 
