@@ -119,11 +119,11 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
           FOSOUpdateCS: optionOf(FOS));
       return;
     } else {
-      // debugger();
       state = state.copyWith(
           isProcessing: false,
           showErrorMessages: true,
           FOSOUpdateCS: optionOf(FOS));
+
       return;
     }
   }

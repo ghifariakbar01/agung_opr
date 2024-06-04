@@ -33,20 +33,26 @@ class UpdateSPKNotifier extends StateNotifier<UpdateSPKState> {
     Either<LocalFailure, Unit>? FOS;
 
     if (isValid()) {
-      state = state.copyWith(isProcessing: true, FOSOUpdateSPK: none());
+      state = state.copyWith(
+        isProcessing: true,
+        FOSOUpdateSPK: none(),
+      );
 
       final spk = state.selectedSPK;
       final ket = state.keterangan;
       final keteranganStr = ket.getOrLeave('');
-      // NG
 
       final queryId = await _repository.getSPKSavableQuery(
-          idSPK: spk.idSpk, ket: keteranganStr);
+        idSPK: spk.idSpk,
+        ket: keteranganStr,
+      );
 
-      // set isNG to true
       FOS = await _repository.saveSPKQuery(queryId: queryId);
 
-      state = state.copyWith(isProcessing: false, FOSOUpdateSPK: optionOf(FOS));
+      state = state.copyWith(
+        isProcessing: false,
+        FOSOUpdateSPK: optionOf(FOS),
+      );
     }
   }
 

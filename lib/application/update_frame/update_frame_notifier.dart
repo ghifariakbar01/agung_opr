@@ -51,20 +51,11 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
   }) async {
     Either<LocalFailure, Unit>? FOS;
 
-    // required String idSPK,
-    // required IDUnit idUnit,
-    // required IDKendType idKendType,
-    // required FrameUnit frame,
-    // required EngineUnit engine,
-    // required WarnaUnit warna,
-    // required SPPDC sppdc,
-
     if (updateFrameList.isNotEmpty) {
-      //
-
-      state = state.copyWith(isProcessing: true, FOSOUpdateFrame: none());
-
-      // debugger(message: 'called');
+      state = state.copyWith(
+        isProcessing: true,
+        FOSOUpdateFrame: none(),
+      );
 
       FOS = await _repository.updateFrameSPK(
         userId: userId,
@@ -75,13 +66,15 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
         updateFrameList: updateFrameList,
       );
 
-      state =
-          state.copyWith(isProcessing: false, FOSOUpdateFrame: optionOf(FOS));
+      state = state.copyWith(
+        isProcessing: false,
+        FOSOUpdateFrame: optionOf(FOS),
+      );
     } else {
-      //
-      state = state.copyWith(isProcessing: false);
-
-      //
+      state = state.copyWith(
+        isProcessing: false,
+        FOSOUpdateFrame: none(),
+      );
     }
   }
 

@@ -308,8 +308,10 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     );
   }
 
-  bool isTappable(
-      {required CSUResult csuResult, required List<CSUResult> csuResultItems}) {
+  bool isTappable({
+    required CSUResult csuResult,
+    required List<CSUResult> csuResultItems,
+  }) {
     Map<bool, List<CSUResult>> listGroupByGate = csuResultItems
         .groupListsBy((element) => element.gate == csuResult.gate);
 
@@ -317,9 +319,11 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     List<CSUResult> listCSUResult = listGroupByGate.values.first;
 
     if (listCSUResult.length == 2) {
-      bool isOut =
-          listCSUResult.firstWhere((element) => element.inout == true).inout ??
-              false;
+      final _list = listCSUResult.firstWhereOrNull(
+        (element) => element.inout == true,
+      );
+
+      bool isOut = _list == null ? false : _list.inout!;
 
       return isOut ? false : true;
     }

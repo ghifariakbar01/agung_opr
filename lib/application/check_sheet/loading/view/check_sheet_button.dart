@@ -17,9 +17,6 @@ class CheckSheetButton extends ConsumerWidget {
         value.updateCSForm.isNG.firstWhere((checkSheet) => checkSheet == true,
             orElse: () => false)));
 
-    final bool isValid =
-        ref.watch(updateFrameNotifierProvider.select((value) => value.isValid));
-
     final user = ref.watch(userNotifierProvider);
 
     final updateCS = ref.watch(updateCSNotifierProvider);
@@ -29,8 +26,6 @@ class CheckSheetButton extends ConsumerWidget {
         VButton(
             label: isDefect ? 'NG' : 'OK',
             color: isDefect ? Palette.red : null,
-            isEnabled: isValid &&
-                ref.read(updateCSNotifierProvider.notifier).isValid(),
             onPressed: () async {
               await ref.read(updateCSNotifierProvider.notifier).saveQuery();
               await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
