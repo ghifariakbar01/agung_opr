@@ -27,25 +27,31 @@ class CheckSheetButton extends ConsumerWidget {
             label: isDefect ? 'NG' : 'OK',
             color: isDefect ? Palette.red : null,
             onPressed: () async {
-              await ref.read(updateCSNotifierProvider.notifier).saveQuery();
-              await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
+              final _notifier = ref.read(updateCSNotifierProvider.notifier);
 
-              final updateProvider = ref.read(updateFrameNotifierProvider);
-              final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
+              if (_notifier.isValid()) {
+                await _notifier.saveQuery();
+                await ref
+                    .read(updateSPKNotifierProvider.notifier)
+                    .saveQuerySPK();
 
-              await ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .updateAllFrame(
-                      idSPK: idSPK.toString(),
-                      nama: user.user.nama!,
-                      sjkb: updateProvider.sppdc,
-                      userId: user.user.idUser.toString(),
-                      gate: updateCS.updateCSForm.gate.getOrLeave(''),
-                      updateFrameList: updateProvider.updateFrameList);
+                final updateProvider = ref.read(updateFrameNotifierProvider);
+                final idSPK = ref.read(updateFrameNotifierProvider).idSPK;
 
-              await ref
-                  .read(updateFrameOfflineNotifierProvider.notifier)
-                  .CUUpdateFrameOFFLINEStatus();
+                await ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .updateAllFrame(
+                        idSPK: idSPK.toString(),
+                        nama: user.user.nama!,
+                        sjkb: updateProvider.sppdc,
+                        userId: user.user.idUser.toString(),
+                        gate: updateCS.updateCSForm.gate.getOrLeave(''),
+                        updateFrameList: updateProvider.updateFrameList);
+
+                await ref
+                    .read(updateFrameOfflineNotifierProvider.notifier)
+                    .CUUpdateFrameOFFLINEStatus();
+              }
             }),
       ],
     );

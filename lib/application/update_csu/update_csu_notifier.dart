@@ -8,6 +8,7 @@ import '../../domain/local_failure.dart';
 import '../../domain/value_objects_copy.dart';
 import '../../infrastructure/update_csu/update_csu_repository.dart';
 
+import '../../utils/validator.dart';
 import '../check_sheet/unit/state/csu_id_query.dart';
 import '../check_sheet/unit/state/csu_ng/csu_ng_result.dart';
 import '../check_sheet/unit/state/csu_result.dart';
@@ -42,10 +43,13 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   }
 
   void changeFillWithValue({required CSUResult csuResult}) {
-    final _tglKirim =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglKirim!));
-    final _tglTerima =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglTerima!));
+    final _tglKirim = csuResult.tglKirim == null
+        ? ''
+        : DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglKirim!));
+
+    final _tglTerima = csuResult.tglTerima == null
+        ? ''
+        : DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglTerima!));
 
     state = state.copyWith(
         updateFrameList: state.updateFrameList.copyWith(
@@ -53,18 +57,16 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       gate: Gate(csuResult.idGate.toString()),
       deck: Deck(csuResult.posisi ?? ''),
       supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
-      tglKirim: TglKirim(csuResult.tglKirim == null ? '' : _tglKirim),
-      tglTerima: TglTerima(csuResult.tglTerima == null ? '' : _tglTerima),
+      tglKirim: TglKirim(_tglKirim),
+      tglTerima: TglTerima(_tglTerima),
       keterangan: Keterangan(csuResult.keterangan ?? ''),
       gateTextController:
           TextEditingController(text: csuResult.idGate.toString()),
       deckTextController: TextEditingController(text: csuResult.posisi ?? ''),
       supirSDRTextController:
           TextEditingController(text: csuResult.supirSDR ?? ''),
-      tglTerimaTextController: TextEditingController(
-          text: csuResult.tglTerima == null ? '' : _tglTerima),
-      tglKirimTextController: TextEditingController(
-          text: csuResult.tglKirim == null ? '' : _tglKirim),
+      tglTerimaTextController: TextEditingController(text: _tglTerima),
+      tglKirimTextController: TextEditingController(text: _tglKirim),
       keteranganTextController:
           TextEditingController(text: csuResult.keterangan ?? ''),
     ));
@@ -115,60 +117,66 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   Future<void> saveQuery() async {
     Either<LocalFailure, Unit>? FOS;
 
-    state = state.copyWith(
-      isProcessing: true,
-      FOSOUpdateCSU: none(),
-      showErrorMessages: false,
-    );
+    if (isValid()) {
+      state = state.copyWith(
+        isProcessing: true,
+        FOSOUpdateCSU: none(),
+        showErrorMessages: false,
+      );
 
-    final UpdateCSUFrameStateSingle updateState = state.updateFrameList;
-    final List<bool> NG = state.updateFrameList.isNG;
+      final UpdateCSUFrameStateSingle updateState = state.updateFrameList;
+      final List<bool> NG = state.updateFrameList.isNG;
 
-    final isNG = NG.firstWhere(
-      (element) => element == true,
-      orElse: () => false,
-    );
+      final isNG = NG.firstWhere(
+        (element) => element == true,
+        orElse: () => false,
+      );
 
-    final CSUIDQuery queryId = await _repository.getOKSavableQuery(
+      final CSUIDQuery queryId = await _repository.getOKSavableQuery(
+          idUnit: state.idUnit,
+          frameName: state.frameName,
+          gate: updateState.gate,
+          posisi: updateState.deck,
+          supirSDR: updateState.supirSDR,
+          tglKirim: updateState.tglKirim,
+          tglTerima: updateState.tglTerima,
+          keterangan: updateState.keterangan,
+          noDefect: isNG == true ? 1 : 0,
+          inOut: updateState.inOut == false ? 0 : 1);
+
+      final List<UpdateCSUNGState> queryNgs = [];
+
+      // GET NG ITEM, JENIS, PENYEBAB
+      for (int index = 0; index < NG.length; index++) {
+        if (NG[index] == true) {
+          final UpdateCSUNGState updateStateNotGood =
+              state.updateFrameList.ngStates[index];
+          queryNgs.add(updateStateNotGood);
+        }
+      }
+
+      final CSUIDQuery queryIdNG = await _repository.getNGSavableQuery(
+        ngStates: queryNgs,
         idUnit: state.idUnit,
         frameName: state.frameName,
-        gate: updateState.gate,
-        posisi: updateState.deck,
-        supirSDR: updateState.supirSDR,
-        tglKirim: updateState.tglKirim,
-        tglTerima: updateState.tglTerima,
-        keterangan: updateState.keterangan,
-        noDefect: isNG == true ? 1 : 0,
-        inOut: updateState.inOut == false ? 0 : 1);
+      );
 
-    final List<UpdateCSUNGState> queryNgs = [];
+      final CSUIDQuery csuIdQuery = CSUIDQuery(
+        query: queryIdNG.query + queryId.query,
+        idUnit: state.idUnit,
+      );
 
-    // GET NG ITEM, JENIS, PENYEBAB
-    for (int index = 0; index < NG.length; index++) {
-      if (NG[index] == true) {
-        final UpdateCSUNGState updateStateNotGood =
-            state.updateFrameList.ngStates[index];
-        queryNgs.add(updateStateNotGood);
-      }
+      FOS = await _repository.saveCSUQuery(queryId: csuIdQuery, isNG: isNG);
+
+      state = state.copyWith(
+          isProcessing: false,
+          showErrorMessages: false,
+          FOSOUpdateCSU: optionOf(FOS));
+    } else {
+      state = state.copyWith(
+        showErrorMessages: true,
+      );
     }
-
-    final CSUIDQuery queryIdNG = await _repository.getNGSavableQuery(
-      ngStates: queryNgs,
-      idUnit: state.idUnit,
-      frameName: state.frameName,
-    );
-
-    final CSUIDQuery csuIdQuery = CSUIDQuery(
-      query: queryIdNG.query + queryId.query,
-      idUnit: state.idUnit,
-    );
-
-    FOS = await _repository.saveCSUQuery(queryId: csuIdQuery, isNG: isNG);
-
-    state = state.copyWith(
-        isProcessing: false,
-        showErrorMessages: false,
-        FOSOUpdateCSU: optionOf(FOS));
   }
 
   void changeIsNG({required bool isNG, required int index}) {
@@ -331,21 +339,21 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     return true;
   }
 
-  // bool isValid() {
-  //   final frame = state.updateFrameList;
+  bool isValid() {
+    final _state = state.updateFrameList;
 
-  //   // HERE
-  //   final values = [
-  //     // frame.gate,
-  //     // frame.deck,
-  //     // frame.supir1,
-  //     // frame.supir2,
-  //     // frame.supirSDR,
-  //     // frame.tglTerima,
-  //     // frame.tglKirim,
-  //     // frame.keterangan
-  //   ];
+    // HERE
+    final values = [
+      _state.gate,
+      // frame.deck,
+      // frame.supir1,
+      // frame.supir2,
+      // frame.supirSDR,
+      // frame.tglTerima,
+      // frame.tglKirim,
+      // frame.keterangan
+    ];
 
-  //   return Validator.validate(values);
-  // }
+    return Validator.validate(values);
+  }
 }
