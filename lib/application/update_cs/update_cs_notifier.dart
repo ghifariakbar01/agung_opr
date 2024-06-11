@@ -51,12 +51,14 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
       isEnabled: spk.cDateCs == null,
       jamLoadUnload: JamLoad(
-        spk.cDateCs == null ? '' : DateTime.parse(spk.cDateCs!).toString(),
+        spk.cDateCs == null
+            ? DateTime.now().toString()
+            : DateTime.parse(spk.cDateCs!).toString(),
         DateTime.now().toString(),
       ),
       jamLoadUnloadText: TextEditingController(
           text: spk.cDateCs == null
-              ? ''
+              ? DateFormat('HH:mm').format(DateTime.now())
               : DateFormat('HH:mm').format(DateTime.parse(spk.cDateCs!))),
     ));
   }
@@ -217,18 +219,6 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
     state = state.copyWith(
       updateCSForm: state.updateCSForm.copyWith(tipe: tipe),
-      FOSOUpdateCS: none(),
-    );
-  }
-
-  void changeJamLoad(
-    String jamLoadStr,
-    String jamNowStr,
-  ) {
-    state = state.copyWith(
-      updateCSForm: state.updateCSForm.copyWith(
-        jamLoadUnload: JamLoad(jamLoadStr, jamNowStr),
-      ),
       FOSOUpdateCS: none(),
     );
   }
