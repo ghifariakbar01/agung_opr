@@ -73,11 +73,12 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(spkList: [...oldSPK, ...newSPK]);
   }
 
-  void processSPKList(
-      {required List<SPK> newSPK,
-      required Function changeSPK,
-      required Function replaceSPK,
-      required int page}) {
+  void processSPKList({
+    required List<SPK> newSPK,
+    required Function changeSPK,
+    required Function replaceSPK,
+    required int page,
+  }) {
     final pageIsZero = page == 0;
     final SPKEmpty = newSPK.isEmpty;
 

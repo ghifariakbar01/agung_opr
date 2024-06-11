@@ -9,8 +9,10 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
 
   AutoDataTimerStateNotifier() : super(AutoDataTimerState.initial());
 
-  Future<void> startTimer(int duration,
-      {required Future<void> Function() getSavedQueryFunction}) async {
+  Future<void> startTimer(
+    int duration, {
+    required Future<void> Function() getSavedQueryFunction,
+  }) async {
     state = state.copyWith(durationInSeconds: duration, isRunning: true);
 
     _timer?.cancel();
@@ -19,9 +21,9 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
         state = state.copyWith(durationInSeconds: state.durationInSeconds - 1);
       } else {
         _resetTimer();
-        //
+
         await getSavedQueryFunction();
-        //
+
         await startTimer(
           duration,
           getSavedQueryFunction: getSavedQueryFunction,

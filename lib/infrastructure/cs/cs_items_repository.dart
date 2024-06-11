@@ -55,17 +55,11 @@ class CSItemsRepository {
     try {
       final frameStorage = await _storage.read();
 
-      // debugger(message: 'called');
-
-      log('CS ITEM STORAGE: $frameStorage');
-
       // HAS MAP
       if (frameStorage != null) {
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
 
         final List<CSItem> response = CSItem.CSItemListFromJson(responsMap);
-
-        log('CS JENIS STORAGE RESPONSE: $response');
 
         if (response.isNotEmpty) {
           return right(response);

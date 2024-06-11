@@ -31,7 +31,7 @@ class UpdateSPKRepository {
       {required List<SPKIdQuery> queryIds}) async {
     final isQueryOK = queryIds.isNotEmpty;
 
-    // debugger(message: 'called');
+    //
 
     if (isQueryOK) {
       for (int i = 0; i < queryIds.length; i++) {
@@ -41,7 +41,7 @@ class UpdateSPKRepository {
         log('INDEX $i');
 
         // GET ID_CS
-        // debugger(message: 'called');
+        //
 
         log('STORAGE UPDATE SPK QUERY: $query');
 
@@ -50,19 +50,18 @@ class UpdateSPKRepository {
 
           await _removeQuerySPKFromSaved(idSPK: idSPK);
         } on RestApiException catch (e) {
-          // debugger(message: 'called');
+          //
 
           await _removeQuerySPKFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.server(e.errorCode, e.message));
         } on NoConnectionException {
-          // debugger(message: 'called');
+          //
 
           // await _removeQuerySPKFromSaved(idSPK: idSPK);
 
           return left(RemoteFailure.noConnection());
         } on RangeError catch (e) {
-          debugger(message: 'called');
           return left(RemoteFailure.parse(message: e.message));
         } on FormatException catch (e) {
           return left(RemoteFailure.parse(message: e.message));
@@ -73,13 +72,13 @@ class UpdateSPKRepository {
           return left(RemoteFailure.storage());
         }
 
-        // debugger(message: 'called');
+        //
 
         // // DELETE SAVED QUERY
       }
     }
 
-    // debugger(message: 'called');
+    //
 
     return right(unit);
   }
@@ -95,14 +94,14 @@ class UpdateSPKRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response =
                   SPKIdQuery.listSPKIdQueryFromJson(parsedResponse);
 
-              final index = response
-                  .indexWhere((element) => element.idSPK == queryId.idSPK);
+              final index = response.indexWhere(
+                (element) => element.idSPK == queryId.idSPK,
+              );
 
               if (index == -1) {
                 final list = [...response, queryId];
@@ -110,9 +109,8 @@ class UpdateSPKRepository {
                 await _storage
                     .save(SPKIdQuery.listSPKIdQueryToJsonSavable(list));
 
-                debugger(message: 'called');
-
                 log('STORAGE UPDATE SPK QUERY: ${SPKIdQuery.listSPKIdQueryToJsonSavable(list)}');
+                return;
               } else {
                 // if not NG, replace list
                 final list = [...response];
@@ -122,9 +120,8 @@ class UpdateSPKRepository {
                 await _storage
                     .save(SPKIdQuery.listSPKIdQueryToJsonSavable(list));
 
-                debugger(message: 'called');
-
                 log('STORAGE UPDATE SPK QUERY: ${SPKIdQuery.listSPKIdQueryToJsonSavable(list)}');
+                return;
               }
             }();
             break;
@@ -135,6 +132,7 @@ class UpdateSPKRepository {
               log('STORAGE SAVE SPK QUERY: ${SPKIdQuery.listSPKIdQueryToJsonSavable(list)}');
 
               await _storage.save(SPKIdQuery.listSPKIdQueryToJsonSavable(list));
+              return;
             }();
         }
       } else {
@@ -155,6 +153,7 @@ class UpdateSPKRepository {
 
   SPKIdQuery getSPKSavableQuery({required int idSPK, required String ket}) {
     // TEST
+
     String dbName = Constants.isTesting ? 'opr_trs_spk_test' : 'opr_trs_spk';
 
     final cAndUDate = DateTime.now()
@@ -168,8 +167,6 @@ class UpdateSPKRepository {
     final SPKIdQuery spkIdQuery = SPKIdQuery(idSPK: idSPK, query: insert);
 
     log('QUERY SAVE SPK : ${spkIdQuery.toJson()}');
-
-    debugger();
 
     return spkIdQuery;
   }
@@ -185,7 +182,7 @@ class UpdateSPKRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
+              //
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response =
@@ -203,7 +200,7 @@ class UpdateSPKRepository {
 
                 await _storage.save(jsonEncode(list));
 
-                // debugger(message: 'called');
+                //
 
                 log('STORAGE UPDATE SPK FRAME DELETE: ${jsonEncode(list)}');
 
@@ -245,7 +242,7 @@ class UpdateSPKRepository {
 
         return right(response);
       } else {
-        // debugger(message: 'CALLED');
+        //
         log('isStorageSaved CS: NOT OK');
 
         return right([]);
@@ -264,7 +261,7 @@ class UpdateSPKRepository {
       if (storedCredentials == null || storedCredentials == '[]') {
         return left(LocalFailure.empty());
       } else {
-        // debugger(message: 'called');
+        //
         log('storedCredentials $storedCredentials');
       }
 

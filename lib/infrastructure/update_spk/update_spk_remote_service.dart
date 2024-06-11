@@ -33,13 +33,8 @@ class UpdateSPKRemoteService {
       final items = response.data?[0];
 
       if (items['status'] == 'Success') {
-        // HERE
-        debugger(message: 'called');
-
         return unit;
       } else {
-        debugger(message: 'called');
-
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;
 

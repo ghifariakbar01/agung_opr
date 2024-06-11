@@ -4,6 +4,7 @@ import 'package:agung_opr/application/user/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../domain/local_failure.dart';
 import '../../domain/value_objects_copy.dart';
@@ -33,22 +34,30 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
   changeSelectedSPK(SPK spk) => state = state.copyWith(selectedSPK: spk);
 
+  changeIsEnabled(bool isEnabled) {
+    state = state.copyWith(
+      updateCSForm: state.updateCSForm.copyWith(isEnabled: isEnabled),
+    );
+  }
+
   void changeFillWithValue({
     required SPK spk,
   }) {
-    // debugger(message: 'called');
-    final picked = TimeOfDay.now();
-    final jam =
-        '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(
       nopol: Nopol(spk.nopol),
-      jamLoadUnload: JamLoad(jam),
       namaSupir: Supir1(spk.supir1Nm ?? ''),
       keterangan: Keterangan(spk.ket ?? ''),
       namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
-      jamLoadUnloadText: TextEditingController(text: jam),
+      isEnabled: spk.cDateCs == null,
+      jamLoadUnload: JamLoad(
+        spk.cDateCs == null ? '' : DateTime.parse(spk.cDateCs!).toString(),
+        DateTime.now().toString(),
+      ),
+      jamLoadUnloadText: TextEditingController(
+          text: spk.cDateCs == null
+              ? ''
+              : DateFormat('HH:mm').format(DateTime.parse(spk.cDateCs!))),
     ));
   }
 
@@ -212,43 +221,17 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
     );
   }
 
-  void changeJamLoad(String jamLoadStr) {
+  void changeJamLoad(
+    String jamLoadStr,
+    String jamNowStr,
+  ) {
     state = state.copyWith(
-      updateCSForm:
-          state.updateCSForm.copyWith(jamLoadUnload: JamLoad(jamLoadStr)),
+      updateCSForm: state.updateCSForm.copyWith(
+        jamLoadUnload: JamLoad(jamLoadStr, jamNowStr),
+      ),
       FOSOUpdateCS: none(),
     );
   }
-
-  // void changeSupir1(String supirStr) {
-  //   state = state.copyWith(
-  //     updateFrameList: state.updateFrameList.copyWith(supir1: Supir1(supirStr)),
-  //     FOSOUpdateCS: none(),
-  //   );
-  // }
-
-  // void changeSupir2(String supirStr) {
-  //   state = state.copyWith(
-  //     updateFrameList: state.updateFrameList.copyWith(supir2: Supir2(supirStr)),
-  //     FOSOUpdateCS: none(),
-  //   );
-  // }
-
-  // void changeSupirSDR(String supirStr) {
-  //   state = state.copyWith(
-  //     updateFrameList:
-  //         state.updateFrameList.copyWith(supirSDR: SupirSDR(supirStr)),
-  //     FOSOUpdateCS: none(),
-  //   );
-  // }
-
-  // void changeTglTerima(String tglTerimaStr) {
-  //   state = state.copyWith(
-  //     updateFrameList:
-  //         state.updateFrameList.copyWith(tglTerima: TglTerima(tglTerimaStr)),
-  //     FOSOUpdateCS: none(),
-  //   );
-  // }
 
   void changeKeterangan(String keteranganStr) {
     state = state.copyWith(

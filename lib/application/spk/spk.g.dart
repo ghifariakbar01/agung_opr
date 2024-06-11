@@ -17,6 +17,7 @@ _$_SPK _$$_SPKFromJson(Map<String, dynamic> json) => _$_SPK(
       namaTrayek: json['trayek_nama'] as String?,
       tglBerangkat: json['tgl_berangkat'] as String?,
       ket: json['ket'] as String?,
+      cDateCs: json['c_date_cs'] as String?,
       nopol: json['nopol'] as String,
     );
 
@@ -31,5 +32,6 @@ Map<String, dynamic> _$$_SPKToJson(_$_SPK instance) => <String, dynamic>{
       'trayek_nama': instance.namaTrayek,
       'tgl_berangkat': instance.tglBerangkat,
       'ket': instance.ket,
+      'c_date_cs': instance.cDateCs,
       'nopol': instance.nopol,
     };

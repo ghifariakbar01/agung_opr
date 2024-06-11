@@ -35,25 +35,9 @@ class AutoDataUpdateFrameNotifier
   // 4. If query success after executed, clear query from UpdateFrameRepository
   // 5. Clear Frame from FrameRepository from saved idSPK
   bool isMapEmpty(Map<String, Map<String, String>> map) {
-    final list = map.entries.toList();
-    if (map.isEmpty) {
-      return true;
-    }
-
-    bool isEmpty = false;
-
-    for (final item in list) {
-      if (item.value.isNotEmpty) {
-        log('ITEM VALUE: ${item.value}');
-        isEmpty = false;
-      } else {
-        isEmpty = true;
-      }
-    }
-
-    log('list is $list');
-
-    return isEmpty;
+    final _cond1 = map.entries.toList().isEmpty && map.keys.toList().isEmpty;
+    log('_cond1 ${_cond1}');
+    return _cond1;
   }
 
   void resetAutoDataRemoteFOSO() {
@@ -91,51 +75,70 @@ class AutoDataUpdateFrameNotifier
     }
 
     state = state.copyWith(
-        isGetting: true, FOSOSPKAutoDataLocalUpdateFrame: none());
+      isGetting: true,
+      FOSOSPKAutoDataLocalUpdateFrame: none(),
+    );
 
-    FOS = await _updateFrameRepository.getUpdateQueryListSPKOFFLINE();
+    FOS = await _updateFrameRepository.getUpdateQueryListOFFLINE();
+
+    final Map<String, Map<String, String>> _map = FOS.fold((l) => {}, (r) => r);
+
+    changeSavedQuery(idSPKMapidTIUnitMapQuery: _map);
 
     state = state.copyWith(
-        isGetting: false, FOSOSPKAutoDataLocalUpdateFrame: optionOf(FOS));
+      isGetting: false,
+      FOSOSPKAutoDataLocalUpdateFrame: _map.isNotEmpty ? optionOf(FOS) : none(),
+    );
   }
 
   // UPDATE FRAME
-  Future<void> runSavedQueryFromRepository(
-      {required Map<String, Map<String, String>>
-          idSPKMapidTIUnitMapQuery}) async {
+  Future<void> runSavedQueryFromRepository({
+    required Map<String, Map<String, String>> idSPKMapidTIUnitMapQuery,
+  }) async {
     if (state.isGetting) {
       return;
     }
-    if (isMapEmpty(idSPKMapidTIUnitMapQuery)) {
+
+    if (isMapEmpty(idSPKMapidTIUnitMapQuery) == true) {
       return;
     }
 
-    await Future.delayed(
-        Duration(seconds: 1),
-        () => changeSavedQuery(
-            idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery));
-
     Either<RemoteFailure, Unit>? FOS;
 
-    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
+    state = state.copyWith(
+      isGetting: true,
+      FOSOAutoDataRemote: none(),
+    );
 
     FOS = await _updateFrameRepository.updateFrameByQuery(
-        queryMap: idSPKMapidTIUnitMapQuery);
+      queryMap: idSPKMapidTIUnitMapQuery,
+    );
 
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+    state = state.copyWith(
+      isGetting: false,
+      FOSOAutoDataRemote:
+          idSPKMapidTIUnitMapQuery.isNotEmpty ? optionOf(FOS) : none(),
+    );
   }
 
   Future<void> getSavedCSUQueryFromRepository() async {
     Either<LocalFailure, List<CSUIDQuery>>? FOS;
 
     state = state.copyWith(
-        isGetting: true, FOSOAutoDataLocalUpdateFrameCSU: none());
+      isGetting: true,
+      FOSOAutoDataLocalUpdateFrameCSU: none(),
+    );
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSUFrameRepository.getUpdateCSUQueryListOFFLINE();
+    final List<CSUIDQuery> _list = FOS.fold((l) => [], (r) => r);
+    changeSavedCSUQuery(csuIdQueries: _list);
 
     state = state.copyWith(
-        isGetting: false, FOSOAutoDataLocalUpdateFrameCSU: optionOf(FOS));
+      isGetting: false,
+      FOSOAutoDataLocalUpdateFrameCSU:
+          _list.isNotEmpty ? optionOf(FOS) : none(),
+    );
   }
 
   Future<void> runSavedCSUQueryFromRepository(
@@ -149,8 +152,6 @@ class AutoDataUpdateFrameNotifier
     if (queryIds.isEmpty) {
       return;
     }
-
-    changeSavedCSUQuery(csuIdQueries: queryIds);
 
     state = state.copyWith(isGetting: true);
 
@@ -170,14 +171,20 @@ class AutoDataUpdateFrameNotifier
 
     log('getSavedCSQueryFromRepository --');
 
-    state =
-        state.copyWith(isGetting: true, FOSOAutoDataLocalUpdateFrameCS: none());
+    state = state.copyWith(
+      isGetting: true,
+      FOSOAutoDataLocalUpdateFrameCS: none(),
+    );
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSRepository.getUpdateCSQueryListOFFLINE();
+    final List<CSIDQuery> _list = FOS.fold((l) => [], (r) => r);
+    changeSavedCSQuery(csIdQueries: _list);
 
     state = state.copyWith(
-        isGetting: false, FOSOAutoDataLocalUpdateFrameCS: optionOf(FOS));
+      isGetting: false,
+      FOSOAutoDataLocalUpdateFrameCS: _list.isNotEmpty ? optionOf(FOS) : none(),
+    );
   }
 
   // CHECK SHEET LOADING / UNLOADING / LOADING & UNLOADING.
@@ -193,14 +200,20 @@ class AutoDataUpdateFrameNotifier
       return;
     }
 
-    changeSavedCSQuery(csIdQueries: queryIds);
+    if (queryIds.isNotEmpty) {
+      state = state.copyWith(
+        isGetting: true,
+        FOSOAutoDataRemote: none(),
+      );
 
-    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
+      // CONVERT ID_CS_NAs to appropriate values
+      FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
 
-    // CONVERT ID_CS_NAs to appropriate values
-    FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
-
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+      state = state.copyWith(
+        isGetting: false,
+        FOSOAutoDataRemote: optionOf(FOS),
+      );
+    }
   }
 
   // 1.
@@ -208,13 +221,20 @@ class AutoDataUpdateFrameNotifier
     Either<LocalFailure, List<SPKIdQuery>>? FOS;
 
     state = state.copyWith(
-        isGetting: true, FOSOAutoDataLocalUpdateFrameSPK: none());
+      isGetting: true,
+      FOSOAutoDataLocalUpdateFrameSPK: none(),
+    );
 
     // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateSPKRepository.getUpdateSPKQueryListOFFLINE();
+    final List<SPKIdQuery> _list = FOS.fold((l) => [], (r) => r);
+    changeSavedSPKQuery(spkIdQueries: _list);
 
     state = state.copyWith(
-        isGetting: false, FOSOAutoDataLocalUpdateFrameSPK: optionOf(FOS));
+      isGetting: false,
+      FOSOAutoDataLocalUpdateFrameSPK:
+          _list.isNotEmpty ? optionOf(FOS) : none(),
+    );
   }
 
   // UPDATE SPK TO IS_EDIT
@@ -229,14 +249,19 @@ class AutoDataUpdateFrameNotifier
       return;
     }
 
-    await Future.delayed(Duration(seconds: 1),
-        () => changeSavedSPKQuery(spkIdQueries: queryIds));
+    if (queryIds.isNotEmpty) {
+      state = state.copyWith(
+        isGetting: true,
+        FOSOAutoDataRemote: none(),
+      );
 
-    state = state.copyWith(isGetting: true, FOSOAutoDataRemote: none());
+      // CONVERT ID_CS_NAs to appropriate values
+      FOS = await _updateSPKRepository.updateSPKByQuery(queryIds: queryIds);
 
-    // CONVERT ID_CS_NAs to appropriate values
-    FOS = await _updateSPKRepository.updateSPKByQuery(queryIds: queryIds);
-
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+      state = state.copyWith(
+        isGetting: false,
+        FOSOAutoDataRemote: optionOf(FOS),
+      );
+    }
   }
 }

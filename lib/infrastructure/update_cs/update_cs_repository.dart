@@ -30,58 +30,41 @@ class UpdateCSRepository {
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<Either<RemoteFailure, Unit>> updateCSByQuery(
-      {required List<CSIDQuery> queryIds}) async {
+  Future<Either<RemoteFailure, Unit>> updateCSByQuery({
+    required List<CSIDQuery> queryIds,
+  }) async {
     final isQueryOK = queryIds.isNotEmpty;
 
-    // debugger(message: 'called');
     final List<CSIDQuery> processedList = queryIds.toSet().toList();
 
     if (isQueryOK) {
-      for (int i = 0; i < processedList.length; i++) {
-        final String query = processedList[i].query;
-        final int idSPK = processedList[i].idSPK;
+      final _item = processedList.first;
+      final String query = _item.query;
+      final int idSPK = _item.idSPK;
 
-        log('INDEX $i');
+      try {
+        await _remoteService.insertCSBYQuery(query: query);
+        await _removeQueryCSFromSaved(idSPK: idSPK);
+      } on RestApiException catch (e) {
+        await _removeQueryCSFromSaved(idSPK: idSPK);
 
-        // GET ID_CS
-        // debugger(message: 'called');
+        return left(RemoteFailure.server(e.errorCode, e.message));
+      } on NoConnectionException {
+        // await _removeQueryCSFromSaved(idSPK: idSPK);
 
-        log('STORAGE UPDATE CS QUERY: $query');
-
-        try {
-          await _remoteService.insertCSBYQuery(query: query);
-          await _removeQueryCSFromSaved(idSPK: idSPK);
-        } on RestApiException catch (e) {
-          // debugger(message: 'called');
-
-          await _removeQueryCSFromSaved(idSPK: idSPK);
-
-          return left(RemoteFailure.server(e.errorCode, e.message));
-        } on NoConnectionException {
-          // debugger(message: 'called');
-
-          // await _removeQueryCSFromSaved(idSPK: idSPK);
-
-          return left(RemoteFailure.noConnection());
-        } on RangeError catch (e) {
-          debugger(message: 'called');
-          return left(RemoteFailure.parse(message: e.message));
-        } on FormatException catch (e) {
-          return left(RemoteFailure.parse(message: e.message));
-        } on JsonUnsupportedObjectError {
-          return left(
-              RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-        } on PlatformException {
-          return left(RemoteFailure.storage());
-        }
-
-        // debugger(message: 'called');
-
-        // // DELETE SAVED QUERY
+        return left(RemoteFailure.noConnection());
+      } on RangeError catch (e) {
+        debugger(message: 'called');
+        return left(RemoteFailure.parse(message: e.message));
+      } on FormatException catch (e) {
+        return left(RemoteFailure.parse(message: e.message));
+      } on JsonUnsupportedObjectError {
+        return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+      } on PlatformException {
+        return left(RemoteFailure.storage());
       }
 
-      // debugger(message: 'called');
+      // // DELETE SAVED QUERY
 
       return right(unit);
     } else {
@@ -128,7 +111,6 @@ class UpdateCSRepository {
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
-                  // debugger(message: 'called');
                   log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
 
                   return;
@@ -196,7 +178,10 @@ class UpdateCSRepository {
     final ketStr = ket.getOrLeave('');
     final supir1Str = supir1.getOrLeave('');
     final supir2Str = supir2.getOrLeave('');
-    final jamLoadStr = jamLoad.getOrLeave('');
+    final _jamLoad = jamLoad.getOrLeave('');
+    final _jamLoadStr = _jamLoad.isEmpty
+        ? ''
+        : DateFormat('HH:mm').format(DateTime.parse(_jamLoad));
 
     final tgl = DateFormat('yyyy-MM-dd')
         .parse(DateTime.now().toString())
@@ -219,7 +204,7 @@ class UpdateCSRepository {
         "'$supir1Str', " +
         "'$supir2Str', " +
         "'$tgl', " +
-        "'$jamLoadStr', " +
+        "'$_jamLoadStr', " +
         "'$gateStr', " +
         "'${status.name}', " +
         "'${tipe.name}', " +
@@ -309,13 +294,13 @@ class UpdateCSRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
               final response = CSIDQuery.listCSIDQueryFromJson(parsedResponse);
 
-              final index =
-                  response.indexWhere((element) => element.idSPK == idSPK);
+              final index = response.indexWhere(
+                (element) => element.idSPK == idSPK,
+              );
 
               if (index == -1) {
                 throw RangeError('ITEM QUERY NOT FOUND');
@@ -325,10 +310,7 @@ class UpdateCSRepository {
 
                 await _storage.save(jsonEncode(list));
 
-                // debugger(message: 'called');
-
                 log('STORAGE UPDATE CS FRAME DELETE: ${jsonEncode(list)}');
-
                 return unit;
               }
             }();
@@ -367,7 +349,6 @@ class UpdateCSRepository {
 
         return right(response);
       } else {
-        // debugger(message: 'CALLED');
         log('isStorageSaved CS: NOT OK');
 
         return right([]);
@@ -386,7 +367,6 @@ class UpdateCSRepository {
       if (storedCredentials == null || storedCredentials == '[]') {
         return left(LocalFailure.empty());
       } else {
-        // debugger(message: 'called');
         log('storedCredentials $storedCredentials');
       }
 

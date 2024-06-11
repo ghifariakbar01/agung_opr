@@ -82,16 +82,20 @@ Either<ValueFailure<String>, String> validateJobdesk(String input) {
   }
 }
 
-// ISENG
-Either<ValueFailure<String>, String> validateJam(String input) {
-  RegExp timePattern = RegExp(r'^([01]\d|2[0-3]):[0-5]\d$');
-  if (timePattern.hasMatch(input)) {
-    // debugger();
+Either<ValueFailure<String>, String> validateJamCDate(
+  String input,
+  String initial,
+) {
+  if (input.isEmpty) {
+    return left(ValueFailure.invalidJam(failedValue: input));
+  }
 
+  final _d1 = DateTime.parse(input);
+  final _d2 = DateTime.parse(initial);
+
+  if (_d2.difference(_d1).inHours < 1) {
     return right(input);
   } else {
-    // debugger();
-
     return left(ValueFailure.invalidJam(failedValue: input));
   }
 }

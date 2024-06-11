@@ -18,8 +18,6 @@ class DataUpdateQueryItem extends StatelessWidget {
 
     final TIUnitMapList = TIUnitMapQuery?.entries.toList();
 
-    log('MAP IS $TIUnitMapQuery');
-
     final width = MediaQuery.of(context).size.width;
 
     return Padding(

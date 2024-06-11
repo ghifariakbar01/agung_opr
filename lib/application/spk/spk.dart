@@ -21,6 +21,7 @@ class SPK with _$SPK {
     @JsonKey(name: 'trayek_nama') required String? namaTrayek,
     @JsonKey(name: 'tgl_berangkat') required String? tglBerangkat,
     required String? ket,
+    @JsonKey(name: 'c_date_cs') required String? cDateCs,
     required String nopol,
   }) = _SPK;
 
@@ -29,6 +30,7 @@ class SPK with _$SPK {
         ket: '',
         nopol: '',
         spkNo: '',
+        cDateCs: '',
         supir1Nm: '',
         supir2Nm: '',
         namaTrayek: '',

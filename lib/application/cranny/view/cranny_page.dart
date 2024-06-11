@@ -11,13 +11,9 @@ import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
 import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
-import '../../check_sheet/shared/state/cs_id_query.dart';
-import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../model/shared/model_providers.dart';
-import '../../spk/application/spk_id_query.dart';
 import '../../user/user_model.dart';
-import '../../widgets/alert_helper.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/v_dialogs.dart';
 import 'cranny_middle.dart';
@@ -165,85 +161,9 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                         )),
                 (_) => ref.read(userNotifierProvider.notifier).getUser())));
 
-    // Frame Queries
-    ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOSPKAutoDataLocalUpdateFrame,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (idSPKMapidTIUnitMapQuery) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .changeSavedQuery(
-                        idSPKMapidTIUnitMapQuery: idSPKMapidTIUnitMapQuery))));
-
-    // CheckSheet Queries
-    ref.listen<Option<Either<LocalFailure, List<CSIDQuery>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalUpdateFrameCS,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (csIdQueries) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .changeSavedCSQuery(csIdQueries: csIdQueries))));
-
-    // CheckSheet Unit Queries
-    ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalUpdateFrameCSU,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (csuIdQueries) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .changeSavedCSUQuery(csuIdQueries: csuIdQueries))));
-
-    // SPK Queries
-    ref.listen<Option<Either<LocalFailure, List<SPKIdQuery>>>>(
-        autoDataUpdateFrameNotifierProvider.select(
-          (state) => state.FOSOAutoDataLocalUpdateFrameSPK,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                (failure) => AlertHelper.showSnackBar(
-                      context,
-                      message: failure.maybeMap(
-                          storage: (_) => 'storage penuh',
-                          format: (error) => 'Error Format: $error',
-                          orElse: () => ''),
-                    ),
-                (csIdQueries) => ref
-                    .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .changeSavedSPKQuery(spkIdQueries: csIdQueries))));
-
-    final isSubmitting = ref
-        .watch(sortDataFormNotifierProvider.select((value) => value.isGetting));
+    final isSubmitting = ref.watch(
+      sortDataFormNotifierProvider.select((value) => value.isGetting),
+    );
 
     return SafeArea(
       child: UpgradeAlert(
@@ -283,10 +203,14 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
   }
 
   Future<void> _startAutoData(
-      Future<void> Function() getSavedQueriesFunction) async {
+    Future<void> Function() getSavedQueriesFunction,
+  ) async {
     final autoDatanotifier = ref.read(autoDataTimerNotifierProvider.notifier);
-    return autoDatanotifier.startTimer(Constants.dataIntervalTimerInSeconds,
-        getSavedQueryFunction: getSavedQueriesFunction);
+
+    return autoDatanotifier.startTimer(
+      Constants.dataIntervalTimerInSeconds,
+      getSavedQueryFunction: getSavedQueriesFunction,
+    );
   }
 }
 

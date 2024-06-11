@@ -7,7 +7,8 @@ import 'package:agung_opr/infrastructure/exceptions.dart';
 import 'package:dio/dio.dart';
 
 import '../../application/check_sheet/shared/state/cs_jenis.dart';
-import '../../application/check_sheet/shared/state/cs_result.dart';
+import '../../application/update_cs_disable/disable.dart';
+import '../../constants/constants.dart';
 
 class CSRemoteService {
   CSRemoteService(this._dio, this._dioRequestNotifier);
@@ -15,22 +16,23 @@ class CSRemoteService {
   final Dio _dio;
   final Map<String, String> _dioRequestNotifier;
 
-  Future<List<CSResult>> getCSByIDSPK({required int idSPK}) async {
-    const String dbName = 'pool_kr_list';
+  Future<UpdateCsDisable> getCsDone({required int idSPK}) async {
+    final String dbName =
+        Constants.isTesting ? 'pool_chk_kr_test' : 'pool_chk_kr';
 
     try {
       final data = _dioRequestNotifier;
 
       data.addAll({
         "mode": "SELECT",
-        "command": "SELECT id_list AS id, nama FROM $dbName",
+        "command": "SELECT tipe FROM $dbName WHERE id_spk = $idSPK",
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      log('response getCSJenis $response');
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       final items = response.data?[0];
 
@@ -42,26 +44,37 @@ class CSRemoteService {
 
           if (list.isNotEmpty) {
             try {
-              List<CSResult> csList =
-                  (list).map((data) => CSResult.fromJson(data)).toList();
+              bool _loading = false;
+              bool _unload = false;
+              bool _loadunload = false;
 
-              log('LIST CS JENIS: $csList');
+              for (final e in list) {
+                if (e['tipe'] == 'loading') {
+                  _loading = true;
+                }
 
-              return csList;
+                if (e['tipe'] == 'unload') {
+                  _unload = true;
+                }
+
+                if (e['tipe'] == 'loadunload') {
+                  _loadunload = true;
+                }
+              }
+
+              return UpdateCsDisable.inital().copyWith(
+                loading: _loading,
+                unload: _unload,
+                loadunload: _loadunload,
+              );
             } catch (e) {
-              log('list error $e');
-
-              throw FormatException('error while iterating list getCSJenis');
+              throw FormatException('error while iterating list getCsDone');
             }
           } else {
-            log('list empty');
-
-            return [];
+            return UpdateCsDisable.inital();
           }
         } else {
-          log('list empty');
-
-          return [];
+          return UpdateCsDisable.inital();
         }
       } else {
         final message = items['error'] as String?;

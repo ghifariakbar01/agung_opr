@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../style/style.dart';
 import '../../../shared/providers/cs_providers.dart';
@@ -15,11 +15,9 @@ class FormJam extends ConsumerStatefulWidget {
 class _FormJamState extends ConsumerState<FormJam> {
   @override
   Widget build(BuildContext context) {
-    final jam = ref.watch(updateCSNotifierProvider
-        .select((value) => value.updateCSForm.jamLoadUnload));
-
-    final jamEdit = ref.watch(updateCSNotifierProvider
-        .select((value) => value.updateCSForm.jamLoadUnloadText));
+    final jamEdit = ref.watch(updateCSNotifierProvider.select(
+      (value) => value.updateCSForm.jamLoadUnloadText,
+    ));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,23 +43,30 @@ class _FormJamState extends ConsumerState<FormJam> {
         Flexible(
           flex: 1,
           child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Palette.primaryColor, width: 2),
-                borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: TextButton(
               onPressed: () async {
                 final TimeOfDay? picked = await showTimePicker(
-                    context: context, initialTime: TimeOfDay.now());
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
 
                 if (picked != null) {
-                  final hour =
-                      '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+                  final _tpicked = DateTime.now().copyWith(
+                    hour: picked.hour,
+                    minute: picked.minute,
+                  );
+
+                  final _time = _tpicked.toString();
+
+                  final _time2 = DateTime.now().toString();
 
                   ref
                       .read(updateCSNotifierProvider.notifier)
-                      .changeJamLoad(hour);
+                      .changeJamLoad(_time, _time2);
 
-                  jamEdit.text = hour;
+                  final _text = DateFormat('HH:mm').format(_tpicked);
+                  jamEdit.text = _text;
                 }
               },
               style: ButtonStyle(
@@ -81,13 +86,19 @@ class _FormJamState extends ConsumerState<FormJam> {
                         )),
                   ),
                   onChanged: (_) {},
-                  validator: (_) => jam.value.fold(
-                    (f) => f.maybeMap(
-                      shortPassword: (_) => 'terlalu pendek',
-                      orElse: () => null,
-                    ),
-                    (_) => null,
-                  ),
+                  validator: (_) => ref
+                      .read(updateCSNotifierProvider)
+                      .updateCSForm
+                      .jamLoadUnload
+                      .value
+                      .fold(
+                        (f) => f.maybeMap(
+                          shortPassword: (_) => 'terlalu pendek',
+                          invalidJam: (_) => 'Jam load invalid',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
                 ),
               ),
             ),

@@ -84,6 +84,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             )).then((_) => _updateOfflineStorageStatus()),
                     (_) async {
                   await _savedQueriesFunction();
+
                   SPK selectedSPK =
                       ref.read(updateCSNotifierProvider).selectedSPK;
                   selectedSPK != SPK.initial()
@@ -93,6 +94,7 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             extra: spkMap,
                             RouteNames.checkSheetLoadingNameRoute,
                           );
+
                           return context.pushNamed(RouteNames.historyNameRoute);
                         }()
                       : () {}();

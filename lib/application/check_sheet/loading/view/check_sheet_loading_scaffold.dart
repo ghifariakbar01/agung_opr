@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
@@ -74,8 +72,6 @@ class _CheckSheetLoadingScaffoldState
     final SPK selectedSPK = ref.watch(selectedSPKStateProvider);
     final ModeState modeApp = ref.watch(modeNotifierProvider);
     final FrameState frameList = ref.watch(frameNotifierProvider);
-
-    log('selectedSPK.isEdit ${selectedSPK}');
 
     final bool isLoading =
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));

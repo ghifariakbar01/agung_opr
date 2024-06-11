@@ -6,6 +6,7 @@ import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
+import '../../application/update_cs_disable/disable.dart';
 import '../../domain/local_failure.dart';
 import '../credentials_storage.dart';
 import '../exceptions.dart';
@@ -26,6 +27,10 @@ class CSRepository {
 
   Future<bool> hasOfflineData() => getCSJenisOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  Future<UpdateCsDisable> getCsDone({required int idSPK}) async {
+    return _remoteService.getCsDone(idSPK: idSPK);
+  }
 
   Future<Either<RemoteFailure, List<CSJenis>>> getCSJenis() async {
     try {
@@ -64,8 +69,6 @@ class CSRepository {
         final responsMap = jsonDecode(csJenisStorage) as List<dynamic>;
 
         final List<CSJenis> response = CSJenis.CSJenisListFromJson(responsMap);
-
-        log('CS JENIS STORAGE RESPONSE: $response');
 
         if (response.isNotEmpty) {
           return right(response);

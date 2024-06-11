@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateCSFormState {
+  bool get isEnabled => throw _privateConstructorUsedError;
   Nopol get nopol => throw _privateConstructorUsedError;
   Supir1 get namaSupir => throw _privateConstructorUsedError;
   SupirSDR get namaAsistenSupir => throw _privateConstructorUsedError;
@@ -44,7 +45,8 @@ abstract class $UpdateCSFormStateCopyWith<$Res> {
       _$UpdateCSFormStateCopyWithImpl<$Res, UpdateCSFormState>;
   @useResult
   $Res call(
-      {Nopol nopol,
+      {bool isEnabled,
+      Nopol nopol,
       Supir1 namaSupir,
       SupirSDR namaAsistenSupir,
       TglBerangkat tglBerangkat,
@@ -72,6 +74,7 @@ class _$UpdateCSFormStateCopyWithImpl<$Res, $Val extends UpdateCSFormState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isEnabled = null,
     Object? nopol = null,
     Object? namaSupir = null,
     Object? namaAsistenSupir = null,
@@ -87,6 +90,10 @@ class _$UpdateCSFormStateCopyWithImpl<$Res, $Val extends UpdateCSFormState>
     Object? ngStates = null,
   }) {
     return _then(_value.copyWith(
+      isEnabled: null == isEnabled
+          ? _value.isEnabled
+          : isEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       nopol: null == nopol
           ? _value.nopol
           : nopol // ignore: cast_nullable_to_non_nullable
@@ -152,7 +159,8 @@ abstract class _$$_UpdateCSFormStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Nopol nopol,
+      {bool isEnabled,
+      Nopol nopol,
       Supir1 namaSupir,
       SupirSDR namaAsistenSupir,
       TglBerangkat tglBerangkat,
@@ -178,6 +186,7 @@ class __$$_UpdateCSFormStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isEnabled = null,
     Object? nopol = null,
     Object? namaSupir = null,
     Object? namaAsistenSupir = null,
@@ -193,6 +202,10 @@ class __$$_UpdateCSFormStateCopyWithImpl<$Res>
     Object? ngStates = null,
   }) {
     return _then(_$_UpdateCSFormState(
+      isEnabled: null == isEnabled
+          ? _value.isEnabled
+          : isEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       nopol: null == nopol
           ? _value.nopol
           : nopol // ignore: cast_nullable_to_non_nullable
@@ -253,7 +266,8 @@ class __$$_UpdateCSFormStateCopyWithImpl<$Res>
 
 class _$_UpdateCSFormState implements _UpdateCSFormState {
   const _$_UpdateCSFormState(
-      {required this.nopol,
+      {required this.isEnabled,
+      required this.nopol,
       required this.namaSupir,
       required this.namaAsistenSupir,
       required this.tglBerangkat,
@@ -269,6 +283,8 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
       : _isNG = isNG,
         _ngStates = ngStates;
 
+  @override
+  final bool isEnabled;
   @override
   final Nopol nopol;
   @override
@@ -309,7 +325,7 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
 
   @override
   String toString() {
-    return 'UpdateCSFormState(nopol: $nopol, namaSupir: $namaSupir, namaAsistenSupir: $namaAsistenSupir, tglBerangkat: $tglBerangkat, jamLoadUnload: $jamLoadUnload, gate: $gate, keterangan: $keterangan, tipe: $tipe, isShowError: $isShowError, jamLoadUnloadText: $jamLoadUnloadText, gateTextController: $gateTextController, isNG: $isNG, ngStates: $ngStates)';
+    return 'UpdateCSFormState(isEnabled: $isEnabled, nopol: $nopol, namaSupir: $namaSupir, namaAsistenSupir: $namaAsistenSupir, tglBerangkat: $tglBerangkat, jamLoadUnload: $jamLoadUnload, gate: $gate, keterangan: $keterangan, tipe: $tipe, isShowError: $isShowError, jamLoadUnloadText: $jamLoadUnloadText, gateTextController: $gateTextController, isNG: $isNG, ngStates: $ngStates)';
   }
 
   @override
@@ -317,6 +333,8 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UpdateCSFormState &&
+            (identical(other.isEnabled, isEnabled) ||
+                other.isEnabled == isEnabled) &&
             (identical(other.nopol, nopol) || other.nopol == nopol) &&
             (identical(other.namaSupir, namaSupir) ||
                 other.namaSupir == namaSupir) &&
@@ -343,6 +361,7 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      isEnabled,
       nopol,
       namaSupir,
       namaAsistenSupir,
@@ -367,7 +386,8 @@ class _$_UpdateCSFormState implements _UpdateCSFormState {
 
 abstract class _UpdateCSFormState implements UpdateCSFormState {
   const factory _UpdateCSFormState(
-      {required final Nopol nopol,
+      {required final bool isEnabled,
+      required final Nopol nopol,
       required final Supir1 namaSupir,
       required final SupirSDR namaAsistenSupir,
       required final TglBerangkat tglBerangkat,
@@ -381,6 +401,8 @@ abstract class _UpdateCSFormState implements UpdateCSFormState {
       required final List<bool> isNG,
       required final List<UpdateCSNGState> ngStates}) = _$_UpdateCSFormState;
 
+  @override
+  bool get isEnabled;
   @override
   Nopol get nopol;
   @override

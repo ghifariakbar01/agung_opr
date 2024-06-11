@@ -50,16 +50,14 @@ class UpdateFrameRepository {
   /// DATA: MAP OF [idSPK] AS KEY, {idUnit : <QUERY>} AS VALUE
   ///
   Future<Either<LocalFailure, Map<String, Map<String, String>>>>
-      getUpdateQueryListSPKOFFLINE() async {
+      getUpdateQueryListOFFLINE() async {
     try {
       final savedStrings = await _storage.read();
       final isStorageSaved = savedStrings != null;
 
       if (isStorageSaved) {
         final parsedResponse = jsonDecode(savedStrings) as Map<String, dynamic>;
-
         final responseDynamic = convertToNestedMap(parsedResponse);
-
         final responseString = convertDynamicToString(responseDynamic);
 
         return right(responseString);
@@ -76,7 +74,7 @@ class UpdateFrameRepository {
     }
   }
 
-  /// FROM [getUpdateQueryListSPKOFFLINE] to [updateFrameByQuery]
+  /// FROM [getUpdateQueryListOFFLINE] to [updateFrameByQuery]
   ///
   Future<Either<RemoteFailure, Unit>> updateFrameByQuery(
       {required Map<String, Map<String, String>> queryMap}) async {
@@ -97,12 +95,8 @@ class UpdateFrameRepository {
 
                 try {
                   await _remoteService.updateFrameByQuery(query: query);
-
-                  // DELETE SAVED QUERY
                   await _removeQueryFromMap(query: query);
                 } on RestApiException catch (e) {
-                  debugger(message: 'called');
-
                   await _removeQueryFromMap(query: query);
 
                   return left(RemoteFailure.server(e.errorCode, e.message));
@@ -153,25 +147,15 @@ class UpdateFrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              // debugger(message: 'CALLED');
-              final parsedResponse =
-                  jsonDecode(savedStrings!) as Map<String, dynamic>;
-
-              final parsedMap = convertToNestedMap(parsedResponse);
+              final parsedMap = convertToNestedMap(
+                jsonDecode(savedStrings!) as Map<String, dynamic>,
+              );
 
               parsedMap.removeWhere((key, value) =>
                   value.values.firstWhere((element) => element == query) ==
                   query);
 
-              log('parsedMap $parsedMap');
-
-              // debugger(message: 'called');
-
               await _storage.save(jsonEncode(parsedMap));
-
-              // debugger(message: 'called');
-
-              log('STORAGE UPDATE FRAME DELETE: ${jsonEncode(parsedMap)}');
 
               return unit;
             }();
@@ -277,8 +261,6 @@ class UpdateFrameRepository {
 
               // VALUES ARE [MAP OF ID UNIT AND QUERY]
               final IdUnitQueryToInsert = newFrameMap.values.first;
-
-              debugger();
 
               // EXISTING SECOND KEY [NO TI UNIT]
               final keyIdUnitQueryToInsert =
