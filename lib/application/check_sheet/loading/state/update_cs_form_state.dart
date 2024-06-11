@@ -9,7 +9,6 @@ part 'update_cs_form_state.freezed.dart';
 @freezed
 class UpdateCSFormState with _$UpdateCSFormState {
   const factory UpdateCSFormState({
-    required bool isEnabled,
     required Nopol nopol,
     required Supir1 namaSupir,
     required SupirSDR namaAsistenSupir,
@@ -26,12 +25,11 @@ class UpdateCSFormState with _$UpdateCSFormState {
   }) = _UpdateCSFormState;
 
   factory UpdateCSFormState.initial() => UpdateCSFormState(
-        isEnabled: false,
         nopol: Nopol(''),
         namaSupir: Supir1(''),
         namaAsistenSupir: SupirSDR(''),
         tglBerangkat: TglBerangkat(''),
-        jamLoadUnload: JamLoad('', DateTime.now().toString()),
+        jamLoadUnload: JamLoad(''),
         gate: Gate(''),
         keterangan: Keterangan(''),
         tipe: Tipe.Unknown,

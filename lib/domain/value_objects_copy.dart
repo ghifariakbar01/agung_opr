@@ -300,8 +300,8 @@ class Nopol extends ValueObject<String> {
 }
 
 class JamLoad extends ValueObject<String> {
-  factory JamLoad(String input, String initial) {
-    return JamLoad._(validateJamCDate(input, initial));
+  factory JamLoad(String input) {
+    return JamLoad._(validateJamCDate(input));
   }
 
   const JamLoad._(this.value);

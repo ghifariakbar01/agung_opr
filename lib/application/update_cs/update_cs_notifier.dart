@@ -34,9 +34,15 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
 
   changeSelectedSPK(SPK spk) => state = state.copyWith(selectedSPK: spk);
 
-  changeIsEnabled(bool isEnabled) {
+  void changeJamLoad(
+    String jamLoadStr,
+    String jamNowStr,
+  ) {
     state = state.copyWith(
-      updateCSForm: state.updateCSForm.copyWith(isEnabled: isEnabled),
+      updateCSForm: state.updateCSForm.copyWith(
+        jamLoadUnload: JamLoad(jamLoadStr),
+      ),
+      FOSOUpdateCS: none(),
     );
   }
 
@@ -49,17 +55,9 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
       namaSupir: Supir1(spk.supir1Nm ?? ''),
       keterangan: Keterangan(spk.ket ?? ''),
       namaAsistenSupir: SupirSDR(spk.supir2Nm ?? ''),
-      isEnabled: spk.cDateCs == null,
-      jamLoadUnload: JamLoad(
-        spk.cDateCs == null
-            ? DateTime.now().toString()
-            : DateTime.parse(spk.cDateCs!).toString(),
-        DateTime.now().toString(),
-      ),
+      jamLoadUnload: JamLoad(DateTime.now().toString()),
       jamLoadUnloadText: TextEditingController(
-          text: spk.cDateCs == null
-              ? DateFormat('HH:mm').format(DateTime.now())
-              : DateFormat('HH:mm').format(DateTime.parse(spk.cDateCs!))),
+          text: DateFormat('HH:mm').format(DateTime.now())),
     ));
   }
 

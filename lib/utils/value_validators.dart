@@ -84,18 +84,10 @@ Either<ValueFailure<String>, String> validateJobdesk(String input) {
 
 Either<ValueFailure<String>, String> validateJamCDate(
   String input,
-  String initial,
 ) {
   if (input.isEmpty) {
     return left(ValueFailure.invalidJam(failedValue: input));
-  }
-
-  final _d1 = DateTime.parse(input);
-  final _d2 = DateTime.parse(initial);
-
-  if (_d2.difference(_d1).inHours < 1) {
-    return right(input);
   } else {
-    return left(ValueFailure.invalidJam(failedValue: input));
+    return right(input);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../style/style.dart';
 import '../../../shared/providers/cs_providers.dart';
@@ -43,34 +44,62 @@ class _FormJamState extends ConsumerState<FormJam> {
           flex: 1,
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: IgnorePointer(
-              ignoring: true,
-              child: TextFormField(
-                controller: jamEdit,
-                decoration: Themes.formStyle(
-                  'Masukkan Jam Load / Unload',
-                  hintFontSize: 11,
-                  icon: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.access_time_filled_outlined,
-                        color: Palette.primaryColor,
-                      )),
-                ),
-                onChanged: (_) {},
-                validator: (_) => ref
-                    .read(updateCSNotifierProvider)
-                    .updateCSForm
-                    .jamLoadUnload
-                    .value
-                    .fold(
-                      (f) => f.maybeMap(
-                        shortPassword: (_) => 'terlalu pendek',
-                        invalidJam: (_) => 'Jam load invalid',
-                        orElse: () => null,
+            child: TextButton(
+              onPressed: () async {
+                final TimeOfDay? picked = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (picked != null) {
+                  final _tpicked = DateTime.now().copyWith(
+                    hour: picked.hour,
+                    minute: picked.minute,
+                  );
+
+                  final _time = _tpicked.toString();
+
+                  final _time2 = DateTime.now().toString();
+
+                  ref
+                      .read(updateCSNotifierProvider.notifier)
+                      .changeJamLoad(_time, _time2);
+
+                  final _text = DateFormat('HH:mm').format(_tpicked);
+                  jamEdit.text = _text;
+                }
+              },
+              style: ButtonStyle(
+                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              child: IgnorePointer(
+                ignoring: true,
+                child: TextFormField(
+                  controller: jamEdit,
+                  decoration: Themes.formStyle(
+                    'Masukkan Jam Load / Unload',
+                    hintFontSize: 11,
+                    icon: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.access_time_filled_outlined,
+                          color: Palette.primaryColor,
+                        )),
+                  ),
+                  onChanged: (_) {},
+                  validator: (_) => ref
+                      .read(updateCSNotifierProvider)
+                      .updateCSForm
+                      .jamLoadUnload
+                      .value
+                      .fold(
+                        (f) => f.maybeMap(
+                          shortPassword: (_) => 'terlalu pendek',
+                          invalidJam: (_) => 'Jam load invalid',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
                       ),
-                      (_) => null,
-                    ),
+                ),
               ),
             ),
           ),

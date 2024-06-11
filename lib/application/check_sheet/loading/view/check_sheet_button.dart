@@ -27,8 +27,6 @@ class CheckSheetButton extends ConsumerWidget {
       orElse: () => false,
     );
 
-    final bool isEnabled = updateCS.updateCSForm.isEnabled;
-
     final disabled = ref.watch(updateCsDisableNotifierProvider);
     final modeApp = ref.watch(modeNotifierProvider);
 
