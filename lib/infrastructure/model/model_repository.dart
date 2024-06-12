@@ -62,6 +62,18 @@ class ModelRepository {
     }
   }
 
+  Future<Unit> clearModelStorage() async {
+    final storedCredentials = await _storage.read();
+
+    if (storedCredentials == null) {
+      return unit;
+    }
+
+    await _storage.clear();
+
+    return unit;
+  }
+
   /// ADD [Model] FROM SEARCH
   ///
   Future<Unit> _add({required List<Model> model}) async {

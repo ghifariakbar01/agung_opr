@@ -20,12 +20,17 @@ class UserNotifier extends StateNotifier<UserState> {
   Future<void> getUser() async {
     Either<UserFailure, String?> failureOrSuccess;
 
-    state = state.copyWith(isGetting: true, failureOrSuccessOption: none());
+    state = state.copyWith(
+      isGetting: true,
+      failureOrSuccessOption: none(),
+    );
 
     failureOrSuccess = await _repository.getSignedInUser();
 
     state = state.copyWith(
-        isGetting: false, failureOrSuccessOption: optionOf(failureOrSuccess));
+      isGetting: false,
+      failureOrSuccessOption: optionOf(failureOrSuccess),
+    );
   }
 
   Either<UserFailure, UserModelWithPassword> parseUser(String? user) {

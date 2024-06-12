@@ -39,11 +39,17 @@ class ModelNotifier extends StateNotifier<ModelState> {
   Future<void> getModelList({required int page}) async {
     final Either<RemoteFailure, List<Model>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOModel: none());
+    state = state.copyWith(
+      isProcessing: true,
+      FOSOModel: none(),
+    );
 
     FOS = await _repository.getModelList(page: page);
 
-    state = state.copyWith(isProcessing: false, FOSOModel: optionOf(FOS));
+    state = state.copyWith(
+      isProcessing: false,
+      FOSOModel: optionOf(FOS),
+    );
   }
 
   Future<void> searchModelList(

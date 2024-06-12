@@ -22,7 +22,9 @@ final modelRemoteServiceProvider = Provider(
 );
 
 final modelRepositoryProvider = Provider((ref) => ModelRepository(
-    ref.watch(modelRemoteServiceProvider), ref.watch(modelStorage)));
+      ref.watch(modelRemoteServiceProvider),
+      ref.watch(modelStorage),
+    ));
 
 final modelNotifierProvider = StateNotifierProvider<ModelNotifier, ModelState>(
   (ref) => ModelNotifier(ref.watch(modelRepositoryProvider)),

@@ -3,16 +3,19 @@ import 'package:flutter/services.dart';
 
 import '../../domain/local_failure.dart';
 import '../../infrastructure/frame/frame_repository.dart';
+import '../../infrastructure/model/model_repository.dart';
 import '../../infrastructure/spk/spk_repository.dart';
 
 class ClearDataRepository {
   ClearDataRepository({
     required this.spkRepository,
     required this.frameRepository,
+    required this.modelRepository,
   });
 
   final SPKRepository spkRepository;
   final FrameRepository frameRepository;
+  final ModelRepository modelRepository;
 
   // Future<bool> hasOfflineData() => getCSJenisOFFLINE()
   //     .then((credentials) => credentials.fold((_) => false, (_) => true));
@@ -21,6 +24,7 @@ class ClearDataRepository {
     try {
       await spkRepository.clearSPKStorage();
       await frameRepository.clearFrameStorage();
+      await modelRepository.clearModelStorage();
 
       // await csuFrameRepository.clearNGStorage();
       // await csRepository.clearCSJenisStorage();

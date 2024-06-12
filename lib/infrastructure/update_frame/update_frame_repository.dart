@@ -76,8 +76,9 @@ class UpdateFrameRepository {
 
   /// FROM [getUpdateQueryListOFFLINE] to [updateFrameByQuery]
   ///
-  Future<Either<RemoteFailure, Unit>> updateFrameByQuery(
-      {required Map<String, Map<String, String>> queryMap}) async {
+  Future<Either<RemoteFailure, Unit>> updateFrameByQuery({
+    required Map<String, Map<String, String>> queryMap,
+  }) async {
     try {
       final isQueryOK = queryMap.values.isNotEmpty;
 
@@ -90,8 +91,7 @@ class UpdateFrameRepository {
               final query = mapOfTIUnitQuery.values.elementAtOrNull(i);
 
               if (query != null) {
-                // RUN QUERY
-                log('QUERY: ${query}');
+                log('QUERY $i: ${query}');
 
                 try {
                   await _remoteService.updateFrameByQuery(query: query);
@@ -151,9 +151,10 @@ class UpdateFrameRepository {
                 jsonDecode(savedStrings!) as Map<String, dynamic>,
               );
 
-              parsedMap.removeWhere((key, value) =>
-                  value.values.firstWhere((element) => element == query) ==
-                  query);
+              parsedMap.removeWhere((_, value) {
+                final _val = value.values;
+                return _val.firstWhere((e) => e == query) == query;
+              });
 
               await _storage.save(jsonEncode(parsedMap));
 
@@ -215,7 +216,7 @@ class UpdateFrameRepository {
         final command =
             " UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', " +
                 " warna = '$warnaStr', id_kend_type = '$idKendTypeInt', " +
-                " u_user = '$nama', u_date = '$cAndUDate' WHERE id_unit = $idUnitInt AND u_date < '$cAndUDate' ";
+                " u_user = '$nama', u_date = '$cAndUDate' WHERE id_unit = $idUnitInt";
 
         final Map<String, String> newMapOfCommands = {idUnitStr: command};
         mapOfCommands.addAll(newMapOfCommands);

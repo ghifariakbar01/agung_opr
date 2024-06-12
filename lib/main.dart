@@ -50,7 +50,6 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
 });
 
 class MyApp extends ConsumerWidget {
-  //
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializationProvider, (_, __) {});

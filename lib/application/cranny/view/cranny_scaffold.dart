@@ -54,12 +54,33 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
               backgroundColor: Colors.white,
               elevation: 5,
               child: Icon(
-                Icons.refresh,
+                Icons.storage,
                 color: Palette.primaryColor,
               ),
-              onPressed: () => ref
-                  .read(clearDataNotifierProvider.notifier)
-                  .clearAllStorage(),
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (c) {
+                    return AlertDialog(
+                      title: Text('Hapus data tersimpan ?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Kembali'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Hapus data frame & spk'),
+                          onPressed: () {
+                            context.pop();
+                            ref
+                                .read(clearDataNotifierProvider.notifier)
+                                .clearAllStorage();
+                          },
+                        ),
+                      ],
+                    );
+                  }),
             )
           : FloatingActionButton.small(
               backgroundColor: Colors.white,

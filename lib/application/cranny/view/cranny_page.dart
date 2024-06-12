@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -18,7 +19,7 @@ import '../../widgets/loading_overlay.dart';
 import '../../widgets/v_dialogs.dart';
 import 'cranny_middle.dart';
 
-class CrannyPage extends ConsumerStatefulWidget {
+class CrannyPage extends StatefulHookConsumerWidget {
   const CrannyPage();
 
   @override
@@ -36,16 +37,20 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _isLoading = useState(false);
+
     // MODEL function get and update offline status
     Future<void> modelFunction() async {
       // GET [500] LATEST DATA
       for (int i = 0; i < 5; i++) {
         await ref.read(modelNotifierProvider.notifier).getModelList(page: i);
       }
+
       final list = await ref
           .read(modelNotifierProvider.notifier)
           .initModelListOFFLINE(limit: 5);
       ref.read(modelNotifierProvider.notifier).replaceModelList(list);
+
       await ref
           .read(modelOfflineNotifierProvider.notifier)
           .checkAndUpdateModelOFFLINEStatus();
@@ -148,22 +153,30 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                (failure) => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (context) => VSimpleDialog(
-                          label: 'Error',
-                          labelDescription: failure.maybeMap(
-                              storage: (_) => 'storage penuh',
-                              format: (error) => 'Error Format Clear: $error',
-                              orElse: () => ''),
-                          asset: Assets.iconCrossed,
-                        )),
-                (_) => ref.read(userNotifierProvider.notifier).getUser())));
+                    (failure) => showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => VSimpleDialog(
+                              label: 'Error',
+                              labelDescription: failure.maybeMap(
+                                  storage: (_) => 'storage penuh',
+                                  format: (error) =>
+                                      'Error Format Clear: $error',
+                                  orElse: () => ''),
+                              asset: Assets.iconCrossed,
+                            )), (_) async {
+                  _isLoading.value = true;
 
-    final isSubmitting = ref.watch(
-      sortDataFormNotifierProvider.select((value) => value.isGetting),
-    );
+                  await modelFunction();
+                  await getSavedQueriesFunction();
+
+                  _isLoading.value = false;
+                })));
+
+    final isSubmitting = _isLoading.value ||
+        ref.watch(
+          sortDataFormNotifierProvider.select((value) => value.isGetting),
+        );
 
     return SafeArea(
       child: UpgradeAlert(
@@ -172,7 +185,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
           showLater: false,
           showIgnore: false,
           canDismissDialog: false,
-          minAppVersion: '2.0.0',
+          minAppVersion: '3.0.7',
           messages: MyUpgraderMessages(),
           dialogStyle: UpgradeDialogStyle.cupertino,
         ),

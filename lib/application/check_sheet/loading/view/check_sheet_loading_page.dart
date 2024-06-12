@@ -213,9 +213,11 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
     final isOffline = ref.read(isOfflineStateProvider);
 
     if (isOffline) {
-      return ref
+      await ref
           .read(frameNotifierProvider.notifier)
           .getFrameListOFFLINE(idSPK: idSpk);
+    } else {
+      await _fillFrameOnline(idSpk);
     }
 
     await ref
@@ -228,14 +230,16 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
           .read(frameNotifierProvider.notifier)
           .getFrameListOFFLINE(idSPK: idSpk),
       orElse: () async {
-        await ref
-            .read(frameNotifierProvider.notifier)
-            .getFrameList(idSPK: idSpk);
-        await ref
-            .read(frameOfflineNotifierProvider.notifier)
-            .checkAndUpdateFrameOFFLINEStatus(idSPK: idSpk);
+        return _fillFrameOnline(idSpk);
       },
     );
+  }
+
+  Future<void> _fillFrameOnline(int idSpk) async {
+    await ref.read(frameNotifierProvider.notifier).getFrameList(idSPK: idSpk);
+    await ref
+        .read(frameOfflineNotifierProvider.notifier)
+        .checkAndUpdateFrameOFFLINEStatus(idSPK: idSpk);
   }
 
   _fillCSJenis() async {
