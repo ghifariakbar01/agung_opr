@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/domain/remote_failure.dart';
@@ -222,8 +224,9 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                             ),
                           ));
                 }, (_) async {
-                  await _readCsuLastPage(context);
                   await _updateOfflineStorageStatus();
+                  await _readCsuLastPage(context);
+
                   ref
                       .read(autoDataUpdateFrameNotifierProvider.notifier)
                       .resetAutoDataRemoteFOSO();

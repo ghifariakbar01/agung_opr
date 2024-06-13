@@ -7,7 +7,7 @@ part of 'update_cs_disable_notifier.dart';
 // **************************************************************************
 
 String _$updateCsDisableNotifierHash() =>
-    r'dcd9a2a2bed5b3bf54adcf66e5301cd6edfa7533';
+    r'436e831ea351858d3108b5b6f28f40fa257875e6';
 
 /// See also [UpdateCsDisableNotifier].
 @ProviderFor(UpdateCsDisableNotifier)

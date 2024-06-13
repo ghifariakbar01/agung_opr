@@ -19,4 +19,10 @@ class UpdateCsDisable with _$UpdateCsDisable {
         unload: false,
         loadunload: false,
       );
+
+  factory UpdateCsDisable.offline() => UpdateCsDisable(
+        loading: true,
+        unload: true,
+        loadunload: true,
+      );
 }

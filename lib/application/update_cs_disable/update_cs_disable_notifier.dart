@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/update_cs_disable/disable.dart';
+import 'package:agung_opr/infrastructure/exceptions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../check_sheet/shared/providers/cs_providers.dart';
@@ -18,7 +19,13 @@ class UpdateCsDisableNotifier extends _$UpdateCsDisableNotifier {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(
-      () => ref.read(csJenisRepositoryProvider).getCsDone(idSPK: idSPK),
+      () async {
+        try {
+          return ref.read(csJenisRepositoryProvider).getCsDone(idSPK: idSPK);
+        } on NoConnectionException {
+          return UpdateCsDisable.offline();
+        }
+      },
     );
   }
 }

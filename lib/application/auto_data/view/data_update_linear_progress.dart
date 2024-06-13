@@ -1,12 +1,14 @@
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../shared/providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/unit/shared/csu_providers.dart';
+import '../../routes/route_names.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
 
 class DataUpdateLinearProgress extends ConsumerWidget {
@@ -41,26 +43,32 @@ class DataUpdateLinearProgress extends ConsumerWidget {
 
     final isOffline = ref.watch(isOfflineStateProvider);
 
-    return Visibility(
-      visible: hasQueryData,
-      child: SizedBox(
-        height: isOffline ? 20 : 30,
-        width: MediaQuery.of(context).size.width,
-        child: isOffline
-            ? Container(
-                color: Palette.secondaryColor,
-                child: Text(
-                  'Data Pending (Offline)',
-                  style:
-                      Themes.customColor(FontWeight.normal, 11, Colors.white),
-                ),
-              )
-            : LinearProgressIndicator(
-                color: Palette.secondaryColor,
-                value: double.parse(
-                    (time / Constants.dataIntervalTimerInSeconds).toString()),
-                semanticsLabel: 'Linear progress indicator',
-              ),
+    return Material(
+      child: Visibility(
+        visible: hasQueryData,
+        child: Ink(
+          height: isOffline ? 20 : 30,
+          width: MediaQuery.of(context).size.width,
+          child: InkWell(
+            onTap: () => context.pushNamed(RouteNames.dataUpdateQueryName),
+            child: isOffline
+                ? Container(
+                    color: Palette.secondaryColor,
+                    child: Text(
+                      'Data Pending (Offline)',
+                      style: Themes.customColor(
+                          FontWeight.normal, 11, Colors.white),
+                    ),
+                  )
+                : LinearProgressIndicator(
+                    color: Palette.secondaryColor,
+                    value: double.parse(
+                        (time / Constants.dataIntervalTimerInSeconds)
+                            .toString()),
+                    semanticsLabel: 'Linear progress indicator',
+                  ),
+          ),
+        ),
       ),
     );
   }

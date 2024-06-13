@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../application/check_sheet/loading/state/update_cs_ng_state.dart';
 import '../../application/check_sheet/shared/state/cs_id_query.dart';
+import '../../application/double/double.dart';
 import '../../application/user/user_model.dart';
 import '../../constants/constants.dart';
 import '../../domain/local_failure.dart';
@@ -18,17 +19,46 @@ import 'update_cs_remote_service.dart';
 
 class UpdateCSRepository {
   UpdateCSRepository(
+    this._storageDouble,
     this._storage,
     this._remoteService,
     this._userModelWithPassword,
   );
 
+  final CredentialsStorage _storageDouble;
   final CredentialsStorage _storage;
   final UpdateCSRemoteService _remoteService;
   final UserModelWithPassword _userModelWithPassword;
 
   Future<bool> hasOfflineData() => getStorageCondition()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  Future<List<SPKDouble>> _getDouble() async {
+    final _prev = await _storageDouble.read();
+
+    if (_prev == null) {
+      return [];
+    }
+
+    final _list =
+        (jsonDecode(_prev) as List).map((e) => SPKDouble.fromJson(e)).toList();
+
+    return _list;
+  }
+
+  Future<void> _removeDoubleBy({required int idSPK}) async {
+    final _list = await _getDouble();
+
+    if (_list.isEmpty) {
+      return;
+    }
+
+    final _list2 = _list.where((element) => element.idSpk != idSPK).toList();
+    final _save = [..._list2];
+    final _s = jsonEncode(_save);
+
+    return _storageDouble.save(_s);
+  }
 
   Future<Either<RemoteFailure, Unit>> updateCSByQuery({
     required List<CSIDQuery> queryIds,
@@ -42,19 +72,26 @@ class UpdateCSRepository {
       final String query = _item.query;
       final int idSPK = _item.idSPK;
 
+      // final _isLoading = query.contains('load');
+      // final _isUnload = query.contains('unload');
+      // final _isLoadUnload = query.contains('loadunload');
+
+      // log('_isLoading $_isLoading');
+      // log('_isUnload $_isUnload');
+      // log('_isLoadUnload $_isLoadUnload');
+
       try {
         await _remoteService.insertCSBYQuery(query: query);
         await _removeQueryCSFromSaved(idSPK: idSPK);
+        //
       } on RestApiException catch (e) {
         await _removeQueryCSFromSaved(idSPK: idSPK);
+        await _removeDoubleBy(idSPK: idSPK);
 
         return left(RemoteFailure.server(e.errorCode, e.message));
       } on NoConnectionException {
-        // await _removeQueryCSFromSaved(idSPK: idSPK);
-
         return left(RemoteFailure.noConnection());
       } on RangeError catch (e) {
-        debugger(message: 'called');
         return left(RemoteFailure.parse(message: e.message));
       } on FormatException catch (e) {
         return left(RemoteFailure.parse(message: e.message));
@@ -64,11 +101,8 @@ class UpdateCSRepository {
         return left(RemoteFailure.storage());
       }
 
-      // // DELETE SAVED QUERY
-
       return right(unit);
     } else {
-      //
       return right(unit);
     }
   }
@@ -111,15 +145,12 @@ class UpdateCSRepository {
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
 
-                  log('STORAGE UPDATE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(list)}');
-
                   return;
                 } else {
                   final _list = [queryId];
                   await _storage
                       .save(CSIDQuery.listCSIDQueryToJsonSavable(_list));
 
-                  log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(_list)}');
                   return;
                 }
               } else {
@@ -128,7 +159,6 @@ class UpdateCSRepository {
                 _list[index] = queryId;
                 await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(
                     _list.toSet().toList()));
-                log('STORAGE INSERT CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(_list)}');
 
                 return;
               }
@@ -138,8 +168,6 @@ class UpdateCSRepository {
             () async {
               final _list = [queryId];
               await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(_list));
-
-              log('STORAGE SAVE CS QUERY: ${CSIDQuery.listCSIDQueryToJsonSavable(_list)}');
             }();
         }
       } else {

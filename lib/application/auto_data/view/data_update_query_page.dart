@@ -1,8 +1,12 @@
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
+import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
+import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
 import 'package:agung_opr/application/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../check_sheet/shared/providers/cs_providers.dart';
 import 'data_update_linear_progress.dart';
 import 'data_update_query_scaffold.dart';
 
@@ -39,6 +43,21 @@ class _DataUpdateQueryPageState extends ConsumerState<DataUpdateQueryPage> {
     final isSubmitting = ref.watch(
       autoDataUpdateFrameNotifierProvider.select((state) => state.isGetting),
     );
+
+    ref.listen(autoDataUpdateFrameNotifierProvider, (_, state) async {
+      await ref
+          .read(updateFrameOfflineNotifierProvider.notifier)
+          .CUUpdateFrameOFFLINEStatus();
+      await ref
+          .read(updateCSOfflineNotifierProvider.notifier)
+          .CUUpdateCSOFFLINEStatus();
+      await ref
+          .read(updateCSUFrameOfflineNotifierProvider.notifier)
+          .CUUpdateCSUFrameOFFLINEStatus();
+      await ref
+          .read(updateSPKOfflineNotifierProvider.notifier)
+          .CUUpdateSPKOFFLINEStatus();
+    });
 
     return Stack(
       children: [

@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/double/double_notifier.dart';
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
@@ -11,6 +12,7 @@ final clearDataRepositoryProvider = Provider((ref) => ClearDataRepository(
       spkRepository: ref.watch(spkRepositoryProvider),
       frameRepository: ref.watch(frameRepositoryProvider),
       modelRepository: ref.watch(modelRepositoryProvider),
+      doubleRepository: ref.watch(doubleRepositoryProvider),
     ));
 
 final clearDataNotifierProvider =

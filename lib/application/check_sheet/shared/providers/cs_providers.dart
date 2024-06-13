@@ -1,5 +1,6 @@
 import 'package:agung_opr/application/check_sheet/shared/cs_jenis_offline_notifier.dart';
 import 'package:agung_opr/application/check_sheet/shared/state/cs_jenis_offline_state.dart';
+import 'package:agung_opr/application/double/double_notifier.dart';
 import 'package:agung_opr/infrastructure/cs/cs_repository.dart';
 import 'package:agung_opr/infrastructure/update_cs/update_cs_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -75,6 +76,7 @@ final updateCSRemoteServiceProvider = Provider(
 );
 
 final updateCSRepositoryProvider = Provider((ref) => UpdateCSRepository(
+      ref.watch(doubleStorageProvider),
       ref.watch(updateCSStorage),
       ref.watch(updateCSRemoteServiceProvider),
       ref.watch(

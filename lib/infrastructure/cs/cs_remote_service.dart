@@ -183,9 +183,6 @@ class CSRemoteService {
       final response = await _dio.post('',
           data: jsonEncode(data), options: Options(contentType: 'text/plain'));
 
-      log('data ${jsonEncode(data)}');
-      log('response getCSItems $response');
-
       final items = response.data?[0];
 
       if (items['status'] == 'Success') {
@@ -198,8 +195,6 @@ class CSRemoteService {
             try {
               List<CSItem> items =
                   (list).map((data) => CSItem.fromJson(data)).toList();
-
-              log('LIST CS ITEMS: $items');
 
               return items;
             } catch (e) {

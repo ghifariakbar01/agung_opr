@@ -48,7 +48,7 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
                 children: [
                   Text(
                     '${csIdMap.keys.elementAt(indexOuter)}. ' +
-                        '${ref.read(csJenisNotifierProvider.select((value) => value.csJenisList.firstWhere((element) => element.id == csIdMap.keys.elementAt(indexOuter)))).nama}',
+                        '${ref.watch(csJenisNotifierProvider.select((value) => value.csJenisList.firstWhere((element) => element.id == csIdMap.keys.elementAt(indexOuter)))).nama}',
                     style:
                         Themes.customColor(FontWeight.bold, 14, Colors.black),
                   ),
@@ -66,10 +66,10 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
 
                     // Body
                     return CSItemForm(
-                      index: ref
-                          .read(csItemNotifierProvider.notifier)
-                          .getIndex(item: val[index]),
                       id: val[index].id,
+                      index: ref
+                          .watch(csItemNotifierProvider.notifier)
+                          .getIndex(item: val[index]),
                       instruction: csIdMap.entries
                           .elementAt(indexOuter)
                           .value[index]

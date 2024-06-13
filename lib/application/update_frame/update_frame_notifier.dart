@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/update_frame/update_frame_state.dart';
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:agung_opr/domain/value_objects_copy.dart';
@@ -260,8 +258,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       // frame.noReff,
       // frame.idKendType,
     ];
-
-    log('values $values');
 
     return Validator.validate(values);
   }

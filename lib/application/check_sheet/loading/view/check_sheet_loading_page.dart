@@ -361,6 +361,6 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
   }
 
   Future<void> _onCSItemsInit(List<CSItem> csItems) async {
-    ref.read(csItemNotifierProvider.notifier).changeCSItemsList(csItems);
+    return ref.read(csItemNotifierProvider.notifier).changeCSItemsList(csItems);
   }
 }
