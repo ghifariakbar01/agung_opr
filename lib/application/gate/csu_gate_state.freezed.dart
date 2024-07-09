@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CSUGateState {
   bool get isProcessing => throw _privateConstructorUsedError;
+  CSUMSTGate get defaultGate => throw _privateConstructorUsedError;
   List<CSUMSTGate> get gates => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<CSUMSTGate>>> get FOSOGate =>
       throw _privateConstructorUsedError;
@@ -34,8 +35,11 @@ abstract class $CSUGateStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isProcessing,
+      CSUMSTGate defaultGate,
       List<CSUMSTGate> gates,
       Option<Either<RemoteFailure, List<CSUMSTGate>>> FOSOGate});
+
+  $CSUMSTGateCopyWith<$Res> get defaultGate;
 }
 
 /// @nodoc
@@ -52,6 +56,7 @@ class _$CSUGateStateCopyWithImpl<$Res, $Val extends CSUGateState>
   @override
   $Res call({
     Object? isProcessing = null,
+    Object? defaultGate = null,
     Object? gates = null,
     Object? FOSOGate = null,
   }) {
@@ -60,6 +65,10 @@ class _$CSUGateStateCopyWithImpl<$Res, $Val extends CSUGateState>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      defaultGate: null == defaultGate
+          ? _value.defaultGate
+          : defaultGate // ignore: cast_nullable_to_non_nullable
+              as CSUMSTGate,
       gates: null == gates
           ? _value.gates
           : gates // ignore: cast_nullable_to_non_nullable
@@ -69,6 +78,14 @@ class _$CSUGateStateCopyWithImpl<$Res, $Val extends CSUGateState>
           : FOSOGate // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUMSTGate>>>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CSUMSTGateCopyWith<$Res> get defaultGate {
+    return $CSUMSTGateCopyWith<$Res>(_value.defaultGate, (value) {
+      return _then(_value.copyWith(defaultGate: value) as $Val);
+    });
   }
 }
 
@@ -82,8 +99,12 @@ abstract class _$$_CSUGateStateCopyWith<$Res>
   @useResult
   $Res call(
       {bool isProcessing,
+      CSUMSTGate defaultGate,
       List<CSUMSTGate> gates,
       Option<Either<RemoteFailure, List<CSUMSTGate>>> FOSOGate});
+
+  @override
+  $CSUMSTGateCopyWith<$Res> get defaultGate;
 }
 
 /// @nodoc
@@ -98,6 +119,7 @@ class __$$_CSUGateStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isProcessing = null,
+    Object? defaultGate = null,
     Object? gates = null,
     Object? FOSOGate = null,
   }) {
@@ -106,6 +128,10 @@ class __$$_CSUGateStateCopyWithImpl<$Res>
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
               as bool,
+      defaultGate: null == defaultGate
+          ? _value.defaultGate
+          : defaultGate // ignore: cast_nullable_to_non_nullable
+              as CSUMSTGate,
       gates: null == gates
           ? _value._gates
           : gates // ignore: cast_nullable_to_non_nullable
@@ -123,12 +149,15 @@ class __$$_CSUGateStateCopyWithImpl<$Res>
 class _$_CSUGateState implements _CSUGateState {
   const _$_CSUGateState(
       {required this.isProcessing,
+      required this.defaultGate,
       required final List<CSUMSTGate> gates,
       required this.FOSOGate})
       : _gates = gates;
 
   @override
   final bool isProcessing;
+  @override
+  final CSUMSTGate defaultGate;
   final List<CSUMSTGate> _gates;
   @override
   List<CSUMSTGate> get gates {
@@ -142,7 +171,7 @@ class _$_CSUGateState implements _CSUGateState {
 
   @override
   String toString() {
-    return 'CSUGateState(isProcessing: $isProcessing, gates: $gates, FOSOGate: $FOSOGate)';
+    return 'CSUGateState(isProcessing: $isProcessing, defaultGate: $defaultGate, gates: $gates, FOSOGate: $FOSOGate)';
   }
 
   @override
@@ -152,13 +181,15 @@ class _$_CSUGateState implements _CSUGateState {
             other is _$_CSUGateState &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
+            (identical(other.defaultGate, defaultGate) ||
+                other.defaultGate == defaultGate) &&
             const DeepCollectionEquality().equals(other._gates, _gates) &&
             (identical(other.FOSOGate, FOSOGate) ||
                 other.FOSOGate == FOSOGate));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isProcessing,
+  int get hashCode => Object.hash(runtimeType, isProcessing, defaultGate,
       const DeepCollectionEquality().hash(_gates), FOSOGate);
 
   @JsonKey(ignore: true)
@@ -171,12 +202,15 @@ class _$_CSUGateState implements _CSUGateState {
 abstract class _CSUGateState implements CSUGateState {
   const factory _CSUGateState(
       {required final bool isProcessing,
+      required final CSUMSTGate defaultGate,
       required final List<CSUMSTGate> gates,
       required final Option<Either<RemoteFailure, List<CSUMSTGate>>>
           FOSOGate}) = _$_CSUGateState;
 
   @override
   bool get isProcessing;
+  @override
+  CSUMSTGate get defaultGate;
   @override
   List<CSUMSTGate> get gates;
   @override

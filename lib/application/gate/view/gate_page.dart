@@ -67,11 +67,10 @@ class _GatePageState extends ConsumerState<GatePage> {
                       orElse: () => AlertHelper.showSnackBar(
                         context,
                         message: failure.maybeMap(
-                          storage: (_) =>
-                              'Storage penuh. Tidak bisa menyimpan data MODEL.',
-                          server: (value) => value.message ?? 'Server Error',
-                          orElse: () => '',
-                        ),
+                            orElse: () => '',
+                            server: (value) => value.message ?? 'Server Error',
+                            storage: (_) =>
+                                'Storage penuh. Tidak bisa menyimpan data gate.'),
                       ),
                     ),
                 (gateResponse) => ref

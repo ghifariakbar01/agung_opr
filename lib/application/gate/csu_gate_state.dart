@@ -10,10 +10,15 @@ part 'csu_gate_state.freezed.dart';
 class CSUGateState with _$CSUGateState {
   const factory CSUGateState({
     required bool isProcessing,
+    required CSUMSTGate defaultGate,
     required List<CSUMSTGate> gates,
     required Option<Either<RemoteFailure, List<CSUMSTGate>>> FOSOGate,
   }) = _CSUGateState;
 
-  factory CSUGateState.initial() =>
-      CSUGateState(isProcessing: false, gates: [], FOSOGate: none());
+  factory CSUGateState.initial() => CSUGateState(
+        isProcessing: false,
+        defaultGate: CSUMSTGate.initial(),
+        gates: [],
+        FOSOGate: none(),
+      );
 }

@@ -4,7 +4,7 @@ import 'package:agung_opr/infrastructure/cache_storage/gate_storage.dart';
 import 'package:agung_opr/infrastructure/gate/gate_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../infrastructure/credentials_storage.dart';
+import '../../../infrastructure/cache_storage/gate_default_storage.dart';
 import '../../../infrastructure/gate/gate_remote_service.dart';
 import '../../../shared/providers.dart';
 import '../gate_offline_notifier.dart';
@@ -12,17 +12,26 @@ import '../gate_offline_state.dart';
 import '../gate_search_notifier.dart';
 import '../gate_search_state.dart';
 
-final gateStorage = Provider<CredentialsStorage>(
+final gateStorage = Provider<GateStorage>(
   (ref) => GateStorage(ref.watch(flutterSecureStorageProvider)),
 );
 
+final gateDefaultStorage = Provider<GateDefaultStorage>(
+  (ref) => GateDefaultStorage(ref.watch(flutterSecureStorageProvider)),
+);
+
 final gateRemoteServiceProvider = Provider(
-  (ref) =>
-      GateRemoteService(ref.watch(dioProvider), ref.watch(dioRequestProvider)),
+  (ref) => GateRemoteService(
+    ref.watch(dioProvider),
+    ref.watch(dioRequestProvider),
+  ),
 );
 
 final gateRepositoryProvider = Provider((ref) => GateRepository(
-    ref.watch(gateRemoteServiceProvider), ref.watch(gateStorage)));
+      ref.watch(gateRemoteServiceProvider),
+      ref.watch(gateStorage),
+      ref.watch(gateDefaultStorage),
+    ));
 
 final gateNotifierProvider = StateNotifierProvider<GateNotifier, CSUGateState>(
   (ref) => GateNotifier(ref.watch(gateRepositoryProvider)),

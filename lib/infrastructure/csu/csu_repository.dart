@@ -186,15 +186,21 @@ class CSUFrameRepository {
     }
   }
 
-  Future<Either<RemoteFailure, List<CSUTrips>>> getCSUFrameTripsByName(
-      {required int idUnit, required String frameName}) async {
+  Future<Either<RemoteFailure, List<CSUTrips>>> getCSUFrameTripsByName({
+    required int idUnit,
+    required String frameName,
+  }) async {
     try {
       final listFrameNameCSUResult =
-          await _remoteService.getCSUFrameTripsByName(frameName: frameName);
+          await _remoteService.getCSUFrameTripsByName(
+        frameName: frameName,
+      );
 
       await this._GETAndREPLACECsuTRIPSInList(
-          newCSUTrips:
-              UnitCSUTrips(idUnit: idUnit, csuResult: listFrameNameCSUResult));
+          newCSUTrips: UnitCSUTrips(
+        idUnit: idUnit,
+        csuResult: listFrameNameCSUResult,
+      ));
 
       return right(listFrameNameCSUResult);
     } on RestApiException catch (e) {
@@ -303,8 +309,9 @@ class CSUFrameRepository {
   }
 
   // SAVE CSU FRAME TRIPS IN STORAGE
-  Future<Unit> _GETAndREPLACECsuTRIPSInList(
-      {required UnitCSUTrips newCSUTrips}) async {
+  Future<Unit> _GETAndREPLACECsuTRIPSInList({
+    required UnitCSUTrips newCSUTrips,
+  }) async {
     final savedStrings = await _storageTrips.read();
     final isNewFrameOK = newCSUTrips.csuResult.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -321,12 +328,14 @@ class CSUFrameRepository {
             final idUnit = newCSUTrips.idUnit;
 
             // FIRST, CHECK IF EXISTING KEY [ID-UNIT] EXIST
-            final key = parsedListCSUSPK
-                .firstWhereOrNull((element) => element.idUnit == idUnit);
+            final key = parsedListCSUSPK.firstWhereOrNull(
+              (element) => element.idUnit == idUnit,
+            );
 
             if (key != null) {
-              final indexIdUnit = parsedListCSUSPK
-                  .indexWhere((element) => element.idUnit == idUnit);
+              final indexIdUnit = parsedListCSUSPK.indexWhere(
+                (element) => element.idUnit == idUnit,
+              );
 
               final isIndexFound = indexIdUnit != -1;
 
@@ -348,7 +357,10 @@ class CSUFrameRepository {
               else {
                 final element = newCSUTrips;
 
-                final list = [...parsedListCSUSPK, element];
+                final list = [
+                  ...parsedListCSUSPK,
+                  element,
+                ];
 
                 await _storageTrips
                     .save(UnitCSUTrips.listCSUResultTripsToJson(list));
@@ -359,7 +371,10 @@ class CSUFrameRepository {
             else {
               final element = newCSUTrips;
 
-              final list = [...parsedListCSUSPK, element];
+              final list = [
+                ...parsedListCSUSPK,
+                element,
+              ];
 
               // SAVE LIST
               await _storageTrips
@@ -384,8 +399,10 @@ class CSUFrameRepository {
   }
 
   // SAVE CSU FRAME IN STORAGE
-  Future<Unit> _GETAndREPLACECsuInList(
-      {required String frameName, required List<CSUResult> newCSU}) async {
+  Future<Unit> _GETAndREPLACECsuInList({
+    required String frameName,
+    required List<CSUResult> newCSU,
+  }) async {
     final savedStrings = await _storage.read();
     final isNewFrameOK = newCSU.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -400,19 +417,23 @@ class CSUFrameRepository {
                 listFrameNameCSUResultFromJson(parsed);
 
             // FIRST, CHECK IF EXISTING KEY [ID-SPK] EXIST
-            final key = parsedListCSUSPK
-                .firstWhereOrNull((element) => element.frameName == frameName);
+            final key = parsedListCSUSPK.firstWhereOrNull(
+              (element) => element.frameName == frameName,
+            );
 
             if (key != null) {
-              final indexIdUnit = parsedListCSUSPK
-                  .indexWhere((element) => element.frameName == frameName);
+              final indexIdUnit = parsedListCSUSPK.indexWhere(
+                (element) => element.frameName == frameName,
+              );
 
               final isIndexFound = indexIdUnit != -1;
 
               // [FRAME-NAME]
               if (isIndexFound) {
                 final element = FrameNameCSUResult(
-                    frameName: frameName, csuResult: [...newCSU]);
+                  frameName: frameName,
+                  csuResult: [...newCSU],
+                );
 
                 // LIST OF PARSED LIST CSU
                 final list = [...parsedListCSUSPK];
@@ -426,13 +447,16 @@ class CSUFrameRepository {
               // [FRAME-NAME] NEW
               else {
                 final element = FrameNameCSUResult(
-                    frameName: frameName, csuResult: [...newCSU]);
+                  frameName: frameName,
+                  csuResult: [...newCSU],
+                );
 
-                final list = [...parsedListCSUSPK, element];
+                final list = [
+                  ...parsedListCSUSPK,
+                  element,
+                ];
 
                 await _storage.save(listFrameNameCSUResultToJson(list));
-
-                log('STORAGE CSU SPK UPDATE W/ ID-SPK : ${listFrameNameCSUResultToJson(list)}');
 
                 debugger();
               }
@@ -440,16 +464,17 @@ class CSUFrameRepository {
             // THEN, HANDLE WHERE [ID-SPK] NOT EXIST,
             // PARAM IS LIST OF CSU AND INDEX [ID-SPK]
             else {
-              final element =
-                  FrameNameCSUResult(frameName: frameName, csuResult: newCSU);
+              final element = FrameNameCSUResult(
+                frameName: frameName,
+                csuResult: newCSU,
+              );
 
-              final list = [...parsedListCSUSPK, element];
+              final list = [
+                ...parsedListCSUSPK,
+                element,
+              ];
 
-              // SAVE LIST
               await _storage.save(listFrameNameCSUResultToJson(list));
-
-              log('STORAGE CSU SPK UPDATE ID-SPK N/A: ${listFrameNameCSUResultToJson(list)}');
-
               debugger();
             }
 
@@ -458,16 +483,12 @@ class CSUFrameRepository {
           break;
         case false:
           () async {
-            final element =
-                FrameNameCSUResult(frameName: frameName, csuResult: newCSU);
+            final element = FrameNameCSUResult(
+              frameName: frameName,
+              csuResult: newCSU,
+            );
 
-            // SAVE LIST
             await _storage.save(listFrameNameCSUResultToJson([element]));
-
-            log('STORAGE CSU SPK UPDATE NEW: ${listFrameNameCSUResultToJson([
-                  element
-                ])}');
-
             return unit;
           }();
       }

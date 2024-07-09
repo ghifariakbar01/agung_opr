@@ -49,7 +49,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                             context,
                             message: failure.maybeMap(
                               storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data FRAME',
+                                  'Storage penuh. Tidak bisa menyimpan data gate',
                               server: (value) =>
                                   value.message ?? 'Server Error',
                               parse: (value) => 'Parse $value',
@@ -61,10 +61,15 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                     ref
                         .read(gateNotifierProvider.notifier)
                         .changeGateList(gateResponse);
+                    final def = ref.read(gateNotifierProvider).defaultGate;
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeGate(def.nama ?? '');
                   }
                 })));
 
     final gates = ref.watch(gateNotifierProvider);
+    final defaultGate = gates.defaultGate;
 
     final gateTextController = ref.watch(updateCSUFrameNotifierProvider
         .select((value) => value.updateFrameList.gateTextController));
@@ -101,49 +106,57 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Palette.primaryColor, width: 2),
             ),
-            child: TextButton(
-              onPressed: () async {
-                final String? id =
-                    await context.pushNamed(RouteNames.gateNameRoute);
+            child: Builder(builder: (_) {
+              if (defaultGate == CSUMSTGate.initial()) {
+                //
+              } else {
+                gateTextController.text = defaultGate.id.toString();
+              }
 
-                if (id != null) {
-                  ref
-                      .read(updateCSUFrameNotifierProvider.notifier)
-                      .changeGate(id);
+              return TextButton(
+                onPressed: () async {
+                  final String? id =
+                      await context.pushNamed(RouteNames.gateNameRoute);
 
-                  ref
-                      .read(updateCSUFrameNotifierProvider)
-                      .updateFrameList
-                      .gateTextController
-                      .text = id;
-                }
-              },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: gateTextController,
-                  decoration: Themes.formStyle(
-                    'Pilih Gate',
-                  ),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) => {},
-                  validator: (_) => ref
-                      .read(updateCSUFrameNotifierProvider)
-                      .updateFrameList
-                      .gate
-                      .value
-                      .fold(
-                        (f) => f.maybeMap(
-                          empty: (_) => 'Silahkan Masukan Gate disini',
-                          orElse: () => null,
+                  if (id != null) {
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeGate(id);
+
+                    ref
+                        .read(updateCSUFrameNotifierProvider)
+                        .updateFrameList
+                        .gateTextController
+                        .text = id;
+                  }
+                },
+                style: ButtonStyle(
+                    padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: TextFormField(
+                    controller: gateTextController,
+                    decoration: Themes.formStyle(
+                      'Pilih Gate',
+                    ),
+                    keyboardType: TextInputType.name,
+                    onChanged: (value) => {},
+                    validator: (_) => ref
+                        .read(updateCSUFrameNotifierProvider)
+                        .updateFrameList
+                        .gate
+                        .value
+                        .fold(
+                          (f) => f.maybeMap(
+                            empty: (_) => 'Silahkan Masukan Gate disini',
+                            orElse: () => null,
+                          ),
+                          (_) => null,
                         ),
-                        (_) => null,
-                      ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ),
         SizedBox(

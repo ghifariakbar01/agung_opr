@@ -227,7 +227,7 @@ class TCPage extends ConsumerWidget {
           Center(
             child: VButton(
                 fontSize: 12,
-                height: 35,
+                height: 50,
                 textAlign: TextAlign.center,
                 label: 'CONTINUE',
                 textStyle:

@@ -1,7 +1,4 @@
 class RouteNames {
-  static const defaultRoute = '/';
-  static const defaultNameRoute = '/';
-
   static const signInRoute = '/signin';
   static const signInNameRoute = '/signin';
 

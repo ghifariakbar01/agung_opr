@@ -88,9 +88,7 @@ final updateCSNotifierProvider =
     StateNotifierProvider<UpdateCSNotifier, UpdateCSState>(
   (ref) => UpdateCSNotifier(
     ref.watch(updateCSRepositoryProvider),
-    ref.watch(
-      userNotifierProvider.select((value) => value.user),
-    ),
+    ref.watch(userNotifierProvider.select((value) => value.user)),
   ),
 );
 

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.9+38
+version: 3.0.9+39
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -27,6 +27,7 @@ dependencies:
   #* Network
   connectivity_plus: ^4.0.2
   dio: ^4.0.6
+  geofence_service: ^6.0.0
   pretty_dio_logger: ^1.2.0-beta-1
   # url_launcher: ^6.1.5
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +25,12 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
   Widget build(BuildContext context) {
     final gateProvider = ref.watch(gateNotifierProvider);
 
-    final gateList = gateProvider.gates
-        .where((element) => element != CSUMSTGate.initial())
-        .toList();
+    final gateList = gateProvider.gates.toList();
 
     final isSearching = ref
         .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
 
     ModeState modeState = ref.watch(modeNotifierProvider);
-    log('modeState $modeState');
 
     return KeyboardDismissOnTap(
       child: SafeArea(
@@ -54,10 +49,21 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
                       IgnorePointer(
                         ignoring: isSearching,
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            final item = gateList[i];
+
+                            if (item == CSUMSTGate.initial()) {
+                              return;
+                            }
+
                             String gateParam = modeState.maybeWhen(
-                                checkSheetUnit: () => gateList[i].id.toString(),
-                                orElse: () => gateList[i].nama.toString());
+                                checkSheetUnit: () => item.id.toString(),
+                                orElse: () => item.nama.toString());
+
+                            await ref
+                                .read(gateNotifierProvider.notifier)
+                                .saveDefaultGate(item);
+
                             context.pop(gateParam);
                           },
                           style: ButtonStyle(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/model/view/model_page.dart';
@@ -61,23 +59,20 @@ class RouterNotifier extends ChangeNotifier {
       authenticated: (_) {
         if (areWeSigningIn && weVisitedTC) {
           //
-
           return RouteNames.crannyName;
         } else if (areWeSigningIn && !weVisitedTC) {
           //
-
           return RouteNames.termsAndConditionNameRoute;
         } else if (areWeReadingTC && weVisitedTC) {
           //
-
           return RouteNames.crannyName;
         } else if (areWeInCSLoading) {
-          debugger();
           this
               ._ref
               .read(modeNotifierProvider.notifier)
               .changeModeAplikasi(ModeState.checkSheetLoading());
         }
+
         return null;
       },
       orElse: () => areWeSigningIn ? null : RouteNames.signInRoute,

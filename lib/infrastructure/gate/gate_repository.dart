@@ -8,7 +8,8 @@ import 'package:flutter/services.dart';
 import '../../application/gate/csu_mst_gate.dart';
 import '../../domain/local_failure.dart';
 import '../../domain/remote_failure.dart';
-import '../credentials_storage.dart';
+import '../cache_storage/gate_default_storage.dart';
+import '../cache_storage/gate_storage.dart';
 import '../exceptions.dart';
 
 /// [SAVED] MODEL => [
@@ -34,13 +35,39 @@ import '../exceptions.dart';
 */
 
 class GateRepository {
-  GateRepository(this._remoteService, this._storage);
+  GateRepository(
+    this._remoteService,
+    this._storage,
+    this._storageDefault,
+  );
 
   final GateRemoteService _remoteService;
-  final CredentialsStorage _storage;
+  final GateStorage _storage;
+  final GateDefaultStorage _storageDefault;
 
   Future<bool> hasOfflineData() => getGatesOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  // SAVE GATE ITEMS IN STORAGE
+  Future<Unit> saveDefaultGate(CSUMSTGate defaultGate) async {
+    final _json = defaultGate.toJson();
+    final _save = jsonEncode(_json);
+    await _storageDefault.save(_save);
+
+    return unit;
+  }
+
+  Future<CSUMSTGate> readDefaultGate() async {
+    final _save = await _storageDefault.read();
+
+    if (_save == null) {
+      return CSUMSTGate.initial();
+    }
+
+    final _json = jsonDecode(_save);
+
+    return CSUMSTGate.fromJson(_json);
+  }
 
   Future<Either<RemoteFailure, List<CSUMSTGate>>> getCSUGates() async {
     try {
