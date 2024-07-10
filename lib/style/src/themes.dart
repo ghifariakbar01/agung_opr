@@ -86,11 +86,15 @@ mixin Themes {
   }
 
   static TextStyle customColor(
-      FontWeight? fontWeight, double fontSize, Color color) {
+      FontWeight? fontWeight, double? fontSize, Color? color,
+      {bool? underline}) {
     return GoogleFonts.poppins(
-        color: color,
-        fontWeight: fontWeight ?? FontWeight.normal,
-        fontSize: fontSize);
+      color: color ?? Colors.black,
+      fontWeight: fontWeight ?? FontWeight.normal,
+      fontSize: fontSize ?? 11,
+      decoration:
+          underline == null ? TextDecoration.none : TextDecoration.underline,
+    );
   }
 
   static OutlineInputBorder notFocused({

@@ -1,6 +1,5 @@
 import '../../application/check_sheet/unit/state/csu_items/csu_items.dart';
 import '../credentials_storage.dart';
-import '../update_csu/update_csu_remote_service.dart';
 
 import 'dart:convert';
 
@@ -10,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import '../../domain/local_failure.dart';
 import '../exceptions.dart';
+import 'csu_jenis_penyebab_remote_service.dart';
 
 /// LIST OF [CSUItems]
 /// [SAVED] MODEL => [
@@ -42,11 +42,27 @@ import '../exceptions.dart';
 class CSUItemsRepository {
   CSUItemsRepository(this._remoteService, this._storage);
 
-  final UpdateCSUFrameRemoteService _remoteService;
+  final CSUJenisPeneybabRemoteService _remoteService;
   final CredentialsStorage _storage;
 
   Future<bool> hasOfflineData() => getCSUItemsOffline()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
+
+  Future<Either<LocalFailure, String?>> getStorageCondition() async {
+    try {
+      final storedCredentials = await _storage.read();
+
+      if (storedCredentials == null) {
+        return left(LocalFailure.empty());
+      }
+
+      return right(storedCredentials);
+    } on FormatException {
+      return left(LocalFailure.format('Error while parsing'));
+    } on PlatformException {
+      return left(LocalFailure.storage());
+    }
+  }
 
   Future<Either<RemoteFailure, List<CSUItems>>> getCSUItems() async {
     try {
@@ -78,12 +94,14 @@ class CSUItemsRepository {
       // HAS MAP
       if (csuItemStorage != null) {
         final responsMap = jsonDecode(csuItemStorage) as List<dynamic>;
-        final List<CSUItems> response = listCSUItemsFromJson(responsMap);
+        final List<CSUItems> response = responsMap
+            .map((e) => CSUItems.fromJson(e as Map<String, dynamic>))
+            .toList();
 
         if (response.isNotEmpty) {
           return right(response);
         } else {
-          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+          return right([]);
         }
       } else {
         return left(RemoteFailure.parse(message: 'LIST EMPTY'));
@@ -102,31 +120,15 @@ class CSUItemsRepository {
     final isNewFrameOK = csuItemsParam.isNotEmpty;
 
     if (isNewFrameOK) {
-      final json = listCSUItemsToJsonSavable(csuItemsParam);
-
-      await _storage.save(json);
+      final json = csuItemsParam.map((e) => e.toJson()).toList();
+      final _encode = jsonEncode(json);
+      await _storage.save(_encode);
     } else {
       throw FormatException(
           'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
     }
 
     return unit;
-  }
-
-  Future<Either<LocalFailure, String?>> getStorageCondition() async {
-    try {
-      final storedCredentials = await _storage.read();
-
-      if (storedCredentials == null) {
-        return left(LocalFailure.empty());
-      }
-
-      return right(storedCredentials);
-    } on FormatException {
-      return left(LocalFailure.format('Error while parsing'));
-    } on PlatformException {
-      return left(LocalFailure.storage());
-    }
   }
 
   Future<Unit> clearCSUItemsStorage() async {

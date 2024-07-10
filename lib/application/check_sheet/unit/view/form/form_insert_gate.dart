@@ -34,6 +34,19 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
 
   @override
   Widget build(BuildContext context) {
+    final gates = ref.watch(gateNotifierProvider);
+    final defaultGate = gates.defaultGate;
+
+    final gateTextController = ref.watch(updateCSUFrameNotifierProvider.select(
+      (value) => value.updateFrameList.gateTextController,
+    ));
+
+    final gateStr = ref.watch(updateCSUFrameNotifierProvider.select((value) =>
+        value.updateFrameList.gate.getOrLeave(
+            defaultGate == CSUMSTGate.initial()
+                ? ''
+                : defaultGate.id.toString())));
+
     ref.listen<Option<Either<RemoteFailure, List<CSUMSTGate>>>>(
         gateNotifierProvider.select(
           (state) => state.FOSOGate,
@@ -62,20 +75,18 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                         .read(gateNotifierProvider.notifier)
                         .changeGateList(gateResponse);
                     final def = ref.read(gateNotifierProvider).defaultGate;
+
+                    if (def == CSUMSTGate.initial()) {
+                      return;
+                    }
+
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
-                        .changeGate(def.nama ?? '');
+                        .changeGate(def.id.toString());
+
+                    gateTextController.text = def.id.toString();
                   }
                 })));
-
-    final gates = ref.watch(gateNotifierProvider);
-    final defaultGate = gates.defaultGate;
-
-    final gateTextController = ref.watch(updateCSUFrameNotifierProvider
-        .select((value) => value.updateFrameList.gateTextController));
-
-    final gateStr = ref.watch(updateCSUFrameNotifierProvider
-        .select((value) => value.updateFrameList.gate.getOrLeave('')));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,12 +118,6 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
               border: Border.all(color: Palette.primaryColor, width: 2),
             ),
             child: Builder(builder: (_) {
-              if (defaultGate == CSUMSTGate.initial()) {
-                //
-              } else {
-                gateTextController.text = defaultGate.id.toString();
-              }
-
               return TextButton(
                 onPressed: () async {
                   final String? id =
@@ -165,14 +170,16 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
         Flexible(
           flex: 2,
           child: Text(
+            textAlign: TextAlign.center,
             gates.gates
-                    .firstWhere((element) => element.id.toString() == gateStr,
-                        orElse: () => CSUMSTGate.initial())
+                    .firstWhere(
+                      (element) => element.id.toString() == gateStr,
+                      orElse: () => CSUMSTGate.initial(),
+                    )
                     .nama ??
                 '',
             style:
                 Themes.customColor(FontWeight.normal, 12, Palette.primaryColor),
-            textAlign: TextAlign.center,
           ),
         ),
       ],

@@ -36,7 +36,10 @@ class CSUNewForm extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: CSURowItem(label: 'ID UNIT', text: frame.frame ?? ''),
+              child: CSURowItem(
+                label: 'ID UNIT',
+                text: frame.frame ?? '',
+              ),
             ),
             SizedBox(
               height: 8,

@@ -15,6 +15,7 @@ class UpdateCSUState with _$UpdateCSUState {
     required bool showErrorMessages,
     required String frameName,
     required UpdateCSUFrameStateSingle updateFrameList,
+    
     required Option<Either<LocalFailure, Unit>> FOSOUpdateCSU,
   }) = _UpdateCSUState;
 

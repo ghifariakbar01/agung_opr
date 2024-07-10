@@ -29,12 +29,22 @@ String listCSUItemsToJsonSavable(List<CSUItems> resultList) {
 
 @freezed
 class CSUItems with _$CSUItems {
-  const factory CSUItems(
-      {@JsonKey(name: 'id_item') required int id,
-      @JsonKey(name: 'nama_ina') required String? ind,
-      @JsonKey(name: 'nama_eng') required String? eng,
-      required String? grup}) = _CSUItems;
+  const factory CSUItems({
+    @JsonKey(name: 'id_item') required int id,
+    required int NoUrut,
+    @JsonKey(name: 'nama_ina') required String? ind,
+    @JsonKey(name: 'nama_eng') required String? eng,
+    required String? Grup,
+  }) = _CSUItems;
 
   factory CSUItems.fromJson(Map<String, Object?> json) =>
       _$CSUItemsFromJson(json);
+
+  factory CSUItems.initial() => CSUItems(
+        ind: '',
+        eng: '',
+        Grup: '',
+        id: 0,
+        NoUrut: 0,
+      );
 }

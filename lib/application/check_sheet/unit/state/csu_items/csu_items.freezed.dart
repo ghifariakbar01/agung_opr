@@ -22,11 +22,12 @@ CSUItems _$CSUItemsFromJson(Map<String, dynamic> json) {
 mixin _$CSUItems {
   @JsonKey(name: 'id_item')
   int get id => throw _privateConstructorUsedError;
+  int get NoUrut => throw _privateConstructorUsedError;
   @JsonKey(name: 'nama_ina')
   String? get ind => throw _privateConstructorUsedError;
   @JsonKey(name: 'nama_eng')
   String? get eng => throw _privateConstructorUsedError;
-  String? get grup => throw _privateConstructorUsedError;
+  String? get Grup => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,9 +42,10 @@ abstract class $CSUItemsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'id_item') int id,
+      int NoUrut,
       @JsonKey(name: 'nama_ina') String? ind,
       @JsonKey(name: 'nama_eng') String? eng,
-      String? grup});
+      String? Grup});
 }
 
 /// @nodoc
@@ -60,14 +62,19 @@ class _$CSUItemsCopyWithImpl<$Res, $Val extends CSUItems>
   @override
   $Res call({
     Object? id = null,
+    Object? NoUrut = null,
     Object? ind = freezed,
     Object? eng = freezed,
-    Object? grup = freezed,
+    Object? Grup = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      NoUrut: null == NoUrut
+          ? _value.NoUrut
+          : NoUrut // ignore: cast_nullable_to_non_nullable
               as int,
       ind: freezed == ind
           ? _value.ind
@@ -77,9 +84,9 @@ class _$CSUItemsCopyWithImpl<$Res, $Val extends CSUItems>
           ? _value.eng
           : eng // ignore: cast_nullable_to_non_nullable
               as String?,
-      grup: freezed == grup
-          ? _value.grup
-          : grup // ignore: cast_nullable_to_non_nullable
+      Grup: freezed == Grup
+          ? _value.Grup
+          : Grup // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -94,9 +101,10 @@ abstract class _$$_CSUItemsCopyWith<$Res> implements $CSUItemsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'id_item') int id,
+      int NoUrut,
       @JsonKey(name: 'nama_ina') String? ind,
       @JsonKey(name: 'nama_eng') String? eng,
-      String? grup});
+      String? Grup});
 }
 
 /// @nodoc
@@ -111,14 +119,19 @@ class __$$_CSUItemsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? NoUrut = null,
     Object? ind = freezed,
     Object? eng = freezed,
-    Object? grup = freezed,
+    Object? Grup = freezed,
   }) {
     return _then(_$_CSUItems(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      NoUrut: null == NoUrut
+          ? _value.NoUrut
+          : NoUrut // ignore: cast_nullable_to_non_nullable
               as int,
       ind: freezed == ind
           ? _value.ind
@@ -128,9 +141,9 @@ class __$$_CSUItemsCopyWithImpl<$Res>
           ? _value.eng
           : eng // ignore: cast_nullable_to_non_nullable
               as String?,
-      grup: freezed == grup
-          ? _value.grup
-          : grup // ignore: cast_nullable_to_non_nullable
+      Grup: freezed == Grup
+          ? _value.Grup
+          : Grup // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -141,9 +154,10 @@ class __$$_CSUItemsCopyWithImpl<$Res>
 class _$_CSUItems implements _CSUItems {
   const _$_CSUItems(
       {@JsonKey(name: 'id_item') required this.id,
+      required this.NoUrut,
       @JsonKey(name: 'nama_ina') required this.ind,
       @JsonKey(name: 'nama_eng') required this.eng,
-      required this.grup});
+      required this.Grup});
 
   factory _$_CSUItems.fromJson(Map<String, dynamic> json) =>
       _$$_CSUItemsFromJson(json);
@@ -152,17 +166,19 @@ class _$_CSUItems implements _CSUItems {
   @JsonKey(name: 'id_item')
   final int id;
   @override
+  final int NoUrut;
+  @override
   @JsonKey(name: 'nama_ina')
   final String? ind;
   @override
   @JsonKey(name: 'nama_eng')
   final String? eng;
   @override
-  final String? grup;
+  final String? Grup;
 
   @override
   String toString() {
-    return 'CSUItems(id: $id, ind: $ind, eng: $eng, grup: $grup)';
+    return 'CSUItems(id: $id, NoUrut: $NoUrut, ind: $ind, eng: $eng, Grup: $Grup)';
   }
 
   @override
@@ -171,14 +187,15 @@ class _$_CSUItems implements _CSUItems {
         (other.runtimeType == runtimeType &&
             other is _$_CSUItems &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.NoUrut, NoUrut) || other.NoUrut == NoUrut) &&
             (identical(other.ind, ind) || other.ind == ind) &&
             (identical(other.eng, eng) || other.eng == eng) &&
-            (identical(other.grup, grup) || other.grup == grup));
+            (identical(other.Grup, Grup) || other.Grup == Grup));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ind, eng, grup);
+  int get hashCode => Object.hash(runtimeType, id, NoUrut, ind, eng, Grup);
 
   @JsonKey(ignore: true)
   @override
@@ -197,9 +214,10 @@ class _$_CSUItems implements _CSUItems {
 abstract class _CSUItems implements CSUItems {
   const factory _CSUItems(
       {@JsonKey(name: 'id_item') required final int id,
+      required final int NoUrut,
       @JsonKey(name: 'nama_ina') required final String? ind,
       @JsonKey(name: 'nama_eng') required final String? eng,
-      required final String? grup}) = _$_CSUItems;
+      required final String? Grup}) = _$_CSUItems;
 
   factory _CSUItems.fromJson(Map<String, dynamic> json) = _$_CSUItems.fromJson;
 
@@ -207,13 +225,15 @@ abstract class _CSUItems implements CSUItems {
   @JsonKey(name: 'id_item')
   int get id;
   @override
+  int get NoUrut;
+  @override
   @JsonKey(name: 'nama_ina')
   String? get ind;
   @override
   @JsonKey(name: 'nama_eng')
   String? get eng;
   @override
-  String? get grup;
+  String? get Grup;
   @override
   @JsonKey(ignore: true)
   _$$_CSUItemsCopyWith<_$_CSUItems> get copyWith =>

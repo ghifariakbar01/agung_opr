@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateCSUNGState {
-  int get idCs => throw _privateConstructorUsedError;
+  String get ket => throw _privateConstructorUsedError;
+  int get idItem => throw _privateConstructorUsedError;
   int get idJenis => throw _privateConstructorUsedError;
-  int get idPenyebab => throw _privateConstructorUsedError;
+  int get idPosisi => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateCSUNGStateCopyWith<UpdateCSUNGState> get copyWith =>
@@ -31,7 +32,7 @@ abstract class $UpdateCSUNGStateCopyWith<$Res> {
           UpdateCSUNGState value, $Res Function(UpdateCSUNGState) then) =
       _$UpdateCSUNGStateCopyWithImpl<$Res, UpdateCSUNGState>;
   @useResult
-  $Res call({int idCs, int idJenis, int idPenyebab});
+  $Res call({String ket, int idItem, int idJenis, int idPosisi});
 }
 
 /// @nodoc
@@ -47,22 +48,27 @@ class _$UpdateCSUNGStateCopyWithImpl<$Res, $Val extends UpdateCSUNGState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idCs = null,
+    Object? ket = null,
+    Object? idItem = null,
     Object? idJenis = null,
-    Object? idPenyebab = null,
+    Object? idPosisi = null,
   }) {
     return _then(_value.copyWith(
-      idCs: null == idCs
-          ? _value.idCs
-          : idCs // ignore: cast_nullable_to_non_nullable
+      ket: null == ket
+          ? _value.ket
+          : ket // ignore: cast_nullable_to_non_nullable
+              as String,
+      idItem: null == idItem
+          ? _value.idItem
+          : idItem // ignore: cast_nullable_to_non_nullable
               as int,
       idJenis: null == idJenis
           ? _value.idJenis
           : idJenis // ignore: cast_nullable_to_non_nullable
               as int,
-      idPenyebab: null == idPenyebab
-          ? _value.idPenyebab
-          : idPenyebab // ignore: cast_nullable_to_non_nullable
+      idPosisi: null == idPosisi
+          ? _value.idPosisi
+          : idPosisi // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -76,7 +82,7 @@ abstract class _$$_UpdateCSUNGStateCopyWith<$Res>
       __$$_UpdateCSUNGStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int idCs, int idJenis, int idPenyebab});
+  $Res call({String ket, int idItem, int idJenis, int idPosisi});
 }
 
 /// @nodoc
@@ -90,22 +96,27 @@ class __$$_UpdateCSUNGStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idCs = null,
+    Object? ket = null,
+    Object? idItem = null,
     Object? idJenis = null,
-    Object? idPenyebab = null,
+    Object? idPosisi = null,
   }) {
     return _then(_$_UpdateCSUNGState(
-      idCs: null == idCs
-          ? _value.idCs
-          : idCs // ignore: cast_nullable_to_non_nullable
+      ket: null == ket
+          ? _value.ket
+          : ket // ignore: cast_nullable_to_non_nullable
+              as String,
+      idItem: null == idItem
+          ? _value.idItem
+          : idItem // ignore: cast_nullable_to_non_nullable
               as int,
       idJenis: null == idJenis
           ? _value.idJenis
           : idJenis // ignore: cast_nullable_to_non_nullable
               as int,
-      idPenyebab: null == idPenyebab
-          ? _value.idPenyebab
-          : idPenyebab // ignore: cast_nullable_to_non_nullable
+      idPosisi: null == idPosisi
+          ? _value.idPosisi
+          : idPosisi // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -115,18 +126,23 @@ class __$$_UpdateCSUNGStateCopyWithImpl<$Res>
 
 class _$_UpdateCSUNGState implements _UpdateCSUNGState {
   const _$_UpdateCSUNGState(
-      {required this.idCs, required this.idJenis, required this.idPenyebab});
+      {required this.ket,
+      required this.idItem,
+      required this.idJenis,
+      required this.idPosisi});
 
   @override
-  final int idCs;
+  final String ket;
+  @override
+  final int idItem;
   @override
   final int idJenis;
   @override
-  final int idPenyebab;
+  final int idPosisi;
 
   @override
   String toString() {
-    return 'UpdateCSUNGState(idCs: $idCs, idJenis: $idJenis, idPenyebab: $idPenyebab)';
+    return 'UpdateCSUNGState(ket: $ket, idItem: $idItem, idJenis: $idJenis, idPosisi: $idPosisi)';
   }
 
   @override
@@ -134,14 +150,15 @@ class _$_UpdateCSUNGState implements _UpdateCSUNGState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UpdateCSUNGState &&
-            (identical(other.idCs, idCs) || other.idCs == idCs) &&
+            (identical(other.ket, ket) || other.ket == ket) &&
+            (identical(other.idItem, idItem) || other.idItem == idItem) &&
             (identical(other.idJenis, idJenis) || other.idJenis == idJenis) &&
-            (identical(other.idPenyebab, idPenyebab) ||
-                other.idPenyebab == idPenyebab));
+            (identical(other.idPosisi, idPosisi) ||
+                other.idPosisi == idPosisi));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, idCs, idJenis, idPenyebab);
+  int get hashCode => Object.hash(runtimeType, ket, idItem, idJenis, idPosisi);
 
   @JsonKey(ignore: true)
   @override
@@ -152,16 +169,19 @@ class _$_UpdateCSUNGState implements _UpdateCSUNGState {
 
 abstract class _UpdateCSUNGState implements UpdateCSUNGState {
   const factory _UpdateCSUNGState(
-      {required final int idCs,
+      {required final String ket,
+      required final int idItem,
       required final int idJenis,
-      required final int idPenyebab}) = _$_UpdateCSUNGState;
+      required final int idPosisi}) = _$_UpdateCSUNGState;
 
   @override
-  int get idCs;
+  String get ket;
+  @override
+  int get idItem;
   @override
   int get idJenis;
   @override
-  int get idPenyebab;
+  int get idPosisi;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateCSUNGStateCopyWith<_$_UpdateCSUNGState> get copyWith =>

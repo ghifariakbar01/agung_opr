@@ -20,9 +20,10 @@ CSUNGResult _$CSUNGResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CSUNGResult {
+  String get ket => throw _privateConstructorUsedError;
   int get idItem => throw _privateConstructorUsedError;
   int get idJenis => throw _privateConstructorUsedError;
-  int get idPenyebab => throw _privateConstructorUsedError;
+  int get idPosisi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $CSUNGResultCopyWith<$Res> {
           CSUNGResult value, $Res Function(CSUNGResult) then) =
       _$CSUNGResultCopyWithImpl<$Res, CSUNGResult>;
   @useResult
-  $Res call({int idItem, int idJenis, int idPenyebab});
+  $Res call({String ket, int idItem, int idJenis, int idPosisi});
 }
 
 /// @nodoc
@@ -52,11 +53,16 @@ class _$CSUNGResultCopyWithImpl<$Res, $Val extends CSUNGResult>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? ket = null,
     Object? idItem = null,
     Object? idJenis = null,
-    Object? idPenyebab = null,
+    Object? idPosisi = null,
   }) {
     return _then(_value.copyWith(
+      ket: null == ket
+          ? _value.ket
+          : ket // ignore: cast_nullable_to_non_nullable
+              as String,
       idItem: null == idItem
           ? _value.idItem
           : idItem // ignore: cast_nullable_to_non_nullable
@@ -65,9 +71,9 @@ class _$CSUNGResultCopyWithImpl<$Res, $Val extends CSUNGResult>
           ? _value.idJenis
           : idJenis // ignore: cast_nullable_to_non_nullable
               as int,
-      idPenyebab: null == idPenyebab
-          ? _value.idPenyebab
-          : idPenyebab // ignore: cast_nullable_to_non_nullable
+      idPosisi: null == idPosisi
+          ? _value.idPosisi
+          : idPosisi // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -81,7 +87,7 @@ abstract class _$$_CSUNGResultCopyWith<$Res>
       __$$_CSUNGResultCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int idItem, int idJenis, int idPenyebab});
+  $Res call({String ket, int idItem, int idJenis, int idPosisi});
 }
 
 /// @nodoc
@@ -95,11 +101,16 @@ class __$$_CSUNGResultCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? ket = null,
     Object? idItem = null,
     Object? idJenis = null,
-    Object? idPenyebab = null,
+    Object? idPosisi = null,
   }) {
     return _then(_$_CSUNGResult(
+      ket: null == ket
+          ? _value.ket
+          : ket // ignore: cast_nullable_to_non_nullable
+              as String,
       idItem: null == idItem
           ? _value.idItem
           : idItem // ignore: cast_nullable_to_non_nullable
@@ -108,9 +119,9 @@ class __$$_CSUNGResultCopyWithImpl<$Res>
           ? _value.idJenis
           : idJenis // ignore: cast_nullable_to_non_nullable
               as int,
-      idPenyebab: null == idPenyebab
-          ? _value.idPenyebab
-          : idPenyebab // ignore: cast_nullable_to_non_nullable
+      idPosisi: null == idPosisi
+          ? _value.idPosisi
+          : idPosisi // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -120,21 +131,26 @@ class __$$_CSUNGResultCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CSUNGResult implements _CSUNGResult {
   const _$_CSUNGResult(
-      {required this.idItem, required this.idJenis, required this.idPenyebab});
+      {required this.ket,
+      required this.idItem,
+      required this.idJenis,
+      required this.idPosisi});
 
   factory _$_CSUNGResult.fromJson(Map<String, dynamic> json) =>
       _$$_CSUNGResultFromJson(json);
 
   @override
+  final String ket;
+  @override
   final int idItem;
   @override
   final int idJenis;
   @override
-  final int idPenyebab;
+  final int idPosisi;
 
   @override
   String toString() {
-    return 'CSUNGResult(idItem: $idItem, idJenis: $idJenis, idPenyebab: $idPenyebab)';
+    return 'CSUNGResult(ket: $ket, idItem: $idItem, idJenis: $idJenis, idPosisi: $idPosisi)';
   }
 
   @override
@@ -142,15 +158,16 @@ class _$_CSUNGResult implements _CSUNGResult {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CSUNGResult &&
+            (identical(other.ket, ket) || other.ket == ket) &&
             (identical(other.idItem, idItem) || other.idItem == idItem) &&
             (identical(other.idJenis, idJenis) || other.idJenis == idJenis) &&
-            (identical(other.idPenyebab, idPenyebab) ||
-                other.idPenyebab == idPenyebab));
+            (identical(other.idPosisi, idPosisi) ||
+                other.idPosisi == idPosisi));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, idItem, idJenis, idPenyebab);
+  int get hashCode => Object.hash(runtimeType, ket, idItem, idJenis, idPosisi);
 
   @JsonKey(ignore: true)
   @override
@@ -168,19 +185,22 @@ class _$_CSUNGResult implements _CSUNGResult {
 
 abstract class _CSUNGResult implements CSUNGResult {
   const factory _CSUNGResult(
-      {required final int idItem,
+      {required final String ket,
+      required final int idItem,
       required final int idJenis,
-      required final int idPenyebab}) = _$_CSUNGResult;
+      required final int idPosisi}) = _$_CSUNGResult;
 
   factory _CSUNGResult.fromJson(Map<String, dynamic> json) =
       _$_CSUNGResult.fromJson;
 
   @override
+  String get ket;
+  @override
   int get idItem;
   @override
   int get idJenis;
   @override
-  int get idPenyebab;
+  int get idPosisi;
   @override
   @JsonKey(ignore: true)
   _$$_CSUNGResultCopyWith<_$_CSUNGResult> get copyWith =>

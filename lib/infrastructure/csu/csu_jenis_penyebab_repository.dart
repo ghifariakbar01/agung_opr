@@ -1,6 +1,8 @@
+import 'package:agung_opr/infrastructure/csu/csu_jenis_penyebab_remote_service.dart';
+
 import '../../application/check_sheet/unit/state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
+import '../../application/check_sheet/unit/state/csu_posisi/csu_posisi.dart';
 import '../credentials_storage.dart';
-import '../update_csu/update_csu_remote_service.dart';
 
 import 'dart:convert';
 
@@ -12,16 +14,20 @@ import '../exceptions.dart';
 
 class CSUJenisPenyebabRepository {
   CSUJenisPenyebabRepository(
-      this._remoteService, this._jenisStorage, this._penyebabStorage);
+    this._remoteService,
+    this._jenisStorage,
+    this._posisiStorage,
+  );
 
-  final UpdateCSUFrameRemoteService _remoteService;
+  final CSUJenisPeneybabRemoteService _remoteService;
+
   final CredentialsStorage _jenisStorage;
-  final CredentialsStorage _penyebabStorage;
+  final CredentialsStorage _posisiStorage;
 
   Future<bool> hasOfflineDataJenis() => getJenisItemsOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
-  Future<bool> hasOfflineDataPenyebab() => getPenyebabItemsOFFLINE()
+  Future<bool> hasOfflineDataPosisi() => getPosisiItemsOFFLINE()
       .then((credentials) => credentials.fold((_) => false, (_) => true));
 
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
@@ -45,16 +51,13 @@ class CSUJenisPenyebabRepository {
     }
   }
 
-  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      getCSUPenyebabItems() async {
+  Future<Either<RemoteFailure, List<CSUPosisi>>> getCSUPosisiItems() async {
     try {
-      final listCsuPenyebabItemsParam =
-          await _remoteService.getCSUPenyebabItems();
+      final posisi = await _remoteService.getCSUPosisiItems();
 
-      await this._SAVECSUPenyebabItems(
-          csuPenyebabItemsParam: listCsuPenyebabItemsParam);
+      await this._SAVECSUPenyebabItems(csuPenyebabItemsParam: posisi);
 
-      return right(listCsuPenyebabItemsParam);
+      return right(posisi);
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
@@ -74,9 +77,9 @@ class CSUJenisPenyebabRepository {
     final isNewFrameOK = csuJenisItemsParam.isNotEmpty;
 
     if (isNewFrameOK) {
-      final json = listCSUJenisPenyebabItemToJsonSavable(csuJenisItemsParam);
-
-      await _jenisStorage.save(json);
+      final json = csuJenisItemsParam.map((e) => e.toJson()).toList();
+      final _encode = jsonEncode(json);
+      await _jenisStorage.save(_encode);
     } else {
       throw FormatException(
           'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
@@ -87,13 +90,13 @@ class CSUJenisPenyebabRepository {
 
 // SAVE CSU PENYEBAB ITEM IN STORAGE
   Future<Unit> _SAVECSUPenyebabItems(
-      {required List<CSUJenisPenyebabItem> csuPenyebabItemsParam}) async {
+      {required List<CSUPosisi> csuPenyebabItemsParam}) async {
     final isNewFrameOK = csuPenyebabItemsParam.isNotEmpty;
 
     if (isNewFrameOK) {
-      final json = listCSUJenisPenyebabItemToJsonSavable(csuPenyebabItemsParam);
-
-      await _penyebabStorage.save(json);
+      final json = csuPenyebabItemsParam.map((e) => e.toJson()).toList();
+      final _encode = jsonEncode(json);
+      await _jenisStorage.save(_encode);
     } else {
       throw FormatException(
           'new CSU ITEMS is Empty. In update_csu_repository _SAVECSUItems');
@@ -102,7 +105,7 @@ class CSUJenisPenyebabRepository {
     return unit;
   }
 
-  /// DATA: [CSUJenisPenyebabItem] FROM STORAGE
+  /// DATA: [CSUPosisi] FROM STORAGE
   ///
   Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       getJenisItemsOFFLINE() async {
@@ -134,15 +137,14 @@ class CSUJenisPenyebabRepository {
 
   /// DATA: [CSUJenisPenyebabItem] FROM STORAGE
   ///
-  Future<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      getPenyebabItemsOFFLINE() async {
+  Future<Either<RemoteFailure, List<CSUPosisi>>> getPosisiItemsOFFLINE() async {
     try {
-      final csPenyebabStorage = await _penyebabStorage.read();
+      final csPenyebabStorage = await _posisiStorage.read();
 
       if (csPenyebabStorage != null) {
-        final List<CSUJenisPenyebabItem> response =
+        final List<CSUPosisi> response =
             (jsonDecode(csPenyebabStorage) as List<dynamic>)
-                .map((e) => CSUJenisPenyebabItem.fromJson(e))
+                .map((e) => CSUPosisi.fromJson(e))
                 .toList();
 
         if (response.isNotEmpty) {
@@ -174,13 +176,13 @@ class CSUJenisPenyebabRepository {
   }
 
   Future<Unit> clearPenyebabStorage() async {
-    final storedCredentials = await _penyebabStorage.read();
+    final storedCredentials = await _posisiStorage.read();
 
     if (storedCredentials == null) {
       return unit;
     }
 
-    await _penyebabStorage.clear();
+    await _posisiStorage.clear();
     return unit;
   }
 }

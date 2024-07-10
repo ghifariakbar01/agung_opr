@@ -86,11 +86,6 @@ class HistoryCSUNgPage extends ConsumerWidget {
                             style: Themes.customColor(
                                 FontWeight.w500, 12, Colors.white),
                           ),
-                          Text(
-                            'ID Penyebab : ${item.idPDefect}',
-                            style: Themes.customColor(
-                                FontWeight.w500, 12, Colors.white),
-                          ),
                           SizedBox(
                             width: 100,
                             child: Divider(

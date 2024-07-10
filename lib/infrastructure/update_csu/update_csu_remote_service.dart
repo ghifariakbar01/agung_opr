@@ -64,19 +64,21 @@ class UpdateCSUFrameRemoteService {
   }
 
   Future<List<CSUItems>> getCSUItems() async {
-    const String dbName = 'cs_mst_item';
+    const String dbName = 'cs_mst_item_mobile';
 
     try {
       final data = _dioRequestNotifier;
 
       data.addAll({
         "mode": "SELECT",
-        "command":
-            "SELECT id_item, nama_ina, nama_eng, Grup AS grup FROM $dbName",
+        "command": "SELECT * FROM $dbName",
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       log('data ${jsonEncode(data)}');
       log('response $response');
@@ -93,10 +95,6 @@ class UpdateCSUFrameRemoteService {
             try {
               List<CSUItems> csuList =
                   (list).map((data) => CSUItems.fromJson(data)).toList();
-
-              log('LIST CSUItems: $list');
-
-              // debugger(message: 'called');
 
               return csuList;
             } catch (e) {
@@ -210,7 +208,7 @@ class UpdateCSUFrameRemoteService {
     }
   }
 
-  Future<List<CSUJenisPenyebabItem>> getCSUPenyebabItems() async {
+  Future<List<CSUJenisPenyebabItem>> getCSUPosisiItems() async {
     const String dbName = 'cs_mst_penyebab_defect';
 
     try {

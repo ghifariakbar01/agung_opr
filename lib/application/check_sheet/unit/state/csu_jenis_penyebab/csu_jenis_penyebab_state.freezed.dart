@@ -17,18 +17,15 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CSUJenisPenyebabState {
   bool get isProcessing => throw _privateConstructorUsedError;
-
-  ///
   List<CSUJenisPenyebabItem> get csuJenisItems =>
       throw _privateConstructorUsedError;
-  List<CSUJenisPenyebabItem> get csuPenyebabItems =>
-      throw _privateConstructorUsedError; //
+  List<CSUPosisi> get csuPosisiItems => throw _privateConstructorUsedError;
   Option<Either<LocalFailure, Unit>> get FOSOJenisPenyebabCSU =>
       throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       get FOSOUpdateCSUJenisItems => throw _privateConstructorUsedError;
-  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      get FOSOUpdateCSUPenyebabItems => throw _privateConstructorUsedError;
+  Option<Either<RemoteFailure, List<CSUPosisi>>> get FOSOUpdateCSUPosisiItems =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CSUJenisPenyebabStateCopyWith<CSUJenisPenyebabState> get copyWith =>
@@ -44,12 +41,11 @@ abstract class $CSUJenisPenyebabStateCopyWith<$Res> {
   $Res call(
       {bool isProcessing,
       List<CSUJenisPenyebabItem> csuJenisItems,
-      List<CSUJenisPenyebabItem> csuPenyebabItems,
+      List<CSUPosisi> csuPosisiItems,
       Option<Either<LocalFailure, Unit>> FOSOJenisPenyebabCSU,
       Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
           FOSOUpdateCSUJenisItems,
-      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-          FOSOUpdateCSUPenyebabItems});
+      Option<Either<RemoteFailure, List<CSUPosisi>>> FOSOUpdateCSUPosisiItems});
 }
 
 /// @nodoc
@@ -68,10 +64,10 @@ class _$CSUJenisPenyebabStateCopyWithImpl<$Res,
   $Res call({
     Object? isProcessing = null,
     Object? csuJenisItems = null,
-    Object? csuPenyebabItems = null,
+    Object? csuPosisiItems = null,
     Object? FOSOJenisPenyebabCSU = null,
     Object? FOSOUpdateCSUJenisItems = null,
-    Object? FOSOUpdateCSUPenyebabItems = null,
+    Object? FOSOUpdateCSUPosisiItems = null,
   }) {
     return _then(_value.copyWith(
       isProcessing: null == isProcessing
@@ -82,10 +78,10 @@ class _$CSUJenisPenyebabStateCopyWithImpl<$Res,
           ? _value.csuJenisItems
           : csuJenisItems // ignore: cast_nullable_to_non_nullable
               as List<CSUJenisPenyebabItem>,
-      csuPenyebabItems: null == csuPenyebabItems
-          ? _value.csuPenyebabItems
-          : csuPenyebabItems // ignore: cast_nullable_to_non_nullable
-              as List<CSUJenisPenyebabItem>,
+      csuPosisiItems: null == csuPosisiItems
+          ? _value.csuPosisiItems
+          : csuPosisiItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUPosisi>,
       FOSOJenisPenyebabCSU: null == FOSOJenisPenyebabCSU
           ? _value.FOSOJenisPenyebabCSU
           : FOSOJenisPenyebabCSU // ignore: cast_nullable_to_non_nullable
@@ -94,10 +90,10 @@ class _$CSUJenisPenyebabStateCopyWithImpl<$Res,
           ? _value.FOSOUpdateCSUJenisItems
           : FOSOUpdateCSUJenisItems // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
-      FOSOUpdateCSUPenyebabItems: null == FOSOUpdateCSUPenyebabItems
-          ? _value.FOSOUpdateCSUPenyebabItems
-          : FOSOUpdateCSUPenyebabItems // ignore: cast_nullable_to_non_nullable
-              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
+      FOSOUpdateCSUPosisiItems: null == FOSOUpdateCSUPosisiItems
+          ? _value.FOSOUpdateCSUPosisiItems
+          : FOSOUpdateCSUPosisiItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUPosisi>>>,
     ) as $Val);
   }
 }
@@ -113,12 +109,11 @@ abstract class _$$_CSUJenisPenyebabStateCopyWith<$Res>
   $Res call(
       {bool isProcessing,
       List<CSUJenisPenyebabItem> csuJenisItems,
-      List<CSUJenisPenyebabItem> csuPenyebabItems,
+      List<CSUPosisi> csuPosisiItems,
       Option<Either<LocalFailure, Unit>> FOSOJenisPenyebabCSU,
       Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
           FOSOUpdateCSUJenisItems,
-      Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-          FOSOUpdateCSUPenyebabItems});
+      Option<Either<RemoteFailure, List<CSUPosisi>>> FOSOUpdateCSUPosisiItems});
 }
 
 /// @nodoc
@@ -134,10 +129,10 @@ class __$$_CSUJenisPenyebabStateCopyWithImpl<$Res>
   $Res call({
     Object? isProcessing = null,
     Object? csuJenisItems = null,
-    Object? csuPenyebabItems = null,
+    Object? csuPosisiItems = null,
     Object? FOSOJenisPenyebabCSU = null,
     Object? FOSOUpdateCSUJenisItems = null,
-    Object? FOSOUpdateCSUPenyebabItems = null,
+    Object? FOSOUpdateCSUPosisiItems = null,
   }) {
     return _then(_$_CSUJenisPenyebabState(
       isProcessing: null == isProcessing
@@ -148,10 +143,10 @@ class __$$_CSUJenisPenyebabStateCopyWithImpl<$Res>
           ? _value._csuJenisItems
           : csuJenisItems // ignore: cast_nullable_to_non_nullable
               as List<CSUJenisPenyebabItem>,
-      csuPenyebabItems: null == csuPenyebabItems
-          ? _value._csuPenyebabItems
-          : csuPenyebabItems // ignore: cast_nullable_to_non_nullable
-              as List<CSUJenisPenyebabItem>,
+      csuPosisiItems: null == csuPosisiItems
+          ? _value._csuPosisiItems
+          : csuPosisiItems // ignore: cast_nullable_to_non_nullable
+              as List<CSUPosisi>,
       FOSOJenisPenyebabCSU: null == FOSOJenisPenyebabCSU
           ? _value.FOSOJenisPenyebabCSU
           : FOSOJenisPenyebabCSU // ignore: cast_nullable_to_non_nullable
@@ -160,10 +155,10 @@ class __$$_CSUJenisPenyebabStateCopyWithImpl<$Res>
           ? _value.FOSOUpdateCSUJenisItems
           : FOSOUpdateCSUJenisItems // ignore: cast_nullable_to_non_nullable
               as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
-      FOSOUpdateCSUPenyebabItems: null == FOSOUpdateCSUPenyebabItems
-          ? _value.FOSOUpdateCSUPenyebabItems
-          : FOSOUpdateCSUPenyebabItems // ignore: cast_nullable_to_non_nullable
-              as Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>,
+      FOSOUpdateCSUPosisiItems: null == FOSOUpdateCSUPosisiItems
+          ? _value.FOSOUpdateCSUPosisiItems
+          : FOSOUpdateCSUPosisiItems // ignore: cast_nullable_to_non_nullable
+              as Option<Either<RemoteFailure, List<CSUPosisi>>>,
     ));
   }
 }
@@ -174,20 +169,16 @@ class _$_CSUJenisPenyebabState implements _CSUJenisPenyebabState {
   const _$_CSUJenisPenyebabState(
       {required this.isProcessing,
       required final List<CSUJenisPenyebabItem> csuJenisItems,
-      required final List<CSUJenisPenyebabItem> csuPenyebabItems,
+      required final List<CSUPosisi> csuPosisiItems,
       required this.FOSOJenisPenyebabCSU,
       required this.FOSOUpdateCSUJenisItems,
-      required this.FOSOUpdateCSUPenyebabItems})
+      required this.FOSOUpdateCSUPosisiItems})
       : _csuJenisItems = csuJenisItems,
-        _csuPenyebabItems = csuPenyebabItems;
+        _csuPosisiItems = csuPosisiItems;
 
   @override
   final bool isProcessing;
-
-  ///
   final List<CSUJenisPenyebabItem> _csuJenisItems;
-
-  ///
   @override
   List<CSUJenisPenyebabItem> get csuJenisItems {
     if (_csuJenisItems is EqualUnmodifiableListView) return _csuJenisItems;
@@ -195,28 +186,25 @@ class _$_CSUJenisPenyebabState implements _CSUJenisPenyebabState {
     return EqualUnmodifiableListView(_csuJenisItems);
   }
 
-  final List<CSUJenisPenyebabItem> _csuPenyebabItems;
+  final List<CSUPosisi> _csuPosisiItems;
   @override
-  List<CSUJenisPenyebabItem> get csuPenyebabItems {
-    if (_csuPenyebabItems is EqualUnmodifiableListView)
-      return _csuPenyebabItems;
+  List<CSUPosisi> get csuPosisiItems {
+    if (_csuPosisiItems is EqualUnmodifiableListView) return _csuPosisiItems;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_csuPenyebabItems);
+    return EqualUnmodifiableListView(_csuPosisiItems);
   }
 
-//
   @override
   final Option<Either<LocalFailure, Unit>> FOSOJenisPenyebabCSU;
   @override
   final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       FOSOUpdateCSUJenisItems;
   @override
-  final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      FOSOUpdateCSUPenyebabItems;
+  final Option<Either<RemoteFailure, List<CSUPosisi>>> FOSOUpdateCSUPosisiItems;
 
   @override
   String toString() {
-    return 'CSUJenisPenyebabState(isProcessing: $isProcessing, csuJenisItems: $csuJenisItems, csuPenyebabItems: $csuPenyebabItems, FOSOJenisPenyebabCSU: $FOSOJenisPenyebabCSU, FOSOUpdateCSUJenisItems: $FOSOUpdateCSUJenisItems, FOSOUpdateCSUPenyebabItems: $FOSOUpdateCSUPenyebabItems)';
+    return 'CSUJenisPenyebabState(isProcessing: $isProcessing, csuJenisItems: $csuJenisItems, csuPosisiItems: $csuPosisiItems, FOSOJenisPenyebabCSU: $FOSOJenisPenyebabCSU, FOSOUpdateCSUJenisItems: $FOSOUpdateCSUJenisItems, FOSOUpdateCSUPosisiItems: $FOSOUpdateCSUPosisiItems)';
   }
 
   @override
@@ -229,16 +217,15 @@ class _$_CSUJenisPenyebabState implements _CSUJenisPenyebabState {
             const DeepCollectionEquality()
                 .equals(other._csuJenisItems, _csuJenisItems) &&
             const DeepCollectionEquality()
-                .equals(other._csuPenyebabItems, _csuPenyebabItems) &&
+                .equals(other._csuPosisiItems, _csuPosisiItems) &&
             (identical(other.FOSOJenisPenyebabCSU, FOSOJenisPenyebabCSU) ||
                 other.FOSOJenisPenyebabCSU == FOSOJenisPenyebabCSU) &&
             (identical(
                     other.FOSOUpdateCSUJenisItems, FOSOUpdateCSUJenisItems) ||
                 other.FOSOUpdateCSUJenisItems == FOSOUpdateCSUJenisItems) &&
-            (identical(other.FOSOUpdateCSUPenyebabItems,
-                    FOSOUpdateCSUPenyebabItems) ||
-                other.FOSOUpdateCSUPenyebabItems ==
-                    FOSOUpdateCSUPenyebabItems));
+            (identical(
+                    other.FOSOUpdateCSUPosisiItems, FOSOUpdateCSUPosisiItems) ||
+                other.FOSOUpdateCSUPosisiItems == FOSOUpdateCSUPosisiItems));
   }
 
   @override
@@ -246,10 +233,10 @@ class _$_CSUJenisPenyebabState implements _CSUJenisPenyebabState {
       runtimeType,
       isProcessing,
       const DeepCollectionEquality().hash(_csuJenisItems),
-      const DeepCollectionEquality().hash(_csuPenyebabItems),
+      const DeepCollectionEquality().hash(_csuPosisiItems),
       FOSOJenisPenyebabCSU,
       FOSOUpdateCSUJenisItems,
-      FOSOUpdateCSUPenyebabItems);
+      FOSOUpdateCSUPosisiItems);
 
   @JsonKey(ignore: true)
   @override
@@ -263,29 +250,26 @@ abstract class _CSUJenisPenyebabState implements CSUJenisPenyebabState {
   const factory _CSUJenisPenyebabState(
       {required final bool isProcessing,
       required final List<CSUJenisPenyebabItem> csuJenisItems,
-      required final List<CSUJenisPenyebabItem> csuPenyebabItems,
+      required final List<CSUPosisi> csuPosisiItems,
       required final Option<Either<LocalFailure, Unit>> FOSOJenisPenyebabCSU,
       required final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
           FOSOUpdateCSUJenisItems,
-      required final Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-          FOSOUpdateCSUPenyebabItems}) = _$_CSUJenisPenyebabState;
+      required final Option<Either<RemoteFailure, List<CSUPosisi>>>
+          FOSOUpdateCSUPosisiItems}) = _$_CSUJenisPenyebabState;
 
   @override
   bool get isProcessing;
   @override
-
-  ///
   List<CSUJenisPenyebabItem> get csuJenisItems;
   @override
-  List<CSUJenisPenyebabItem> get csuPenyebabItems;
-  @override //
+  List<CSUPosisi> get csuPosisiItems;
+  @override
   Option<Either<LocalFailure, Unit>> get FOSOJenisPenyebabCSU;
   @override
   Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
       get FOSOUpdateCSUJenisItems;
   @override
-  Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-      get FOSOUpdateCSUPenyebabItems;
+  Option<Either<RemoteFailure, List<CSUPosisi>>> get FOSOUpdateCSUPosisiItems;
   @override
   @JsonKey(ignore: true)
   _$$_CSUJenisPenyebabStateCopyWith<_$_CSUJenisPenyebabState> get copyWith =>

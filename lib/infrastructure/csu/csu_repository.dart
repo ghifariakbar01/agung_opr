@@ -170,7 +170,9 @@ class CSUFrameRepository {
           await _remoteService.getCSUNGByIdCS(idCS: idCS);
 
       await this._GETAndREPLACECsuNGSInList(
-          idCS: idCS, newCSUNGList: listFrameNameCSUNGResult);
+        idCS: idCS,
+        newCSUNGList: listFrameNameCSUNGResult,
+      );
 
       return right(listFrameNameCSUNGResult);
     } on RestApiException catch (e) {
@@ -216,6 +218,19 @@ class CSUFrameRepository {
     }
   }
 
+  List<CSUNGResultByID> csuNgResultListFromJson(List<dynamic> jsonList) {
+    return jsonList
+        .map((e) => CSUNGResultByID.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  String csuNgResultListToJson(List<CSUNGResultByID> resultList) {
+    List<Map<String, dynamic>> jsonList =
+        resultList.map((e) => e.toJson()).toList();
+
+    return jsonEncode(jsonList);
+  }
+
   // _GETAndREPLACECsuNGInList
   Future<Unit> _GETAndREPLACECsuNGSInList(
       {required int idCS, required List<CSUNGResult> newCSUNGList}) async {
@@ -233,12 +248,14 @@ class CSUFrameRepository {
                 CSUNGResultByID.CSUNGResultListFromJson(parsed);
 
             // FIRST, CHECK IF EXISTING KEY [ID-CS] EXIST
-            final key = parsedListCSUSNG
-                .firstWhereOrNull((element) => element.idCS == idCS);
+            final key = parsedListCSUSNG.firstWhereOrNull(
+              (element) => element.idCS == idCS,
+            );
 
             if (key != null) {
-              final indexIdCS = parsedListCSUSNG
-                  .indexWhere((element) => element.idCS == idCS);
+              final indexIdCS = parsedListCSUSNG.indexWhere(
+                (element) => element.idCS == idCS,
+              );
 
               final isIndexFound = indexIdCS != -1;
 
@@ -250,11 +267,12 @@ class CSUFrameRepository {
                 list[indexIdCS] =
                     CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
 
-                log('STORAGE CSU NG RESULT BY ID UPDATE: ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+                final _json = CSUNGResultByID.CSUNGResultListToJson(list);
+
+                log('_json $_json');
 
                 // SAVE LIST
-                await _storageNG
-                    .save(CSUNGResultByID.CSUNGResultListToJson(list));
+                await _storageNG.save(_json);
               }
 
               // [FRAME-NAME] NEW
@@ -264,24 +282,23 @@ class CSUFrameRepository {
 
                 final list = [...parsedListCSUSNG, newElement];
 
-                await _storageNG
-                    .save(CSUNGResultByID.CSUNGResultListToJson(list));
+                final _json = CSUNGResultByID.CSUNGResultListToJson(list);
 
-                log('STORAGE CSU NG RESULT BY IDE W/O ID-CS : ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+                await _storageNG.save(_json);
               }
             }
             // THEN, HANDLE WHERE [ID-CS] NOT EXIST,
             // PARAM IS LIST OF CSU NG AND INDEX [ID-CS]
             else {
-              final CSUNGResultByID newElement =
-                  CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+              final CSUNGResultByID newElement = CSUNGResultByID(
+                idCS: idCS,
+                csuNGResult: newCSUNGList,
+              );
 
               final list = [...parsedListCSUSNG, newElement];
+              final _json = CSUNGResultByID.CSUNGResultListToJson(list);
 
-              await _storageNG
-                  .save(CSUNGResultByID.CSUNGResultListToJson(list));
-
-              log('STORAGE CSU NG RESULT BY ID CS W/O ID-CS : ${CSUNGResultByID.CSUNGResultListToJson(list)}');
+              await _storageNG.save(_json);
             }
 
             return unit;
@@ -289,16 +306,17 @@ class CSUFrameRepository {
           break;
         case false:
           () async {
-            final CSUNGResultByID newElement =
-                CSUNGResultByID(idCS: idCS, csuNGResult: newCSUNGList);
+            final CSUNGResultByID newElement = CSUNGResultByID(
+              idCS: idCS,
+              csuNGResult: newCSUNGList,
+            );
+
+            final _json = CSUNGResultByID.CSUNGResultListToJson([newElement]);
 
             // SAVE LIST
-            await _storageNG
-                .save(CSUNGResultByID.CSUNGResultListToJson([newElement]));
+            await _storageNG.save(_json);
 
-            log('STORAGE CSU NG RESULT BY ID CS UPDATE NEW: ${CSUNGResultByID.CSUNGResultListToJson([
-                  newElement
-                ])}');
+            log('STORAGE CSU NG RESULT BY ID CS UPDATE NEW: ${_json}');
 
             return unit;
           }();
@@ -457,8 +475,6 @@ class CSUFrameRepository {
                 ];
 
                 await _storage.save(listFrameNameCSUResultToJson(list));
-
-                debugger();
               }
             }
             // THEN, HANDLE WHERE [ID-SPK] NOT EXIST,
@@ -475,7 +491,6 @@ class CSUFrameRepository {
               ];
 
               await _storage.save(listFrameNameCSUResultToJson(list));
-              debugger();
             }
 
             return unit;
@@ -503,29 +518,22 @@ class CSUFrameRepository {
   Future<Either<RemoteFailure, List<CSUNGResult>>> getCSUNGResultByIDOFFLINE(
       {required int idCS}) async {
     try {
-      final frameStorage = await _storage.read();
-
-      log('CSU NG BY ID STORAGE: $frameStorage');
+      final frameStorage = await _storageNG.read();
 
       // HAS MAP
       if (frameStorage != null) {
         final responsMap = jsonDecode(frameStorage) as List<dynamic>;
-
-        final List<CSUNGResultByID> response =
-            CSUNGResultByID.CSUNGResultListFromJson(responsMap);
-
-        log('CSU NG BY ID STORAGE RESPONSE: $response');
+        final response = CSUNGResultByID.CSUNGResultListFromJson(responsMap);
 
         // FIRST, CHECK IF EXISTING KEY [ID-SPK] EXIST
-        final key =
-            response.firstWhereOrNull((element) => element.idCS == idCS);
+        final key = response.firstWhereOrNull(
+          (element) => element.idCS == idCS,
+        );
 
         if (key != null) {
           return right(key.csuNGResult);
         } else {
-          debugger(message: 'called');
-
-          return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+          return right([]);
         }
       } else {
         debugger(message: 'called');

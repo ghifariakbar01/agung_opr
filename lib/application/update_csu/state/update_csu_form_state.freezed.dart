@@ -43,6 +43,7 @@ mixin _$UpdateCSUFrameStateSingle {
   bool get inOut => throw _privateConstructorUsedError;
   bool get isShowError => throw _privateConstructorUsedError;
   List<bool> get isNG => throw _privateConstructorUsedError;
+  List<List<int>> get idNGRanges => throw _privateConstructorUsedError;
   List<UpdateCSUNGState> get ngStates => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -76,6 +77,7 @@ abstract class $UpdateCSUFrameStateSingleCopyWith<$Res> {
       bool inOut,
       bool isShowError,
       List<bool> isNG,
+      List<List<int>> idNGRanges,
       List<UpdateCSUNGState> ngStates});
 }
 
@@ -112,6 +114,7 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
     Object? inOut = null,
     Object? isShowError = null,
     Object? isNG = null,
+    Object? idNGRanges = null,
     Object? ngStates = null,
   }) {
     return _then(_value.copyWith(
@@ -191,6 +194,10 @@ class _$UpdateCSUFrameStateSingleCopyWithImpl<$Res,
           ? _value.isNG
           : isNG // ignore: cast_nullable_to_non_nullable
               as List<bool>,
+      idNGRanges: null == idNGRanges
+          ? _value.idNGRanges
+          : idNGRanges // ignore: cast_nullable_to_non_nullable
+              as List<List<int>>,
       ngStates: null == ngStates
           ? _value.ngStates
           : ngStates // ignore: cast_nullable_to_non_nullable
@@ -228,6 +235,7 @@ abstract class _$$_UpdateCSUFrameStateSingleCopyWith<$Res>
       bool inOut,
       bool isShowError,
       List<bool> isNG,
+      List<List<int>> idNGRanges,
       List<UpdateCSUNGState> ngStates});
 }
 
@@ -263,6 +271,7 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
     Object? inOut = null,
     Object? isShowError = null,
     Object? isNG = null,
+    Object? idNGRanges = null,
     Object? ngStates = null,
   }) {
     return _then(_$_UpdateCSUFrameStateSingle(
@@ -342,6 +351,10 @@ class __$$_UpdateCSUFrameStateSingleCopyWithImpl<$Res>
           ? _value._isNG
           : isNG // ignore: cast_nullable_to_non_nullable
               as List<bool>,
+      idNGRanges: null == idNGRanges
+          ? _value._idNGRanges
+          : idNGRanges // ignore: cast_nullable_to_non_nullable
+              as List<List<int>>,
       ngStates: null == ngStates
           ? _value._ngStates
           : ngStates // ignore: cast_nullable_to_non_nullable
@@ -373,8 +386,10 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
       required this.inOut,
       required this.isShowError,
       required final List<bool> isNG,
+      required final List<List<int>> idNGRanges,
       required final List<UpdateCSUNGState> ngStates})
       : _isNG = isNG,
+        _idNGRanges = idNGRanges,
         _ngStates = ngStates;
 
   @override
@@ -421,6 +436,14 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
     return EqualUnmodifiableListView(_isNG);
   }
 
+  final List<List<int>> _idNGRanges;
+  @override
+  List<List<int>> get idNGRanges {
+    if (_idNGRanges is EqualUnmodifiableListView) return _idNGRanges;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_idNGRanges);
+  }
+
   final List<UpdateCSUNGState> _ngStates;
   @override
   List<UpdateCSUNGState> get ngStates {
@@ -431,7 +454,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
 
   @override
   String toString() {
-    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, keterangan: $keterangan, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, supirSDRTextController: $supirSDRTextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, keteranganTextController: $keteranganTextController, inOut: $inOut, isShowError: $isShowError, isNG: $isNG, ngStates: $ngStates)';
+    return 'UpdateCSUFrameStateSingle(gate: $gate, deck: $deck, supir1: $supir1, supir2: $supir2, supirSDR: $supirSDR, tglTerima: $tglTerima, tglKirim: $tglKirim, keterangan: $keterangan, gateTextController: $gateTextController, deckTextController: $deckTextController, supir1TextController: $supir1TextController, supir2TextController: $supir2TextController, supirSDRTextController: $supirSDRTextController, tglTerimaTextController: $tglTerimaTextController, tglKirimTextController: $tglKirimTextController, keteranganTextController: $keteranganTextController, inOut: $inOut, isShowError: $isShowError, isNG: $isNG, idNGRanges: $idNGRanges, ngStates: $ngStates)';
   }
 
   @override
@@ -473,6 +496,8 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
             (identical(other.isShowError, isShowError) ||
                 other.isShowError == isShowError) &&
             const DeepCollectionEquality().equals(other._isNG, _isNG) &&
+            const DeepCollectionEquality()
+                .equals(other._idNGRanges, _idNGRanges) &&
             const DeepCollectionEquality().equals(other._ngStates, _ngStates));
   }
 
@@ -498,6 +523,7 @@ class _$_UpdateCSUFrameStateSingle implements _UpdateCSUFrameStateSingle {
         inOut,
         isShowError,
         const DeepCollectionEquality().hash(_isNG),
+        const DeepCollectionEquality().hash(_idNGRanges),
         const DeepCollectionEquality().hash(_ngStates)
       ]);
 
@@ -530,6 +556,7 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
           required final bool inOut,
           required final bool isShowError,
           required final List<bool> isNG,
+          required final List<List<int>> idNGRanges,
           required final List<UpdateCSUNGState> ngStates}) =
       _$_UpdateCSUFrameStateSingle;
 
@@ -571,6 +598,8 @@ abstract class _UpdateCSUFrameStateSingle implements UpdateCSUFrameStateSingle {
   bool get isShowError;
   @override
   List<bool> get isNG;
+  @override
+  List<List<int>> get idNGRanges;
   @override
   List<UpdateCSUNGState> get ngStates;
   @override

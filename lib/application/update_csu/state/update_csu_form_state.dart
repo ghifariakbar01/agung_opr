@@ -27,6 +27,7 @@ class UpdateCSUFrameStateSingle with _$UpdateCSUFrameStateSingle {
     required bool inOut,
     required bool isShowError,
     required List<bool> isNG,
+    required List<List<int>> idNGRanges,
     required List<UpdateCSUNGState> ngStates,
   }) = _UpdateCSUFrameStateSingle;
 
@@ -50,6 +51,7 @@ class UpdateCSUFrameStateSingle with _$UpdateCSUFrameStateSingle {
         inOut: false,
         isShowError: false,
         isNG: [],
+        idNGRanges: [[]],
         ngStates: [],
       );
 }

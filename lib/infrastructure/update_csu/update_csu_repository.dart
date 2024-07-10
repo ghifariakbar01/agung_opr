@@ -65,8 +65,10 @@ class UpdateCSUFrameRepository {
     return right(unit);
   }
 
-  Future<Either<LocalFailure, Unit>> saveCSUQuery(
-      {required CSUIDQuery queryId, bool isNG = false}) async {
+  Future<Either<LocalFailure, Unit>> saveCSUQuery({
+    required CSUIDQuery queryId,
+    bool isNG = false,
+  }) async {
     try {
       final savedStrings = await _storage.read();
       final isQueryOK = queryId.query.isNotEmpty;
@@ -225,7 +227,7 @@ class UpdateCSUFrameRepository {
 
     final String insert = ' INSERT INTO $dbName '
         '(id_cs, frame, c_date, u_date, c_user, '
-        ' u_user, id_item, id_jns_defect, id_p_defect)';
+        ' u_user, id_item, id_jns_defect, id_p_defect, id_posisi, ket)';
 
     final nameUser = _userModelWithPassword.nama;
 
@@ -236,29 +238,31 @@ class UpdateCSUFrameRepository {
     final requiredQuery =
         " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbNameCS), '${frameName}','${cAndUDate}', '${cAndUDate}', '${nameUser}', '${nameUser}',  ";
 
-    List<int> idCheckSheet = [];
+    List<int> idItemDefect = [];
     List<int> idJenisDefect = [];
-    List<int> idPenyebabDefect = [];
+    List<int> idPosisiDefect = [];
+    List<String> ketDefect = [];
 
     if (ngStates.isNotEmpty) {
       for (final NG in ngStates) {
-        idCheckSheet.add(NG.idCs);
+        idItemDefect.add(NG.idItem);
         idJenisDefect.add(NG.idJenis);
-        idPenyebabDefect.add(NG.idPenyebab);
+        idPosisiDefect.add(NG.idPosisi);
+        ketDefect.add(NG.ket);
       }
     }
 
     // CONVERT TO MAP, TO ADD ALL STRING
     Map<int, String> queryMap = {};
 
-    for (int i = 0; i < idCheckSheet.length; i++) {
+    for (int i = 0; i < idItemDefect.length; i++) {
       final csuQueryIndex =
-          " ${idCheckSheet[i]},  ${idJenisDefect[i]},  ${idPenyebabDefect[i]}";
+          " ${idItemDefect[i]},  ${idJenisDefect[i]}, ${idJenisDefect[i]},  ${idPosisiDefect[i]}, '${ketDefect[i]}' ";
 
       final queryIndex =
           insert + ' VALUES ' + ' (${requiredQuery} ${csuQueryIndex}) ';
 
-      queryMap.addAll({idCheckSheet[i]: queryIndex});
+      queryMap.addAll({idItemDefect[i]: queryIndex});
     }
 
     // GET QUERY STRING

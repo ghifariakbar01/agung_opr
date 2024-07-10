@@ -62,6 +62,11 @@ class _FormGateState extends ConsumerState<FormGate> {
                         .read(gateNotifierProvider.notifier)
                         .changeGateList(gateResponse);
                     final def = ref.read(gateNotifierProvider).defaultGate;
+
+                    if (def == CSUMSTGate.initial()) {
+                      return;
+                    }
+
                     ref
                         .read(updateCSNotifierProvider.notifier)
                         .changeGate(def.nama ?? '');

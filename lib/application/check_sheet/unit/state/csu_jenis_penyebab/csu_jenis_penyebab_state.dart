@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../domain/remote_failure.dart';
+import '../csu_posisi/csu_posisi.dart';
 import 'csu_jenis_penyebab_item.dart';
 
 part 'csu_jenis_penyebab_state.freezed.dart';
@@ -11,24 +12,20 @@ part 'csu_jenis_penyebab_state.freezed.dart';
 class CSUJenisPenyebabState with _$CSUJenisPenyebabState {
   const factory CSUJenisPenyebabState({
     required bool isProcessing,
-
-    ///
     required List<CSUJenisPenyebabItem> csuJenisItems,
-    required List<CSUJenisPenyebabItem> csuPenyebabItems,
-
-    //
+    required List<CSUPosisi> csuPosisiItems,
     required Option<Either<LocalFailure, Unit>> FOSOJenisPenyebabCSU,
     required Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
         FOSOUpdateCSUJenisItems,
-    required Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>
-        FOSOUpdateCSUPenyebabItems,
+    required Option<Either<RemoteFailure, List<CSUPosisi>>>
+        FOSOUpdateCSUPosisiItems,
   }) = _CSUJenisPenyebabState;
 
   factory CSUJenisPenyebabState.initial() => CSUJenisPenyebabState(
       isProcessing: false,
       csuJenisItems: [],
-      csuPenyebabItems: [],
+      csuPosisiItems: [],
       FOSOJenisPenyebabCSU: none(),
       FOSOUpdateCSUJenisItems: none(),
-      FOSOUpdateCSUPenyebabItems: none());
+      FOSOUpdateCSUPosisiItems: none());
 }

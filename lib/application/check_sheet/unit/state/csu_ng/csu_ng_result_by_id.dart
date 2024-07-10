@@ -1,11 +1,5 @@
-// {
-//   "id_cs": 206514,
-//   "id_item": 1,
-//   "id_jns_defect": 9,
-//   "id_p_defect": 3
-// },
-
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -26,14 +20,23 @@ class CSUNGResultByID with _$CSUNGResultByID {
       _$CSUNGResultByIDFromJson(json);
 
   static List<CSUNGResultByID> CSUNGResultListFromJson(List<dynamic> jsonList) {
-    return jsonList
-        .map((e) => CSUNGResultByID.fromJson(e as Map<String, dynamic>))
-        .toList();
+    List<CSUNGResultByID> list = [];
+
+    try {
+      list = jsonList
+          .map((e) => CSUNGResultByID.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      log('error $e');
+    }
+
+    return list;
   }
 
   static String CSUNGResultListToJson(List<CSUNGResultByID> resultList) {
     List<Map<String, dynamic>> jsonList =
         resultList.map((e) => e.toJson()).toList();
+
     return jsonEncode(jsonList);
   }
 }

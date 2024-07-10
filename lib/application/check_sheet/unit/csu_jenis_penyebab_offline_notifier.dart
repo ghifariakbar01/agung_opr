@@ -12,7 +12,7 @@ class CSUJenisPenyebabOfflineNotifier
 
   Future<void> checkAndUpdateCSUJenisPenyebabItemsOFFLINEStatus() async {
     final isOfffline = await _repository.hasOfflineDataJenis() &&
-        await _repository.hasOfflineDataPenyebab();
+        await _repository.hasOfflineDataPosisi();
 
     if (isOfffline) {
       state = const CSUJenisPenyebabOfflineState.hasOfflineStorage();

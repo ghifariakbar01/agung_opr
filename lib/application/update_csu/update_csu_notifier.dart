@@ -10,6 +10,7 @@ import '../../infrastructure/update_csu/update_csu_repository.dart';
 
 import '../../utils/validator.dart';
 import '../check_sheet/unit/state/csu_id_query.dart';
+import '../check_sheet/unit/state/csu_items/csu_items.dart';
 import '../check_sheet/unit/state/csu_ng/csu_ng_result.dart';
 import '../check_sheet/unit/state/csu_result.dart';
 import 'state/update_csu_form_state.dart';
@@ -25,21 +26,22 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
   void changeFillInitial() {
     state = state.copyWith(
-        updateFrameList: state.updateFrameList.copyWith(
-      inOut: false,
-      gate: Gate(''),
-      deck: Deck(''),
-      supirSDR: SupirSDR(''),
-      tglTerima: TglTerima(''),
-      tglKirim: TglKirim(''),
-      keterangan: Keterangan(''),
-      gateTextController: TextEditingController(),
-      deckTextController: TextEditingController(),
-      supirSDRTextController: TextEditingController(),
-      tglTerimaTextController: TextEditingController(),
-      tglKirimTextController: TextEditingController(),
-      keteranganTextController: TextEditingController(),
-    ));
+      updateFrameList: state.updateFrameList.copyWith(
+        inOut: false,
+        gate: Gate(''),
+        deck: Deck(''),
+        supirSDR: SupirSDR(''),
+        tglTerima: TglTerima(''),
+        tglKirim: TglKirim(''),
+        keterangan: Keterangan(''),
+        gateTextController: TextEditingController(),
+        deckTextController: TextEditingController(),
+        supirSDRTextController: TextEditingController(),
+        tglTerimaTextController: TextEditingController(),
+        tglKirimTextController: TextEditingController(),
+        keteranganTextController: TextEditingController(),
+      ),
+    );
   }
 
   void changeFillWithValue({required CSUResult csuResult}) {
@@ -52,66 +54,110 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         : DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglTerima!));
 
     state = state.copyWith(
-        updateFrameList: state.updateFrameList.copyWith(
-      inOut: csuResult.inout == false ? true : false,
-      gate: Gate(csuResult.idGate.toString()),
-      deck: Deck(csuResult.posisi ?? ''),
-      supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
-      tglKirim: TglKirim(_tglKirim),
-      tglTerima: TglTerima(_tglTerima),
-      keterangan: Keterangan(csuResult.keterangan ?? ''),
-      gateTextController:
-          TextEditingController(text: csuResult.idGate.toString()),
-      deckTextController: TextEditingController(text: csuResult.posisi ?? ''),
-      supirSDRTextController:
-          TextEditingController(text: csuResult.supirSDR ?? ''),
-      tglTerimaTextController: TextEditingController(text: _tglTerima),
-      tglKirimTextController: TextEditingController(text: _tglKirim),
-      keteranganTextController:
-          TextEditingController(text: csuResult.keterangan ?? ''),
-    ));
+      updateFrameList: state.updateFrameList.copyWith(
+        inOut: csuResult.inout == false ? true : false,
+        gate: Gate(csuResult.idGate.toString()),
+        deck: Deck(csuResult.posisi ?? ''),
+        supirSDR: SupirSDR(csuResult.supirSDR ?? ''),
+        tglKirim: TglKirim(_tglKirim),
+        tglTerima: TglTerima(_tglTerima),
+        keterangan: Keterangan(csuResult.keterangan ?? ''),
+        gateTextController:
+            TextEditingController(text: csuResult.idGate.toString()),
+        deckTextController: TextEditingController(text: csuResult.posisi ?? ''),
+        supirSDRTextController:
+            TextEditingController(text: csuResult.supirSDR ?? ''),
+        tglTerimaTextController: TextEditingController(text: _tglTerima),
+        tglKirimTextController: TextEditingController(text: _tglKirim),
+        keteranganTextController:
+            TextEditingController(text: csuResult.keterangan ?? ''),
+      ),
+    );
   }
 
   void changeFillNG({required List<CSUNGResult> csuNGResult}) {
-    for (final NG in csuNGResult) {
-      final index = NG.idItem;
+    for (int i = 0; i < csuNGResult.length; i++) {
+      final NG = csuNGResult[i];
 
-      final NGList = [
-        ...state.updateFrameList.isNG
-      ]; // Create a copy of the list
+      int index = 0;
 
-      // Update the element at the given index
+      final List<List<int>> ranges = state.updateFrameList.idNGRanges;
+
+      for (int i = 0; i < ranges.length; i++) {
+        ranges[i].any((element) => element == NG.idItem) ? index = i : () {};
+      }
+
+      final NGList = [...state.updateFrameList.isNG];
+
       NGList[index] = true;
 
+      state = state.copyWith(
+        updateFrameList: state.updateFrameList.copyWith(isNG: NGList),
+      );
+
+      final NGItemsList = [
+        ...state.updateFrameList.ngStates
+            .mapIndexed((idx, element) => idx == index
+                ? UpdateCSUNGState(
+                    ket: NG.ket,
+                    idItem: NG.idItem,
+                    idJenis: NG.idJenis,
+                    idPosisi: NG.idPosisi,
+                  )
+                : element)
+            .toList()
+      ];
+
       // Update the state with the new list
       state = state.copyWith(
-          updateFrameList: state.updateFrameList.copyWith(isNG: NGList));
-
-      final NGItemsList = [...state.updateFrameList.ngStates];
-
-      // Update the element at the given index
-      NGItemsList[index] = UpdateCSUNGState(
-          idCs: NG.idItem, idJenis: NG.idJenis, idPenyebab: NG.idPenyebab);
-
-      // Update the state with the new list
-      state = state.copyWith(
-          updateFrameList:
-              state.updateFrameList.copyWith(ngStates: NGItemsList));
+        updateFrameList: state.updateFrameList.copyWith(ngStates: NGItemsList),
+      );
     }
   }
 
+  void processNewCSUItems({required List<CSUItems> items}) {
+    final entries = items.groupListsBy((element) => element.Grup);
+
+    final len = entries.keys.length;
+
+    final List<List<int>> ranges = [];
+
+    for (final en in entries.entries) {
+      final _list = en.value.map((e) => e.id).toList();
+      ranges.add(_list);
+    }
+
+    changeIdRanges(idNGRanges: ranges);
+    changeFillEmptyList(length: len);
+  }
+
+  void changeIdRanges({required List<List<int>> idNGRanges}) {
+    state = state.copyWith(
+      updateFrameList: state.updateFrameList.copyWith(
+        idNGRanges: idNGRanges,
+      ),
+    );
+  }
+
   void changeFillEmptyList({required int length}) {
-    final generateIsNG = List.generate(length, (index) => false);
+    final generateIsNG = List.generate(
+      length,
+      (index) => false,
+    );
 
     state = state.copyWith(
-        updateFrameList: state.updateFrameList.copyWith(isNG: generateIsNG));
+      updateFrameList: state.updateFrameList.copyWith(isNG: generateIsNG),
+    );
 
-    final generateNGStates =
-        List.generate(length, (index) => UpdateCSUNGState.initial());
+    final generateNGStates = List.generate(
+      length,
+      (index) => UpdateCSUNGState.initial(),
+    );
 
     state = state.copyWith(
-        updateFrameList:
-            state.updateFrameList.copyWith(ngStates: generateNGStates));
+      updateFrameList:
+          state.updateFrameList.copyWith(ngStates: generateNGStates),
+    );
   }
 
   Future<void> saveQuery() async {
@@ -166,7 +212,10 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         idUnit: state.idUnit,
       );
 
-      FOS = await _repository.saveCSUQuery(queryId: csuIdQuery, isNG: isNG);
+      FOS = await _repository.saveCSUQuery(
+        queryId: csuIdQuery,
+        isNG: isNG,
+      );
 
       state = state.copyWith(
           isProcessing: false,
@@ -190,12 +239,27 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(isNG: list));
   }
 
+  void changeNGKet({required String ket, required int index}) {
+    final list = [
+      ...state.updateFrameList.ngStates
+    ]; // Create a copy of the list
+
+    final elementAt = list.elementAt(index).copyWith(ket: ket);
+
+    // Update the element at the given index
+    list[index] = elementAt;
+
+    // Update the state with the new list
+    state = state.copyWith(
+        updateFrameList: state.updateFrameList.copyWith(ngStates: list));
+  }
+
   void changeNGId({required int id, required int index}) {
     final list = [
       ...state.updateFrameList.ngStates
     ]; // Create a copy of the list
 
-    final elementAt = list.elementAt(index).copyWith(idCs: id);
+    final elementAt = list.elementAt(index).copyWith(idItem: id);
 
     // Update the element at the given index
     list[index] = elementAt;
@@ -220,12 +284,12 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(ngStates: list));
   }
 
-  void changeNGPenyebab({required int id, required int index}) {
+  void changeNGPosisi({required int id, required int index}) {
     final list = [
       ...state.updateFrameList.ngStates
     ]; // Create a copy of the list
 
-    final elementAt = list.elementAt(index).copyWith(idPenyebab: id);
+    final elementAt = list.elementAt(index).copyWith(idPosisi: id);
 
     // Update the element at the given index
     list[index] = elementAt;
@@ -235,9 +299,13 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         updateFrameList: state.updateFrameList.copyWith(ngStates: list));
   }
 
-  void changeIdUnit(int idUnit) {
+  void changeIdUnitAndFrameName(
+    int idUnit,
+    String frameName,
+  ) {
     state = state.copyWith(
       idUnit: idUnit,
+      frameName: frameName,
       FOSOUpdateCSU: none(),
     );
   }
@@ -245,13 +313,6 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   void changeIdCS(int idCS) {
     state = state.copyWith(
       idCS: idCS,
-      FOSOUpdateCSU: none(),
-    );
-  }
-
-  void changeFrameName(String frameName) {
-    state = state.copyWith(
-      frameName: frameName,
       FOSOUpdateCSU: none(),
     );
   }
@@ -333,7 +394,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
       bool isOut = _list == null ? false : _list.inout!;
 
-      return isOut ? false : true;
+      return isOut ? true : true;
     }
 
     return true;

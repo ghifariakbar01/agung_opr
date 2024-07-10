@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -8,28 +6,29 @@ import '../../shared/csu_providers.dart';
 
 class CSUItemOKOrNG extends ConsumerWidget {
   const CSUItemOKOrNG(
-    this.id,
     this.index,
-    this.instruction,
+    this.title,
+    this.isNG,
   );
 
-  final int id;
   final int index;
-  final String instruction;
+  final String title;
+  final bool isNG;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNG = ref.watch(updateCSUFrameNotifierProvider
-        .select((value) => value.updateFrameList.isNG[index]));
-
     return Row(
       children: [
         Expanded(
           child: Container(
               width: MediaQuery.of(context).size.width,
               child: Text(
-                instruction,
-                style: Themes.customColor(FontWeight.normal, 14, Colors.black),
+                '${index + 1}.' + ' ' + title,
+                style: Themes.customColor(
+                  FontWeight.w500,
+                  15,
+                  Colors.black,
+                ),
               )),
         ),
         SizedBox(
@@ -44,9 +43,14 @@ class CSUItemOKOrNG extends ConsumerWidget {
               children: [
                 // OK Box
                 InkWell(
-                  onTap: () => ref
-                      .read(updateCSUFrameNotifierProvider.notifier)
-                      .changeIsNG(isNG: false, index: index),
+                  onTap: () {
+                    ref
+                        .read(updateCSUFrameNotifierProvider.notifier)
+                        .changeIsNG(
+                          isNG: false,
+                          index: index,
+                        );
+                  },
                   child: Ink(
                     width: 40,
                     decoration: BoxDecoration(
@@ -68,13 +72,10 @@ class CSUItemOKOrNG extends ConsumerWidget {
                   onTap: () {
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
-                        .changeNGId(id: id, index: index);
-
-                    ref
-                        .read(updateCSUFrameNotifierProvider.notifier)
-                        .changeIsNG(isNG: true, index: index);
-
-                    log('NG ID : ${id} INDEX: ${index}');
+                        .changeIsNG(
+                          isNG: true,
+                          index: index,
+                        );
                   },
                   child: Ink(
                     width: 40,

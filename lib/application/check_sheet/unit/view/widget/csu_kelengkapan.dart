@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,16 +12,18 @@ class CSUKelengkapan extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<CSUItems> csuItems = ref
-        .watch(csuItemsFrameNotifierProvider.select((value) => value.csuItems));
+    final List<CSUItems> csuItems = ref.watch(
+      csuItemsFrameNotifierProvider.select((value) => value.csuItems),
+    );
+
+    final group = csuItems.groupListsBy((element) => element.Grup);
 
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Palette.primaryColor, width: 2)),
-      padding: EdgeInsets.all(4),
-      child: Column(
-        children: [
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Palette.primaryColor, width: 2)),
+        padding: EdgeInsets.all(4),
+        child: Column(children: [
           Text(
             'KELENGKAPAN',
             style:
@@ -29,15 +32,13 @@ class CSUKelengkapan extends ConsumerWidget {
           SizedBox(
             height: 8,
           ),
-          for (int index = 0; index < csuItems.length; index++) ...[
-            CheckSheetUnitItemForm(
-                id: csuItems[index].id,
-                index: index,
-                instruction:
-                    '  ${csuItems[index].id}. ${csuItems[index].ind} (${csuItems[index].eng})')
-          ]
-        ],
-      ),
-    );
+          ...group.entries.mapIndexed((index, element) {
+            return CheckSheetUnitItemForm(
+              index: index,
+              title: element.key!,
+              items: element.value,
+            );
+          }),
+        ]));
   }
 }

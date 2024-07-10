@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
+import '../../../routes/route_names.dart';
 import '../../../update_frame/frame.dart';
 import '../../../widgets/alert_helper.dart';
 import '../../../widgets/loading_overlay.dart';
@@ -17,6 +16,7 @@ import '../shared/csu_providers.dart';
 import '../state/csu_items/csu_items.dart';
 import '../state/csu_jenis_penyebab/csu_jenis_penyebab_item.dart';
 import '../state/csu_ng/csu_ng_result.dart';
+import '../state/csu_posisi/csu_posisi.dart';
 import 'csu_new_scaffold.dart';
 
 class CSUNewPage extends ConsumerStatefulWidget {
@@ -34,13 +34,14 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final Frame frame = ref.read(csuFrameNotifierProvider).frame;
+      final frame = ref.read(csuFrameNotifierProvider).frame;
+
       ref
           .read(updateCSUFrameNotifierProvider.notifier)
-          .changeIdUnit(frame.idUnit);
-      ref
-          .read(updateCSUFrameNotifierProvider.notifier)
-          .changeFrameName(frame.frame ?? '');
+          .changeIdUnitAndFrameName(
+            frame.idUnit,
+            frame.frame ?? '',
+          );
 
       // CSU ITEMS
       await _getCSUItems();
@@ -76,16 +77,14 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                             ),
                           ),
                         ), (items) async {
-                  log('items: $items');
                   if (items != []) {
                     ref
                         .read(csuItemsFrameNotifierProvider.notifier)
                         .changeCSUItems(items);
 
-                    /// RUN [changeFillEmptyList] TO UPDATE NG PLACEHOLDERS
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
-                        .changeFillEmptyList(length: items.length);
+                        .processNewCSUItems(items: items);
 
                     // CSU JENIS
                     await ref
@@ -121,7 +120,6 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                             ),
                           ),
                         ), (csuNGResponse) {
-                  log('FRAME CSU NG RESPONSE: $csuNGResponse');
                   if (csuNGResponse != []) {
                     ref
                         .read(updateCSUFrameNotifierProvider.notifier)
@@ -152,24 +150,20 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                             ),
                           ),
                         ), (CSUJenisResponse) async {
-                  /// SET [frameResponse] from GOT frameList
-
-                  log('CSU RESPONSE: $CSUJenisResponse');
                   if (CSUJenisResponse != []) {
                     ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .changeCSUJenisItems(CSUJenisResponse);
 
-                    // CSU PENYEBAB
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .getCSUPenyebabItems();
+                        .getCSUPosisiItems();
                   }
                 })));
 
-    ref.listen<Option<Either<RemoteFailure, List<CSUJenisPenyebabItem>>>>(
+    ref.listen<Option<Either<RemoteFailure, List<CSUPosisi>>>>(
         jenisPenyebabFrameNotifierProvider.select(
-          (state) => state.FOSOUpdateCSUPenyebabItems,
+          (state) => state.FOSOUpdateCSUPosisiItems,
         ),
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
@@ -181,22 +175,19 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(
-                              storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
+                              orElse: () => '',
                               server: (value) =>
                                   value.message ?? 'Server Error',
                               parse: (value) => 'Parse $value',
-                              orElse: () => '',
+                              storage: (_) =>
+                                  'Storage penuh. Tidak bisa menyimpan data CSU Posisi Item',
                             ),
                           ),
                         ), (CSUPenyebabResponse) async {
-                  /// SET [frameResponse] from GOT frameList
-
-                  log('CSUPenyebabResponse RESPONSE: $CSUPenyebabResponse');
                   if (CSUPenyebabResponse != []) {
                     ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .changeCSUPenyebabItems(CSUPenyebabResponse);
+                        .changeCSUPosisiItems(CSUPenyebabResponse);
                   }
                 })));
 
@@ -220,11 +211,12 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                           ),
                         ), (_) async {
                   _saveCSULastPage();
+
                   await ref
                       .read(updateCSUFrameOfflineNotifierProvider.notifier)
                       .CUUpdateCSUFrameOFFLINEStatus();
 
-                  context.pop();
+                  context.replaceNamed(RouteNames.crannyNameRoute);
                 })));
 
     final isLoading = ref.watch(
@@ -245,43 +237,56 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
   }
 
   Future<void> _getCSUItems() async {
-    await ref
-        .read(csuItemsOfflineNotifierProvider.notifier)
-        .checkAndUpdateCSUItemsOFFLINEStatus();
+    final offline = ref.read(isOfflineStateProvider);
+    if (offline) {
+      await ref
+          .read(csuItemsOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUItemsOFFLINEStatus();
 
-    final csuItemsOfflineOrOnline = ref.read(csuItemsOfflineNotifierProvider);
-    await csuItemsOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () =>
-          ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItemsOFFLINE(),
-      orElse: () async {
-        await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+      final csuItemsOfflineOrOnline = ref.read(csuItemsOfflineNotifierProvider);
+      await csuItemsOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => ref
+              .read(csuItemsFrameNotifierProvider.notifier)
+              .getCSUItemsOFFLINE(),
+          orElse: () async {
+            await ref
+                .read(csuItemsFrameNotifierProvider.notifier)
+                .getCSUItems();
 
-        // CSU RESULT STORAGE
-        await ref
-            .read(csuItemsOfflineNotifierProvider.notifier)
-            .checkAndUpdateCSUItemsOFFLINEStatus();
-      },
-    );
+            // CSU RESULT STORAGE
+            await ref
+                .read(csuItemsOfflineNotifierProvider.notifier)
+                .checkAndUpdateCSUItemsOFFLINEStatus();
+          });
+    } else {
+      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+      // CSU RESULT STORAGE
+      await ref
+          .read(csuItemsOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUItemsOFFLINEStatus();
+    }
   }
 
   Future<void> _getCSUNGByID(int idCS) async {
     final isOffline = ref.read(isOfflineStateProvider);
-    if (!isOffline) {
+
+    if (isOffline == false) {
       await _getCSUNGByIdOnline(idCS);
+
       return;
+    } else {
+      await ref
+          .read(csuNGByIDOfflineNotifierProvider.notifier)
+          .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
+
+      final CSNGByID = ref.read(csuNGByIDOfflineNotifierProvider);
+      await CSNGByID.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(csuFrameNotifierProvider.notifier)
+            .getCSUNGByIdCSOFFLINE(idCS: widget.idCS),
+        orElse: () => _getCSUNGByIdOnline(idCS),
+      );
     }
-
-    await ref
-        .read(csuNGByIDOfflineNotifierProvider.notifier)
-        .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
-
-    final CSNGByID = ref.read(csuNGByIDOfflineNotifierProvider);
-    await CSNGByID.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUNGByIdCSOFFLINE(idCS: widget.idCS),
-      orElse: () => _getCSUNGByIdOnline(idCS),
-    );
   }
 
   Future<void> _getCSUNGByIdOnline(int idCS) async {
@@ -289,7 +294,6 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
         .read(csuFrameNotifierProvider.notifier)
         .getCSUNGByIdCS(idCS: widget.idCS);
 
-    // PENYEBAB CSU STORAGE
     await ref
         .read(csuNGByIDOfflineNotifierProvider.notifier)
         .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);

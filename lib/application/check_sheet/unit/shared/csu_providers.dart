@@ -12,6 +12,7 @@ import '../../../../infrastructure/cache_storage/csu/csu_trips_frame_storage.dar
 import '../../../../infrastructure/cache_storage/queries/update_csu_storage.dart';
 import '../../../../infrastructure/credentials_storage.dart';
 import '../../../../infrastructure/csu/csu_items_repository.dart';
+import '../../../../infrastructure/csu/csu_jenis_penyebab_remote_service.dart';
 import '../../../../infrastructure/csu/csu_remote_service.dart';
 import '../../../../infrastructure/csu/csu_repository.dart';
 import '../../../../infrastructure/update_csu/update_csu_remote_service.dart';
@@ -129,6 +130,52 @@ final csuTripsOfflineNotifierProvider =
 
 /* 
     --
+    CSU JENIS PENYEBAB PROVIDERS
+    --
+*/
+
+final jenisDefectStorage = Provider<CredentialsStorage>(
+  (ref) => CSUJenisStorage(
+    ref.watch(flutterSecureStorageProvider),
+  ),
+);
+
+final penyebabDefectStorage = Provider<CredentialsStorage>(
+  (ref) => CSUPenyebabStorage(
+    ref.watch(flutterSecureStorageProvider),
+  ),
+);
+
+final jenisPenyebabRemoteServiceProvider = Provider(
+  (ref) => CSUJenisPeneybabRemoteService(
+    ref.watch(dioProvider),
+    ref.watch(dioRequestProvider),
+  ),
+);
+
+final jenisPenyebabRepositoryProvider =
+    Provider((ref) => CSUJenisPenyebabRepository(
+          ref.watch(jenisPenyebabRemoteServiceProvider),
+          ref.watch(jenisDefectStorage),
+          ref.watch(penyebabDefectStorage),
+        ));
+
+final jenisPenyebabFrameNotifierProvider =
+    StateNotifierProvider<CSUJenisPenyebabNotifier, CSUJenisPenyebabState>(
+  (ref) => CSUJenisPenyebabNotifier(
+    ref.watch(jenisPenyebabRepositoryProvider),
+  ),
+);
+
+final jenisPenyebabOfflineNotifierProvider = StateNotifierProvider<
+    CSUJenisPenyebabOfflineNotifier, CSUJenisPenyebabOfflineState>(
+  (ref) => CSUJenisPenyebabOfflineNotifier(
+    ref.watch(jenisPenyebabRepositoryProvider),
+  ),
+);
+
+/* 
+    --
     CSU ITEMS PROVIDERS
     --
 */
@@ -137,7 +184,7 @@ final csuItemsStorage = Provider<CredentialsStorage>(
 );
 
 final csuItemsRepositoryProvider = Provider((ref) => CSUItemsRepository(
-      ref.watch(updateCSUFrameRemoteServiceProvider),
+      ref.watch(jenisPenyebabRemoteServiceProvider),
       ref.watch(csuItemsStorage),
     ));
 
@@ -148,33 +195,5 @@ final csuItemsFrameNotifierProvider =
 
 final csuItemsOfflineNotifierProvider =
     StateNotifierProvider<CSUItemsOfflineNotifier, CSUItemsOfflineState>(
-        (ref) =>
-            CSUItemsOfflineNotifier(ref.watch(csuItemsRepositoryProvider)));
-
-/* 
-    --
-    CSU JENIS PENYEBAB PROVIDERS
-    --
-*/
-final jenisDefectStorage = Provider<CredentialsStorage>(
-  (ref) => CSUJenisStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final penyebabDefectStorage = Provider<CredentialsStorage>(
-  (ref) => CSUPenyebabStorage(ref.watch(flutterSecureStorageProvider)),
-);
-
-final jenisPenyebabRepositoryProvider = Provider((ref) =>
-    CSUJenisPenyebabRepository(ref.watch(updateCSUFrameRemoteServiceProvider),
-        ref.watch(jenisDefectStorage), ref.watch(penyebabDefectStorage)));
-
-final jenisPenyebabFrameNotifierProvider =
-    StateNotifierProvider<CSUJenisPenyebabNotifier, CSUJenisPenyebabState>(
-  (ref) => CSUJenisPenyebabNotifier(ref.watch(jenisPenyebabRepositoryProvider)),
-);
-
-final jenisPenyebabOfflineNotifierProvider = StateNotifierProvider<
-    CSUJenisPenyebabOfflineNotifier, CSUJenisPenyebabOfflineState>(
-  (ref) => CSUJenisPenyebabOfflineNotifier(
-      ref.watch(jenisPenyebabRepositoryProvider)),
+  (ref) => CSUItemsOfflineNotifier(ref.watch(csuItemsRepositoryProvider)),
 );
