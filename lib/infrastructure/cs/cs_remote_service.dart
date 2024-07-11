@@ -62,7 +62,7 @@ class CSRemoteService {
                 }
               }
 
-              return UpdateCsDisable.inital().copyWith(
+              return UpdateCsDisable(
                 loading: _loading,
                 unload: _unload,
                 loadunload: _loadunload,

@@ -55,7 +55,7 @@ class _CheckSheetLoadingScaffoldState
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.addListener(() {
         final nearOK = scrollController.position.pixels >
             0.99 * scrollController.position.maxScrollExtent;

@@ -6,7 +6,7 @@ import '../check_sheet/shared/providers/cs_providers.dart';
 
 part 'update_cs_disable_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UpdateCsDisableNotifier extends _$UpdateCsDisableNotifier {
   @override
   FutureOr<UpdateCsDisable> build() async {

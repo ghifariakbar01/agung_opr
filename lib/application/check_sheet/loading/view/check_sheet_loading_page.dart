@@ -1,6 +1,5 @@
 // ignore_for_file: unused_result
 
-import 'package:agung_opr/application/update_cs_disable/update_cs_disable_notifier.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,6 +11,7 @@ import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../mode/mode_state.dart';
 import '../../../model/shared/model_providers.dart';
 import '../../../spk/spk.dart';
+import '../../../update_cs_disable/update_cs_disable_notifier.dart';
 import '../../../update_frame/frame.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../update_spk/providers/update_spk_providers.dart';
@@ -45,6 +45,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       await ref
           .read(updateCsDisableNotifierProvider.notifier)
           .getDisabled(idSPK: widget.spk.idSpk);
+
       await _fillFrame(widget.spk.idSpk);
       await _fillCSJenis();
 

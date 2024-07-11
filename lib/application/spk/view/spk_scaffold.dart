@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/shared/providers.dart';
@@ -8,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
+import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'spk_header.dart';
 import 'spk_item.dart';
@@ -121,6 +123,8 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                           ignoring: isSearching,
                           child: TextButton(
                             onPressed: () async {
+                              changeModeAndTipe();
+
                               Map<String, dynamic> spkMap = spkItem.toJson();
                               await context.pushNamed(
                                 extra: spkMap,
@@ -199,5 +203,12 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
           .read(spkOfflineNotifierProvider.notifier)
           .checkAndUpdateSPKOFFLINEStatus();
     }
+  }
+
+  void changeModeAndTipe() {
+    final mode = ModeState.checkSheetLoading();
+
+    ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
+    ref.read(updateCSNotifierProvider.notifier).changeTipe(mode);
   }
 }
