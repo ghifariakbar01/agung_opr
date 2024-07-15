@@ -23,7 +23,6 @@ class CSURowItem extends StatelessWidget {
           Flexible(
             child: Text(
               '${text}',
-              maxLines: 5,
               style: Themes.customColor(
                   FontWeight.normal, 16, Palette.primaryColor),
             ),

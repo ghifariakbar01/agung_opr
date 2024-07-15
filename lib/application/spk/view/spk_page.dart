@@ -77,10 +77,10 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                         page: page,
                         changeSPK: () => ref
                             .read(spkNotifierProvider.notifier)
-                            .changeSPKList(newSPK: response, oldSPK: oldSPK),
+                            .addPKList(newSPK: response, oldSPK: oldSPK),
                         replaceSPK: () => ref
                             .read(spkNotifierProvider.notifier)
-                            .replaceSPKList(response),
+                            .changeSPKList(response),
                       );
                 })));
 

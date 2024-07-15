@@ -10,20 +10,17 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final search = ref
-        .watch(frameSearchNotifierProvider.select((value) => value.searchText));
-
-    final focusNode = ref
-        .watch(frameSearchNotifierProvider.select((value) => value.focusNode));
+    final search = ref.watch(
+      frameSearchNotifierProvider.select((value) => value.searchText),
+    );
 
     return SizedBox(
       height: 48,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
           autofocus: false,
-          focusNode: focusNode,
           decoration: Themes.searchFormStyle(
-            'Cari Frame',
+            'Cari Frame (5 Angka Belakang Saja)',
             icon: SizedBox(
               width: 55,
               child: Row(
@@ -43,25 +40,17 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
               ),
             ),
           ),
-          onEditingComplete: () => ref
-              .read(frameSearchNotifierProvider.notifier)
-              .changeIsSearch(false),
-          onTapOutside: (_) => ref
-              .read(frameSearchNotifierProvider.notifier)
-              .changeIsSearch(false),
           onChanged: (search) async {
             ref
                 .read(frameSearchNotifierProvider.notifier)
                 .changeSearchText(search);
 
             if (search.isEmpty) {
+              await _resetFrame(ref);
+            } else {
               ref
                   .read(frameSearchNotifierProvider.notifier)
-                  .changeIsSearch(false);
-
-              await ref
-                  .read(frameNotifierProvider.notifier)
-                  .getFrameListOFFLINE(idSPK: 0);
+                  .changeIsSearch(true);
             }
           },
           onFieldSubmitted: (search) async =>
@@ -73,10 +62,24 @@ class FrameSearchWithoutSPK extends ConsumerWidget {
 
   Future<void> _resetFrame(WidgetRef ref) async {
     ref.read(frameSearchNotifierProvider.notifier).changeIsSearch(false);
+    ref.read(frameNotifierProvider.notifier).changeFrameList([]);
 
+    final isOnline = ref.read(isOfflineStateProvider.notifier).state == false;
+
+    if (isOnline) {
+      await _getFrameOnline(ref);
+    } else {
+      await ref
+          .read(frameNotifierProvider.notifier)
+          .getFrameListOFFLINE(idSPK: 0);
+    }
+  }
+
+  Future<void> _getFrameOnline(WidgetRef ref) async {
+    await ref.read(frameNotifierProvider.notifier).getFrameListByPage(page: 0);
     await ref
-        .read(frameNotifierProvider.notifier)
-        .getFrameListOFFLINE(idSPK: 0);
+        .read(frameOfflineNotifierProvider.notifier)
+        .checkAndUpdateFrameOFFLINEStatusByPage(page: 0);
   }
 
   Future<void> _searchFrame(WidgetRef ref, String search) async {

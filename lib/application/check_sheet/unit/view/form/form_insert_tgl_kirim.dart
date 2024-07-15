@@ -48,7 +48,7 @@ class FormInsertTglKirim extends ConsumerWidget {
             height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextButton(
-              onPressed: () async {
+              onLongPress: () async {
                 DateTime selectedDate = DateTime.now();
 
                 final DateTime? picked = await showDatePicker(
@@ -65,6 +65,16 @@ class FormInsertTglKirim extends ConsumerWidget {
 
                   tglKirimTextController.text = date;
                 }
+              },
+              onPressed: () async {
+                DateTime picked = DateTime.now();
+
+                final date = DateFormat('yyyy-MM-dd').format(picked);
+                ref
+                    .read(updateCSUFrameNotifierProvider.notifier)
+                    .changeTglKirim(date);
+
+                tglKirimTextController.text = date;
               },
               style: ButtonStyle(
                   padding: MaterialStatePropertyAll(EdgeInsets.zero)),

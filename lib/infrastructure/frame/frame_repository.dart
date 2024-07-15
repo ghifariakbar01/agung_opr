@@ -180,8 +180,9 @@ class FrameRepository {
   }
 
   // SAVE MAP IN STORAGE
-  Future<Unit> _GETAndADDFrameInMap(
-      {required Map<String, List<Frame>> newFrame}) async {
+  Future<Unit> _GETAndADDFrameInMap({
+    required Map<String, List<Frame>> newFrame,
+  }) async {
     final savedStrings = await _storage.read();
     final isNewFrameOK = newFrame.values.isNotEmpty;
     final isStorageSaved = savedStrings != null;
@@ -211,18 +212,27 @@ class FrameRepository {
                   ...newValue
                 ].toSet().toList();
 
-                parsedMap.update(key, (value) => _list);
+                parsedMap.update(
+                  key,
+                  (value) => _list,
+                );
               } else {
-                parsedMap.update(key, (value) => newValue);
+                parsedMap.update(
+                  key,
+                  (value) => newValue,
+                );
               }
             }
             // IF EXISTING KEY NULL
             else {
-              parsedMap.addAll({key: newValue});
+              parsedMap.addAll(
+                {key: newValue},
+              );
             }
 
             final newFrameMap = convertListFrameToListMap(parsedMap: parsedMap);
-            await _storage.save(jsonEncode(newFrameMap));
+            final json = jsonEncode(newFrameMap);
+            await _storage.save(json);
 
             return unit;
           }();
@@ -232,7 +242,8 @@ class FrameRepository {
             final jsonFrames = convertFrameToListMap(listMap: newFrame);
             final newFrameMap = {'${newFrame.keys.first}': jsonFrames};
 
-            await _storage.save(jsonEncode(newFrameMap));
+            final json = jsonEncode(newFrameMap);
+            await _storage.save(json);
 
             return unit;
           }();

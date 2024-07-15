@@ -5,7 +5,6 @@ import 'package:agung_opr/application/update_frame/shared/update_frame_providers
 import 'package:agung_opr/domain/remote_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
@@ -14,11 +13,7 @@ import '../../auto_data/shared/auto_data_providers.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
-import '../../clear_data_essential/clear_data_essential_providers.dart';
-import '../../routes/route_names.dart';
 import '../../spk/application/spk_id_query.dart';
-import '../../spk/spk.dart';
-import '../../update_frame/frame.dart';
 import '../../update_spk/providers/update_spk_providers.dart';
 import '../../widgets/alert_helper.dart';
 import '../../widgets/v_dialogs.dart';
@@ -47,61 +42,8 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
         .CUUpdateSPKOFFLINEStatus();
   }
 
-  Future<void> _savedQueriesFunction() async {
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedQueryFromRepository();
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedCSQueryFromRepository();
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedCSUQueryFromRepository();
-    await ref
-        .read(autoDataUpdateFrameNotifierProvider.notifier)
-        .getSavedSPKQueryFromRepository();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Clear Data upon refreshing
-    ref.listen<Option<Either<LocalFailure, Unit>>>(
-        clearDataEssentialNotifierProvider.select(
-          (state) => state.FOSOSPKClearDataEssential,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                    (failure) => showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context) => VSimpleDialog(
-                              label: 'Error',
-                              labelDescription: failure.maybeMap(
-                                  storage: (_) => 'storage penuh',
-                                  format: (error) =>
-                                      'Error Format Clear: $error',
-                                  orElse: () => ''),
-                              asset: Assets.iconCrossed,
-                            )).then((_) => _updateOfflineStorageStatus()),
-                    (_) async {
-                  await _savedQueriesFunction();
-
-                  SPK selectedSPK =
-                      ref.read(updateCSNotifierProvider).selectedSPK;
-                  selectedSPK != SPK.initial()
-                      ? () {
-                          Map<String, dynamic> spkMap = selectedSPK.toJson();
-                          context.pushReplacementNamed(
-                            extra: spkMap,
-                            RouteNames.checkSheetLoadingNameRoute,
-                          );
-
-                          return context.pushNamed(RouteNames.historyNameRoute);
-                        }()
-                      : () {}();
-                })));
-
     // Frame Queres
     ref.listen<Option<Either<LocalFailure, Map<String, Map<String, String>>>>>(
         autoDataUpdateFrameNotifierProvider.select(
@@ -113,10 +55,11 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                   await _updateOfflineStorageStatus();
                   return AlertHelper.showSnackBar(
                     context,
-                    message: failure.maybeMap(
-                        storage: (_) => 'storage penuh',
-                        format: (error) => 'Error Format: $error',
-                        orElse: () => ''),
+                    message: failure.map(
+                      storage: (_) => 'storage penuh',
+                      empty: (_) => 'Update Frame empty',
+                      format: (error) => 'Error Format: $error',
+                    ),
                   );
                 },
                     (idSPKMapidTIUnitMapQuery) => ref
@@ -139,15 +82,19 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                       builder: (_) => VSimpleDialog(
                         label: 'Error',
                         labelDescription: failure.map(
-                            storage: (_) => 'storage penuh',
-                            format: (value) => 'error format $value',
-                            empty: (_) => 'empty'),
+                          empty: (_) => 'empty',
+                          storage: (_) => 'storage penuh',
+                          format: (value) => 'error format $value',
+                        ),
                         asset: Assets.iconCrossed,
                       ),
                     ).then((_) => _updateOfflineStorageStatus()),
                 (queryIds) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .runSavedCSQueryFromRepository(queryIds: queryIds))));
+                    .runSavedCSQueryFromRepository(queryIds: queryIds)
+                    .then((_) => ref
+                        .read(updateCSOfflineNotifierProvider.notifier)
+                        .CUUpdateCSOFFLINEStatus()))));
 
     // CheckSheet Unit Queries
     ref.listen<Option<Either<LocalFailure, List<CSUIDQuery>>>>(
@@ -163,9 +110,10 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                       builder: (_) => VSimpleDialog(
                         label: 'Error',
                         labelDescription: failure.map(
-                            storage: (_) => 'storage penuh',
-                            format: (value) => 'error format $value',
-                            empty: (_) => 'empty'),
+                          empty: (_) => 'empty',
+                          storage: (_) => 'storage penuh',
+                          format: (value) => 'error format $value',
+                        ),
                         asset: Assets.iconCrossed,
                       ),
                     ).then((_) => _updateOfflineStorageStatus()),
@@ -195,7 +143,10 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                     ).then((_) => _updateOfflineStorageStatus()),
                 (queryIds) => ref
                     .read(autoDataUpdateFrameNotifierProvider.notifier)
-                    .runSavedSPKQueryFromRepository(queryIds: queryIds))));
+                    .runSavedSPKQueryFromRepository(queryIds: queryIds)
+                    .then((_) => ref
+                        .read(updateSPKOfflineNotifierProvider.notifier)
+                        .CUUpdateSPKOFFLINEStatus()))));
 
     //
     ref.listen<Option<Either<RemoteFailure, Unit>>>(
@@ -223,26 +174,8 @@ class _CrannyMiddleState extends ConsumerState<CrannyMiddle> {
                               ),
                             ),
                           ));
-                }, (_) async {
-                  await _updateOfflineStorageStatus();
-                  await _readCsuLastPage(context);
-
-                  ref
-                      .read(autoDataUpdateFrameNotifierProvider.notifier)
-                      .resetAutoDataRemoteFOSO();
-                })));
+                }, (_) => _updateOfflineStorageStatus())));
 
     return CrannyScaffold();
-  }
-
-  Future<void> _readCsuLastPage(BuildContext context) async {
-    final Frame frame = ref.read(csuLastPageProvider);
-    if (frame != Frame.initial()) {
-      Map<String, dynamic> frameMap = frame.toJson();
-
-      await context.pushNamed(extra: frameMap, RouteNames.CSUResultRoute);
-
-      ref.read(csuLastPageProvider.notifier).state = Frame.initial();
-    }
   }
 }

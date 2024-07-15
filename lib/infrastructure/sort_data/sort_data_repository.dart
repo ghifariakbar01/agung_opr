@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
@@ -22,25 +21,25 @@ class SortDataRepository {
     try {
       final List<SPK> listSPK = await _spkRepository
           .getSPKListOFFLINE(page: 0)
-          .then((value) => value.fold((l) => [], (r) => r));
+          .then((value) => value.fold(
+                (_) => [],
+                (r) => r,
+              ));
 
       if (listSPK.isNotEmpty) {
         for (int i = 0; i < listSPK.length; i++) {
-          await _frameRepository.getFrameList(idSPK: listSPK[i].idSpk);
+          await _frameRepository.getFrameList(
+            idSPK: listSPK[i].idSpk,
+          );
         }
       }
 
       return right(unit);
     } on RestApiException catch (e) {
-      debugger(message: 'called');
-
       return left(RemoteFailure.server(e.errorCode, e.message));
     } on NoConnectionException {
-      debugger(message: 'called');
-
       return left(RemoteFailure.noConnection());
     } on RangeError catch (e) {
-      debugger(message: 'called');
       return left(RemoteFailure.parse(message: e.message));
     } on FormatException catch (e) {
       return left(RemoteFailure.parse(message: e.message));

@@ -151,6 +151,12 @@ class UpdateFrameRepository {
                 jsonDecode(savedStrings!) as Map<String, dynamic>,
               );
 
+              if (parsedMap.entries.length == 1) {
+                await _storage.clear();
+
+                return unit;
+              }
+
               parsedMap.removeWhere((_, value) {
                 final _val = value.values;
                 return _val.firstWhere((e) => e == query) == query;
@@ -191,22 +197,22 @@ class UpdateFrameRepository {
     try {
       final Map<String, String> mapOfCommands = {};
 
-      updateFrameList.forEach((UpdateFrameStateSingle element) {
+      for (final frame in updateFrameList) {
         // TEST
         String dbName =
             Constants.isTesting ? 'opr_trs_ti_unit_test' : 'opr_trs_ti_unit';
 
-        final idKendTypeStr = element.idKendType.getOrLeave('');
+        final idKendTypeStr = frame.idKendType.getOrLeave('');
         final idKendTypeInt =
             idKendTypeStr.isNotEmpty ? int.parse(idKendTypeStr) : 0;
 
-        final engineStr = element.engine.getOrLeave('');
-        final warnaStr = element.warna.getOrLeave('');
+        final engineStr = frame.engine.getOrLeave('');
+        final warnaStr = frame.warna.getOrLeave('');
         // MANDATORY
-        final frameStr = element.frame.getOrCrash();
+        final frameStr = frame.frame.getOrCrash();
         final sppdcStr = sppdc;
 
-        final idUnitStr = element.idUnit.getOrCrash();
+        final idUnitStr = frame.idUnit.getOrCrash();
         final idUnitInt = int.parse(idUnitStr);
 
         final cAndUDate = DateTime.now()
@@ -220,7 +226,7 @@ class UpdateFrameRepository {
 
         final Map<String, String> newMapOfCommands = {idUnitStr: command};
         mapOfCommands.addAll(newMapOfCommands);
-      });
+      }
 
       // THEN ADD mapOfCommands TO newMap by idSPK
 
@@ -252,10 +258,9 @@ class UpdateFrameRepository {
         switch (isStorageSaved) {
           case true:
             () async {
-              debugger(message: 'CALLED');
+              final json = jsonDecode(savedStrings!) as Map<String, dynamic>;
               final Map<String, Map<String, dynamic>> parsedMap =
-                  convertToNestedMap(
-                      jsonDecode(savedStrings!) as Map<String, dynamic>);
+                  convertToNestedMap(json);
 
               // FIRST, CHECK IF EXISTING KEY [NO SPK] EXIST
               final idSpk = newFrameMap.keys.first;
@@ -278,9 +283,9 @@ class UpdateFrameRepository {
                   null;
 
               if (parsedMap.containsKey(idSpk)) {
-                debugger();
+                //
                 if (IdUnitQueryToInsertExist) {
-                  debugger();
+                  //
 
                   IdUnitQueryToInsert.update(keyIdUnitQueryToInsert,
                       (value) => valueIdUnitQueryToInsert);
@@ -288,7 +293,7 @@ class UpdateFrameRepository {
 
                 // THEN UPDATE parsedMap
 
-                debugger();
+                //
 
                 // TI UNIT, QUERY VALUE
                 parsedMap.update(
@@ -298,30 +303,26 @@ class UpdateFrameRepository {
               }
               // IF EXISTING KEY NULL
               else {
-                debugger();
-
                 parsedMap.addAll({
                   idSpk: {keyIdUnitQueryToInsert: valueIdUnitQueryToInsert}
                 });
               }
 
               // debugger(message: 'called');
+              final _save = jsonEncode(parsedMap);
+              log('STORAGE UPDATE FRAME UPDATE: ${_save}');
 
-              log('STORAGE UPDATE FRAME UPDATE: ${jsonEncode(parsedMap)}');
-
-              await _storage.save(jsonEncode(parsedMap));
-
+              await _storage.save(_save);
               return unit;
             }();
             break;
           case false:
             () async {
               // debugger(message: 'called');
+              final _save = jsonEncode(newFrameMap);
+              log('STORAGE UPDATE FRAME SAVE: ${_save}');
 
-              log('STORAGE UPDATE FRAME SAVE: ${jsonEncode(newFrameMap)}');
-
-              await _storage.save(jsonEncode(newFrameMap));
-
+              await _storage.save(_save);
               return unit;
             }();
         }
@@ -329,8 +330,6 @@ class UpdateFrameRepository {
 
       return left(LocalFailure.empty());
     } on FormatException catch (e) {
-      debugger(message: 'called');
-
       log('ERROR UPDATE FRAME $e');
 
       return left(LocalFailure.format(e.message));

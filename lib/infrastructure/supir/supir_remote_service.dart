@@ -39,16 +39,14 @@ class SupirRemoteService {
 
           if (list.isNotEmpty) {
             try {
-              List<Supir> modelList =
+              List<Supir> supirList =
                   (list).map((data) => Supir.fromJson(data)).toList();
 
-              // log('list $list');
-
-              return modelList;
+              return supirList;
             } catch (e) {
               log('list error $e');
 
-              throw FormatException('error while iterating list model');
+              throw FormatException('error while iterating list supir');
             }
           } else {
             log('list empty');
@@ -112,12 +110,12 @@ class SupirRemoteService {
 
           if (list.isNotEmpty) {
             try {
-              List<Supir> modelList =
+              List<Supir> supirList =
                   (list).map((data) => Supir.fromJson(data)).toList();
 
               // log('list $list');
 
-              return modelList;
+              return supirList;
             } catch (e) {
               log('list error $e');
 

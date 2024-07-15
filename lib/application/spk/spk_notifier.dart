@@ -65,11 +65,11 @@ class SPKNotifier extends StateNotifier<SPKState> {
     state = state.copyWith(isProcessing: false, FOSOSPK: optionOf(FOS));
   }
 
-  void replaceSPKList(List<SPK> spkList) {
+  void changeSPKList(List<SPK> spkList) {
     state = state.copyWith(spkList: [...spkList]);
   }
 
-  void changeSPKList({required List<SPK> newSPK, required List<SPK> oldSPK}) {
+  void addPKList({required List<SPK> newSPK, required List<SPK> oldSPK}) {
     state = state.copyWith(spkList: [...oldSPK, ...newSPK]);
   }
 

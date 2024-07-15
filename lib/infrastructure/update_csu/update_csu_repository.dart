@@ -32,37 +32,38 @@ class UpdateCSUFrameRepository {
 
   Future<Either<RemoteFailure, Unit>> updateCSUByQuery(
       {required List<CSUIDQuery> queryIds}) async {
-    if (queryIds.isNotEmpty) {
-      for (int i = 0; i < queryIds.length; i++) {
-        final query = queryIds[i].query;
-        final idUnit = queryIds[i].idUnit;
+    final queryIdSet = queryIds.toSet().toList();
 
-        try {
-          await _remoteService.insertFrameCSUByQuery(query: query);
+    if (queryIdSet.isNotEmpty) {
+      final item = queryIdSet.first;
 
-          await _removeQueryCSUFromSaved(idUnit: idUnit);
-        } on RestApiException catch (e) {
-          await _removeQueryCSUFromSaved(idUnit: idUnit);
+      final query = item.query;
+      final idUnit = item.idUnit;
+      try {
+        await _remoteService.insertFrameCSUByQuery(query: query);
+        await _removeQueryCSUFromSaved(idUnit: idUnit);
 
-          return left(RemoteFailure.server(e.errorCode, e.message));
-        } on NoConnectionException {
-          return left(RemoteFailure.noConnection());
-        } on RangeError catch (e) {
-          return left(RemoteFailure.parse(message: e.message));
-        } on FormatException catch (e) {
-          return left(RemoteFailure.parse(message: e.message));
-        } on JsonUnsupportedObjectError {
-          return left(
-              RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
-        } on PlatformException {
-          return left(RemoteFailure.storage());
-        }
+        return right(unit);
+      } on RestApiException catch (e) {
+        await _removeQueryCSUFromSaved(idUnit: idUnit);
+
+        return left(RemoteFailure.server(e.errorCode, e.message));
+      } on NoConnectionException {
+        return left(RemoteFailure.noConnection());
+      } on RangeError catch (e) {
+        return left(RemoteFailure.parse(message: e.message));
+      } on FormatException catch (e) {
+        return left(RemoteFailure.parse(message: e.message));
+      } on JsonUnsupportedObjectError {
+        return left(RemoteFailure.parse(message: 'JsonUnsupportedObjectError'));
+      } on PlatformException {
+        return left(RemoteFailure.storage());
       }
     } else {
       log('updateCSUByQuery : querId empty');
-    }
 
-    return right(unit);
+      return right(unit);
+    }
   }
 
   Future<Either<LocalFailure, Unit>> saveCSUQuery({
@@ -153,23 +154,13 @@ class UpdateCSUFrameRepository {
     required String frameName,
     required Gate gate,
     required Deck posisi,
-    // required Supir1 supir1,
-    // required Supir2 supir2,
     required SupirSDR supirSDR,
     required TglKirim tglKirim,
     required TglTerima tglTerima,
     required Keterangan keterangan,
-    String idCS = 'ID_CS_NA',
   }) {
     // TEST
     String dbName = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
-
-    // supir1, supir2,
-
-    final String insert = 'INSERT INTO $dbName '
-        '(id_cs, frame, inout, id_user, c_user, u_user,'
-        'tgl, c_date, u_date, id_gate, posisi, no_defect, '
-        'supir_sdr, tgl_kirim_unit, tgl_terima_unit, ket)';
 
     final idUser = _userModelWithPassword.idUser;
     final nameUser = _userModelWithPassword.nama;
@@ -178,8 +169,6 @@ class UpdateCSUFrameRepository {
     final gateInt = gateStr.isNotEmpty ? int.parse(gateStr) : 0;
 
     final deckStr = posisi.getOrLeave('');
-    // final supir1Str = supir1.getOrCrash();
-    // final supir2Str = supir2.getOrLeave('');
 
     final supirSDRStr = supirSDR.getOrLeave('');
 
@@ -197,13 +186,17 @@ class UpdateCSUFrameRepository {
         .toString()
         .substring(0, DateTime.now().toString().length - 3);
 
-    // '${supir1Str}', '${supir2Str}'
+    final String insert = 'INSERT INTO $dbName '
+        '(id_cs, frame, inout, id_user, c_user, u_user,'
+        'tgl, c_date, u_date, id_gate, posisi, no_defect, '
+        'supir_sdr, tgl_kirim_unit, tgl_terima_unit, ket)';
+
+    final requiredQuery = " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName), "
+        " '${frameName}', ${inOut}, ${idUser}, '${nameUser}',  "
+        " '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
 
     final csuQuery =
         " ${gateInt},  '${deckStr}', ${noDefect}, '${supirSDRStr}', '${tglKirimStr}', '${tglTerimaStr}', '${keteranganStr}' ";
-
-    final requiredQuery =
-        " (SELECT ISNULL(max(id_cs), 0) + 1 FROM $dbName), '${frameName}', ${inOut}, ${idUser}, '${nameUser}', '${nameUser}', '${tgl}', '${cAndUDate}', '${cAndUDate}', ";
 
     final csuIdQuery = CSUIDQuery(
         idUnit: idUnit,
@@ -214,12 +207,12 @@ class UpdateCSUFrameRepository {
     return csuIdQuery;
   }
 
-  CSUIDQuery getNGSavableQuery({
+  Future<CSUIDQuery> getNGSavableQuery({
     required int idUnit,
     required String frameName,
     required List<UpdateCSUNGState> ngStates,
     String idCS = 'ID_CS_NA',
-  }) {
+  }) async {
     // TEST
     String dbName =
         Constants.isTesting ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_dtl';
@@ -265,12 +258,16 @@ class UpdateCSUFrameRepository {
       queryMap.addAll({idItemDefect[i]: queryIndex});
     }
 
+    log('queryMap SAVE CS NG : ${queryMap}');
+
     // GET QUERY STRING
     final String queryString =
         queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
 
-    final CSUIDQuery csuIdQuery =
-        CSUIDQuery(idUnit: idUnit, query: queryString);
+    final CSUIDQuery csuIdQuery = CSUIDQuery(
+      idUnit: idUnit,
+      query: queryString,
+    );
 
     log('QUERY SAVE CS NG : ${csuIdQuery.toJson()}');
 
@@ -290,21 +287,24 @@ class UpdateCSUFrameRepository {
             () async {
               final parsedResponse = jsonDecode(savedStrings!) as List<dynamic>;
 
-              final response =
-                  CSUIDQuery.listCSUIDQueryFromJson(parsedResponse);
+              final response = CSUIDQuery.listCSUIDQueryFromJson(
+                parsedResponse,
+              );
 
-              final index =
-                  response.indexWhere((element) => element.idUnit == idUnit);
+              final index = response.indexWhere(
+                (element) => element.idUnit == idUnit,
+              );
 
               if (index == -1) {
                 throw RangeError('ITEM QUERY NOT FOUND');
               } else {
                 final item = response[index];
                 final list = [...response.where((element) => element != item)];
+                final json = jsonEncode(list);
 
-                await _storage.save(jsonEncode(list));
+                await _storage.save(json);
 
-                log('STORAGE UPDATE CSU FRAME DELETE: ${jsonEncode(list)}');
+                log('STORAGE UPDATE CSU FRAME DELETE: ${json}');
 
                 return unit;
               }

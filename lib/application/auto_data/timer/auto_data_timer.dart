@@ -13,27 +13,20 @@ class AutoDataTimerStateNotifier extends StateNotifier<AutoDataTimerState> {
     int duration, {
     required Future<void> Function() getSavedQueryFunction,
   }) async {
-    state = state.copyWith(durationInSeconds: duration, isRunning: true);
+    state = state.copyWith(
+      durationInSeconds: duration,
+      isRunning: true,
+    );
 
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
       if (state.durationInSeconds > 0) {
-        state = state.copyWith(durationInSeconds: state.durationInSeconds - 1);
-      } else {
-        _resetTimer();
-
-        await getSavedQueryFunction();
-
-        await startTimer(
-          duration,
-          getSavedQueryFunction: getSavedQueryFunction,
+        state = state.copyWith(
+          durationInSeconds: state.durationInSeconds - 1,
         );
+      } else {
+        await getSavedQueryFunction();
       }
     });
-  }
-
-  void _resetTimer() {
-    _timer?.cancel();
-    state = state.copyWith(durationInSeconds: 0, isRunning: false);
   }
 }

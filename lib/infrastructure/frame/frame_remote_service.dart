@@ -45,8 +45,11 @@ class FrameRemoteService {
             " T.id_unit IN (SELECT id_unit FROM $dbOprTrsSpk WHERE id_spk = $idSPK)"
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       final items = response.data?[0];
 
@@ -121,8 +124,11 @@ class FrameRemoteService {
             " ORDER BY T.id_unit DESC OFFSET ${page}0 ROWS FETCH FIRST 10 ROWS ONLY"
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       final items = response.data?[0];
 
@@ -201,8 +207,11 @@ class FrameRemoteService {
             " ORDER BY T.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY"
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       final items = response.data?[0];
 
@@ -275,8 +284,11 @@ class FrameRemoteService {
                 " ORDER BY T.id_unit DESC OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY"
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       final items = response.data?[0];
 

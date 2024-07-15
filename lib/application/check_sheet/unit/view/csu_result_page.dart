@@ -53,6 +53,7 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
       await ref
           .read(csuTripsOfflineNotifierProvider.notifier)
           .checkAndUpdateTripsOFFLINEStatus(idUnit: frame.idUnit);
+
       return;
     }
 
@@ -85,6 +86,8 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
       await ref
           .read(csuResultOfflineNotifierProvider.notifier)
           .checkAndUpdateCSUResultOFFLINEStatus(frame: frameName);
+
+      return;
     }
 
     final csuResultOfflineOrOnline = ref.read(csuResultOfflineNotifierProvider);

@@ -88,8 +88,17 @@ class _UnitPageState extends ConsumerState<UnitPage> {
                             ),
                           ),
                         ), (frameResponse) {
+                  final isSearching =
+                      ref.read(frameSearchNotifierProvider).isSearching;
+
+                  if (isSearching) {
+                    _replaceFrame(frameResponse);
+                    return;
+                  }
+
                   if (frameResponse != []) {
                     _changeFrame(frameResponse);
+                    return;
                   }
                 })));
 
@@ -120,5 +129,21 @@ class _UnitPageState extends ConsumerState<UnitPage> {
     ref
         .read(updateFrameNotifierProvider.notifier)
         .changeFillEmptyList(length: _len, frame: [..._prev, ...frameResponse]);
+  }
+
+  void _replaceFrame(List<Frame> frameResponse) {
+    ref
+        .read(frameNotifierProvider.notifier)
+        .changeFrameList([...frameResponse]);
+
+    final int _len = frameResponse.length;
+    ref
+        .read(frameNotifierProvider.notifier)
+        .changeFillEmptyFOSOSaveFrameList(length: _len);
+
+    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+    ref
+        .read(updateFrameNotifierProvider.notifier)
+        .changeFillEmptyList(length: _len, frame: [...frameResponse]);
   }
 }

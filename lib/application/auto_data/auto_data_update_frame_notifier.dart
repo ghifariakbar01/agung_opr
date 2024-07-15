@@ -26,10 +26,6 @@ class AutoDataUpdateFrameNotifier
   final UpdateFrameRepository _updateFrameRepository;
   final UpdateCSUFrameRepository _updateCSUFrameRepository;
 
-  void resetAutoDataRemoteFOSO() {
-    state = state.copyWith(FOSOAutoDataRemote: none());
-  }
-
   Future<void> getSavedQueryFromRepository() async {
     Either<LocalFailure, Map<String, Map<String, String>>>? FOS;
 
@@ -63,7 +59,6 @@ class AutoDataUpdateFrameNotifier
     Either<RemoteFailure, Unit>? FOS;
 
     state = state.copyWith(
-      isGetting: true,
       FOSOAutoDataRemote: none(),
     );
 
@@ -72,7 +67,6 @@ class AutoDataUpdateFrameNotifier
     );
 
     state = state.copyWith(
-      isGetting: false,
       FOSOAutoDataRemote:
           idSPKMapidTIUnitMapQuery.isNotEmpty ? optionOf(FOS) : none(),
     );
@@ -86,9 +80,16 @@ class AutoDataUpdateFrameNotifier
       FOSOAutoDataLocalUpdateFrameCSU: none(),
     );
 
-    // CONVERT ID_CS_NAs to appropriate values
     FOS = await _updateCSUFrameRepository.getUpdateCSUQueryListOFFLINE();
-    final List<CSUIDQuery> _list = FOS.fold((l) => [], (r) => r);
+
+    final List<CSUIDQuery> _list = FOS.fold(
+      (l) => [],
+      (r) => r,
+    );
+
+    if (_list.isEmpty) {
+      return;
+    }
 
     state = state.copyWith(
       isGetting: false,
@@ -111,11 +112,17 @@ class AutoDataUpdateFrameNotifier
       return;
     }
 
-    state = state.copyWith(isGetting: true);
+    state = state.copyWith(
+      FOSOAutoDataRemote: none(),
+    );
 
-    FOS = await _updateCSUFrameRepository.updateCSUByQuery(queryIds: queryIds);
+    FOS = await _updateCSUFrameRepository.updateCSUByQuery(
+      queryIds: queryIds,
+    );
 
-    state = state.copyWith(isGetting: false, FOSOAutoDataRemote: optionOf(FOS));
+    state = state.copyWith(
+      FOSOAutoDataRemote: optionOf(FOS),
+    );
   }
 
   // 1.
@@ -156,15 +163,15 @@ class AutoDataUpdateFrameNotifier
     }
 
     state = state.copyWith(
-      isGetting: true,
       FOSOAutoDataRemote: none(),
     );
 
     // CONVERT ID_CS_NAs to appropriate values
-    FOS = await _updateCSRepository.updateCSByQuery(queryIds: queryIds);
+    FOS = await _updateCSRepository.updateCSByQuery(
+      queryIds: queryIds,
+    );
 
     state = state.copyWith(
-      isGetting: false,
       FOSOAutoDataRemote: optionOf(FOS),
     );
   }
@@ -203,7 +210,6 @@ class AutoDataUpdateFrameNotifier
     }
 
     state = state.copyWith(
-      isGetting: true,
       FOSOAutoDataRemote: none(),
     );
 
@@ -211,7 +217,6 @@ class AutoDataUpdateFrameNotifier
     FOS = await _updateSPKRepository.updateSPKByQuery(queryIds: queryIds);
 
     state = state.copyWith(
-      isGetting: false,
       FOSOAutoDataRemote: optionOf(FOS),
     );
   }

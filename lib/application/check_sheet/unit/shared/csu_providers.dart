@@ -20,7 +20,6 @@ import '../../../../infrastructure/update_csu/update_csu_repository.dart';
 import '../../../../shared/providers.dart';
 import '../../../update_csu/state/update_csu_state.dart';
 import '../../../update_csu/update_csu_notifier.dart';
-import '../../../update_frame/frame.dart';
 import '../../csu_items_offline_notifier.dart';
 import '../../csu_ng_by_id_offline_notifier.dart';
 
@@ -38,10 +37,6 @@ import '../state/csu_ng/csu_ng_by_id_offline_state.dart';
 import '../state/csu_result_offline_state.dart';
 import '../state/csu_result_state.dart';
 import '../state/csu_trips_offline_state.dart';
-
-final csuLastPageProvider = StateProvider<Frame>((ref) {
-  return Frame.initial();
-});
 
 /* 
     --

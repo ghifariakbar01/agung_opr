@@ -19,6 +19,9 @@ class SortDataNotifier extends StateNotifier<SortDataState> {
 
     FOS = await _repository.sortDataFrameInSPK();
 
-    state = state.copyWith(isGetting: false, FOSOSPKSortData: optionOf(FOS));
+    state = state.copyWith(
+      isGetting: false,
+      FOSOSPKSortData: optionOf(FOS),
+    );
   }
 }

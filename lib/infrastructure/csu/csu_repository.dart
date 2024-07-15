@@ -536,9 +536,7 @@ class CSUFrameRepository {
           return right([]);
         }
       } else {
-        debugger(message: 'called');
-
-        return left(RemoteFailure.parse(message: 'LIST EMPTY'));
+        return right([]);
       }
     } on RestApiException catch (e) {
       return left(RemoteFailure.server(e.errorCode, e.message));

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,21 +14,22 @@ class CSUResultInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final frame =
-        ref.watch(csuFrameNotifierProvider.select((value) => value.frame));
-
-    final csuResultTripList = ref.watch(
-        csuFrameNotifierProvider.select((value) => value.csuTripsResultList));
-
     final hideTrip = ref.watch(hideTripProvider);
 
-    log('frame $frame');
+    final frame = ref.watch(
+      csuFrameNotifierProvider.select((value) => value.frame),
+    );
+
+    final csuResultTripList = ref.watch(
+      csuFrameNotifierProvider.select((value) => value.csuTripsResultList),
+    );
 
     return // Informasi Unit
         Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(width: 2, color: Palette.primaryColor)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(width: 2, color: Palette.primaryColor),
+      ),
       padding: EdgeInsets.all(8),
       child: Column(
         children: [

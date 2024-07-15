@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
-import '../../../clear_data_essential/clear_data_essential_providers.dart';
 import '../../../mode/mode_state.dart';
+import '../../../routes/route_names.dart';
 import '../../../spk/spk.dart';
 import '../../../spk/view/spk_item.dart';
 import '../../../update_frame/frame_state.dart';
@@ -83,8 +83,6 @@ class _CheckSheetLoadingScaffoldState
     final bool hideFAB = ref.watch(hideFABProvider);
     final bool isOffline = ref.watch(isOfflineStateProvider);
 
-    final updateFrameNotifier = ref.watch(updateFrameNotifierProvider);
-
     final _controller = ref.watch(doubleControllerProvider);
 
     ref.listen<AsyncValue>(doubleControllerProvider, (_, state) {
@@ -129,7 +127,7 @@ class _CheckSheetLoadingScaffoldState
                         backgroundColor: Colors.white,
                         elevation: 5,
                         label: Text(
-                          'Ambil Data Terbaru (Setelah OK/NG)',
+                          'Submit',
                           style: Themes.customColor(
                               FontWeight.normal, 11, Colors.black),
                         ),
@@ -137,9 +135,8 @@ class _CheckSheetLoadingScaffoldState
                           Icons.download,
                           color: Palette.primaryColor,
                         ),
-                        onPressed: () => ref
-                            .read(clearDataEssentialNotifierProvider.notifier)
-                            .clearAllStorage(idSPK: updateFrameNotifier.idSPK),
+                        onPressed: () => context
+                            .pushNamed(RouteNames.dataUpdateQueryNameRoute),
                       ),
             body: SingleChildScrollView(
               controller: scrollController,
@@ -264,7 +261,7 @@ class _CheckSheetLoadingScaffoldState
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                   color: Palette.primaryColor, width: 2)),
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(16),
                           child: Form(
                             autovalidateMode: AutovalidateMode.always,
                             child: Column(children: [
@@ -273,6 +270,9 @@ class _CheckSheetLoadingScaffoldState
                               ),
                               FormGate(),
                               FormJam(),
+                              SizedBox(
+                                height: 8,
+                              ),
                               FormKeterangan(),
                               SizedBox(
                                 height: 4,
@@ -285,7 +285,7 @@ class _CheckSheetLoadingScaffoldState
                       CheckSheetKelengkapan(),
                       CheckSheetButton(),
                       SizedBox(
-                        height: 65,
+                        height: 110,
                       )
                     ]
                   ],

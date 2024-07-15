@@ -123,6 +123,10 @@ class SPKRemoteService {
     try {
       final data = _dioRequestNotifier;
 
+      const testing = " spk.bs_sta = 1 " +
+          " AND spk.tiba_sta = 0 " +
+          " AND spk.kmbl_sta = 0 AND ";
+
       data.addAll({
         "mode": "SELECT",
         "command": "SELECT " +
@@ -154,10 +158,8 @@ class SPKRemoteService {
             " ON    " +
             " spk.id_trayek = trayek.id_trayek "
                 " WHERE     " +
-            " spk.bs_sta = 1 " +
-            " AND spk.tiba_sta = 0 " +
-            " AND spk.kmbl_sta = 0 " +
-            " AND spk.spk_tgl >= DATEADD(DAY, -15, GETDATE()) " +
+            " ${Constants.isTesting ? "" : testing} " +
+            "  spk.spk_tgl >= DATEADD(DAY, -15, GETDATE()) " +
             " ORDER BY " +
             " spk.spk_tgl DESC " +
             " OFFSET " +
@@ -165,6 +167,8 @@ class SPKRemoteService {
             " FETCH FIRST " +
             " 10 ROWS ONLY"
       });
+
+      log(data['command']!);
 
       final response = await _dio.post(
         '',

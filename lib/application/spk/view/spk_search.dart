@@ -33,6 +33,9 @@ class SPKSearch extends ConsumerWidget {
                   InkWell(
                       onTap: () {
                         focusNode.unfocus();
+                        ref
+                            .read(spkNotifierProvider.notifier)
+                            .changeSPKList([]);
 
                         search.isNotEmpty && search.length > 1
                             ? () async {
@@ -86,6 +89,8 @@ class SPKSearch extends ConsumerWidget {
           },
           onFieldSubmitted: (search) => search.isNotEmpty && search.length > 1
               ? () async {
+                  ref.read(spkNotifierProvider.notifier).changeSPKList([]);
+
                   final isOnline =
                       ref.read(isOfflineStateProvider.notifier).state == false;
 
@@ -101,9 +106,13 @@ class SPKSearch extends ConsumerWidget {
                     debugger();
                   }
                 }()
-              : ref
-                  .read(spkNotifierProvider.notifier)
-                  .getSPKListOFFLINE(page: 0)),
+              : () async {
+                  ref.read(spkNotifierProvider.notifier).changeSPKList([]);
+
+                  await ref
+                      .read(spkNotifierProvider.notifier)
+                      .getSPKListOFFLINE(page: 0);
+                }),
     );
   }
 }

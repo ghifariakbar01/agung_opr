@@ -79,7 +79,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                               'Storage penuh. Tidak bisa menyimpan data FRAME',
                           server: (value) => value.message ?? 'Server Error',
                           parse: (value) => 'Parse $value',
-                          orElse: () => '',
+                          orElse: () => 'err',
                         ),
                       ),
                     ),
@@ -219,6 +219,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
           .getFrameListOFFLINE(idSPK: idSpk);
     } else {
       await _fillFrameOnline(idSpk);
+      return;
     }
 
     await ref
@@ -230,9 +231,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
       hasOfflineStorage: () => ref
           .read(frameNotifierProvider.notifier)
           .getFrameListOFFLINE(idSPK: idSpk),
-      orElse: () async {
-        return _fillFrameOnline(idSpk);
-      },
+      orElse: () => _fillFrameOnline(idSpk),
     );
   }
 
@@ -246,10 +245,7 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
   _fillCSJenis() async {
     final isOffline = ref.read(isOfflineStateProvider);
     if (!isOffline) {
-      await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
-      return ref
-          .read(csJenisOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSJenisOFFLINEStatus();
+      await _fillCSJenisOnline();
     }
 
     await ref
@@ -260,22 +256,21 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
     await csJenisOfflineOrOnline.maybeWhen(
       hasOfflineStorage: () =>
           ref.read(csJenisNotifierProvider.notifier).getCSJenisOFFLINE(),
-      orElse: () async {
-        await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
-        await ref
-            .read(csJenisOfflineNotifierProvider.notifier)
-            .checkAndUpdateCSJenisOFFLINEStatus();
-      },
+      orElse: () => _fillCSJenisOnline(),
     );
+  }
+
+  _fillCSJenisOnline() async {
+    await ref.read(csJenisNotifierProvider.notifier).getCSJenis();
+    return ref
+        .read(csJenisOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSJenisOFFLINEStatus();
   }
 
   _fillCSItems() async {
     final isOffline = ref.read(isOfflineStateProvider);
     if (!isOffline) {
-      await ref.read(csItemNotifierProvider.notifier).getCSItems();
-      return ref
-          .read(csItemOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSItemOFFLINEStatus();
+      await _fillCSItemsOnline();
     }
 
     await ref
@@ -286,13 +281,15 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
     await csItemsOfflineOrOnline.maybeWhen(
       hasOfflineStorage: () =>
           ref.read(csItemNotifierProvider.notifier).getCSItemsOFFLINE(),
-      orElse: () async {
-        await ref.read(csItemNotifierProvider.notifier).getCSItems();
-        await ref
-            .read(csItemOfflineNotifierProvider.notifier)
-            .checkAndUpdateCSItemOFFLINEStatus();
-      },
+      orElse: () => _fillCSItemsOnline(),
     );
+  }
+
+  _fillCSItemsOnline() async {
+    await ref.read(csItemNotifierProvider.notifier).getCSItems();
+    return ref
+        .read(csItemOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSItemOFFLINEStatus();
   }
 
   /*

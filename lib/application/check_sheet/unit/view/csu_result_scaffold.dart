@@ -91,7 +91,7 @@ class CSUResultScaffold extends ConsumerWidget {
                           AbsorbPointer(
                             absorbing: !ref
                                 .read(updateCSUFrameNotifierProvider.notifier)
-                                .isTappable(
+                                .isEditable(
                                     csuResult: csuResultList[index],
                                     csuResultItems: csuResultList),
                             child: TextButton(
@@ -102,6 +102,7 @@ class CSUResultScaffold extends ConsumerWidget {
                                     .read(
                                         updateCSUFrameNotifierProvider.notifier)
                                     .changeFillWithValue(csuResult: csuItem);
+
                                 await context.pushNamed(
                                   extra: csuItem.id,
                                   RouteNames.CSUNewNameRoute,

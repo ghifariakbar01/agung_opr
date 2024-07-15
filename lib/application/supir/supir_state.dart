@@ -11,17 +11,14 @@ class SupirState with _$SupirState {
   const factory SupirState({
     required List<Supir> supirList,
     required int idSelected,
-    required int page,
-    required bool hasMore,
     required bool isProcessing,
     required Option<Either<RemoteFailure, List<Supir>>> FOSOSupir,
   }) = _SupirState;
 
   factory SupirState.initial() => SupirState(
-      supirList: [],
-      idSelected: 0,
-      page: 0,
-      hasMore: true,
-      isProcessing: false,
-      FOSOSupir: none());
+        supirList: [],
+        idSelected: 0,
+        isProcessing: false,
+        FOSOSupir: none(),
+      );
 }

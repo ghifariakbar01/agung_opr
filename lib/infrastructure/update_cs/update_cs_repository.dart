@@ -72,18 +72,11 @@ class UpdateCSRepository {
       final String query = _item.query;
       final int idSPK = _item.idSPK;
 
-      // final _isLoading = query.contains('load');
-      // final _isUnload = query.contains('unload');
-      // final _isLoadUnload = query.contains('loadunload');
-
-      // log('_isLoading $_isLoading');
-      // log('_isUnload $_isUnload');
-      // log('_isLoadUnload $_isLoadUnload');
-
       try {
         await _remoteService.insertCSBYQuery(query: query);
         await _removeQueryCSFromSaved(idSPK: idSPK);
-        //
+
+        return right(unit);
       } on RestApiException catch (e) {
         await _removeQueryCSFromSaved(idSPK: idSPK);
         await _removeDoubleBy(idSPK: idSPK);
@@ -100,8 +93,6 @@ class UpdateCSRepository {
       } on PlatformException {
         return left(RemoteFailure.storage());
       }
-
-      return right(unit);
     } else {
       return right(unit);
     }
@@ -118,7 +109,6 @@ class UpdateCSRepository {
       await _storage.read();
       await _storage.read();
       await _storage.read();
-      //
 
       final savedStrings = await _storage.read();
       final isQueryOK = queryId.query.isNotEmpty;
@@ -142,14 +132,18 @@ class UpdateCSRepository {
                 if (response.isNotEmpty) {
                   final List<CSIDQuery> list =
                       [...response, queryId].toSet().toList();
-                  await _storage
-                      .save(CSIDQuery.listCSIDQueryToJsonSavable(list));
+
+                  await _storage.save(
+                    CSIDQuery.listCSIDQueryToJsonSavable(list),
+                  );
 
                   return;
                 } else {
                   final _list = [queryId];
-                  await _storage
-                      .save(CSIDQuery.listCSIDQueryToJsonSavable(_list));
+
+                  await _storage.save(
+                    CSIDQuery.listCSIDQueryToJsonSavable(_list),
+                  );
 
                   return;
                 }
@@ -157,8 +151,10 @@ class UpdateCSRepository {
                 List<CSIDQuery> _list = [...response];
 
                 _list[index] = queryId;
-                await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(
-                    _list.toSet().toList()));
+
+                await _storage.save(
+                  CSIDQuery.listCSIDQueryToJsonSavable(_list.toSet().toList()),
+                );
 
                 return;
               }
@@ -167,7 +163,9 @@ class UpdateCSRepository {
           case false:
             () async {
               final _list = [queryId];
-              await _storage.save(CSIDQuery.listCSIDQueryToJsonSavable(_list));
+              await _storage.save(
+                CSIDQuery.listCSIDQueryToJsonSavable(_list),
+              );
             }();
         }
       } else {
@@ -243,18 +241,21 @@ class UpdateCSRepository {
         "'${_userModelWithPassword.nama}' " +
         " ) ";
 
-    final CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: insert);
+    final CSIDQuery csIdQuery = CSIDQuery(
+      idSPK: idSPK,
+      query: insert,
+    );
 
     log('QUERY SAVE CS : ${csIdQuery.toJson()}');
 
     return csIdQuery;
   }
 
-  CSIDQuery getNGSavableQuery({
+  Future<CSIDQuery> getNGSavableQuery({
     required int idSPK,
     required String frameName,
     required List<UpdateCSNGState> ngStates,
-  }) {
+  }) async {
     // TEST
     String dbName =
         Constants.isTesting ? 'pool_chk_kr_dtl_test' : 'pool_chk_kr_dtl';
@@ -276,12 +277,7 @@ class UpdateCSRepository {
       }
     }
 
-    // CONVERT TO MAP, TO ADD ALL STRING
     Map<int, String> queryMap = {};
-
-    // 4. insert checksheet to pool_chk_kr_dtl
-
-    // id_kr_chk_dtl (auto increment), id_kr_chk, id_list_dtl, status, ket, c_date, c_user, u_date, u_user
 
     for (int i = 0; i < idListDetail.length; i++) {
       final String insert = " INSERT INTO $dbName " +
@@ -299,12 +295,18 @@ class UpdateCSRepository {
           " '${keterangan[i]}' " +
           " ) ";
 
-      queryMap.addAll({idListDetail[i]: insert});
+      queryMap.addAll({
+        idListDetail[i]: insert,
+      });
     }
 
     // GET QUERY STRING
     String queryString = queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
-    CSIDQuery csIdQuery = CSIDQuery(idSPK: idSPK, query: queryString);
+
+    CSIDQuery csIdQuery = CSIDQuery(
+      idSPK: idSPK,
+      query: queryString,
+    );
 
     log('QUERY SAVE CS NG: ${csIdQuery.toJson()}');
 
@@ -336,7 +338,9 @@ class UpdateCSRepository {
                 final item = response[index];
                 final list = [...response.where((element) => element != item)];
 
-                await _storage.save(jsonEncode(list));
+                await _storage.save(
+                  jsonEncode(list),
+                );
 
                 log('STORAGE UPDATE CS FRAME DELETE: ${jsonEncode(list)}');
                 return unit;

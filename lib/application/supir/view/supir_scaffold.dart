@@ -10,44 +10,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../style/style.dart';
 import '../../widgets/v_appbar.dart';
 
-final ScrollController _scrollController = ScrollController();
-
 class SupirScaffold extends ConsumerWidget {
   const SupirScaffold();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        _scrollController.position.notifyListeners();
-      },
-    );
-
-    _scrollController.addListener(() async {
-      final supirProviderOnScrolled = ref.read(supirNotifierProvider);
-      final page = supirProviderOnScrolled.page;
-      final isMore = supirProviderOnScrolled.hasMore;
-      final isGetting = supirProviderOnScrolled.isProcessing;
-      final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
-
-      if (_scrollController.hasClients &&
-          _scrollController.position.pixels > nextPageTrigger &&
-          isMore &&
-          !isGetting) {
-        ref.read(supirNotifierProvider.notifier).changePage(page + 1);
-
-        await ref
-            .read(supirNotifierProvider.notifier)
-            .getSupirListOFFLINE(page: page + 1);
-      }
-    });
-
     final supirProvider = ref.watch(supirNotifierProvider);
 
     final supirList = supirProvider.supirList;
 
-    final isSearching = ref
-        .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
+    final isSearching = ref.watch(
+      spkSearchNotifierProvider.select((value) => value.isSearching),
+    );
 
     return KeyboardDismissOnTap(
       child: SafeArea(
@@ -59,7 +33,6 @@ class SupirScaffold extends ConsumerWidget {
           body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
-                controller: _scrollController,
                 child: Column(
                   children: [
                     SupirSearch(),

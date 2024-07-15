@@ -1,6 +1,7 @@
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
+import 'package:agung_opr/constants/constants.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -78,6 +79,10 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
           page < 10 &&
           _isBottom == false &&
           _isScrolledBottom) {
+        if (Constants.isTesting) {
+          return;
+        }
+
         _isAtBottom();
 
         await loadSpkOnlineOrOffline(page: page + 1);

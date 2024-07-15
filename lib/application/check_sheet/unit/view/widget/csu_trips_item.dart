@@ -49,7 +49,7 @@ class CSUTripsItem extends ConsumerWidget {
                     '${trip.costanalis ?? ''}',
                     maxLines: 10,
                     style: Themes.customColor(
-                        FontWeight.w500, 12, Palette.primaryColor),
+                        FontWeight.w500, 11, Palette.primaryColor),
                   ),
                 ),
               ],
@@ -64,7 +64,7 @@ class CSUTripsItem extends ConsumerWidget {
                 Text(
                   '${trip.custnm ?? ''}',
                   style: Themes.customColor(
-                      FontWeight.w500, 12, Palette.primaryColor),
+                      FontWeight.w500, 11, Palette.primaryColor),
                 ),
               ],
             ),

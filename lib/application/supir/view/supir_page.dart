@@ -60,44 +60,31 @@ class _SupirPageState extends ConsumerState<SupirPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => failure.maybeMap(
-                          noConnection: (value) => ref
-                              .read(isOfflineStateProvider.notifier)
-                              .state = true,
-                          orElse: () => AlertHelper.showSnackBar(
-                            context,
-                            message: failure.maybeMap(
-                              storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data MODEL.',
-                              server: (value) =>
-                                  value.message ?? 'Server Error',
-                              orElse: () => '',
-                            ),
-                          ),
-                        ), (SupirResponse) {
-                  final oldSupir = ref.read(supirNotifierProvider).supirList;
-                  final page = ref.read(supirNotifierProvider).page;
-                  ref.read(supirNotifierProvider.notifier).processSupirList(
-                        newSupir: SupirResponse,
-                        page: page,
-                        changeSupir: () => ref
-                            .read(supirNotifierProvider.notifier)
-                            .changeSupirList(
-                                newSupir: SupirResponse, oldSupir: oldSupir),
-                        replaceSupir: () => ref
-                            .read(supirNotifierProvider.notifier)
-                            .replaceSupirList(SupirResponse),
-                        changeIsMore: () => ref
-                            .read(supirNotifierProvider.notifier)
-                            .changeIsMore(false),
-                      );
-                })));
+                  (failure) => failure.maybeMap(
+                    noConnection: (value) =>
+                        ref.read(isOfflineStateProvider.notifier).state = true,
+                    orElse: () => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                        storage: (_) =>
+                            'Storage penuh. Tidak bisa menyimpan data MODEL.',
+                        server: (value) => value.message ?? 'Server Error',
+                        orElse: () => '',
+                      ),
+                    ),
+                  ),
+                  ref.read(supirNotifierProvider.notifier).replaceSupirList,
+                )));
 
-    final isLoading =
-        ref.watch(supirNotifierProvider.select((value) => value.isProcessing));
+    final isLoading = ref.watch(
+      supirNotifierProvider.select((value) => value.isProcessing),
+    );
 
     return Stack(
-      children: [SupirScaffold(), LoadingOverlay(isLoading: isLoading)],
+      children: [
+        SupirScaffold(),
+        LoadingOverlay(isLoading: isLoading),
+      ],
     );
   }
 }

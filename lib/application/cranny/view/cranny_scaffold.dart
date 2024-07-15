@@ -129,7 +129,19 @@ class _CrannyScaffoldState extends ConsumerState<CrannyScaffold> {
                     TextButton(
                         onPressed: () => context.pushNamed(RouteNames.unitName),
                         child: CrannyItem(label: 'CHECK SHEET UNIT')),
-                  ]
+                  ],
+                  if (isUpdateAvailable) ...[
+                    TextButton(
+                        onPressed: () async {
+                          await context
+                              .pushNamed(RouteNames.dataUpdateQueryNameRoute);
+                        },
+                        child: CrannyItem(
+                          label: 'SUBMIT',
+                          fontSize: 18,
+                          color: Colors.red,
+                        ))
+                  ],
                 ],
               ),
               Positioned(

@@ -1,7 +1,5 @@
 // ignore_for_file: unused_result
 
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,14 +29,10 @@ class UnitScaffold extends StatefulHookConsumerWidget {
 
 class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     final scrollController = useScrollController();
     final _page = useState(1);
     final _isAtBottom = useState(false);
-
-    log('_page ${_page.value}');
 
     ref.listen<Option<Either<RemoteFailure, List<Frame>>>>(
         frameNotifierProvider.select(
@@ -51,6 +45,9 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                 }, (frameResponse) {
                   if (frameResponse != []) {
                     _isAtBottom.value = false;
+                    ref
+                        .read(frameNotifierProvider.notifier)
+                        .addFrameList(frameResponse);
                   }
                 })));
 
@@ -81,10 +78,10 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
     };
 
     final frameList = ref.watch(frameNotifierProvider).frameList;
-    final isSearching = ref.watch(
-        frameSearchNotifierProvider.select((value) => value.isSearching));
-    final isLoading =
-        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
+
+    final isLoading = ref.watch(
+      frameNotifierProvider.select((value) => value.isProcessing),
+    );
 
     return KeyboardDismissOnTap(
       child: SafeArea(
@@ -123,7 +120,6 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                 ),
               ),
             ),
-            // drawer: Drawer(),
             body: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RefreshIndicator(
@@ -141,7 +137,7 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                         SizedBox(
                           height: 8,
                         ),
-                        if (!isSearching || !isLoading) ...[
+                        if (!isLoading) ...[
                           for (int index = 0;
                               index < frameList.length;
                               index++) ...[
@@ -164,8 +160,9 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                                 frame: frameList[index],
                               ),
                               style: ButtonStyle(
-                                  padding: MaterialStatePropertyAll(
-                                      EdgeInsets.zero)),
+                                padding:
+                                    MaterialStatePropertyAll(EdgeInsets.zero),
+                              ),
                             ),
                           ]
                         ]
@@ -181,12 +178,7 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
     final isOffline = ref.read(isOfflineStateProvider);
 
     if (!isOffline) {
-      await ref
-          .read(frameNotifierProvider.notifier)
-          .getFrameListByPage(page: page);
-      await ref
-          .read(frameOfflineNotifierProvider.notifier)
-          .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
+      await _getFrameByPageOnline(page);
       return;
     }
 
@@ -199,14 +191,16 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
       hasOfflineStorage: () => ref
           .read(frameNotifierProvider.notifier)
           .getFrameListOFFLINEByPage(page: page),
-      orElse: () async {
-        await ref
-            .read(frameNotifierProvider.notifier)
-            .getFrameListByPage(page: page);
-        await ref
-            .read(frameOfflineNotifierProvider.notifier)
-            .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
-      },
+      orElse: () => _getFrameByPageOnline(page),
     );
+  }
+
+  _getFrameByPageOnline(int page) async {
+    await ref
+        .read(frameNotifierProvider.notifier)
+        .getFrameListByPage(page: page);
+    await ref
+        .read(frameOfflineNotifierProvider.notifier)
+        .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
   }
 }

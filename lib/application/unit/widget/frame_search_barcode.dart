@@ -38,6 +38,8 @@ class FrameSearchBarcode extends ConsumerWidget {
                       .read(frameSearchNotifierProvider.notifier)
                       .changeSearchText(frame);
 
+                  ref.read(frameNotifierProvider.notifier).changeFrameList([]);
+
                   if (!isOffline) {
                     await ref
                         .read(frameNotifierProvider.notifier)

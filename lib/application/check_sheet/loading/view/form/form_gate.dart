@@ -34,6 +34,9 @@ class _FormGateState extends ConsumerState<FormGate> {
 
   @override
   Widget build(BuildContext context) {
+    final gateTextController = ref.watch(updateCSNotifierProvider
+        .select((value) => value.updateCSForm.gateTextController));
+
     ref.listen<Option<Either<RemoteFailure, List<CSUMSTGate>>>>(
         gateNotifierProvider.select(
           (state) => state.FOSOGate,
@@ -67,91 +70,76 @@ class _FormGateState extends ConsumerState<FormGate> {
                       return;
                     }
 
+                    gateTextController.text = def.nama ?? '';
                     ref
                         .read(updateCSNotifierProvider.notifier)
                         .changeGate(def.nama ?? '');
                   }
                 })));
 
-    final gates = ref.watch(gateNotifierProvider);
-    final defaultGate = gates.defaultGate;
-
-    final gateTextController = ref.watch(updateCSNotifierProvider
-        .select((value) => value.updateCSForm.gateTextController));
-
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 70,
-            width: 65,
+            height: 50,
+            width: 35,
             child: Center(
-              child: Text(
-                'LOKASI/GATE',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-                textAlign: TextAlign.center,
+              child: Icon(
+                Icons.store_mall_directory_outlined,
+                size: 35,
+                color: Palette.primaryColor,
               ),
             ),
           ),
         ),
         SizedBox(
-          width: 8,
+          width: 16,
         ),
         Flexible(
           flex: 1,
-          child: Builder(builder: (_) {
-            if (defaultGate == CSUMSTGate.initial()) {
-              //
-            } else {
-              final _nama = defaultGate.nama.toString();
-              gateTextController.text = _nama;
-            }
+          child: TextButton(
+            onPressed: () async {
+              final String? nama =
+                  await context.pushNamed(RouteNames.gateNameRoute);
 
-            return TextButton(
-              onPressed: () async {
-                final String? nama =
-                    await context.pushNamed(RouteNames.gateNameRoute);
+              if (nama != null) {
+                ref.read(updateCSNotifierProvider.notifier).changeGate(nama);
 
-                if (nama != null) {
-                  ref.read(updateCSNotifierProvider.notifier).changeGate(nama);
-
-                  ref
-                      .read(updateCSNotifierProvider)
-                      .updateCSForm
-                      .gateTextController
-                      .text = nama;
-                }
-              },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: gateTextController,
-                  decoration: Themes.formStyle(
-                    'Pilih Gate',
-                  ),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) => {},
-                  validator: (_) => ref
-                      .read(updateCSNotifierProvider)
-                      .updateCSForm
-                      .gate
-                      .value
-                      .fold(
-                        (f) => f.maybeMap(
-                          empty: (_) => 'Silahkan Masukan Gate disini',
-                          orElse: () => null,
-                        ),
-                        (_) => null,
-                      ),
+                ref
+                    .read(updateCSNotifierProvider)
+                    .updateCSForm
+                    .gateTextController
+                    .text = nama;
+              }
+            },
+            style:
+                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+            child: IgnorePointer(
+              ignoring: true,
+              child: TextFormField(
+                controller: gateTextController,
+                decoration: Themes.formStyle(
+                  'Pilih Gate',
                 ),
+                keyboardType: TextInputType.name,
+                onChanged: (value) => {},
+                validator: (_) => ref
+                    .read(updateCSNotifierProvider)
+                    .updateCSForm
+                    .gate
+                    .value
+                    .fold(
+                      (f) => f.maybeMap(
+                        empty: (_) => 'Silahkan Masukan Gate disini',
+                        orElse: () => null,
+                      ),
+                      (_) => null,
+                    ),
               ),
-            );
-          }),
+            ),
+          ),
         ),
         SizedBox(
           width: 8,

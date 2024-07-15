@@ -47,25 +47,30 @@ class DataUpdateLinearProgress extends ConsumerWidget {
       child: Visibility(
         visible: hasQueryData,
         child: Ink(
-          height: isOffline ? 20 : 30,
+          height: 30,
           width: MediaQuery.of(context).size.width,
           child: InkWell(
             onTap: () => context.pushNamed(RouteNames.dataUpdateQueryName),
             child: isOffline
                 ? Container(
                     color: Palette.secondaryColor,
-                    child: Text(
-                      'Data Pending (Offline)',
-                      style: Themes.customColor(
-                          FontWeight.normal, 11, Colors.white),
+                    child: Center(
+                      child: Text(
+                        'Data Pending (Offline)',
+                        style: Themes.customColor(
+                          FontWeight.normal,
+                          11,
+                          Colors.white,
+                        ),
+                      ),
                     ),
                   )
                 : LinearProgressIndicator(
                     color: Palette.secondaryColor,
-                    value: double.parse(
-                        (time / Constants.dataIntervalTimerInSeconds)
-                            .toString()),
                     semanticsLabel: 'Linear progress indicator',
+                    value: double.parse(
+                      (time / Constants.dataIntervalTimerInSeconds).toString(),
+                    ),
                   ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/csu_providers.dart';
@@ -34,6 +35,8 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
 
     final posisi = ref.watch(jenisPenyebabFrameNotifierProvider
         .select((value) => value.csuPosisiItems));
+
+    final isDefectTap = useState(false);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -94,17 +97,32 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                         Colors.black,
                       )),
                   SizedBox(
-                      height: 50,
+                      height: 65,
                       width: MediaQuery.of(context).size.width,
-                      child: DropdownButton<CSUItems>(
+                      child: DropdownButtonFormField<CSUItems>(
                         value: items.firstWhere(
                           (element) => element.id == ngState.idItem,
                           orElse: () => items.first,
                         ),
                         elevation: 1,
-                        underline: Container(),
+                        style: TextStyle(decoration: TextDecoration.none),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'kosong';
+                          }
+                          if (value.id == 0) {
+                            return 'pilih item';
+                          }
+
+                          if (isDefectTap.value == false) {
+                            return 'pilih item';
+                          }
+
+                          return null;
+                        },
                         onChanged: (CSUItems? value) {
                           if (value != null) {
+                            isDefectTap.value = true;
                             ref
                                 .read(updateCSUFrameNotifierProvider.notifier)
                                 .changeNGId(
@@ -123,10 +141,6 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                                   color: Colors.white,
                                   border: Border.all(
                                       color: Palette.primaryColor, width: 1)),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 4.0,
-                              ),
                               child: Row(
                                 children: [
                                   Flexible(
@@ -154,15 +168,24 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                         Colors.black,
                       )),
                   SizedBox(
-                      height: 50,
+                      height: 65,
                       width: MediaQuery.of(context).size.width,
-                      child: DropdownButton<CSUPosisi>(
+                      child: DropdownButtonFormField<CSUPosisi>(
                         value: posisi.firstWhere(
                           (element) => element.idPosisi == ngState.idPosisi,
                           orElse: () => posisi.first,
                         ),
                         elevation: 1,
-                        underline: Container(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'kosong';
+                          }
+                          if (value.idPosisi == 0) {
+                            return 'pilih item';
+                          }
+
+                          return null;
+                        },
                         onChanged: (CSUPosisi? value) {
                           if (value != null)
                             ref
@@ -176,31 +199,26 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                             (CSUPosisi value) {
                           return DropdownMenuItem<CSUPosisi>(
                             value: value,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 100,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Palette.primaryColor, width: 1)),
-                                padding: EdgeInsets.all(5.0),
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        '${value.idPosisi}. ${value.namaPosisiInd} (${value.namaPosisiEng})',
-                                        maxLines: 10,
-                                        style: Themes.customColor(
-                                          FontWeight.normal,
-                                          14,
-                                          Colors.black,
-                                        ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 100,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Palette.primaryColor, width: 1)),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      '${value.idPosisi}. ${value.namaPosisiInd} (${value.namaPosisiEng})',
+                                      maxLines: 10,
+                                      style: Themes.customColor(
+                                        FontWeight.normal,
+                                        14,
+                                        Colors.black,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -214,18 +232,25 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                         Colors.black,
                       )),
                   SizedBox(
-                    height: 8,
-                  ),
-                  SizedBox(
-                      height: 35,
+                      height: 65,
                       width: MediaQuery.of(context).size.width,
-                      child: DropdownButton<CSUJenisPenyebabItem>(
+                      child: DropdownButtonFormField<CSUJenisPenyebabItem>(
                         value: jenis.firstWhere(
                           (element) => element.id == ngState.idJenis,
                           orElse: () => jenis.first,
                         ),
                         elevation: 1,
-                        underline: Container(),
+                        style: TextStyle(decoration: TextDecoration.none),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'kosong';
+                          }
+                          if (value.id == 0) {
+                            return 'pilih item';
+                          }
+
+                          return null;
+                        },
                         onChanged: (CSUJenisPenyebabItem? value) {
                           // This is called when the user selects an item.
                           if (value != null)
@@ -247,8 +272,9 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(
-                                      color: Palette.primaryColor, width: 1)),
-                              padding: EdgeInsets.all(4),
+                                    color: Palette.primaryColor,
+                                    width: 1,
+                                  )),
                               child: Text(
                                 '${value.id}. ${value.ind} (${value.eng})',
                                 style: Themes.customColor(

@@ -54,7 +54,6 @@ class UserNotifier extends StateNotifier<UserState> {
     required Function checkAndUpdateStatus,
     required Function initializeDioRequest,
     required Function initializeAndCheckData,
-    required Function initializeAutoData,
     required Function sortDataFrameInSPK,
   }) async {
     setUser(user);
@@ -66,7 +65,7 @@ class UserNotifier extends StateNotifier<UserState> {
     await checkAndUpdateStatus();
     await initializeDioRequest();
     await initializeAndCheckData();
-    await initializeAutoData();
+
     await sortDataFrameInSPK();
   }
 

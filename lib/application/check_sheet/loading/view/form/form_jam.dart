@@ -25,31 +25,51 @@ class _FormJamState extends ConsumerState<FormJam> {
         Flexible(
           flex: 0,
           child: SizedBox(
-            height: 70,
-            width: 65,
+            height: 50,
+            width: 35,
             child: Center(
-              child: Text(
-                'JAM LOAD',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-                textAlign: TextAlign.center,
+              child: Icon(
+                Icons.access_time_outlined,
+                size: 35,
+                color: Palette.primaryColor,
               ),
             ),
           ),
         ),
         SizedBox(
-          width: 8,
+          width: 16,
         ),
         Flexible(
           flex: 1,
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: TextButton(
-              onPressed: () async {
+              onLongPress: () async {
                 final TimeOfDay? picked = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
                 );
+                if (picked != null) {
+                  final _tpicked = DateTime.now().copyWith(
+                    hour: picked.hour,
+                    minute: picked.minute,
+                  );
+
+                  final _time = _tpicked.toString();
+
+                  final _time2 = DateTime.now().toString();
+
+                  ref
+                      .read(updateCSNotifierProvider.notifier)
+                      .changeJamLoad(_time, _time2);
+
+                  final _text = DateFormat('HH:mm').format(_tpicked);
+                  jamEdit.text = _text;
+                }
+              },
+              onPressed: () async {
+                final TimeOfDay? picked =
+                    TimeOfDay.fromDateTime(DateTime.now());
 
                 if (picked != null) {
                   final _tpicked = DateTime.now().copyWith(

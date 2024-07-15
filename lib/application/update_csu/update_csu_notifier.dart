@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -195,9 +197,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
       // GET NG ITEM, JENIS, PENYEBAB
       for (int index = 0; index < NG.length; index++) {
         if (NG[index] == true) {
-          final UpdateCSUNGState updateStateNotGood =
-              state.updateFrameList.ngStates[index];
-          queryNgs.add(updateStateNotGood);
+          final ng = state.updateFrameList.ngStates[index];
+          queryNgs.add(ng);
         }
       }
 
@@ -216,6 +217,8 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
         queryId: csuIdQuery,
         isNG: isNG,
       );
+
+      log('$csuIdQuery');
 
       state = state.copyWith(
           isProcessing: false,
@@ -377,7 +380,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
     );
   }
 
-  bool isTappable({
+  bool isEditable({
     required CSUResult csuResult,
     required List<CSUResult> csuResultItems,
   }) {
@@ -394,7 +397,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
 
       bool isOut = _list == null ? false : _list.inout!;
 
-      return isOut ? true : true;
+      return isOut ? false : true;
     }
 
     return true;

@@ -20,59 +20,31 @@ class _FormKeteranganState extends ConsumerState<FormKeterangan> {
 
     final keteranganStr = keterangan.getOrLeave('');
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flexible(
-          flex: 0,
-          child: SizedBox(
-            height: 70,
-            width: 65,
-            child: Center(
-              child: Text(
-                'KETERANGAN',
-                style: Themes.customColor(
-                    FontWeight.bold, 14, Palette.primaryColor),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Palette.primaryColor, width: 2),
+          borderRadius: BorderRadius.circular(12)),
+      child: TextFormField(
+        initialValue: keteranganStr,
+        decoration: Themes.formStyle(
+          'Masukkan KETERANGAN (Jika Ada Temuan Abnormality Terkait APD, CCR) :',
+          hintFontSize: 11,
+          icon: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.note,
+                color: Palette.primaryColor,
+              )),
         ),
-        SizedBox(
-          width: 8,
-        ),
-        Flexible(
-          flex: 1,
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Palette.primaryColor, width: 2),
-                borderRadius: BorderRadius.circular(12)),
-            child: TextFormField(
-              initialValue: keteranganStr,
-              decoration: Themes.formStyle(
-                'Masukkan KETERANGAN (Jika Ada Temuan Abnormality Terkait APD, CCR) :',
-                hintFontSize: 11,
-                icon: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.note,
-                      color: Palette.primaryColor,
-                    )),
-              ),
-              onChanged: (value) {
-                ref
-                    .read(updateCSNotifierProvider.notifier)
-                    .changeKeterangan(value);
+        onChanged: (value) {
+          ref.read(updateCSNotifierProvider.notifier).changeKeterangan(value);
 
-                ref
-                    .read(updateSPKNotifierProvider.notifier)
-                    .changeKeterangan(keterangan: value);
-              },
-              maxLines: 2,
-            ),
-          ),
-        )
-      ],
+          ref
+              .read(updateSPKNotifierProvider.notifier)
+              .changeKeterangan(keterangan: value);
+        },
+        maxLines: 2,
+      ),
     );
   }
 }

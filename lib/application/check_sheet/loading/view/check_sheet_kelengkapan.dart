@@ -25,8 +25,11 @@ class _CheckSheetKelengkapanState extends ConsumerState<CheckSheetKelengkapan> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Palette.primaryColor, width: 2)),
-      padding: EdgeInsets.all(8),
+          border: Border.all(
+            color: Palette.primaryColor,
+            width: 2,
+          )),
+      padding: EdgeInsets.all(16),
       child: Column(
         children: [
           Text(

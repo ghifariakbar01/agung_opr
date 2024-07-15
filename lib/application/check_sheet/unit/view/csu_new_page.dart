@@ -1,14 +1,10 @@
-import 'package:agung_opr/domain/local_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
-import '../../../routes/route_names.dart';
-import '../../../update_frame/frame.dart';
 import '../../../widgets/alert_helper.dart';
 import '../../../widgets/loading_overlay.dart';
 import '../shared/csu_providers.dart';
@@ -86,7 +82,6 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                         .read(updateCSUFrameNotifierProvider.notifier)
                         .processNewCSUItems(items: items);
 
-                    // CSU JENIS
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
                         .getCSUJenisItems();
@@ -149,11 +144,11 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                               orElse: () => '',
                             ),
                           ),
-                        ), (CSUJenisResponse) async {
-                  if (CSUJenisResponse != []) {
+                        ), (csuJenisItems) async {
+                  if (csuJenisItems != []) {
                     ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .changeCSUJenisItems(CSUJenisResponse);
+                        .changeCSUJenisItems(csuJenisItems);
 
                     await ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
@@ -183,40 +178,12 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
                                   'Storage penuh. Tidak bisa menyimpan data CSU Posisi Item',
                             ),
                           ),
-                        ), (CSUPenyebabResponse) async {
-                  if (CSUPenyebabResponse != []) {
+                        ), (csuPosisiItems) async {
+                  if (csuPosisiItems != []) {
                     ref
                         .read(jenisPenyebabFrameNotifierProvider.notifier)
-                        .changeCSUPosisiItems(CSUPenyebabResponse);
+                        .changeCSUPosisiItems(csuPosisiItems);
                   }
-                })));
-
-    /*
-      CALLED Upon Saving Query
-    */
-    ref.listen<Option<Either<LocalFailure, Unit>>>(
-        updateCSUFrameNotifierProvider.select(
-          (state) => state.FOSOUpdateCSU,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold(
-                    (failure) => AlertHelper.showSnackBar(
-                          context,
-                          message: failure.map(
-                            storage: (_) =>
-                                'Storage penuh. Tidak bisa menyimpan data CSU PENYEBAB ITEM',
-                            empty: (_) => 'Data kosong',
-                            format: (error) => 'Error format. $error',
-                          ),
-                        ), (_) async {
-                  _saveCSULastPage();
-
-                  await ref
-                      .read(updateCSUFrameOfflineNotifierProvider.notifier)
-                      .CUUpdateCSUFrameOFFLINEStatus();
-
-                  context.replaceNamed(RouteNames.crannyNameRoute);
                 })));
 
     final isLoading = ref.watch(
@@ -231,11 +198,6 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     );
   }
 
-  void _saveCSULastPage() {
-    final Frame frame = ref.read(csuFrameNotifierProvider).frame;
-    ref.read(csuLastPageProvider.notifier).state = frame;
-  }
-
   Future<void> _getCSUItems() async {
     final offline = ref.read(isOfflineStateProvider);
     if (offline) {
@@ -248,44 +210,27 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
           hasOfflineStorage: () => ref
               .read(csuItemsFrameNotifierProvider.notifier)
               .getCSUItemsOFFLINE(),
-          orElse: () async {
-            await ref
-                .read(csuItemsFrameNotifierProvider.notifier)
-                .getCSUItems();
-
-            // CSU RESULT STORAGE
-            await ref
-                .read(csuItemsOfflineNotifierProvider.notifier)
-                .checkAndUpdateCSUItemsOFFLINEStatus();
-          });
+          orElse: () => _getCSUItemsOnline());
     } else {
-      await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
-      // CSU RESULT STORAGE
-      await ref
-          .read(csuItemsOfflineNotifierProvider.notifier)
-          .checkAndUpdateCSUItemsOFFLINEStatus();
+      await _getCSUItemsOnline();
     }
   }
 
   Future<void> _getCSUNGByID(int idCS) async {
-    final isOffline = ref.read(isOfflineStateProvider);
-
-    if (isOffline == false) {
-      await _getCSUNGByIdOnline(idCS);
-
-      return;
-    } else {
+    final offline = ref.read(isOfflineStateProvider);
+    if (offline) {
       await ref
           .read(csuNGByIDOfflineNotifierProvider.notifier)
           .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
 
       final CSNGByID = ref.read(csuNGByIDOfflineNotifierProvider);
       await CSNGByID.maybeWhen(
-        hasOfflineStorage: () => ref
-            .read(csuFrameNotifierProvider.notifier)
-            .getCSUNGByIdCSOFFLINE(idCS: widget.idCS),
-        orElse: () => _getCSUNGByIdOnline(idCS),
-      );
+          hasOfflineStorage: () => ref
+              .read(csuFrameNotifierProvider.notifier)
+              .getCSUNGByIdCSOFFLINE(idCS: widget.idCS),
+          orElse: () => _getCSUNGByIdOnline(idCS));
+    } else {
+      await _getCSUNGByIdOnline(idCS);
     }
   }
 
@@ -297,5 +242,13 @@ class _CSUNewPageState extends ConsumerState<CSUNewPage> {
     await ref
         .read(csuNGByIDOfflineNotifierProvider.notifier)
         .checkAndUpdateCSUNGByIDOFFLINEStatus(idCS: idCS);
+  }
+
+  Future<void> _getCSUItemsOnline() async {
+    await ref.read(csuItemsFrameNotifierProvider.notifier).getCSUItems();
+
+    await ref
+        .read(csuItemsOfflineNotifierProvider.notifier)
+        .checkAndUpdateCSUItemsOFFLINEStatus();
   }
 }

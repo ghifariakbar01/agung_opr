@@ -15,53 +15,69 @@ class SupirNotifier extends StateNotifier<SupirState> {
   Future<void> getSupirList({required int page}) async {
     final Either<RemoteFailure, List<Supir>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOSupir: none());
+    state = state.copyWith(
+      isProcessing: true,
+      FOSOSupir: none(),
+    );
 
     FOS = await _repository.getSupirList(page: page);
 
-    state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
+    state = state.copyWith(
+      isProcessing: false,
+      FOSOSupir: optionOf(FOS),
+    );
   }
 
   Future<void> getSupirListOFFLINE({required int page}) async {
     final Either<RemoteFailure, List<Supir>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOSupir: none());
+    state = state.copyWith(
+      isProcessing: true,
+      FOSOSupir: none(),
+    );
 
     FOS = await _repository.getSupirListOFFLINE(page: page);
 
-    state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
+    state = state.copyWith(
+      isProcessing: false,
+      FOSOSupir: optionOf(FOS),
+    );
   }
 
   Future<void> searchSupirList({required String search}) async {
     final Either<RemoteFailure, List<Supir>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOSupir: none());
+    state = state.copyWith(
+      isProcessing: true,
+      FOSOSupir: none(),
+    );
 
     FOS = await _repository.searchSupirList(search: search);
 
-    state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
+    state = state.copyWith(
+      isProcessing: false,
+      FOSOSupir: optionOf(FOS),
+    );
   }
 
   Future<void> searchSupirListOFFLINE({required String search}) async {
     final Either<RemoteFailure, List<Supir>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOSupir: none());
+    state = state.copyWith(
+      isProcessing: true,
+      FOSOSupir: none(),
+    );
 
     FOS = await _repository.searchSupirListOFFLINE(search: search);
 
-    state = state.copyWith(isProcessing: false, FOSOSupir: optionOf(FOS));
+    state = state.copyWith(
+      isProcessing: false,
+      FOSOSupir: optionOf(FOS),
+    );
   }
 
   void changeSelectedId(int idSelected) {
     state = state.copyWith(idSelected: idSelected);
-  }
-
-  void changeIsMore(bool hasMore) {
-    state = state.copyWith(hasMore: hasMore);
-  }
-
-  void changePage(int page) {
-    state = state.copyWith(page: page);
   }
 
   void replaceSupirList(List<Supir> supir) {

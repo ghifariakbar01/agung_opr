@@ -5,12 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../../constants/assets.dart';
-import '../../../constants/constants.dart';
 import '../../../domain/local_failure.dart';
 import '../../../domain/remote_failure.dart';
 import '../../../domain/user_failure.dart';
 import '../../../shared/providers.dart';
-import '../../auto_data/shared/auto_data_providers.dart';
 import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../model/shared/model_providers.dart';
@@ -41,7 +39,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
 
     // MODEL function get and update offline status
     Future<void> modelFunction() async {
-      // GET [500] LATEST DATA
       for (int i = 0; i < 5; i++) {
         await ref.read(modelNotifierProvider.notifier).getModelList(page: i);
       }
@@ -49,27 +46,12 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
       final list = await ref
           .read(modelNotifierProvider.notifier)
           .initModelListOFFLINE(limit: 5);
+
       ref.read(modelNotifierProvider.notifier).replaceModelList(list);
 
       await ref
           .read(modelOfflineNotifierProvider.notifier)
           .checkAndUpdateModelOFFLINEStatus();
-    }
-
-    // Saved Queries
-    Future<void> getSavedQueriesFunction() async {
-      await ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedQueryFromRepository();
-      await ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSQueryFromRepository();
-      await ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedCSUQueryFromRepository();
-      await ref
-          .read(autoDataUpdateFrameNotifierProvider.notifier)
-          .getSavedSPKQueryFromRepository();
     }
 
     //
@@ -110,10 +92,7 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                                   }),
                               initializeAndCheckData: () async {
                                 await modelFunction();
-                                await getSavedQueriesFunction();
                               },
-                              initializeAutoData: () =>
-                                  _startAutoData(getSavedQueriesFunction),
                               checkAndUpdateStatus: ref
                                   .read(authNotifierProvider.notifier)
                                   .checkAndUpdateAuthStatus,
@@ -168,7 +147,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
                   _isLoading.value = true;
 
                   await modelFunction();
-                  await getSavedQueriesFunction();
 
                   _isLoading.value = false;
                 })));
@@ -212,17 +190,6 @@ class _CrannyPageState extends ConsumerState<CrannyPage> {
           errorParsing: (error) => 'Error while parsing user. ${error.message}',
         ),
       ),
-    );
-  }
-
-  Future<void> _startAutoData(
-    Future<void> Function() getSavedQueriesFunction,
-  ) async {
-    final autoDatanotifier = ref.read(autoDataTimerNotifierProvider.notifier);
-
-    return autoDatanotifier.startTimer(
-      Constants.dataIntervalTimerInSeconds,
-      getSavedQueryFunction: getSavedQueriesFunction,
     );
   }
 }

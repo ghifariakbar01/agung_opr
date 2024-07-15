@@ -101,13 +101,11 @@ class RouterNotifier extends ChangeNotifier {
               path: RouteNames.spkName,
               builder: (context, state) => SPKPage(),
             ),
-
             GoRoute(
               name: RouteNames.gateNameRoute,
               path: RouteNames.gateName,
               builder: (context, state) => GatePage(),
             ),
-
             GoRoute(
               name: RouteNames.modelNameRoute,
               path: RouteNames.modelName,
@@ -148,7 +146,6 @@ class RouterNotifier extends ChangeNotifier {
               path: RouteNames.copyrightRoute,
               builder: (context, state) => CopyRightPage(),
             ),
-
             GoRoute(
               name: RouteNames.unitNameRoute,
               path: RouteNames.unitName,
@@ -171,12 +168,6 @@ class RouterNotifier extends ChangeNotifier {
                   int idCS = state.extra as int;
                   return CSUNewPage(idCS: idCS);
                 }),
-
-            // GoRoute(
-            //   name: RouteNames.checkSheetUnloadingNameRoute,
-            //   path: RouteNames.checkSheetUnloadingName,
-            //   builder: (context, state) => CheckSheetUnloadingPage(),
-            // ),
           ]),
     ];
   }

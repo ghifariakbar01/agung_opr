@@ -18,8 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SupirState {
   List<Supir> get supirList => throw _privateConstructorUsedError;
   int get idSelected => throw _privateConstructorUsedError;
-  int get page => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
   bool get isProcessing => throw _privateConstructorUsedError;
   Option<Either<RemoteFailure, List<Supir>>> get FOSOSupir =>
       throw _privateConstructorUsedError;
@@ -38,8 +36,6 @@ abstract class $SupirStateCopyWith<$Res> {
   $Res call(
       {List<Supir> supirList,
       int idSelected,
-      int page,
-      bool hasMore,
       bool isProcessing,
       Option<Either<RemoteFailure, List<Supir>>> FOSOSupir});
 }
@@ -59,8 +55,6 @@ class _$SupirStateCopyWithImpl<$Res, $Val extends SupirState>
   $Res call({
     Object? supirList = null,
     Object? idSelected = null,
-    Object? page = null,
-    Object? hasMore = null,
     Object? isProcessing = null,
     Object? FOSOSupir = null,
   }) {
@@ -73,14 +67,6 @@ class _$SupirStateCopyWithImpl<$Res, $Val extends SupirState>
           ? _value.idSelected
           : idSelected // ignore: cast_nullable_to_non_nullable
               as int,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -104,8 +90,6 @@ abstract class _$$_SupirStateCopyWith<$Res>
   $Res call(
       {List<Supir> supirList,
       int idSelected,
-      int page,
-      bool hasMore,
       bool isProcessing,
       Option<Either<RemoteFailure, List<Supir>>> FOSOSupir});
 }
@@ -123,8 +107,6 @@ class __$$_SupirStateCopyWithImpl<$Res>
   $Res call({
     Object? supirList = null,
     Object? idSelected = null,
-    Object? page = null,
-    Object? hasMore = null,
     Object? isProcessing = null,
     Object? FOSOSupir = null,
   }) {
@@ -137,14 +119,6 @@ class __$$_SupirStateCopyWithImpl<$Res>
           ? _value.idSelected
           : idSelected // ignore: cast_nullable_to_non_nullable
               as int,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -163,8 +137,6 @@ class _$_SupirState implements _SupirState {
   const _$_SupirState(
       {required final List<Supir> supirList,
       required this.idSelected,
-      required this.page,
-      required this.hasMore,
       required this.isProcessing,
       required this.FOSOSupir})
       : _supirList = supirList;
@@ -180,17 +152,13 @@ class _$_SupirState implements _SupirState {
   @override
   final int idSelected;
   @override
-  final int page;
-  @override
-  final bool hasMore;
-  @override
   final bool isProcessing;
   @override
   final Option<Either<RemoteFailure, List<Supir>>> FOSOSupir;
 
   @override
   String toString() {
-    return 'SupirState(supirList: $supirList, idSelected: $idSelected, page: $page, hasMore: $hasMore, isProcessing: $isProcessing, FOSOSupir: $FOSOSupir)';
+    return 'SupirState(supirList: $supirList, idSelected: $idSelected, isProcessing: $isProcessing, FOSOSupir: $FOSOSupir)';
   }
 
   @override
@@ -202,8 +170,6 @@ class _$_SupirState implements _SupirState {
                 .equals(other._supirList, _supirList) &&
             (identical(other.idSelected, idSelected) ||
                 other.idSelected == idSelected) &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
             (identical(other.FOSOSupir, FOSOSupir) ||
@@ -215,8 +181,6 @@ class _$_SupirState implements _SupirState {
       runtimeType,
       const DeepCollectionEquality().hash(_supirList),
       idSelected,
-      page,
-      hasMore,
       isProcessing,
       FOSOSupir);
 
@@ -231,8 +195,6 @@ abstract class _SupirState implements SupirState {
   const factory _SupirState(
       {required final List<Supir> supirList,
       required final int idSelected,
-      required final int page,
-      required final bool hasMore,
       required final bool isProcessing,
       required final Option<Either<RemoteFailure, List<Supir>>>
           FOSOSupir}) = _$_SupirState;
@@ -241,10 +203,6 @@ abstract class _SupirState implements SupirState {
   List<Supir> get supirList;
   @override
   int get idSelected;
-  @override
-  int get page;
-  @override
-  bool get hasMore;
   @override
   bool get isProcessing;
   @override

@@ -35,6 +35,10 @@ class FrameSearch extends ConsumerWidget {
                         search.isNotEmpty && search.length > 0
                             ? () async {
                                 ref
+                                    .read(frameNotifierProvider.notifier)
+                                    .changeFrameList([]);
+
+                                ref
                                     .read(frameSearchNotifierProvider.notifier)
                                     .changeIsSearch(true);
 
@@ -48,6 +52,10 @@ class FrameSearch extends ConsumerWidget {
                                     .changeSearchText('');
                               }()
                             : () async {
+                                ref
+                                    .read(frameNotifierProvider.notifier)
+                                    .changeFrameList([]);
+
                                 ref
                                     .read(frameSearchNotifierProvider.notifier)
                                     .changeIsSearch(false);
@@ -91,6 +99,8 @@ class FrameSearch extends ConsumerWidget {
           },
           onFieldSubmitted: (search) => search.isNotEmpty && search.length > 0
               ? () async {
+                  ref.read(frameNotifierProvider.notifier).changeFrameList([]);
+
                   ref
                       .read(frameSearchNotifierProvider.notifier)
                       .changeIsSearch(true);
@@ -104,6 +114,8 @@ class FrameSearch extends ConsumerWidget {
                       .changeSearchText('');
                 }()
               : () async {
+                  ref.read(frameNotifierProvider.notifier).changeFrameList([]);
+
                   ref
                       .read(frameSearchNotifierProvider.notifier)
                       .changeIsSearch(false);

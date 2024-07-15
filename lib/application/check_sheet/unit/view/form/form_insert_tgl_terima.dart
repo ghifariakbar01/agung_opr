@@ -48,14 +48,15 @@ class FormInsertTglTerima extends ConsumerWidget {
             height: 65,
             width: MediaQuery.of(context).size.width,
             child: TextButton(
-              onPressed: () async {
+              onLongPress: () async {
                 DateTime selectedDate = DateTime.now();
 
                 final DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: selectedDate,
-                    firstDate: DateTime(2015, 8),
-                    lastDate: selectedDate);
+                  context: context,
+                  initialDate: selectedDate,
+                  firstDate: DateTime(2015, 8),
+                  lastDate: selectedDate,
+                );
 
                 if (picked != null && picked != selectedDate) {
                   final date = DateFormat('yyyy-MM-dd').format(picked);
@@ -65,6 +66,16 @@ class FormInsertTglTerima extends ConsumerWidget {
 
                   tglTerimaTextController.text = date;
                 }
+              },
+              onPressed: () async {
+                DateTime picked = DateTime.now();
+
+                final date = DateFormat('yyyy-MM-dd').format(picked);
+                ref
+                    .read(updateCSUFrameNotifierProvider.notifier)
+                    .changeTglTerima(date);
+
+                tglTerimaTextController.text = date;
               },
               style: ButtonStyle(
                   padding: MaterialStatePropertyAll(EdgeInsets.zero)),
