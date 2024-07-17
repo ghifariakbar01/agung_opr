@@ -130,10 +130,6 @@ class CheckSheetButton extends ConsumerWidget {
                                 gate: updateCS.updateCSForm.gate.getOrLeave(''),
                                 updateFrameList: updateProvider.updateFrameList,
                               );
-
-                          await ref
-                              .read(updateFrameOfflineNotifierProvider.notifier)
-                              .CUUpdateFrameOFFLINEStatus();
                         }
 
                         await ref

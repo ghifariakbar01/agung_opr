@@ -195,9 +195,9 @@ class UpdateFrameRepository {
     required String gate,
   }) async {
     try {
-      final Map<String, String> mapOfCommands = {};
+      Map<String, String> mapOfCommands = {};
 
-      for (final frame in updateFrameList) {
+      updateFrameList.forEach((frame) {
         // TEST
         String dbName =
             Constants.isTesting ? 'opr_trs_ti_unit_test' : 'opr_trs_ti_unit';
@@ -224,15 +224,20 @@ class UpdateFrameRepository {
                 " warna = '$warnaStr', id_kend_type = '$idKendTypeInt', " +
                 " u_user = '$nama', u_date = '$cAndUDate' WHERE id_unit = $idUnitInt";
 
-        final Map<String, String> newMapOfCommands = {idUnitStr: command};
-        mapOfCommands.addAll(newMapOfCommands);
-      }
+        mapOfCommands.addAll({
+          idUnitStr: command,
+        });
+      });
 
       // THEN ADD mapOfCommands TO newMap by idSPK
 
-      final Map<String, Map<String, String>> newMap = {idSPK: mapOfCommands};
+      final Map<String, Map<String, String>> newMap = {
+        idSPK: mapOfCommands,
+      };
       // debugger(message: 'called');
-      await this._GETAndADDFrameSPKInMap(newFrameMap: newMap);
+      await this._GETAndADDFrameSPKInMap(
+        newFrameMap: newMap,
+      );
 
       return right(unit);
     } on FormatException catch (e) {
@@ -259,52 +264,45 @@ class UpdateFrameRepository {
           case true:
             () async {
               final json = jsonDecode(savedStrings!) as Map<String, dynamic>;
-              final Map<String, Map<String, dynamic>> parsedMap =
+              Map<String, Map<String, dynamic>> parsedMap =
                   convertToNestedMap(json);
 
               // FIRST, CHECK IF EXISTING KEY [NO SPK] EXIST
               final idSpk = newFrameMap.keys.first;
 
               // VALUES ARE [MAP OF ID UNIT AND QUERY]
-              final IdUnitQueryToInsert = newFrameMap.values.first;
+              final IdUnit = newFrameMap.values.first;
 
-              // EXISTING SECOND KEY [NO TI UNIT]
-              final keyIdUnitQueryToInsert =
-                  newFrameMap.values.first.keys.first;
+              // EXISTING SECOND KEY [NO TI UNIT] TO INSERT
+              final val = newFrameMap.values.first;
+              final IdUnitToInsert = val.keys.first;
+              final ValueToInsert = val.values.first;
 
-              final valueIdUnitQueryToInsert =
-                  newFrameMap.values.first.values.first;
-
-              // VALUES ARE Map<String, dynamic> , CHECK BY keyIdUnitQueryToInsert
-              final valuesParsedMap = parsedMap.values as Map<String, dynamic>;
-              final IdUnitQueryToInsertExist = valuesParsedMap.entries
+              // VALUES ARE Map<String, dynamic> , CHECK BY IdUnitToInsert
+              final savedParsedMap = parsedMap.values as Map<String, dynamic>;
+              final IdUnitQueryToInsertExist = savedParsedMap.entries
                       .firstWhereOrNull(
-                          (element) => element.key == keyIdUnitQueryToInsert) !=
+                          (element) => element.key == IdUnitToInsert) !=
                   null;
 
               if (parsedMap.containsKey(idSpk)) {
-                //
                 if (IdUnitQueryToInsertExist) {
-                  //
-
-                  IdUnitQueryToInsert.update(keyIdUnitQueryToInsert,
-                      (value) => valueIdUnitQueryToInsert);
+                  IdUnit.update(
+                    IdUnitToInsert,
+                    (_) => ValueToInsert,
+                  );
                 }
 
-                // THEN UPDATE parsedMap
-
-                //
-
-                // TI UNIT, QUERY VALUE
+                // THEN UPDATE parsedMap TI UNIT, QUERY VALUE
                 parsedMap.update(
-                    idSpk,
-                    (value) =>
-                        {keyIdUnitQueryToInsert: valueIdUnitQueryToInsert});
+                  idSpk,
+                  (_) => {IdUnitToInsert: ValueToInsert},
+                );
               }
               // IF EXISTING KEY NULL
               else {
                 parsedMap.addAll({
-                  idSpk: {keyIdUnitQueryToInsert: valueIdUnitQueryToInsert}
+                  idSpk: {IdUnitToInsert: ValueToInsert}
                 });
               }
 

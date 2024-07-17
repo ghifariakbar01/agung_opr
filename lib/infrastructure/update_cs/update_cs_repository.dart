@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -265,22 +266,10 @@ class UpdateCSRepository {
         .toString()
         .substring(0, DateTime.now().toString().length - 3);
 
-    List<int> idListDetail = [];
-    List<String> status = [];
-    List<String> keterangan = [];
+    List<String> query = [];
 
-    if (ngStates.isNotEmpty) {
-      for (final NG in ngStates) {
-        idListDetail.add(NG.id);
-        status.add(NG.status.name);
-        keterangan.add(NG.keterangan.getOrLeave(''));
-      }
-    }
-
-    Map<int, String> queryMap = {};
-
-    for (int i = 0; i < idListDetail.length; i++) {
-      final String insert = " INSERT INTO $dbName " +
+    ngStates.forEachIndexed((i, _) {
+      final el = " INSERT INTO $dbName " +
           " (id_kr_chk_dtl, id_kr_chk, c_date, u_date, c_user, u_user, id_list_dtl, status, ket) " +
           " VALUES " +
           " ( " +
@@ -290,18 +279,19 @@ class UpdateCSRepository {
           " '$cAndUDate', " +
           " '${_userModelWithPassword.nama}', " +
           " '${_userModelWithPassword.nama}', " +
-          "  ${idListDetail[i]}, " +
-          " '${status[i]}', " +
-          " '${keterangan[i]}' " +
+          "  ${ngStates[i].id}, " +
+          " '${ngStates[i].status.name}', " +
+          " '${ngStates[i].keterangan.getOrLeave('')}' " +
           " ) ";
 
-      queryMap.addAll({
-        idListDetail[i]: insert,
-      });
-    }
+      query.add(el);
+    });
 
     // GET QUERY STRING
-    String queryString = queryMap.isNotEmpty ? queryMap.values.join(' ') : '';
+    String queryString = query.fold(
+      "",
+      (previousValue, element) => previousValue + ' ' + element,
+    );
 
     CSIDQuery csIdQuery = CSIDQuery(
       idSPK: idSPK,

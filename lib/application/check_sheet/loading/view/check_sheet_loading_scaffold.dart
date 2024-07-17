@@ -1,3 +1,4 @@
+import 'package:agung_opr/application/check_sheet/loading/view/check_sheet_update_frame_button.dart';
 import 'package:agung_opr/application/double/double_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -13,7 +14,8 @@ import '../../../spk/view/spk_item.dart';
 import '../../../update_frame/frame_state.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 import '../../../update_frame/view/form/form_update_sppdc.dart';
-import '../../../update_frame/view/update_frame_item_scaffold.dart';
+
+import '../../../update_frame/view/update_frame_item.dart';
 import '../../../widgets/v_appbar.dart';
 import '../../../widgets/v_async_widget.dart';
 import 'check_sheet_button.dart';
@@ -222,8 +224,8 @@ class _CheckSheetLoadingScaffoldState
                                   for (int index = 0;
                                       index < frameList.frameList.length;
                                       index++) ...[
-                                    UpdateFrameItemScaffold(
-                                      index,
+                                    UpdateFrameItem(
+                                      index: index,
                                     ),
                                   ]
                                 ]
@@ -283,6 +285,7 @@ class _CheckSheetLoadingScaffoldState
                         height: 8,
                       ),
                       CheckSheetKelengkapan(),
+                      CheckSheetUpdateFrameButton(),
                       CheckSheetButton(),
                       SizedBox(
                         height: 110,

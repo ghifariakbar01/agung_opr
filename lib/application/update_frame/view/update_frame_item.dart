@@ -3,6 +3,8 @@ import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../domain/value_objects_copy.dart';
+import '../shared/update_frame_providers.dart';
 import 'form/form_update_frame.dart';
 import 'form/form_update_model.dart';
 
@@ -13,17 +15,16 @@ class UpdateFrameItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // log('INDEX UPDATE FRAME $index');
+    ref.listen<FrameUnit>(
+      updateFrameNotifierProvider
+          .select((value) => value.updateFrameList[index].frame),
+      (_, __) => ref.read(updateFrameNotifierProvider.notifier).checkIfValid(),
+    );
 
-    // final showErrorMessage = ref.watch(updateFrameNotifierProvider.select(
-    //     (value) => value.updateFrameList.length < index
-    //         ? false
-    //         : value.updateFrameList[index].isShowError));
-
-    // final frame = ref.watch(frameNotifierProvider.select((value) =>
-    //     value.frameList.length < index || value.frameList.isEmpty
-    //         ? []
-    //         : value.frameList[index]));
+    ref.listen<SPPDC>(
+      updateFrameNotifierProvider.select((value) => value.sppdc),
+      (_, __) => ref.read(updateFrameNotifierProvider.notifier).checkIfValid(),
+    );
 
     return Form(
       autovalidateMode: AutovalidateMode.always,
@@ -31,7 +32,8 @@ class UpdateFrameItem extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(width: 2, color: Palette.primaryColor)),
+            border: Border.all(width: 2, color: Palette.primaryColor),
+          ),
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
@@ -62,10 +64,6 @@ class UpdateFrameItem extends ConsumerWidget {
                 height: 8,
               ),
 
-              // FormUpdateEngine(
-              //   index: index,
-              // ),
-
               SizedBox(
                 height: 8,
               ),
@@ -85,51 +83,6 @@ class UpdateFrameItem extends ConsumerWidget {
               SizedBox(
                 height: 8,
               ),
-
-              // Button Simpan
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     // Update Frame
-              //     // Flexible(
-              //     //   flex: 1,
-              //     //   child: SizedBox(
-              //     //     height: 65,
-              //     //     child: VButton(
-              //     //         label: 'SIMPAN',
-              //     //         onPressed: () async {
-              //     //           await ref
-              //     //               .read(updateFrameNotifierProvider.notifier)
-              //     //               .updateFrame(index: index);
-
-              //     //           await ref
-              //     //               .read(
-              //     //                   updateFrameOfflineNotifierProvider.notifier)
-              //     //               .CUUpdateFrameOFFLINEStatus();
-              //     //         }),
-              //     //   ),
-              //     // ),
-
-              //     // CSU
-              //     // Flexible(
-              //     //   flex: 1,
-              //     //   child: SizedBox(
-              //     //     height: 65,
-              //     //     child: VButton(
-              //     //         label: 'CSU',
-              //     //         onPressed: () async {
-              //     //           if (frame is Frame) {
-              //     //             Map<String, dynamic> frameMap = frame.toJson();
-
-              //     //             await context.pushNamed(
-              //     //                 RouteNames.CSUListNameRoute,
-              //     //                 extra: frameMap);
-              //     //           }
-              //     //         }),
-              //     //   ),
-              //     // ),
-              //   ],
-              // )
             ],
           ),
         ),

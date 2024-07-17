@@ -97,7 +97,10 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(updateFrameList: list);
   }
 
-  void changeFillEmptyList({required int length, required List<Frame> frame}) {
+  void changeFillEmptyList({
+    required int length,
+    required List<Frame> frame,
+  }) {
     final generateList = List.generate(
         length,
         (index) => UpdateFrameStateSingle(
@@ -148,19 +151,24 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
       warnaTextController: generateListWarnaTextController,
     );
 
-    final frameHasSPPDC =
-        frame.firstWhereOrNull((element) => element.sppdc != null);
+    final frameHasSPPDC = frame.firstWhereOrNull(
+      (element) => element.sppdc != null,
+    );
 
     if (frameHasSPPDC != null && frameHasSPPDC.sppdc != null) {
-      final sjkbText =
-          TextEditingController(text: frameHasSPPDC.sppdc.toString());
+      final sjkbText = TextEditingController(
+        text: frameHasSPPDC.sppdc.toString(),
+      );
 
       state = state.copyWith(
-          sjkbTextController: sjkbText, sppdc: SPPDC(frameHasSPPDC.sppdc!));
+        sjkbTextController: sjkbText,
+        sppdc: SPPDC(frameHasSPPDC.sppdc!),
+      );
     } else {
       state = state.copyWith(
-          sjkbTextController: TextEditingController(text: ''),
-          sppdc: SPPDC(''));
+        sjkbTextController: TextEditingController(text: ''),
+        sppdc: SPPDC(''),
+      );
     }
   }
 

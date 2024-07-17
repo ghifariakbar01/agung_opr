@@ -169,6 +169,26 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
                     .read(updateSPKOfflineNotifierProvider.notifier)
                     .CUUpdateSPKOFFLINEStatus())));
 
+    ref.listen<Option<Either<LocalFailure, Unit>>>(
+        updateFrameNotifierProvider.select(
+          (state) => state.FOSOUpdateFrame,
+        ),
+        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
+            () {},
+            (either) => either.fold(
+                (failure) => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.map(
+                        empty: (_) => 'Data kosong',
+                        format: (error) => 'Error format. $error',
+                        storage: (_) =>
+                            'Storage penuh. Tidak bisa menyimpan data Update Frame',
+                      ),
+                    ),
+                (_) => ref
+                    .read(updateFrameOfflineNotifierProvider.notifier)
+                    .CUUpdateFrameOFFLINEStatus())));
+
     final isLoading = ref.watch(
             frameNotifierProvider.select((value) => value.isProcessing)) ||
         ref.watch(
@@ -184,19 +204,18 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
   }
 
   void _onFrame(List<Frame> frameResponse) {
-    if (frameResponse != []) {
-      ref.read(frameNotifierProvider.notifier).changeFrameList(frameResponse);
+    final responseLEN = frameResponse.length;
 
-      final responseLEN = frameResponse.length;
-
-      ref
-          .read(frameNotifierProvider.notifier)
-          .changeFillEmptyFOSOSaveFrameList(length: responseLEN);
-
+    if (responseLEN != 0) {
       /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-      ref
-          .read(updateFrameNotifierProvider.notifier)
-          .changeFillEmptyList(length: responseLEN, frame: frameResponse);
+      ref.read(updateFrameNotifierProvider.notifier).changeFillEmptyList(
+            length: responseLEN,
+            frame: frameResponse,
+          );
+
+      ref.read(frameNotifierProvider.notifier).changeFrameList(
+            frameResponse,
+          );
     }
   }
 

@@ -35,6 +35,7 @@ class _UnitPageState extends ConsumerState<UnitPage> {
 
   Future<void> _getFrame() async {
     final isOffline = ref.read(isOfflineStateProvider);
+
     if (!isOffline) {
       await _getFrameOnline();
     } else {
@@ -121,9 +122,6 @@ class _UnitPageState extends ConsumerState<UnitPage> {
         .changeFrameList([..._prev, ...frameResponse]);
 
     final int _len = _prev.length + frameResponse.length;
-    ref
-        .read(frameNotifierProvider.notifier)
-        .changeFillEmptyFOSOSaveFrameList(length: _len);
 
     /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
     ref
@@ -137,13 +135,11 @@ class _UnitPageState extends ConsumerState<UnitPage> {
         .changeFrameList([...frameResponse]);
 
     final int _len = frameResponse.length;
-    ref
-        .read(frameNotifierProvider.notifier)
-        .changeFillEmptyFOSOSaveFrameList(length: _len);
 
     /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-    ref
-        .read(updateFrameNotifierProvider.notifier)
-        .changeFillEmptyList(length: _len, frame: [...frameResponse]);
+    ref.read(updateFrameNotifierProvider.notifier).changeFillEmptyList(
+      length: _len,
+      frame: [...frameResponse],
+    );
   }
 }

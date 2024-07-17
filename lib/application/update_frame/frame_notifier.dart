@@ -104,18 +104,6 @@ class FrameNotifier extends StateNotifier<FrameState> {
     ]);
   }
 
-  void changeFillEmptyFOSOSaveFrameList({required int length}) {
-    Either<LocalFailure, Unit>? FOS;
-
-    final generateList = List.generate(length, (index) => optionOf(FOS));
-
-    state = state.copyWith(FOSOSaveFrame: generateList);
-  }
-
-  void resetFOSOSaveFrame() {
-    state = state.copyWith(FOSOSaveFrame: []);
-  }
-
   List<Option<Either<LocalFailure, Unit>>> isFOSONotOK() {
     List<Option<Either<LocalFailure, Unit>>> list = [...state.FOSOSaveFrame];
 
