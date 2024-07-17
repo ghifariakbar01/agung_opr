@@ -17,6 +17,8 @@ class Frame with _$Frame {
     @JsonKey(name: 'no_invoice') required String? sppdc,
     @JsonKey(name: 'last_spk') required String? lastSpk,
     @JsonKey(name: 'c_date') required String? tglDibuat,
+    @JsonKey(name: 'u_date') required String? uDate,
+    @JsonKey(name: 'u_user') required String? uUser,
     @JsonKey(name: 'id_kend_type') required int? idKendType,
   }) = _Frame;
 
@@ -26,6 +28,8 @@ class Frame with _$Frame {
         warna: '',
         sppdc: '',
         engine: '',
+        uDate: '',
+        uUser: '',
         custnm: '',
         lastSpk: '',
         tglDibuat: '',

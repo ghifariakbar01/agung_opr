@@ -6,6 +6,8 @@ part 'update_frame_single_state.freezed.dart';
 @freezed
 class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
   const factory UpdateFrameStateSingle({
+    required String uDate,
+    required String uUser,
     required IDUnit idUnit,
     required FrameUnit frame,
     required WarnaUnit warna,
@@ -15,6 +17,8 @@ class UpdateFrameStateSingle with _$UpdateFrameStateSingle {
   }) = _UpdateFrameStateSingle;
 
   factory UpdateFrameStateSingle.initial() => UpdateFrameStateSingle(
+        uDate: '',
+        uUser: '',
         isShowError: false,
         idUnit: IDUnit(''),
         frame: FrameUnit(''),

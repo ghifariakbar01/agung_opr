@@ -38,6 +38,8 @@ class FrameRemoteService {
             " T.id_kend_type," +
             " T.no_invoice," +
             " T.c_date," +
+            " T.u_date," +
+            " T.u_user," +
             "(SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +
             " $dbName AS T" +

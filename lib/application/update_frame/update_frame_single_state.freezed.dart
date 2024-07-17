@@ -22,6 +22,8 @@ mixin _$UpdateFrameStateSingle {
   bool get isShowError => throw _privateConstructorUsedError;
   EngineUnit get engine => throw _privateConstructorUsedError;
   IDKendType get idKendType => throw _privateConstructorUsedError;
+  String get uDate => throw _privateConstructorUsedError;
+  String get uUser => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateFrameStateSingleCopyWith<UpdateFrameStateSingle> get copyWith =>
@@ -40,7 +42,9 @@ abstract class $UpdateFrameStateSingleCopyWith<$Res> {
       WarnaUnit warna,
       bool isShowError,
       EngineUnit engine,
-      IDKendType idKendType});
+      IDKendType idKendType,
+      String uDate,
+      String uUser});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
     Object? isShowError = null,
     Object? engine = null,
     Object? idKendType = null,
+    Object? uDate = null,
+    Object? uUser = null,
   }) {
     return _then(_value.copyWith(
       idUnit: null == idUnit
@@ -89,6 +95,14 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
+      uDate: null == uDate
+          ? _value.uDate
+          : uDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      uUser: null == uUser
+          ? _value.uUser
+          : uUser // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -107,7 +121,9 @@ abstract class _$$_UpdateFrameStateSingleCopyWith<$Res>
       WarnaUnit warna,
       bool isShowError,
       EngineUnit engine,
-      IDKendType idKendType});
+      IDKendType idKendType,
+      String uDate,
+      String uUser});
 }
 
 /// @nodoc
@@ -128,6 +144,8 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
     Object? isShowError = null,
     Object? engine = null,
     Object? idKendType = null,
+    Object? uDate = null,
+    Object? uUser = null,
   }) {
     return _then(_$_UpdateFrameStateSingle(
       idUnit: null == idUnit
@@ -154,6 +172,14 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
+      uDate: null == uDate
+          ? _value.uDate
+          : uDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      uUser: null == uUser
+          ? _value.uUser
+          : uUser // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -167,7 +193,9 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
       required this.warna,
       required this.isShowError,
       required this.engine,
-      required this.idKendType});
+      required this.idKendType,
+      required this.uDate,
+      required this.uUser});
 
   @override
   final IDUnit idUnit;
@@ -181,10 +209,14 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
   final EngineUnit engine;
   @override
   final IDKendType idKendType;
+  @override
+  final String uDate;
+  @override
+  final String uUser;
 
   @override
   String toString() {
-    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, warna: $warna, isShowError: $isShowError, engine: $engine, idKendType: $idKendType)';
+    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, warna: $warna, isShowError: $isShowError, engine: $engine, idKendType: $idKendType, uDate: $uDate, uUser: $uUser)';
   }
 
   @override
@@ -199,12 +231,14 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
                 other.isShowError == isShowError) &&
             (identical(other.engine, engine) || other.engine == engine) &&
             (identical(other.idKendType, idKendType) ||
-                other.idKendType == idKendType));
+                other.idKendType == idKendType) &&
+            (identical(other.uDate, uDate) || other.uDate == uDate) &&
+            (identical(other.uUser, uUser) || other.uUser == uUser));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, idUnit, frame, warna, isShowError, engine, idKendType);
+  int get hashCode => Object.hash(runtimeType, idUnit, frame, warna,
+      isShowError, engine, idKendType, uDate, uUser);
 
   @JsonKey(ignore: true)
   @override
@@ -221,7 +255,9 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
       required final WarnaUnit warna,
       required final bool isShowError,
       required final EngineUnit engine,
-      required final IDKendType idKendType}) = _$_UpdateFrameStateSingle;
+      required final IDKendType idKendType,
+      required final String uDate,
+      required final String uUser}) = _$_UpdateFrameStateSingle;
 
   @override
   IDUnit get idUnit;
@@ -235,6 +271,10 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
   EngineUnit get engine;
   @override
   IDKendType get idKendType;
+  @override
+  String get uDate;
+  @override
+  String get uUser;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateFrameStateSingleCopyWith<_$_UpdateFrameStateSingle> get copyWith =>

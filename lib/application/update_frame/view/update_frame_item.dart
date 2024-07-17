@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../domain/value_objects_copy.dart';
 import '../shared/update_frame_providers.dart';
 import 'form/form_update_frame.dart';
+import 'form/form_update_info.dart';
 import 'form/form_update_model.dart';
 
 class UpdateFrameItem extends ConsumerWidget {
@@ -37,7 +38,6 @@ class UpdateFrameItem extends ConsumerWidget {
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
-              // Header
               Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -83,6 +83,8 @@ class UpdateFrameItem extends ConsumerWidget {
               SizedBox(
                 height: 8,
               ),
+
+              FormUpdateInfo(index: index),
             ],
           ),
         ),

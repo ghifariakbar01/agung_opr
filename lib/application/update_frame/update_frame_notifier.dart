@@ -105,6 +105,8 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
         length,
         (index) => UpdateFrameStateSingle(
               isShowError: false,
+              uDate: frame[index].uDate ?? '',
+              uUser: frame[index].uUser ?? '',
               frame: FrameUnit(frame[index].frame ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
               engine: EngineUnit(frame[index].engine ?? ''),
