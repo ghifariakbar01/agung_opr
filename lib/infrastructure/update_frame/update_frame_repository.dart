@@ -151,12 +151,6 @@ class UpdateFrameRepository {
                 jsonDecode(savedStrings!) as Map<String, dynamic>,
               );
 
-              if (parsedMap.entries.length == 1) {
-                await _storage.clear();
-
-                return unit;
-              }
-
               parsedMap.removeWhere((_, value) {
                 final _val = value.values;
                 return _val.firstWhere((e) => e == query) == query;
@@ -168,7 +162,7 @@ class UpdateFrameRepository {
             }();
             break;
           case false:
-            throw LocalFailure.empty();
+            return unit;
         }
       } else {
         throw LocalFailure.empty();

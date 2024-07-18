@@ -23,8 +23,11 @@ class UpdateFrameRemoteService {
         "command": "$query",
       });
 
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
+      final response = await _dio.post(
+        '',
+        data: jsonEncode(data),
+        options: Options(contentType: 'text/plain'),
+      );
 
       log('data ${jsonEncode(data)}');
       log('response $response');
@@ -36,8 +39,6 @@ class UpdateFrameRemoteService {
         // HERE
         return unit;
       } else {
-        debugger(message: 'called');
-
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;
 
