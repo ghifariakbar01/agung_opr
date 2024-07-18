@@ -206,17 +206,15 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
   void _onFrame(List<Frame> frameResponse) {
     final responseLEN = frameResponse.length;
 
-    if (responseLEN != 0) {
-      /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-      ref.read(updateFrameNotifierProvider.notifier).changeFillEmptyList(
-            length: responseLEN,
-            frame: frameResponse,
-          );
+    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
+    ref.read(updateFrameNotifierProvider.notifier).changeFillEmptyList(
+          length: responseLEN,
+          frame: frameResponse,
+        );
 
-      ref.read(frameNotifierProvider.notifier).changeFrameList(
-            frameResponse,
-          );
-    }
+    ref.read(frameNotifierProvider.notifier).changeFrameList(
+          frameResponse,
+        );
   }
 
   Future<void> _onCSJenis(List<CSJenis> csJenis) async {
