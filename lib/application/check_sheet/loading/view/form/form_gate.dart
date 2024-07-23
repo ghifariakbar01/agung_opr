@@ -115,7 +115,7 @@ class _FormGateState extends ConsumerState<FormGate> {
               }
             },
             style:
-                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
             child: IgnorePointer(
               ignoring: true,
               child: TextFormField(

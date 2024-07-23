@@ -136,7 +136,7 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                   }
                 },
                 style: ButtonStyle(
-                    padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                    padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                 child: IgnorePointer(
                   ignoring: true,
                   child: TextFormField(

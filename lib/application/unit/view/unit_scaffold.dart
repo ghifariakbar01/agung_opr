@@ -96,7 +96,7 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
               color: Palette.greySecondary,
               child: TextButton(
                 style: ButtonStyle(
-                    padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                    padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                 onPressed: () => context.pop(),
                 child: Row(
                   children: [
@@ -161,7 +161,7 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                               ),
                               style: ButtonStyle(
                                 padding:
-                                    MaterialStatePropertyAll(EdgeInsets.zero),
+                                    WidgetStatePropertyAll(EdgeInsets.zero),
                               ),
                             ),
                           ]

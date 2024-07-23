@@ -48,8 +48,7 @@ class SupirScaffold extends ConsumerWidget {
                             supir: supirList[i],
                           ),
                           style: ButtonStyle(
-                              padding:
-                                  MaterialStatePropertyAll(EdgeInsets.zero)),
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                         ),
                       )
                     ]
@@ -61,8 +60,8 @@ class SupirScaffold extends ConsumerWidget {
             width: MediaQuery.of(context).size.width,
             color: Palette.greySecondary,
             child: TextButton(
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              style:
+                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
               onPressed: () => context.pop(),
               child: Row(
                 children: [

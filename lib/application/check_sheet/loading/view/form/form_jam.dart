@@ -89,8 +89,8 @@ class _FormJamState extends ConsumerState<FormJam> {
                   jamEdit.text = _text;
                 }
               },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              style:
+                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(

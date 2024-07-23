@@ -76,8 +76,8 @@ class FormInsertTglKirim extends ConsumerWidget {
 
                 tglKirimTextController.text = date;
               },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              style:
+                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(

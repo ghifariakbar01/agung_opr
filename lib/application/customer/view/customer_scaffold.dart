@@ -41,7 +41,7 @@ class CustomerScaffold extends ConsumerWidget {
                             .read(customerNotifierProvider.notifier)
                             .insertCustomer(customer: customerList[i]),
                         style: ButtonStyle(
-                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                         child: CustomerItem(
                           customer: customerList[i],
                         ),
@@ -58,7 +58,7 @@ class CustomerScaffold extends ConsumerWidget {
           color: Palette.greySecondary,
           child: TextButton(
             style:
-                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
             onPressed: () => context.pop(),
             child: Row(
               children: [

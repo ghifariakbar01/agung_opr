@@ -61,8 +61,8 @@ class FormInsertSupirSDR extends ConsumerWidget {
                   supirSDRTextController.text = id;
                 }
               },
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              style:
+                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
               child: IgnorePointer(
                 ignoring: true,
                 child: TextFormField(

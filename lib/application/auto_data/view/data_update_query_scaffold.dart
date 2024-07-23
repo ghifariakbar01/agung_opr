@@ -36,8 +36,8 @@ class DataUpdateQueryScaffold extends ConsumerWidget {
             width: MediaQuery.of(context).size.width,
             color: Palette.greySecondary,
             child: TextButton(
-              style: ButtonStyle(
-                  padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              style:
+                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
               onPressed: () => context.pop(),
               child: Row(
                 children: [

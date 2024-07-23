@@ -112,8 +112,8 @@ class CSUResultScaffold extends ConsumerWidget {
                                 index: index,
                               ),
                               style: ButtonStyle(
-                                  padding: MaterialStatePropertyAll(
-                                      EdgeInsets.zero)),
+                                  padding:
+                                      WidgetStatePropertyAll(EdgeInsets.zero)),
                             ),
                           ),
                         ]
@@ -136,7 +136,7 @@ class VBottomNav extends ConsumerWidget {
       width: MediaQuery.of(context).size.width,
       color: Palette.greySecondary,
       child: TextButton(
-        style: ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+        style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
         onPressed: () {
           ref.read(csuFrameNotifierProvider.notifier).changeCSUResultList([]);
           context.pop();

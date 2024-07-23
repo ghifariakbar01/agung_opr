@@ -71,7 +71,7 @@ class ModelScaffold extends ConsumerWidget {
                           context.pop(modelId);
                         },
                         style: ButtonStyle(
-                            padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                         child: ModelItem(
                           model: modelList[i],
                         ),
@@ -88,7 +88,7 @@ class ModelScaffold extends ConsumerWidget {
           color: Palette.greySecondary,
           child: TextButton(
             style:
-                ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
             onPressed: () => context.pop(),
             child: Row(
               children: [
