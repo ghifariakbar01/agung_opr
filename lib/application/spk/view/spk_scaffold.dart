@@ -47,9 +47,6 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
 
     final spkList = hideDone.value ? _isEditedSPK : _isNotEditedSPK;
 
-    final isSearching = ref
-        .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
-
     /* --- SCROLL CONTROLLER START ---*/
     final controller = useScrollController();
     final isLoading =
@@ -124,34 +121,30 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                       Builder(builder: (context) {
                         final spkItem = spkList[i];
 
-                        return IgnorePointer(
-                          ignoring: isSearching,
-                          child: TextButton(
-                            onPressed: () async {
-                              changeModeAndTipe();
+                        return TextButton(
+                          onPressed: () async {
+                            changeModeAndTipe();
 
-                              Map<String, dynamic> spkMap = spkItem.toJson();
-                              await context.pushNamed(
-                                extra: spkMap,
-                                RouteNames.checkSheetLoadingNameRoute,
-                              );
-                            },
-                            child: SPKItem(
-                              isEdit: spkItem.isEdit ?? false,
-                              nomorSpk: spkItem.spkNo,
-                              uUser: spkItem.updatedUser ?? '',
-                              uDate: spkItem.updatedDate ?? '',
-                              nomorPolisi: '${spkItem.nopol}',
-                              namaTrayek: spkItem.namaTrayek ?? '',
-                              tglBerangkat:
-                                  'TGL BERANGKAT: ${spkItem.tglBerangkat}',
-                              namaDriver:
-                                  '${spkItem.supir1Nm ?? ''} ${spkItem.supir2Nm != null ? '/ ${spkItem.supir2Nm}' : ''}',
-                            ),
-                            style: ButtonStyle(
-                                padding:
-                                    WidgetStatePropertyAll(EdgeInsets.zero)),
+                            Map<String, dynamic> spkMap = spkItem.toJson();
+                            await context.pushNamed(
+                              extra: spkMap,
+                              RouteNames.checkSheetLoadingNameRoute,
+                            );
+                          },
+                          child: SPKItem(
+                            isEdit: spkItem.isEdit ?? false,
+                            nomorSpk: spkItem.spkNo,
+                            uUser: spkItem.updatedUser ?? '',
+                            uDate: spkItem.updatedDate ?? '',
+                            nomorPolisi: '${spkItem.nopol}',
+                            namaTrayek: spkItem.namaTrayek ?? '',
+                            tglBerangkat:
+                                'TGL BERANGKAT: ${spkItem.tglBerangkat}',
+                            namaDriver:
+                                '${spkItem.supir1Nm ?? ''} ${spkItem.supir2Nm != null ? '/ ${spkItem.supir2Nm}' : ''}',
                           ),
+                          style: ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                         );
                       })
                     ]

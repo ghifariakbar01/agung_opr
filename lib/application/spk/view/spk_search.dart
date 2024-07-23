@@ -12,11 +12,13 @@ class SPKSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final search = ref
-        .watch(spkSearchNotifierProvider.select((value) => value.searchText));
+    final search = ref.watch(
+      spkSearchNotifierProvider.select((value) => value.searchText),
+    );
 
-    final focusNode =
-        ref.watch(spkSearchNotifierProvider.select((value) => value.focusNode));
+    final focusNode = ref.watch(
+      spkSearchNotifierProvider.select((value) => value.focusNode),
+    );
 
     return SizedBox(
       height: 48,
