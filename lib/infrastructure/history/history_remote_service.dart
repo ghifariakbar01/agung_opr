@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agung_opr/infrastructure/dio_extensions.dart';
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 import '../../application/history/history.dart';
 import '../../constants/constants.dart';
@@ -17,8 +17,14 @@ class HistoryRemoteService {
 
   Future<List<HistoryCheckSheet>> getHistoryCheckSheet({
     required String cUser,
+    required String nopol,
+    required DateTime start,
+    required DateTime end,
   }) async {
     String dbName = Constants.isTesting ? 'pool_chk_kr_test' : 'pool_chk_kr';
+
+    final startStr = DateFormat('yyyy-MM-dd').format(start);
+    final endStr = DateFormat('yyyy-MM-dd').format(end);
 
     try {
       final data = _dioRequestNotifier;
@@ -26,6 +32,8 @@ class HistoryRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command": "SELECT * FROM $dbName WHERE c_user = '$cUser' " +
+            " AND nopol LIKE '%$nopol%' " +
+            " AND c_date BETWEEN '$startStr' AND '$endStr' " +
             " ORDER BY c_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY ",
       });
 
@@ -86,9 +94,14 @@ class HistoryRemoteService {
 
   Future<List<HistoryCSUNg>> getHistoryCSUNg({
     required String cUser,
+    required DateTime start,
+    required DateTime end,
   }) async {
     String dbName =
         Constants.isTesting ? 'cs_trs_cs_dtl_test' : 'cs_trs_cs_dtl';
+
+    final startStr = DateFormat('yyyy-MM-dd').format(start);
+    final endStr = DateFormat('yyyy-MM-dd').format(end);
 
     try {
       final data = _dioRequestNotifier;
@@ -96,6 +109,7 @@ class HistoryRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command": "SELECT * FROM $dbName WHERE c_user = '$cUser' " +
+            " AND c_date BETWEEN '$startStr' AND '$endStr' " +
             " ORDER BY c_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY ",
       });
 
@@ -155,8 +169,13 @@ class HistoryRemoteService {
 
   Future<List<HistoryCSUOk>> getHistoryCSUOk({
     required String cUser,
+    required DateTime start,
+    required DateTime end,
   }) async {
     String dbName = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
+
+    final startStr = DateFormat('yyyy-MM-dd').format(start);
+    final endStr = DateFormat('yyyy-MM-dd').format(end);
 
     try {
       final data = _dioRequestNotifier;
@@ -164,6 +183,7 @@ class HistoryRemoteService {
       data.addAll({
         "mode": "SELECT",
         "command": "SELECT * FROM $dbName WHERE c_user = '$cUser' " +
+            " AND c_date BETWEEN '$startStr' AND '$endStr' " +
             " ORDER BY c_date DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY ",
       });
 
@@ -199,60 +219,6 @@ class HistoryRemoteService {
 
           return [];
         }
-      } else {
-        final message = items['error'] as String?;
-        final errorNum = items['errornum'] as int?;
-
-        throw RestApiException(errorNum, message);
-      }
-    } on DioError catch (e) {
-      if (e.isNoConnectionError || e.isConnectionTimeout) {
-        throw NoConnectionException();
-      } else if (e.response != null) {
-        final items = e.response?.data?[0];
-
-        final message = items['error'] as String?;
-        final errorNum = items['errornum'] as int?;
-
-        throw RestApiException(errorNum, message);
-      } else {
-        rethrow;
-      }
-    }
-  }
-
-  Future<Unit> insertToHistory({
-    required int idUser,
-    required String query,
-    required String cUser,
-    required String cDate,
-    required String sDate,
-    required String content,
-  }) async {
-    const String dbName = 'mst_historical_transaction_opr';
-
-    try {
-      final data = _dioRequestNotifier;
-
-      final cleanQuery = query.replaceAll("'", '');
-
-      data.addAll({
-        "mode": "INSERT",
-        "command":
-            " INSERT INTO $dbName (id_user, query, content, c_user, c_date, s_date) " +
-                " VALUES ($idUser, '$cleanQuery', '$content', '$cUser', '$cDate', '$sDate') ",
-      });
-
-      final response = await _dio.post('',
-          data: jsonEncode(data), options: Options(contentType: 'text/plain'));
-
-      log('data ${jsonEncode(data)}');
-      log('response $response');
-
-      final items = response.data?[0];
-
-      if (items['status'] == 'Success') {
-        return unit;
       } else {
         final message = items['error'] as String?;
         final errorNum = items['errornum'] as int?;

@@ -17,29 +17,34 @@ class HistoryRepository {
   final HistoryRemoteService _remoteService;
   final UserModelWithPassword _userModelWithPassword;
 
-  // Future<bool> hasOfflineData() => getStorageCondition()
-  //     .then((credentials) => credentials.fold((_) => false, (_) => true));
-
-  // Future<bool> hasOfflineData() => getGatesOFFLINE()
-  //     .then((credentials) => credentials.fold((_) => false, (_) => true));
-
-  Future<Either<RemoteFailure, History>> getHistories() async {
+  Future<Either<RemoteFailure, History>> getHistories({
+    required String nopol,
+    required DateTime start,
+    required DateTime end,
+  }) async {
     try {
       final history = History.initial();
 
       final List<HistoryCheckSheet> historyCheckSheet =
           await _remoteService.getHistoryCheckSheet(
         cUser: _userModelWithPassword.nama!,
+        nopol: nopol,
+        start: start,
+        end: end,
       );
 
       final List<HistoryCSUOk> historyCSUOk =
           await _remoteService.getHistoryCSUOk(
         cUser: _userModelWithPassword.nama!,
+        start: start,
+        end: end,
       );
 
       final List<HistoryCSUNg> historyCSUNg =
           await _remoteService.getHistoryCSUNg(
         cUser: _userModelWithPassword.nama!,
+        start: start,
+        end: end,
       );
 
       final _history = history.copyWith(

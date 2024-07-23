@@ -13,7 +13,10 @@ import '../../update_frame/shared/update_frame_providers.dart';
 import '../shared/history_providers.dart';
 
 class HistoryCheckSheetPage extends ConsumerWidget {
-  const HistoryCheckSheetPage({super.key});
+  const HistoryCheckSheetPage(this.search, this.isSearching, {super.key});
+
+  final ValueNotifier<String> search;
+  final ValueNotifier<bool> isSearching;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,86 +44,90 @@ class HistoryCheckSheetPage extends ConsumerWidget {
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Ink(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Palette.primaryColor, width: 2)),
-              child: InkWell(
-                onTap: () async {
-                  final id = item.idSpk;
-                  final tipe = item.tipe;
-                  if (id != null && tipe != null) {
-                    final Map<int, ModeState> _mode = _determineIdAndMode(tipe);
-                    _changeInitialAndMode(_mode);
+            child: IgnorePointer(
+              ignoring: isSearching.value,
+              child: Ink(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Palette.primaryColor, width: 2)),
+                child: InkWell(
+                  onTap: () async {
+                    final id = item.idSpk;
+                    final tipe = item.tipe;
+                    if (id != null && tipe != null) {
+                      final Map<int, ModeState> _mode =
+                          _determineIdAndMode(tipe);
+                      _changeInitialAndMode(_mode);
 
-                    final _spk = await ref
-                        .read(spkNotifierProvider.notifier)
-                        .getSPKById(idSpk: id);
+                      final _spk = await ref
+                          .read(spkNotifierProvider.notifier)
+                          .getSPKById(idSpk: id);
 
-                    Map<String, dynamic> spkMap = _spk.toJson();
-                    await context.pushNamed(
-                      extra: spkMap,
-                      RouteNames.checkSheetLoadingNameRoute,
-                    );
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${item.tipe}',
-                        style: Themes.customColor(
-                            FontWeight.bold, 12, Colors.black),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Oleh : ${item.cUser}',
-                            style: Themes.customColor(
-                                FontWeight.bold, 12, Colors.black),
-                          ),
-                          Text(
-                            item.cDate == null
-                                ? ''
-                                : 'Date :  ${DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(item.cDate!))}',
-                            style: Themes.customColor(
-                                FontWeight.bold, 12, Colors.black),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        'Gate : ${item.gate}',
-                        style: Themes.customColor(
-                            FontWeight.w500, 12, Colors.black),
-                      ),
-                      Text(
-                        'Nopol : ${item.nopol}',
-                        style: Themes.customColor(
-                            FontWeight.w500, 12, Colors.black),
-                      ),
-                      Text(
-                        'Tgl Berangkat : ${item.tglBerangkat}',
-                        style: Themes.customColor(
-                            FontWeight.w500, 12, Colors.black),
-                      ),
-                      Text(
-                        'Status : ${item.status}',
-                        style: Themes.customColor(
-                            FontWeight.w500, 12, Colors.black),
-                      ),
-                      Text(
-                        'Keterangan : ${item.ket}',
-                        style: Themes.customColor(
-                            FontWeight.w500, 12, Colors.black),
-                      ),
-                    ],
+                      Map<String, dynamic> spkMap = _spk.toJson();
+                      await context.pushNamed(
+                        extra: spkMap,
+                        RouteNames.checkSheetLoadingNameRoute,
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${item.tipe}',
+                          style: Themes.customColor(
+                              FontWeight.bold, 12, Colors.black),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Oleh : ${item.cUser}',
+                              style: Themes.customColor(
+                                  FontWeight.bold, 12, Colors.black),
+                            ),
+                            Text(
+                              item.cDate == null
+                                  ? ''
+                                  : 'Date :  ${DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(item.cDate!))}',
+                              style: Themes.customColor(
+                                  FontWeight.bold, 12, Colors.black),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          'Gate : ${item.gate}',
+                          style: Themes.customColor(
+                              FontWeight.w500, 12, Colors.black),
+                        ),
+                        Text(
+                          'Nopol : ${item.nopol}',
+                          style: Themes.customColor(
+                              FontWeight.w500, 12, Colors.black),
+                        ),
+                        Text(
+                          'Tgl Berangkat : ${item.tglBerangkat}',
+                          style: Themes.customColor(
+                              FontWeight.w500, 12, Colors.black),
+                        ),
+                        Text(
+                          'Status : ${item.status}',
+                          style: Themes.customColor(
+                              FontWeight.w500, 12, Colors.black),
+                        ),
+                        Text(
+                          'Keterangan : ${item.ket}',
+                          style: Themes.customColor(
+                              FontWeight.w500, 12, Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

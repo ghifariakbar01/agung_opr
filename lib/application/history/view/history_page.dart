@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/assets.dart';
+import '../../../constants/constants.dart';
 import '../../../domain/remote_failure.dart';
 import '../../widgets/v_dialogs.dart';
 import '../history.dart';
@@ -23,11 +24,11 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref
-        .read(historyNotifierProvider.notifier)
-        .getHistory(
-            startDate: DateTime.now(),
-            endDate: DateTime.now().subtract(Duration(days: 1))));
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(historyNotifierProvider.notifier).getHistory(
+              nopol: '',
+              dateRange: Constants.defaultDateTimeRange,
+            ));
   }
 
   @override
@@ -62,7 +63,10 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
         ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
 
     return Stack(
-      children: [HistoryScaffold(), LoadingOverlay(isLoading: isLoading)],
+      children: [
+        HistoryScaffold(),
+        LoadingOverlay(isLoading: isLoading),
+      ],
     );
   }
 }
