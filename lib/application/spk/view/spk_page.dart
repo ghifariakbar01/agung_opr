@@ -70,11 +70,8 @@ class _SPKPageState extends ConsumerState<SPKPage> {
                   _isNotAtBottom();
 
                   final oldSPK = ref.read(spkNotifierProvider).spkList;
-                  final page = ref.read(scrollPageProvider);
-
                   ref.read(spkNotifierProvider.notifier).processSPKList(
                         newSPK: response,
-                        page: page,
                         changeSPK: () => ref
                             .read(spkNotifierProvider.notifier)
                             .addPKList(newSPK: response, oldSPK: oldSPK),

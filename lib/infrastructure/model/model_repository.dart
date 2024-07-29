@@ -110,11 +110,10 @@ class ModelRepository {
       // HAS LIST
       if (modelStorage != null) {
         final response = jsonDecode(modelStorage);
+        final List<Model> modelList =
+            (response as List).map((data) => Model.fromJson(data)).toList();
 
         if (allModel != null && allModel == true) {
-          List<Model> modelList =
-              (response as List).map((data) => Model.fromJson(data)).toList();
-
           return right(modelList);
         }
 
@@ -122,9 +121,6 @@ class ModelRepository {
           final int itemsPerPage = 20;
 
           int _startIndex = page * itemsPerPage;
-
-          List<Model> modelList =
-              (response as List).map((data) => Model.fromJson(data)).toList();
 
           final _endIndex = (_startIndex + itemsPerPage) <= modelList.length
               ? (_startIndex + itemsPerPage)

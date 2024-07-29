@@ -77,19 +77,13 @@ class SPKNotifier extends StateNotifier<SPKState> {
     required List<SPK> newSPK,
     required Function changeSPK,
     required Function replaceSPK,
-    required int page,
   }) {
-    final pageIsZero = page == 0;
     final SPKEmpty = newSPK.isEmpty;
 
-    if (!pageIsZero && !SPKEmpty) {
+    if (!SPKEmpty) {
       changeSPK();
-    } else if (!pageIsZero && SPKEmpty) {
-      // changeIsMore();
-    } else if (pageIsZero && !SPKEmpty) {
+    } else if (SPKEmpty) {
       replaceSPK();
-    } else if (pageIsZero && SPKEmpty) {
-      return;
     }
   }
 }

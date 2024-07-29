@@ -61,12 +61,12 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                           orElse: () => AlertHelper.showSnackBar(
                             context,
                             message: failure.maybeMap(
-                              storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data gate',
+                              orElse: () => '',
                               server: (value) =>
                                   value.message ?? 'Server Error',
                               parse: (value) => 'Parse $value',
-                              orElse: () => '',
+                              storage: (_) =>
+                                  'Storage penuh. Tidak bisa menyimpan data gate',
                             ),
                           ),
                         ), (gateResponse) {

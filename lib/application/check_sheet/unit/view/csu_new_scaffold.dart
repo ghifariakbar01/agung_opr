@@ -61,13 +61,8 @@ class CSUNewScaffold extends HookConsumerWidget {
 
     return WillPopScope(
       onWillPop: () {
-        ModeState modeState = ref.read(modeNotifierProvider);
-        modeState.maybeWhen(
-          orElse: () {},
-          checkSheetUnit: () => ref
-              .read(modeNotifierProvider.notifier)
-              .changeModeAplikasi(ModeState.checkSheetUnit()),
-        );
+        const mode = ModeState.checkSheetUnit();
+        ref.read(modeNotifierProvider.notifier).changeModeAplikasi(mode);
         return Future.value(true);
       },
       child: KeyboardDismissOnTap(

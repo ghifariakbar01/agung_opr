@@ -65,13 +65,22 @@ class ModelNotifier extends StateNotifier<ModelState> {
   }
 
   Future<void> getAndChangeModelListOFFLINE() async {
-    state = state.copyWith(isProcessing: true);
+    state = state.copyWith(
+      isProcessing: true,
+      modelListSaved: [],
+    );
 
-    final list = await _repository
+    final List<Model> _model = await _repository
         .getModelListOFFLINE(allModel: true)
-        .then((value) => value.fold((_) => [] as List<Model>, (r) => r));
+        .then((value) => value.fold(
+              (_) => [],
+              (r) => r,
+            ));
 
-    state = state.copyWith(isProcessing: false, modelListSaved: list);
+    state = state.copyWith(
+      isProcessing: false,
+      modelListSaved: _model,
+    );
   }
 
   Future<void> getModelListOFFLINE({required int page}) async {

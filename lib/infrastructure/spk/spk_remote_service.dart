@@ -62,7 +62,7 @@ class SPKRemoteService {
             " AND supir1_nm LIKE '%$search%' OR supir2_nm LIKE '%$search%' OR nopol LIKE '%$search%' " +
             " AND spk.spk_tgl >= DATEADD(DAY, -15, GETDATE()) " +
             " ORDER BY "
-                " spk.spk_tgl DESC "
+                " spk.tgl_berangkat DESC "
                 " OFFSET "
                 " 0 ROWS "
                 " FETCH FIRST "
@@ -161,7 +161,7 @@ class SPKRemoteService {
             " ${Constants.isTesting ? "" : testing} " +
             "  spk.spk_tgl >= DATEADD(DAY, -15, GETDATE()) " +
             " ORDER BY " +
-            " spk.spk_tgl DESC " +
+            " spk.tgl_berangkat DESC " +
             " OFFSET " +
             " ${page}0 ROWS " +
             " FETCH FIRST " +
