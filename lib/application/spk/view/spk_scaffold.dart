@@ -103,10 +103,7 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
     return KeyboardDismissOnTap(
       child: SafeArea(
         child: Scaffold(
-          appBar: VAppBar(
-            context,
-            'SPK List ${isOffline ? '(Offline)' : ''}',
-          ),
+          appBar: VAppBar(context, 'SPK List ${isOffline ? '(Offline)' : ''}'),
           body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(

@@ -1,7 +1,6 @@
 import 'package:agung_opr/application/model/shared/model_providers.dart';
 import 'package:agung_opr/application/model/view/model_item.dart';
 import 'package:agung_opr/application/model/view/model_search.dart';
-import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
@@ -23,31 +22,7 @@ class ModelScaffold extends ConsumerWidget {
       },
     );
 
-    _scrollController.addListener(() async {
-      final modelScrollProvider = ref.read(modelNotifierProvider);
-      final page = modelScrollProvider.page;
-      final isMore = modelScrollProvider.hasMore;
-      final isGetting = modelScrollProvider.isProcessing;
-      final nextPageTrigger = 0.9 * _scrollController.position.maxScrollExtent;
-
-      if (_scrollController.hasClients &&
-          _scrollController.position.pixels > nextPageTrigger &&
-          isMore &&
-          !isGetting) {
-        ref.read(modelNotifierProvider.notifier).changePage(page + 1);
-
-        await ref
-            .read(modelNotifierProvider.notifier)
-            .getModelListOFFLINE(page: page + 1);
-      }
-    });
-
-    final modelProvider = ref.watch(modelNotifierProvider);
-
-    final modelList = modelProvider.modelList;
-
-    final isSearching = ref
-        .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
+    final modelList = ref.watch(modelNotifierProvider).modelList;
 
     return KeyboardDismissOnTap(
       child: Scaffold(
@@ -63,18 +38,15 @@ class ModelScaffold extends ConsumerWidget {
                 children: [
                   ModelSearch(),
                   for (int i = 0; i < modelList.length; i++) ...[
-                    IgnorePointer(
-                      ignoring: isSearching,
-                      child: TextButton(
-                        onPressed: () {
-                          final modelId = modelList[i].id.toString();
-                          context.pop(modelId);
-                        },
-                        style: ButtonStyle(
-                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-                        child: ModelItem(
-                          model: modelList[i],
-                        ),
+                    TextButton(
+                      onPressed: () {
+                        final modelId = modelList[i].id.toString();
+                        context.pop(modelId);
+                      },
+                      style: ButtonStyle(
+                          padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+                      child: ModelItem(
+                        model: modelList[i],
                       ),
                     )
                   ]

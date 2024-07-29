@@ -27,7 +27,9 @@ final modelRepositoryProvider = Provider((ref) => ModelRepository(
     ));
 
 final modelNotifierProvider = StateNotifierProvider<ModelNotifier, ModelState>(
-  (ref) => ModelNotifier(ref.watch(modelRepositoryProvider)),
+  (ref) => ModelNotifier(
+    ref.watch(modelRepositoryProvider),
+  ),
 );
 
 final modelOfflineNotifierProvider =
