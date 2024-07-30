@@ -26,7 +26,6 @@ class CrannyDrawer extends ConsumerWidget {
                 children: [
                   ProfileAvatarItem(
                     color: Colors.white.withOpacity(0.1),
-                    url: userProvider.user.photo,
                   ),
                   SizedBox(
                     height: 8,

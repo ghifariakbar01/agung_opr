@@ -15,7 +15,7 @@ class ProfileView extends ConsumerWidget {
 
     return Column(
       children: [
-        ProfileAvatarItem(url: userProvider.user.photo),
+        ProfileAvatarItem(),
         ProfileItem(
           text: userProvider.user.idKary ?? '',
           icon: Icons.person,
@@ -33,11 +33,6 @@ class ProfileView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ProfileItem(
-              text: userProvider.user.nama ?? '',
-              icon: Icons.person,
-              label: 'Username',
-            ),
-            ProfileItem(
               text: userProvider.user.ktp ?? '',
               icon: Icons.person,
               label: 'No KTP',
@@ -46,50 +41,19 @@ class ProfileView extends ConsumerWidget {
               height: 8,
             ),
             ProfileItem(
-              text: userProvider.user.email ?? '',
-              icon: Icons.email,
-              label: 'Email',
-            ),
-            ProfileItem(
-              text: userProvider.user.email2 ?? '',
-              icon: Icons.email,
-              label: 'Email 2',
-            ),
-            ProfileItem(
-              text: userProvider.user.noTelp1 ?? '',
-              icon: Icons.numbers,
-              label: 'No HP',
-            ),
-            ProfileItem(
               text: userProvider.user.noTelp2 ?? '',
               icon: Icons.numbers,
-              label: 'No HP 2',
-            ),
-            ProfileItem(
-              text: userProvider.user.deptList ?? '',
-              icon: Icons.list,
-              label: 'Departemen',
-            ),
-            ProfileItem(
-              text: userProvider.user.company ?? '',
-              icon: Icons.location_city,
-              label: 'Company',
+              label: 'No HP',
             ),
             ProfileItem(
               text: userProvider.user.jobdesk ?? '',
               icon: Icons.location_city_sharp,
               label: 'Jobdesk',
             ),
-            ProfileItem(
-              icon: Icons.business_center,
-              text: userProvider.user.jabatan ?? '',
-              label: 'Jabatan',
-            ),
             SizedBox(
               height: 8,
             ),
             if (userProvider.user.password != null) ...[
-              ProfilePassword(),
               SizedBox(
                 height: 8,
               ),

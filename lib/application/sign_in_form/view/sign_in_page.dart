@@ -38,6 +38,10 @@ class SignInPage extends HookConsumerWidget {
       signInFormNotifierProvider.select((state) => state.isSubmitting),
     );
 
+    final jobDesk = ref
+        .watch(signInFormNotifierProvider.select((value) => value.jobdesk))
+        .getOrLeave('');
+
     return SafeArea(
       child: Stack(
         children: [
@@ -50,9 +54,13 @@ class SignInPage extends HookConsumerWidget {
                   await ref
                       .read(signInFormNotifierProvider.notifier)
                       .signInAndRemember(
-                        signIn: () => ref
-                            .read(signInFormNotifierProvider.notifier)
-                            .signInWithUserIdEmailAndPassword(),
+                        signIn: jobDesk == 'Cranny'
+                            ? () => ref
+                                .read(signInFormNotifierProvider.notifier)
+                                .signInWithUserIdEmailAndPassword()
+                            : () => ref
+                                .read(signInFormNotifierProvider.notifier)
+                                .signInWithUsernameAndNoKtp(),
                         remember: () => ref
                             .read(signInFormNotifierProvider.notifier)
                             .rememberInfo(),

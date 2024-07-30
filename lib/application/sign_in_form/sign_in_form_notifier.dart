@@ -20,12 +20,14 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   final AuthRepository _repository;
 
   void changeAllData({
+    required String noKtpStr,
     required String idKaryawanStr,
     required String userStr,
     required String passwordStr,
     required String jobdeskStr,
   }) {
     state = state.copyWith(
+      noKtp: NoKtp(noKtpStr),
       userId: UserId(userStr),
       jobdesk: Jobdesk(jobdeskStr),
       password: Password(passwordStr),
@@ -62,6 +64,13 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
     );
   }
 
+  void changeNoKtp(String noKtpStr) {
+    state = state.copyWith(
+      noKtp: NoKtp(noKtpStr),
+      failureOrSuccessOption: none(),
+    );
+  }
+
   void changeJobdesk(String jobdeskStr) {
     state = state.copyWith(
       jobdesk: Jobdesk(jobdeskStr),
@@ -91,14 +100,20 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
 
   Future<void> rememberInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final model = RememberMeState(
+      noKtp: state.noKtp.getOrLeave(''),
+      nama: state.userId.getOrLeave(''),
+      nik: state.idKaryawan.getOrLeave(''),
+      jobdesk: state.jobdesk.getOrLeave(''),
+      password: state.password.getOrLeave(''),
+    );
+
+    final json = jsonEncode(model);
+
     await prefs.setString(
-        'remember_me',
-        jsonEncode(RememberMeState(
-          nama: state.userId.getOrLeave(''),
-          nik: state.idKaryawan.getOrLeave(''),
-          jobdesk: state.jobdesk.getOrLeave(''),
-          password: state.password.getOrLeave(''),
-        )));
+      'remember_me',
+      json,
+    );
   }
 
   Future<void> signInWithUserIdEmailAndPassword() async {
@@ -114,6 +129,29 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
         jobdesk: state.jobdesk,
         userId: state.userId,
         password: state.password,
+      );
+    }
+
+    state = state.copyWith(
+      isSubmitting: false,
+      showErrorMessages: true,
+      failureOrSuccessOption: optionOf(signInFailureOrSuccess),
+    );
+  }
+
+  Future<void> signInWithUsernameAndNoKtp() async {
+    Either<AuthFailure, Unit>? signInFailureOrSuccess;
+
+    if (isValid) {
+      state = state.copyWith(
+        isSubmitting: true,
+        failureOrSuccessOption: none(),
+      );
+
+      signInFailureOrSuccess = await _repository.signInWithUsernameAndNoKtp(
+        jobdesk: state.jobdesk,
+        userId: state.userId,
+        noKtp: state.noKtp,
       );
     }
 

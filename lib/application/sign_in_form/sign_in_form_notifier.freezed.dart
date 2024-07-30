@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SignInFormState {
+  NoKtp get noKtp => throw _privateConstructorUsedError;
   UserId get userId => throw _privateConstructorUsedError;
   Email get email => throw _privateConstructorUsedError;
   IdKaryawan get idKaryawan => throw _privateConstructorUsedError;
@@ -39,7 +40,8 @@ abstract class $SignInFormStateCopyWith<$Res> {
       _$SignInFormStateCopyWithImpl<$Res, SignInFormState>;
   @useResult
   $Res call(
-      {UserId userId,
+      {NoKtp noKtp,
+      UserId userId,
       Email email,
       IdKaryawan idKaryawan,
       Password password,
@@ -63,6 +65,7 @@ class _$SignInFormStateCopyWithImpl<$Res, $Val extends SignInFormState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noKtp = null,
     Object? userId = null,
     Object? email = null,
     Object? idKaryawan = null,
@@ -74,6 +77,10 @@ class _$SignInFormStateCopyWithImpl<$Res, $Val extends SignInFormState>
     Object? failureOrSuccessOption = null,
   }) {
     return _then(_value.copyWith(
+      noKtp: null == noKtp
+          ? _value.noKtp
+          : noKtp // ignore: cast_nullable_to_non_nullable
+              as NoKtp,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -123,7 +130,8 @@ abstract class _$$_SignInFormStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {UserId userId,
+      {NoKtp noKtp,
+      UserId userId,
       Email email,
       IdKaryawan idKaryawan,
       Password password,
@@ -145,6 +153,7 @@ class __$$_SignInFormStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noKtp = null,
     Object? userId = null,
     Object? email = null,
     Object? idKaryawan = null,
@@ -156,6 +165,10 @@ class __$$_SignInFormStateCopyWithImpl<$Res>
     Object? failureOrSuccessOption = null,
   }) {
     return _then(_$_SignInFormState(
+      noKtp: null == noKtp
+          ? _value.noKtp
+          : noKtp // ignore: cast_nullable_to_non_nullable
+              as NoKtp,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -200,7 +213,8 @@ class __$$_SignInFormStateCopyWithImpl<$Res>
 
 class _$_SignInFormState implements _SignInFormState {
   const _$_SignInFormState(
-      {required this.userId,
+      {required this.noKtp,
+      required this.userId,
       required this.email,
       required this.idKaryawan,
       required this.password,
@@ -210,6 +224,8 @@ class _$_SignInFormState implements _SignInFormState {
       required this.isChecked,
       required this.failureOrSuccessOption});
 
+  @override
+  final NoKtp noKtp;
   @override
   final UserId userId;
   @override
@@ -231,7 +247,7 @@ class _$_SignInFormState implements _SignInFormState {
 
   @override
   String toString() {
-    return 'SignInFormState(userId: $userId, email: $email, idKaryawan: $idKaryawan, password: $password, jobdesk: $jobdesk, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, isChecked: $isChecked, failureOrSuccessOption: $failureOrSuccessOption)';
+    return 'SignInFormState(noKtp: $noKtp, userId: $userId, email: $email, idKaryawan: $idKaryawan, password: $password, jobdesk: $jobdesk, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, isChecked: $isChecked, failureOrSuccessOption: $failureOrSuccessOption)';
   }
 
   @override
@@ -239,6 +255,7 @@ class _$_SignInFormState implements _SignInFormState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SignInFormState &&
+            (identical(other.noKtp, noKtp) || other.noKtp == noKtp) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.idKaryawan, idKaryawan) ||
@@ -259,6 +276,7 @@ class _$_SignInFormState implements _SignInFormState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      noKtp,
       userId,
       email,
       idKaryawan,
@@ -278,7 +296,8 @@ class _$_SignInFormState implements _SignInFormState {
 
 abstract class _SignInFormState implements SignInFormState {
   const factory _SignInFormState(
-      {required final UserId userId,
+      {required final NoKtp noKtp,
+      required final UserId userId,
       required final Email email,
       required final IdKaryawan idKaryawan,
       required final Password password,
@@ -289,6 +308,8 @@ abstract class _SignInFormState implements SignInFormState {
       required final Option<Either<AuthFailure, Unit>>
           failureOrSuccessOption}) = _$_SignInFormState;
 
+  @override
+  NoKtp get noKtp;
   @override
   UserId get userId;
   @override

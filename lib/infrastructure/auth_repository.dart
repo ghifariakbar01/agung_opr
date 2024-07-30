@@ -26,14 +26,6 @@ class AuthRepository {
       .then((value) => value.fold((_) => '', (userString) => userString ?? ''));
 
   Future<Either<AuthFailure, Unit>> signOut() async {
-    // try {
-    //   await _remoteService.signOut();
-    // } on RestApiException catch (e) {
-    //   return left(AuthFailure.server(e.errorCode));
-    // } on NoConnectionException {
-    //   // Ignoring
-    // }
-
     return clearCredentialsStorage();
   }
 
@@ -51,6 +43,41 @@ class AuthRepository {
         userId: userIdStr,
         jobdesk: jobdeskStr,
         password: passwordStr,
+      );
+
+      return authResponse.when(
+        withUser: (user) async {
+          final userSave = jsonEncode(user);
+          await _credentialsStorage.save(userSave);
+
+          return right(unit);
+        },
+        failure: (errorCode, message) => left(AuthFailure.server(
+          errorCode,
+          message,
+        )),
+      );
+    } on RestApiException catch (e) {
+      return left(AuthFailure.server(e.errorCode));
+    } on NoConnectionException {
+      return left(const AuthFailure.noConnection());
+    }
+  }
+
+  Future<Either<AuthFailure, Unit>> signInWithUsernameAndNoKtp({
+    required UserId userId,
+    required NoKtp noKtp,
+    required Jobdesk jobdesk,
+  }) async {
+    try {
+      final userIdStr = userId.getOrCrash();
+      final passwordStr = noKtp.getOrCrash();
+      final jobdeskStr = jobdesk.getOrCrash();
+
+      final authResponse = await _remoteService.signInSupir(
+        nama: userIdStr,
+        jobdesk: jobdeskStr,
+        noKtp: passwordStr,
       );
 
       return authResponse.when(

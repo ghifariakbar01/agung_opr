@@ -3,6 +3,7 @@ part of 'sign_in_form_notifier.dart';
 @freezed
 class SignInFormState with _$SignInFormState {
   const factory SignInFormState({
+    required NoKtp noKtp,
     required UserId userId,
     required Email email,
     required IdKaryawan idKaryawan,
@@ -15,6 +16,7 @@ class SignInFormState with _$SignInFormState {
   }) = _SignInFormState;
 
   factory SignInFormState.initial() => SignInFormState(
+        noKtp: NoKtp(''),
         userId: UserId(''),
         email: Email(''),
         idKaryawan: IdKaryawan(''),

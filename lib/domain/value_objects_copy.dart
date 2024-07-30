@@ -67,6 +67,17 @@ class UserId extends ValueObject<String> {
   final Either<ValueFailure<String>, String> value;
 }
 
+class NoKtp extends ValueObject<String> {
+  factory NoKtp(String input) {
+    return NoKtp._(validateStringNotEmpty(input));
+  }
+
+  const NoKtp._(this.value);
+
+  @override
+  final Either<ValueFailure<String>, String> value;
+}
+
 class Password extends ValueObject<String> {
   factory Password(String input) {
     return Password._(

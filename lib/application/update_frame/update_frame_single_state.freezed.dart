@@ -16,14 +16,14 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateFrameStateSingle {
+  String get uDate => throw _privateConstructorUsedError;
+  String get uUser => throw _privateConstructorUsedError;
   IDUnit get idUnit => throw _privateConstructorUsedError;
   FrameUnit get frame => throw _privateConstructorUsedError;
   WarnaUnit get warna => throw _privateConstructorUsedError;
   bool get isShowError => throw _privateConstructorUsedError;
   EngineUnit get engine => throw _privateConstructorUsedError;
   IDKendType get idKendType => throw _privateConstructorUsedError;
-  String get uDate => throw _privateConstructorUsedError;
-  String get uUser => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateFrameStateSingleCopyWith<UpdateFrameStateSingle> get copyWith =>
@@ -37,14 +37,14 @@ abstract class $UpdateFrameStateSingleCopyWith<$Res> {
       _$UpdateFrameStateSingleCopyWithImpl<$Res, UpdateFrameStateSingle>;
   @useResult
   $Res call(
-      {IDUnit idUnit,
+      {String uDate,
+      String uUser,
+      IDUnit idUnit,
       FrameUnit frame,
       WarnaUnit warna,
       bool isShowError,
       EngineUnit engine,
-      IDKendType idKendType,
-      String uDate,
-      String uUser});
+      IDKendType idKendType});
 }
 
 /// @nodoc
@@ -61,16 +61,24 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uDate = null,
+    Object? uUser = null,
     Object? idUnit = null,
     Object? frame = null,
     Object? warna = null,
     Object? isShowError = null,
     Object? engine = null,
     Object? idKendType = null,
-    Object? uDate = null,
-    Object? uUser = null,
   }) {
     return _then(_value.copyWith(
+      uDate: null == uDate
+          ? _value.uDate
+          : uDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      uUser: null == uUser
+          ? _value.uUser
+          : uUser // ignore: cast_nullable_to_non_nullable
+              as String,
       idUnit: null == idUnit
           ? _value.idUnit
           : idUnit // ignore: cast_nullable_to_non_nullable
@@ -95,14 +103,6 @@ class _$UpdateFrameStateSingleCopyWithImpl<$Res,
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
-      uDate: null == uDate
-          ? _value.uDate
-          : uDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      uUser: null == uUser
-          ? _value.uUser
-          : uUser // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -116,14 +116,14 @@ abstract class _$$_UpdateFrameStateSingleCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {IDUnit idUnit,
+      {String uDate,
+      String uUser,
+      IDUnit idUnit,
       FrameUnit frame,
       WarnaUnit warna,
       bool isShowError,
       EngineUnit engine,
-      IDKendType idKendType,
-      String uDate,
-      String uUser});
+      IDKendType idKendType});
 }
 
 /// @nodoc
@@ -138,16 +138,24 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uDate = null,
+    Object? uUser = null,
     Object? idUnit = null,
     Object? frame = null,
     Object? warna = null,
     Object? isShowError = null,
     Object? engine = null,
     Object? idKendType = null,
-    Object? uDate = null,
-    Object? uUser = null,
   }) {
     return _then(_$_UpdateFrameStateSingle(
+      uDate: null == uDate
+          ? _value.uDate
+          : uDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      uUser: null == uUser
+          ? _value.uUser
+          : uUser // ignore: cast_nullable_to_non_nullable
+              as String,
       idUnit: null == idUnit
           ? _value.idUnit
           : idUnit // ignore: cast_nullable_to_non_nullable
@@ -172,14 +180,6 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
           ? _value.idKendType
           : idKendType // ignore: cast_nullable_to_non_nullable
               as IDKendType,
-      uDate: null == uDate
-          ? _value.uDate
-          : uDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      uUser: null == uUser
-          ? _value.uUser
-          : uUser // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -188,15 +188,19 @@ class __$$_UpdateFrameStateSingleCopyWithImpl<$Res>
 
 class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
   const _$_UpdateFrameStateSingle(
-      {required this.idUnit,
+      {required this.uDate,
+      required this.uUser,
+      required this.idUnit,
       required this.frame,
       required this.warna,
       required this.isShowError,
       required this.engine,
-      required this.idKendType,
-      required this.uDate,
-      required this.uUser});
+      required this.idKendType});
 
+  @override
+  final String uDate;
+  @override
+  final String uUser;
   @override
   final IDUnit idUnit;
   @override
@@ -209,14 +213,10 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
   final EngineUnit engine;
   @override
   final IDKendType idKendType;
-  @override
-  final String uDate;
-  @override
-  final String uUser;
 
   @override
   String toString() {
-    return 'UpdateFrameStateSingle(idUnit: $idUnit, frame: $frame, warna: $warna, isShowError: $isShowError, engine: $engine, idKendType: $idKendType, uDate: $uDate, uUser: $uUser)';
+    return 'UpdateFrameStateSingle(uDate: $uDate, uUser: $uUser, idUnit: $idUnit, frame: $frame, warna: $warna, isShowError: $isShowError, engine: $engine, idKendType: $idKendType)';
   }
 
   @override
@@ -224,6 +224,8 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UpdateFrameStateSingle &&
+            (identical(other.uDate, uDate) || other.uDate == uDate) &&
+            (identical(other.uUser, uUser) || other.uUser == uUser) &&
             (identical(other.idUnit, idUnit) || other.idUnit == idUnit) &&
             (identical(other.frame, frame) || other.frame == frame) &&
             (identical(other.warna, warna) || other.warna == warna) &&
@@ -231,14 +233,12 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
                 other.isShowError == isShowError) &&
             (identical(other.engine, engine) || other.engine == engine) &&
             (identical(other.idKendType, idKendType) ||
-                other.idKendType == idKendType) &&
-            (identical(other.uDate, uDate) || other.uDate == uDate) &&
-            (identical(other.uUser, uUser) || other.uUser == uUser));
+                other.idKendType == idKendType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, idUnit, frame, warna,
-      isShowError, engine, idKendType, uDate, uUser);
+  int get hashCode => Object.hash(runtimeType, uDate, uUser, idUnit, frame,
+      warna, isShowError, engine, idKendType);
 
   @JsonKey(ignore: true)
   @override
@@ -250,15 +250,19 @@ class _$_UpdateFrameStateSingle implements _UpdateFrameStateSingle {
 
 abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
   const factory _UpdateFrameStateSingle(
-      {required final IDUnit idUnit,
+      {required final String uDate,
+      required final String uUser,
+      required final IDUnit idUnit,
       required final FrameUnit frame,
       required final WarnaUnit warna,
       required final bool isShowError,
       required final EngineUnit engine,
-      required final IDKendType idKendType,
-      required final String uDate,
-      required final String uUser}) = _$_UpdateFrameStateSingle;
+      required final IDKendType idKendType}) = _$_UpdateFrameStateSingle;
 
+  @override
+  String get uDate;
+  @override
+  String get uUser;
   @override
   IDUnit get idUnit;
   @override
@@ -271,10 +275,6 @@ abstract class _UpdateFrameStateSingle implements UpdateFrameStateSingle {
   EngineUnit get engine;
   @override
   IDKendType get idKendType;
-  @override
-  String get uDate;
-  @override
-  String get uUser;
   @override
   @JsonKey(ignore: true)
   _$$_UpdateFrameStateSingleCopyWith<_$_UpdateFrameStateSingle> get copyWith =>

@@ -154,7 +154,6 @@ class UpdateCSUFrameRepository {
     required String frameName,
     required Gate gate,
     required Deck posisi,
-    required SupirSDR supirSDR,
     required TglKirim tglKirim,
     required TglTerima tglTerima,
     required Keterangan keterangan,
@@ -163,14 +162,14 @@ class UpdateCSUFrameRepository {
     String dbName = Constants.isTesting ? 'cs_trs_cs_test' : 'cs_trs_cs';
 
     final idUser = _userModelWithPassword.idUser;
-    final nameUser = _userModelWithPassword.nama;
+    final nameUser = _userModelWithPassword.fullname;
 
     final gateStr = gate.getOrLeave('');
     final gateInt = gateStr.isNotEmpty ? int.parse(gateStr) : 0;
 
     final deckStr = posisi.getOrLeave('');
 
-    final supirSDRStr = supirSDR.getOrLeave('');
+    final supirSDRStr = _userModelWithPassword.fullname;
 
     final tglKirimStr = tglKirim.getOrLeave('');
     final tglTerimaStr = tglTerima.getOrLeave('');
@@ -222,7 +221,7 @@ class UpdateCSUFrameRepository {
         '(id_cs, frame, c_date, u_date, c_user, '
         ' u_user, id_item, id_jns_defect, id_p_defect, id_posisi, ket)';
 
-    final nameUser = _userModelWithPassword.nama;
+    final nameUser = _userModelWithPassword.fullname;
 
     final cAndUDate = DateTime.now()
         .toString()

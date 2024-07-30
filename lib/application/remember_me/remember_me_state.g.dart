@@ -12,6 +12,7 @@ _$_RememberMeState _$$_RememberMeStateFromJson(Map<String, dynamic> json) =>
       nama: json['nama'] as String,
       jobdesk: json['jobdesk'] as String,
       password: json['password'] as String,
+      noKtp: json['no_ktp'] as String,
     );
 
 Map<String, dynamic> _$$_RememberMeStateToJson(_$_RememberMeState instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_RememberMeStateToJson(_$_RememberMeState instance) =>
       'nama': instance.nama,
       'jobdesk': instance.jobdesk,
       'password': instance.password,
+      'no_ktp': instance.noKtp,
     };

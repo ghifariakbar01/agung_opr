@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../style/style.dart';
 
 class ProfileAvatarItem extends StatelessWidget {
-  const ProfileAvatarItem({Key? key, required this.url, this.color})
-      : super(key: key);
+  const ProfileAvatarItem({Key? key, this.color}) : super(key: key);
 
-  final String? url;
   final Color? color;
 
   @override
@@ -19,16 +17,11 @@ class ProfileAvatarItem extends StatelessWidget {
           CircleAvatar(
               radius: 36,
               backgroundColor: color ?? Palette.primaryColor,
-              child: url == null
-                  ? Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 50,
-                    )
-                  : Image.network(
-                      '$url',
-                      fit: BoxFit.cover,
-                    )),
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 50,
+              )),
           // Positioned(
           //     bottom: 0,
           //     right: 0,

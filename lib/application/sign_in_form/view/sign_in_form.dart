@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,22 +23,38 @@ class _SignInFormState extends ConsumerState<SignInForm> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final _resp = prefs.getString('remember_me');
+      await _fetchRememberInfo();
+    });
+  }
 
-      if (_resp != null) {
-        final _item = jsonDecode(_resp);
+  Future<void> _fetchRememberInfo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final _resp = prefs.getString('remember_me');
+
+    if (_resp != null) {
+      final _item = jsonDecode(_resp);
+
+      try {
         final _respState = RememberMeState.fromJson(_item);
         ref.read(passwordVisibleProvider.notifier).state = false;
 
         ref.read(signInFormNotifierProvider.notifier).changeAllData(
+              noKtpStr: _respState.noKtp,
               userStr: _respState.nama,
               idKaryawanStr: _respState.nik,
               jobdeskStr: _respState.jobdesk,
               passwordStr: _respState.password,
             );
+      } on FormatException catch (_) {
+        await prefs.setString('remember_me', '');
+
+        return _fetchRememberInfo();
+      } on PlatformException {
+        await prefs.clear();
+
+        rethrow;
       }
-    });
+    }
   }
 
   @override
@@ -61,32 +78,6 @@ class _SignInFormState extends ConsumerState<SignInForm> {
           : AutovalidateMode.disabled,
       child: Column(
         children: [
-          SizedBox(
-            height: 4,
-          ),
-          ProfileLabel(icon: Icons.person, label: 'Username'),
-          SizedBox(
-            height: 4,
-          ),
-          TextFormField(
-            initialValue: signInForm.userId.getOrLeave(''),
-            decoration: Themes.formStyle(userId != ''
-                ? userId + ' (ketik untuk ubah teks)'
-                : 'Masukkan username'),
-            keyboardType: TextInputType.name,
-            onChanged: (value) => ref
-                .read(signInFormNotifierProvider.notifier)
-                .changeUserId(value),
-            validator: (_) =>
-                ref.read(signInFormNotifierProvider).userId.value.fold(
-                      (f) => f.maybeMap(
-                        empty: (_) => 'kosong',
-                        orElse: () => null,
-                      ),
-                      (_) => null,
-                    ),
-          ),
-          const SizedBox(height: 16),
           ProfileLabel(icon: Icons.location_city_outlined, label: 'Jobdesk'),
           SizedBox(
               height: 50,
@@ -119,38 +110,90 @@ class _SignInFormState extends ConsumerState<SignInForm> {
                 }).toList(),
               )),
           const SizedBox(height: 16),
-          ProfileLabel(icon: Icons.lock_rounded, label: 'Password'),
+          SizedBox(
+            height: 4,
+          ),
+          ProfileLabel(icon: Icons.person, label: 'Username'),
           SizedBox(
             height: 4,
           ),
           TextFormField(
-            initialValue: signInForm.password.getOrLeave(''),
-            decoration: Themes.formStyle(
-              password != ''
-                  ? '*password tersimpan*' + ' (ketik untuk ubah teks)'
-                  : 'Masukkan password',
-              icon: IconButton(
-                  onPressed: () => ref
-                      .read(passwordVisibleProvider.notifier)
-                      .state = toggleBool(passwordVisible),
-                  icon: Icon(
-                    passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Palette.primaryColor,
-                  )),
-            ),
-            obscureText: !passwordVisible,
+            initialValue: signInForm.userId.getOrLeave(''),
+            decoration: Themes.formStyle(userId != ''
+                ? userId + ' (ketik untuk ubah teks)'
+                : 'Masukkan username'),
+            keyboardType: TextInputType.name,
             onChanged: (value) => ref
                 .read(signInFormNotifierProvider.notifier)
-                .changePassword(value),
+                .changeUserId(value),
             validator: (_) =>
-                ref.read(signInFormNotifierProvider).password.value.fold(
+                ref.read(signInFormNotifierProvider).userId.value.fold(
                       (f) => f.maybeMap(
-                        shortPassword: (_) => 'terlalu pendek',
+                        empty: (_) => 'kosong',
                         orElse: () => null,
                       ),
                       (_) => null,
                     ),
           ),
+          const SizedBox(height: 16),
+          if (jobdeskUser == 'Cranny') ...[
+            ProfileLabel(icon: Icons.lock_rounded, label: 'Password'),
+            SizedBox(
+              height: 4,
+            ),
+            TextFormField(
+              initialValue: signInForm.password.getOrLeave(''),
+              decoration: Themes.formStyle(
+                password != ''
+                    ? '*password tersimpan*' + ' (ketik untuk ubah teks)'
+                    : 'Masukkan password',
+                icon: IconButton(
+                    onPressed: () => ref
+                        .read(passwordVisibleProvider.notifier)
+                        .state = toggleBool(passwordVisible),
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Palette.primaryColor,
+                    )),
+              ),
+              obscureText: !passwordVisible,
+              onChanged: (value) => ref
+                  .read(signInFormNotifierProvider.notifier)
+                  .changePassword(value),
+              validator: (_) =>
+                  ref.read(signInFormNotifierProvider).password.value.fold(
+                        (f) => f.maybeMap(
+                          shortPassword: (_) => 'terlalu pendek',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+            ),
+          ] else ...[
+            ProfileLabel(icon: Icons.wallet, label: 'No Ktp'),
+            SizedBox(
+              height: 4,
+            ),
+            TextFormField(
+              initialValue: signInForm.noKtp.getOrLeave(''),
+              decoration: Themes.formStyle(
+                password != ''
+                    ? '*noKtp tersimpan*' + ' (ketik untuk ubah teks)'
+                    : 'Masukkan noKtp',
+              ),
+              onChanged: (value) => ref
+                  .read(signInFormNotifierProvider.notifier)
+                  .changeNoKtp(value),
+              validator: (_) =>
+                  ref.read(signInFormNotifierProvider).noKtp.value.fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'terlalu pendek',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+            ),
+          ],
           const SizedBox(height: 8),
         ],
       ),

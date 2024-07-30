@@ -105,7 +105,9 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                           orElse: () => items.first,
                         ),
                         elevation: 1,
-                        style: TextStyle(decoration: TextDecoration.none),
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                        ),
                         validator: (value) {
                           if (value == null) {
                             return 'kosong';
@@ -136,11 +138,9 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                           return DropdownMenuItem<CSUItems>(
                             value: value,
                             child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               width: MediaQuery.of(context).size.width - 100,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Palette.primaryColor, width: 1)),
+                              height: 65,
                               child: Row(
                                 children: [
                                   Flexible(
@@ -155,6 +155,11 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                                     ),
                                   ),
                                 ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Palette.primaryColor, width: 1),
                               ),
                             ),
                           );
@@ -200,6 +205,7 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                           return DropdownMenuItem<CSUPosisi>(
                             value: value,
                             child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               width: MediaQuery.of(context).size.width - 100,
                               decoration: BoxDecoration(
                                   color: Colors.white,
@@ -269,6 +275,7 @@ class CheckSheetUnitItemForm extends HookConsumerWidget {
                           return DropdownMenuItem<CSUJenisPenyebabItem>(
                             value: value,
                             child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(

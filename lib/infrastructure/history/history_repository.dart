@@ -35,14 +35,14 @@ class HistoryRepository {
 
       final List<HistoryCSUOk> historyCSUOk =
           await _remoteService.getHistoryCSUOk(
-        cUser: _userModelWithPassword.nama!,
+        cUser: _userModelWithPassword.fullname!,
         start: start,
         end: end,
       );
 
       final List<HistoryCSUNg> historyCSUNg =
           await _remoteService.getHistoryCSUNg(
-        cUser: _userModelWithPassword.nama!,
+        cUser: _userModelWithPassword.fullname!,
         start: start,
         end: end,
       );

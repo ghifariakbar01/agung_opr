@@ -24,6 +24,8 @@ mixin _$RememberMeState {
   String get nama => throw _privateConstructorUsedError;
   String get jobdesk => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  @JsonKey(name: 'no_ktp')
+  String get noKtp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +39,12 @@ abstract class $RememberMeStateCopyWith<$Res> {
           RememberMeState value, $Res Function(RememberMeState) then) =
       _$RememberMeStateCopyWithImpl<$Res, RememberMeState>;
   @useResult
-  $Res call({String nik, String nama, String jobdesk, String password});
+  $Res call(
+      {String nik,
+      String nama,
+      String jobdesk,
+      String password,
+      @JsonKey(name: 'no_ktp') String noKtp});
 }
 
 /// @nodoc
@@ -57,6 +64,7 @@ class _$RememberMeStateCopyWithImpl<$Res, $Val extends RememberMeState>
     Object? nama = null,
     Object? jobdesk = null,
     Object? password = null,
+    Object? noKtp = null,
   }) {
     return _then(_value.copyWith(
       nik: null == nik
@@ -75,6 +83,10 @@ class _$RememberMeStateCopyWithImpl<$Res, $Val extends RememberMeState>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      noKtp: null == noKtp
+          ? _value.noKtp
+          : noKtp // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -87,7 +99,12 @@ abstract class _$$_RememberMeStateCopyWith<$Res>
       __$$_RememberMeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String nik, String nama, String jobdesk, String password});
+  $Res call(
+      {String nik,
+      String nama,
+      String jobdesk,
+      String password,
+      @JsonKey(name: 'no_ktp') String noKtp});
 }
 
 /// @nodoc
@@ -105,6 +122,7 @@ class __$$_RememberMeStateCopyWithImpl<$Res>
     Object? nama = null,
     Object? jobdesk = null,
     Object? password = null,
+    Object? noKtp = null,
   }) {
     return _then(_$_RememberMeState(
       nik: null == nik
@@ -123,6 +141,10 @@ class __$$_RememberMeStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      noKtp: null == noKtp
+          ? _value.noKtp
+          : noKtp // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -134,7 +156,8 @@ class _$_RememberMeState implements _RememberMeState {
       {required this.nik,
       required this.nama,
       required this.jobdesk,
-      required this.password});
+      required this.password,
+      @JsonKey(name: 'no_ktp') required this.noKtp});
 
   factory _$_RememberMeState.fromJson(Map<String, dynamic> json) =>
       _$$_RememberMeStateFromJson(json);
@@ -147,10 +170,13 @@ class _$_RememberMeState implements _RememberMeState {
   final String jobdesk;
   @override
   final String password;
+  @override
+  @JsonKey(name: 'no_ktp')
+  final String noKtp;
 
   @override
   String toString() {
-    return 'RememberMeState(nik: $nik, nama: $nama, jobdesk: $jobdesk, password: $password)';
+    return 'RememberMeState(nik: $nik, nama: $nama, jobdesk: $jobdesk, password: $password, noKtp: $noKtp)';
   }
 
   @override
@@ -162,12 +188,14 @@ class _$_RememberMeState implements _RememberMeState {
             (identical(other.nama, nama) || other.nama == nama) &&
             (identical(other.jobdesk, jobdesk) || other.jobdesk == jobdesk) &&
             (identical(other.password, password) ||
-                other.password == password));
+                other.password == password) &&
+            (identical(other.noKtp, noKtp) || other.noKtp == noKtp));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, nik, nama, jobdesk, password);
+  int get hashCode =>
+      Object.hash(runtimeType, nik, nama, jobdesk, password, noKtp);
 
   @JsonKey(ignore: true)
   @override
@@ -185,10 +213,12 @@ class _$_RememberMeState implements _RememberMeState {
 
 abstract class _RememberMeState implements RememberMeState {
   const factory _RememberMeState(
-      {required final String nik,
-      required final String nama,
-      required final String jobdesk,
-      required final String password}) = _$_RememberMeState;
+          {required final String nik,
+          required final String nama,
+          required final String jobdesk,
+          required final String password,
+          @JsonKey(name: 'no_ktp') required final String noKtp}) =
+      _$_RememberMeState;
 
   factory _RememberMeState.fromJson(Map<String, dynamic> json) =
       _$_RememberMeState.fromJson;
@@ -201,6 +231,9 @@ abstract class _RememberMeState implements RememberMeState {
   String get jobdesk;
   @override
   String get password;
+  @override
+  @JsonKey(name: 'no_ktp')
+  String get noKtp;
   @override
   @JsonKey(ignore: true)
   _$$_RememberMeStateCopyWith<_$_RememberMeState> get copyWith =>

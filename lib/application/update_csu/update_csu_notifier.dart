@@ -185,7 +185,7 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
           frameName: state.frameName,
           gate: updateState.gate,
           posisi: updateState.deck,
-          supirSDR: updateState.supirSDR,
+          // supirSDR: updateState.supirSDR,
           tglKirim: updateState.tglKirim,
           tglTerima: updateState.tglTerima,
           keterangan: updateState.keterangan,

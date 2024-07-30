@@ -11,6 +11,7 @@ class RememberMeState with _$RememberMeState {
     required String nama,
     required String jobdesk,
     required String password,
+    @JsonKey(name: 'no_ktp') required String noKtp,
   }) = _RememberMeState;
 
   factory RememberMeState.fromJson(Map<String, Object?> json) =>
