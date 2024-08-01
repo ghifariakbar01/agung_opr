@@ -162,7 +162,7 @@ class UpdateSPKRepository {
 
     final String insert = "UPDATE $dbName " +
         " SET is_edit = 1, u_user = '${_userModelWithPassword.nama}', u_date = '$cAndUDate', ket = '$ket' " +
-        " WHERE id_spk = $idSPK AND u_date < '$cAndUDate' ";
+        " WHERE id_spk = $idSPK  ";
 
     final SPKIdQuery spkIdQuery = SPKIdQuery(idSPK: idSPK, query: insert);
 

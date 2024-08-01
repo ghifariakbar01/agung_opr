@@ -1,4 +1,5 @@
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
+import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,9 @@ class DataUpdateLinearProgress extends ConsumerWidget {
     final time = ref.watch(autoDataTimerNotifierProvider
         .select((value) => value.durationInSeconds));
 
+    final updateSpkOfflineOrOnline =
+        ref.watch(updateSPKOfflineNotifierProvider);
+
     final updateFrameOfflineOrOnline =
         ref.watch(updateFrameOfflineNotifierProvider);
 
@@ -28,7 +32,11 @@ class DataUpdateLinearProgress extends ConsumerWidget {
     final updateCSFrameOfflineOrOnline =
         ref.watch(updateCSOfflineNotifierProvider);
 
-    final hasQueryData = updateFrameOfflineOrOnline.maybeWhen(
+    final hasQueryData = updateSpkOfflineOrOnline.maybeWhen(
+          hasOfflineStorage: () => true,
+          orElse: () => false,
+        ) ||
+        updateFrameOfflineOrOnline.maybeWhen(
           hasOfflineStorage: () => true,
           orElse: () => false,
         ) ||

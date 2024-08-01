@@ -46,31 +46,28 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
                   children: [
                     GateSearch(),
                     for (int i = 0; i < gateList.length; i++) ...[
-                      IgnorePointer(
-                        ignoring: isSearching,
-                        child: TextButton(
-                          onPressed: () async {
-                            final item = gateList[i];
+                      TextButton(
+                        onPressed: () async {
+                          final item = gateList[i];
 
-                            if (item == CSUMSTGate.initial()) {
-                              return;
-                            }
+                          if (item == CSUMSTGate.initial()) {
+                            return;
+                          }
 
-                            String gateParam = modeState.maybeWhen(
-                                checkSheetUnit: () => item.id.toString(),
-                                orElse: () => item.nama.toString());
+                          String gateParam = modeState.maybeWhen(
+                              checkSheetUnit: () => item.id.toString(),
+                              orElse: () => item.nama.toString());
 
-                            await ref
-                                .read(gateNotifierProvider.notifier)
-                                .saveDefaultGate(item);
+                          await ref
+                              .read(gateNotifierProvider.notifier)
+                              .saveDefaultGate(item);
 
-                            context.pop(gateParam);
-                          },
-                          style: ButtonStyle(
-                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-                          child: GateItem(
-                            gate: gateList[i],
-                          ),
+                          context.pop(gateParam);
+                        },
+                        style: ButtonStyle(
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+                        child: GateItem(
+                          gate: gateList[i],
                         ),
                       )
                     ]
