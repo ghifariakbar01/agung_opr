@@ -119,7 +119,7 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   Future<void> signInWithUserIdEmailAndPassword() async {
     Either<AuthFailure, Unit>? signInFailureOrSuccess;
 
-    if (isValid) {
+    if (isValidCranny) {
       state = state.copyWith(
         isSubmitting: true,
         failureOrSuccessOption: none(),
@@ -142,7 +142,7 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
   Future<void> signInWithUsernameAndNoKtp() async {
     Either<AuthFailure, Unit>? signInFailureOrSuccess;
 
-    if (isValid) {
+    if (isValidDriver) {
       state = state.copyWith(
         isSubmitting: true,
         failureOrSuccessOption: none(),
@@ -162,11 +162,21 @@ class SignInFormNotifier extends StateNotifier<SignInFormState> {
     );
   }
 
-  bool get isValid {
+  bool get isValidCranny {
     final values = [
       state.userId,
       state.jobdesk,
       state.password,
+    ];
+
+    return Validator.validate(values);
+  }
+
+  bool get isValidDriver {
+    final values = [
+      state.userId,
+      state.jobdesk,
+      state.noKtp,
     ];
 
     return Validator.validate(values);

@@ -176,6 +176,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
             ),
             TextFormField(
               initialValue: signInForm.noKtp.getOrLeave(''),
+              keyboardType: TextInputType.number,
               decoration: Themes.formStyle(
                 password != ''
                     ? '*noKtp tersimpan*' + ' (ketik untuk ubah teks)'
