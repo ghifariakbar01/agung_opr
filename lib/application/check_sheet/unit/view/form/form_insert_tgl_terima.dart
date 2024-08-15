@@ -59,7 +59,18 @@ class FormInsertTglTerima extends ConsumerWidget {
                 );
 
                 if (picked != null && picked != selectedDate) {
-                  final date = DateFormat('yyyy-MM-dd').format(picked);
+                  final hour = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      ) ??
+                      TimeOfDay.now();
+
+                  final time = picked.copyWith(
+                    hour: hour.hour,
+                    minute: hour.minute,
+                  );
+
+                  final date = DateFormat('yyyy-MM-dd HH:mm:ss').format(time);
                   ref
                       .read(updateCSUFrameNotifierProvider.notifier)
                       .changeTglTerima(date);
@@ -70,7 +81,7 @@ class FormInsertTglTerima extends ConsumerWidget {
               onPressed: () async {
                 DateTime picked = DateTime.now();
 
-                final date = DateFormat('yyyy-MM-dd').format(picked);
+                final date = DateFormat('yyyy-MM-dd HH:mm:ss').format(picked);
                 ref
                     .read(updateCSUFrameNotifierProvider.notifier)
                     .changeTglTerima(date);

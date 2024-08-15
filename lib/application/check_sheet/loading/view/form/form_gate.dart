@@ -23,19 +23,47 @@ class FormGate extends ConsumerStatefulWidget {
 }
 
 class _FormGateState extends ConsumerState<FormGate> {
+  CSUMSTGate defaultGate = CSUMSTGate.initial();
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(gateNotifierProvider.notifier).getGates();
+      final isOffline = ref.read(isOfflineStateProvider);
+      if (!isOffline) {
+        await ref.read(gateNotifierProvider.notifier).getGates();
+        await ref
+            .read(gateOfflineNotifierProvider.notifier)
+            .checkAndUpdateGateOFFLINEStatus();
+        return;
+      }
+
+      await ref
+          .read(gateOfflineNotifierProvider.notifier)
+          .checkAndUpdateGateOFFLINEStatus();
+
+      final gateOfflineOrOnline = ref.watch(gateOfflineNotifierProvider);
+
+      await gateOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () =>
+            ref.read(gateNotifierProvider.notifier).getGatesOFFLINE(),
+        orElse: () async {
+          await ref.read(gateNotifierProvider.notifier).getGates();
+          await ref
+              .read(gateOfflineNotifierProvider.notifier)
+              .checkAndUpdateGateOFFLINEStatus();
+        },
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final gateTextController = ref.watch(updateCSNotifierProvider
-        .select((value) => value.updateCSForm.gateTextController));
+    final gateTextController = ref.watch(
+      updateCSNotifierProvider
+          .select((value) => value.updateCSForm.gateTextController),
+    );
 
     ref.listen<Option<Either<RemoteFailure, List<CSUMSTGate>>>>(
         gateNotifierProvider.select(
@@ -59,11 +87,17 @@ class _FormGateState extends ConsumerState<FormGate> {
                               orElse: () => '',
                             ),
                           ),
-                        ), (gateResponse) {
+                        ), (gateResponse) async {
                   if (gateResponse != []) {
+                    final list = gateResponse
+                        .where(
+                            (e) => e.isCsu == null ? false : e.isCsu == false)
+                        .toList();
+
                     ref
                         .read(gateNotifierProvider.notifier)
-                        .changeGateList(gateResponse);
+                        .changeGateList(list);
+
                     final def = ref.read(gateNotifierProvider).defaultGate;
 
                     if (def == CSUMSTGate.initial()) {
@@ -101,8 +135,10 @@ class _FormGateState extends ConsumerState<FormGate> {
           flex: 1,
           child: TextButton(
             onPressed: () async {
-              final String? nama =
-                  await context.pushNamed(RouteNames.gateNameRoute);
+              final String? nama = await context.pushNamed(
+                RouteNames.gateNameRoute,
+                extra: false,
+              );
 
               if (nama != null) {
                 ref.read(updateCSNotifierProvider.notifier).changeGate(nama);

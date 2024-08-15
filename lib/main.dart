@@ -21,6 +21,12 @@ void main() async {
 }
 
 final initializationProvider = FutureProvider<Unit>((ref) async {
+  final authNotifier = ref.read(authNotifierProvider.notifier);
+  await authNotifier.checkAndUpdateAuthStatus();
+
+  final tcNotifier = ref.read(tcNotifierProvider.notifier);
+  await tcNotifier.checkAndUpdateStatusTC();
+
   // await ref.read(flutterSecureStorageProvider).deleteAll();
   // await ref.read(hiveProvider).init();
 
@@ -39,12 +45,6 @@ final initializationProvider = FutureProvider<Unit>((ref) async {
           requestBody: true,
         ));
   }
-
-  final authNotifier = ref.read(authNotifierProvider.notifier);
-  await authNotifier.checkAndUpdateAuthStatus();
-
-  final tcNotifier = ref.read(tcNotifierProvider.notifier);
-  await tcNotifier.checkAndUpdateStatusTC();
 
   return unit;
 });

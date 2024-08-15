@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -252,6 +253,10 @@ class TCPage extends ConsumerWidget {
                             await ref
                                 .read(tcNotifierProvider.notifier)
                                 .checkAndUpdateStatusTC();
+
+                            await ref
+                                .read(authNotifierProvider.notifier)
+                                .checkAndUpdateAuthStatus();
                           }));
                 }),
           )

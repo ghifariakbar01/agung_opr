@@ -154,15 +154,19 @@ class FrameRepository {
     }
   }
 
-  Future<Either<RemoteFailure, List<Frame>>> getFrameListByPage(
-      {required int page, int? idSPK = 0}) async {
+  Future<Either<RemoteFailure, List<Frame>>> getFrameListByPage({
+    required int page,
+    int? idSPK = 0,
+  }) async {
     try {
       final modelMapList = await _remoteService.getFrameListByPage(page: page);
 
       await this._GETAndADDFrameInMap(newFrame: modelMapList);
 
-      if (modelMapList["$idSPK"] != null) {
-        return right(modelMapList["$idSPK"] as List<Frame>);
+      final item = modelMapList["$idSPK"];
+
+      if (item != null) {
+        return right(item);
       } else {
         return right([]);
       }
@@ -277,21 +281,10 @@ class FrameRepository {
           final frameList = frameEntries.value;
 
           final searchedList = frameList
-              .where((element) => element.frame != null
-                  ? element.frame!.toUpperCase().contains(searchUpperCase) ||
-                      element.idUnit
-                          .toString()
-                          .toUpperCase()
-                          .contains(searchUpperCase) ||
-                      element.custnm
-                          .toString()
-                          .toUpperCase()
-                          .contains(searchUpperCase) ||
-                      element.tglDibuat
-                          .toString()
-                          .toUpperCase()
-                          .contains(searchUpperCase)
-                  : element != Frame.initial())
+              .where(
+                (element) =>
+                    element.frame!.toUpperCase().contains(searchUpperCase),
+              )
               .toList();
 
           return right(searchedList);

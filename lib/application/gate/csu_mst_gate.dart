@@ -27,9 +27,14 @@ class CSUMSTGate with _$CSUMSTGate {
   const factory CSUMSTGate({
     required int id,
     required String? nama,
+    @JsonKey(name: 'is_csu') required bool? isCsu,
   }) = _CSUMSTGate;
 
-  factory CSUMSTGate.initial() => CSUMSTGate(id: 0, nama: '');
+  factory CSUMSTGate.initial() => CSUMSTGate(
+        id: 0,
+        nama: '',
+        isCsu: false,
+      );
 
   factory CSUMSTGate.fromJson(Map<String, Object?> json) =>
       _$CSUMSTGateFromJson(json);

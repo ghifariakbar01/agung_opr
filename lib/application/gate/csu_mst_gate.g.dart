@@ -10,10 +10,12 @@ _$_CSUMSTGate _$$_CSUMSTGateFromJson(Map<String, dynamic> json) =>
     _$_CSUMSTGate(
       id: json['id'] as int,
       nama: json['nama'] as String?,
+      isCsu: json['is_csu'] as bool?,
     );
 
 Map<String, dynamic> _$$_CSUMSTGateToJson(_$_CSUMSTGate instance) =>
     <String, dynamic>{
       'id': instance.id,
       'nama': instance.nama,
+      'is_csu': instance.isCsu,
     };

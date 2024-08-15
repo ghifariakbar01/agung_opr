@@ -12,7 +12,7 @@ import '../../widgets/loading_overlay.dart';
 import 'unit_scaffold.dart';
 
 class UnitPage extends ConsumerStatefulWidget {
-  const UnitPage();
+  const UnitPage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<UnitPage> createState() => _UnitPageState();
@@ -24,6 +24,7 @@ class _UnitPageState extends ConsumerState<UnitPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _reset();
       _resetFrame();
       _getFrame();
     });
@@ -31,6 +32,15 @@ class _UnitPageState extends ConsumerState<UnitPage> {
 
   void _resetFrame() {
     ref.read(frameNotifierProvider.notifier).changeFrameList([]);
+  }
+
+  void _reset() {
+    ref.read(isAtBottomUnitPage.notifier).state = false;
+    ref.read(scrollUnitPage.notifier).state = 0;
+  }
+
+  void _isNotAtBottom() {
+    ref.read(isAtBottomUnitPage.notifier).state = false;
   }
 
   Future<void> _getFrame() async {
@@ -73,38 +83,29 @@ class _UnitPageState extends ConsumerState<UnitPage> {
         (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
             () {},
             (either) => either.fold(
-                    (failure) => failure.maybeMap(
-                          noConnection: (value) => ref
-                              .read(isOfflineStateProvider.notifier)
-                              .state = true,
-                          orElse: () => AlertHelper.showSnackBar(
-                            context,
-                            message: failure.maybeMap(
-                              storage: (_) =>
-                                  'Storage penuh. Tidak bisa menyimpan data FRAME',
-                              server: (value) =>
-                                  value.message ?? 'Server Error',
-                              parse: (value) => 'Parse $value',
-                              orElse: () => '',
-                            ),
-                          ),
-                        ), (frameResponse) {
-                  final isSearching =
-                      ref.read(frameSearchNotifierProvider).isSearching;
+                  (failure) => failure.maybeMap(
+                    noConnection: (value) =>
+                        ref.read(isOfflineStateProvider.notifier).state = true,
+                    orElse: () => AlertHelper.showSnackBar(
+                      context,
+                      message: failure.maybeMap(
+                        storage: (_) =>
+                            'Storage penuh. Tidak bisa menyimpan data FRAME',
+                        server: (value) => value.message ?? 'Server Error',
+                        parse: (value) => 'Parse $value',
+                        orElse: () => '',
+                      ),
+                    ),
+                  ),
+                  (list) {
+                    _isNotAtBottom();
+                    ref.read(frameNotifierProvider.notifier).addFrameList(list);
+                  },
+                )));
 
-                  if (isSearching) {
-                    _replaceFrame(frameResponse);
-                    return;
-                  }
-
-                  if (frameResponse != []) {
-                    _changeFrame(frameResponse);
-                    return;
-                  }
-                })));
-
-    final isLoading =
-        ref.watch(frameNotifierProvider.select((value) => value.isProcessing));
+    final isLoading = ref.watch(frameNotifierProvider.select(
+      (value) => value.isProcessing,
+    ));
 
     return Stack(
       children: [
@@ -112,34 +113,6 @@ class _UnitPageState extends ConsumerState<UnitPage> {
         Positioned(top: 100, child: DataUpdateLinearProgress()),
         LoadingOverlay(isLoading: isLoading)
       ],
-    );
-  }
-
-  void _changeFrame(List<Frame> frameResponse) {
-    final _prev = ref.read(frameNotifierProvider).frameList;
-    ref
-        .read(frameNotifierProvider.notifier)
-        .changeFrameList([..._prev, ...frameResponse]);
-
-    final int _len = _prev.length + frameResponse.length;
-
-    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-    ref
-        .read(updateFrameNotifierProvider.notifier)
-        .changeFillEmptyList(length: _len, frame: [..._prev, ...frameResponse]);
-  }
-
-  void _replaceFrame(List<Frame> frameResponse) {
-    ref
-        .read(frameNotifierProvider.notifier)
-        .changeFrameList([...frameResponse]);
-
-    final int _len = frameResponse.length;
-
-    /// RUN [changeAllFrame] TO UPDATE PLACEHOLDERS
-    ref.read(updateFrameNotifierProvider.notifier).changeFillEmptyList(
-      length: _len,
-      frame: [...frameResponse],
     );
   }
 }

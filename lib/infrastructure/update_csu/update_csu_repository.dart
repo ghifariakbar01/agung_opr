@@ -95,18 +95,25 @@ class UpdateCSUFrameRepository {
                       [...response, queryId].toSet().toList();
 
                   final _list = CSUIDQuery.listCSUIDQueryToJsonSavable(list);
-                  await _storage.save(_list);
+
+                  try {
+                    await _storage.save(_list);
+                  } catch (_) {
+                    return left(LocalFailure.storage());
+                  }
 
                   // debugger(message: 'called');
                   log('saveCSUQuery : STORAGE UPDATE CSU QUERY: ${_list}');
-
-                  return;
                 } else {
                   final _list = [queryId];
                   final _finalized =
                       CSUIDQuery.listCSUIDQueryToJsonSavable(_list);
 
-                  await _storage.save(_finalized);
+                  try {
+                    await _storage.save(_finalized);
+                  } catch (_) {
+                    return left(LocalFailure.storage());
+                  }
 
                   log('STORAGE SAVE CSU QUERY: ${_finalized}');
                 }
@@ -116,10 +123,13 @@ class UpdateCSUFrameRepository {
                 _list[index] = queryId;
                 final _res = _list.toSet().toList();
                 final _finalized = CSUIDQuery.listCSUIDQueryToJsonSavable(_res);
-                await _storage.save(_finalized);
-                log('STORAGE INSERT CSU QUERY: ${_finalized}');
 
-                return;
+                try {
+                  await _storage.save(_finalized);
+                } catch (_) {
+                  return left(LocalFailure.storage());
+                }
+                log('STORAGE INSERT CSU QUERY: ${_finalized}');
               }
             }();
             break;

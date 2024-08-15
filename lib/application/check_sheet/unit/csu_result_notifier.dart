@@ -44,29 +44,29 @@ class CSUFrameResultNotifier extends StateNotifier<CSUResultState> {
     state = state.copyWith(isProcessing: false, FOSOCSUNGResult: optionOf(FOS));
   }
 
-  Future<void> getCSUTripsByFrameId(
-      {required int idUnit, required String frameName}) async {
-    final Either<RemoteFailure, List<CSUTrips>> FOS;
+  // Future<void> getCSUTripsByFrameId(
+  //     {required int idUnit, required String frameName}) async {
+  //   final Either<RemoteFailure, List<CSUTrips>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOCSUTripsResult: none());
+  //   state = state.copyWith(isProcessing: true, FOSOCSUTripsResult: none());
 
-    FOS = await _repository.getCSUFrameTripsByName(
-        idUnit: idUnit, frameName: frameName);
+  //   FOS = await _repository.getCSUFrameTripsByName(
+  //       idUnit: idUnit, frameName: frameName);
 
-    state =
-        state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
-  }
+  //   state =
+  //       state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
+  // }
 
-  Future<void> getCSUTripsByFrameIdOFFLINE({required int idUnit}) async {
-    final Either<RemoteFailure, List<CSUTrips>> FOS;
+  // Future<void> getCSUTripsByFrameIdOFFLINE({required int idUnit}) async {
+  //   final Either<RemoteFailure, List<CSUTrips>> FOS;
 
-    state = state.copyWith(isProcessing: true, FOSOCSUTripsResult: none());
+  //   state = state.copyWith(isProcessing: true, FOSOCSUTripsResult: none());
 
-    FOS = await _repository.getCSUFrameTripsOFFLINE(idUnit: idUnit);
+  //   FOS = await _repository.getCSUFrameTripsOFFLINE(idUnit: idUnit);
 
-    state =
-        state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
-  }
+  //   state =
+  //       state.copyWith(isProcessing: false, FOSOCSUTripsResult: optionOf(FOS));
+  // }
 
   Future<void> getCSUResultByFrameNameOFFLINE({required String frame}) async {
     final Either<RemoteFailure, List<CSUResult>> FOS;

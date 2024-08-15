@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../../spk/shared/spk_providers.dart';
 import '../../widgets/v_appbar.dart';
 import '../csu_mst_gate.dart';
 import '../gate_item.dart';
@@ -23,14 +22,9 @@ class GateScaffold extends ConsumerStatefulWidget {
 class _GateScaffoldState extends ConsumerState<GateScaffold> {
   @override
   Widget build(BuildContext context) {
-    final gateProvider = ref.watch(gateNotifierProvider);
-
-    final gateList = gateProvider.gates.toList();
-
-    final isSearching = ref
-        .watch(spkSearchNotifierProvider.select((value) => value.isSearching));
-
-    ModeState modeState = ref.watch(modeNotifierProvider);
+    final gateList = ref.watch(
+      gateNotifierProvider.select((value) => value.gates),
+    );
 
     return KeyboardDismissOnTap(
       child: SafeArea(
@@ -53,6 +47,8 @@ class _GateScaffoldState extends ConsumerState<GateScaffold> {
                           if (item == CSUMSTGate.initial()) {
                             return;
                           }
+
+                          ModeState modeState = ref.read(modeNotifierProvider);
 
                           String gateParam = modeState.maybeWhen(
                               checkSheetUnit: () => item.id.toString(),

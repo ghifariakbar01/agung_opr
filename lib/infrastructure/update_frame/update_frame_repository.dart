@@ -304,8 +304,13 @@ class UpdateFrameRepository {
               final _save = jsonEncode(parsedMap);
               log('STORAGE UPDATE FRAME UPDATE: ${_save}');
 
-              await _storage.save(_save);
-              return unit;
+              try {
+                await _storage.save(_save);
+
+                return unit;
+              } catch (err) {
+                return left(LocalFailure.storage());
+              }
             }();
             break;
           case false:
@@ -314,8 +319,13 @@ class UpdateFrameRepository {
               final _save = jsonEncode(newFrameMap);
               log('STORAGE UPDATE FRAME SAVE: ${_save}');
 
-              await _storage.save(_save);
-              return unit;
+              try {
+                await _storage.save(_save);
+
+                return unit;
+              } catch (err) {
+                return left(LocalFailure.storage());
+              }
             }();
         }
       }

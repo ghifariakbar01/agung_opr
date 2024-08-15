@@ -49,11 +49,13 @@ class UpdateCSUNotifier extends StateNotifier<UpdateCSUState> {
   void changeFillWithValue({required CSUResult csuResult}) {
     final _tglKirim = csuResult.tglKirim == null
         ? ''
-        : DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglKirim!));
+        : DateFormat('yyyy-MM-dd HH:mm:ss')
+            .format(DateTime.parse(csuResult.tglKirim!));
 
     final _tglTerima = csuResult.tglTerima == null
         ? ''
-        : DateFormat('yyyy-MM-dd').format(DateTime.parse(csuResult.tglTerima!));
+        : DateFormat('yyyy-MM-dd HH:mm:ss')
+            .format(DateTime.parse(csuResult.tglTerima!));
 
     state = state.copyWith(
       updateFrameList: state.updateFrameList.copyWith(

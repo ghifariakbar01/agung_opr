@@ -1,5 +1,4 @@
 import 'package:agung_opr/application/cranny/view/cranny_page.dart';
-import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/model/view/model_page.dart';
 import 'package:agung_opr/application/spk/view/spk_page.dart';
 
@@ -48,29 +47,40 @@ class RouterNotifier extends ChangeNotifier {
     final tcState = _ref.read(tcNotifierProvider);
 
     final areWeSigningIn = state.matchedLocation == RouteNames.signInRoute;
-    final areWeReadingTC =
+    final areWeAtHome = state.matchedLocation == RouteNames.crannyName;
+    final areWeAtTc =
         state.matchedLocation == RouteNames.termsAndConditionRoute;
-    final areWeInCSLoading =
-        state.matchedLocation == RouteNames.checkSheetLoadingNameRoute;
+    final areWeAtDefaultRoute = state.matchedLocation == "/";
 
-    final weVisitedTC = tcState == TCState.visited();
+    final weVisitedTC = tcState.when(
+      initial: () => false,
+      visited: () => true,
+    );
 
     return authState.maybeMap(
       authenticated: (_) {
-        if (areWeSigningIn && weVisitedTC) {
-          //
+        if (!weVisitedTC) {
+          return RouteNames.termsAndConditionRoute;
+        }
+
+        if (areWeAtDefaultRoute && weVisitedTC) {
           return RouteNames.crannyName;
-        } else if (areWeSigningIn && !weVisitedTC) {
-          //
-          return RouteNames.termsAndConditionNameRoute;
-        } else if (areWeReadingTC && weVisitedTC) {
-          //
+        }
+
+        if (areWeAtHome && weVisitedTC) {
+          return null;
+        }
+
+        if (areWeAtTc && weVisitedTC) {
           return RouteNames.crannyName;
-        } else if (areWeInCSLoading) {
-          this
-              ._ref
-              .read(modeNotifierProvider.notifier)
-              .changeModeAplikasi(ModeState.checkSheetLoading());
+        }
+
+        if (areWeSigningIn) {
+          if (weVisitedTC) {
+            return RouteNames.crannyName;
+          } else {
+            return RouteNames.termsAndConditionRoute;
+          }
         }
 
         return null;
@@ -104,7 +114,10 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
               name: RouteNames.gateNameRoute,
               path: RouteNames.gateName,
-              builder: (context, state) => GatePage(),
+              builder: (context, state) {
+                final isCsu = state.extra as bool;
+                return GatePage(isCsu);
+              },
             ),
             GoRoute(
               name: RouteNames.modelNameRoute,

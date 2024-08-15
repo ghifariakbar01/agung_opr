@@ -28,7 +28,31 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(gateNotifierProvider.notifier).getGates();
+      final isOffline = ref.read(isOfflineStateProvider);
+      if (!isOffline) {
+        await ref.read(gateNotifierProvider.notifier).getGates();
+        await ref
+            .read(gateOfflineNotifierProvider.notifier)
+            .checkAndUpdateGateOFFLINEStatus();
+        return;
+      }
+
+      await ref
+          .read(gateOfflineNotifierProvider.notifier)
+          .checkAndUpdateGateOFFLINEStatus();
+
+      final gateOfflineOrOnline = ref.watch(gateOfflineNotifierProvider);
+
+      await gateOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () =>
+            ref.read(gateNotifierProvider.notifier).getGatesOFFLINE(),
+        orElse: () async {
+          await ref.read(gateNotifierProvider.notifier).getGates();
+          await ref
+              .read(gateOfflineNotifierProvider.notifier)
+              .checkAndUpdateGateOFFLINEStatus();
+        },
+      );
     });
   }
 
@@ -71,9 +95,14 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
                           ),
                         ), (gateResponse) {
                   if (gateResponse != []) {
+                    final list = gateResponse
+                        .where((e) => e.isCsu == null ? false : e.isCsu == true)
+                        .toList();
+
                     ref
                         .read(gateNotifierProvider.notifier)
-                        .changeGateList(gateResponse);
+                        .changeGateList(list);
+
                     final def = ref.read(gateNotifierProvider).defaultGate;
 
                     if (def == CSUMSTGate.initial()) {
@@ -120,8 +149,10 @@ class _FormInsertGateState extends ConsumerState<FormInsertGate> {
             child: Builder(builder: (_) {
               return TextButton(
                 onPressed: () async {
-                  final String? id =
-                      await context.pushNamed(RouteNames.gateNameRoute);
+                  final String? id = await context.pushNamed(
+                    RouteNames.gateNameRoute,
+                    extra: true,
+                  );
 
                   if (id != null) {
                     ref

@@ -21,7 +21,7 @@ class GateRemoteService {
 
       data.addAll({
         "mode": "SELECT",
-        "command": "SELECT id_gate AS id, nama FROM $dbName",
+        "command": "SELECT id_gate AS id, nama, is_csu FROM $dbName",
       });
 
       final response = await _dio.post('',

@@ -22,6 +22,8 @@ CSUMSTGate _$CSUMSTGateFromJson(Map<String, dynamic> json) {
 mixin _$CSUMSTGate {
   int get id => throw _privateConstructorUsedError;
   String? get nama => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_csu')
+  bool? get isCsu => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,7 @@ abstract class $CSUMSTGateCopyWith<$Res> {
           CSUMSTGate value, $Res Function(CSUMSTGate) then) =
       _$CSUMSTGateCopyWithImpl<$Res, CSUMSTGate>;
   @useResult
-  $Res call({int id, String? nama});
+  $Res call({int id, String? nama, @JsonKey(name: 'is_csu') bool? isCsu});
 }
 
 /// @nodoc
@@ -53,6 +55,7 @@ class _$CSUMSTGateCopyWithImpl<$Res, $Val extends CSUMSTGate>
   $Res call({
     Object? id = null,
     Object? nama = freezed,
+    Object? isCsu = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -63,6 +66,10 @@ class _$CSUMSTGateCopyWithImpl<$Res, $Val extends CSUMSTGate>
           ? _value.nama
           : nama // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCsu: freezed == isCsu
+          ? _value.isCsu
+          : isCsu // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -75,7 +82,7 @@ abstract class _$$_CSUMSTGateCopyWith<$Res>
       __$$_CSUMSTGateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String? nama});
+  $Res call({int id, String? nama, @JsonKey(name: 'is_csu') bool? isCsu});
 }
 
 /// @nodoc
@@ -91,6 +98,7 @@ class __$$_CSUMSTGateCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? nama = freezed,
+    Object? isCsu = freezed,
   }) {
     return _then(_$_CSUMSTGate(
       id: null == id
@@ -101,6 +109,10 @@ class __$$_CSUMSTGateCopyWithImpl<$Res>
           ? _value.nama
           : nama // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCsu: freezed == isCsu
+          ? _value.isCsu
+          : isCsu // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -108,7 +120,10 @@ class __$$_CSUMSTGateCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CSUMSTGate implements _CSUMSTGate {
-  const _$_CSUMSTGate({required this.id, required this.nama});
+  const _$_CSUMSTGate(
+      {required this.id,
+      required this.nama,
+      @JsonKey(name: 'is_csu') required this.isCsu});
 
   factory _$_CSUMSTGate.fromJson(Map<String, dynamic> json) =>
       _$$_CSUMSTGateFromJson(json);
@@ -117,10 +132,13 @@ class _$_CSUMSTGate implements _CSUMSTGate {
   final int id;
   @override
   final String? nama;
+  @override
+  @JsonKey(name: 'is_csu')
+  final bool? isCsu;
 
   @override
   String toString() {
-    return 'CSUMSTGate(id: $id, nama: $nama)';
+    return 'CSUMSTGate(id: $id, nama: $nama, isCsu: $isCsu)';
   }
 
   @override
@@ -129,12 +147,13 @@ class _$_CSUMSTGate implements _CSUMSTGate {
         (other.runtimeType == runtimeType &&
             other is _$_CSUMSTGate &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.nama, nama) || other.nama == nama));
+            (identical(other.nama, nama) || other.nama == nama) &&
+            (identical(other.isCsu, isCsu) || other.isCsu == isCsu));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nama);
+  int get hashCode => Object.hash(runtimeType, id, nama, isCsu);
 
   @JsonKey(ignore: true)
   @override
@@ -152,7 +171,9 @@ class _$_CSUMSTGate implements _CSUMSTGate {
 
 abstract class _CSUMSTGate implements CSUMSTGate {
   const factory _CSUMSTGate(
-      {required final int id, required final String? nama}) = _$_CSUMSTGate;
+      {required final int id,
+      required final String? nama,
+      @JsonKey(name: 'is_csu') required final bool? isCsu}) = _$_CSUMSTGate;
 
   factory _CSUMSTGate.fromJson(Map<String, dynamic> json) =
       _$_CSUMSTGate.fromJson;
@@ -161,6 +182,9 @@ abstract class _CSUMSTGate implements CSUMSTGate {
   int get id;
   @override
   String? get nama;
+  @override
+  @JsonKey(name: 'is_csu')
+  bool? get isCsu;
   @override
   @JsonKey(ignore: true)
   _$$_CSUMSTGateCopyWith<_$_CSUMSTGate> get copyWith =>

@@ -37,43 +37,43 @@ class _CSUResultPageState extends ConsumerState<CSUResultPage> {
 
       ref.read(csuFrameNotifierProvider.notifier).changeFrame(frame);
       await _fillCSUResult(frameName);
-      await _fillTrips(frame);
+      // await _fillTrips(frame);
     });
   }
 
-  _fillTrips(Frame frame) async {
-    final isOffline = ref.read(isOfflineStateProvider);
+  // _fillTrips(Frame frame) async {
+  //   final isOffline = ref.read(isOfflineStateProvider);
 
-    if (!isOffline) {
-      await ref.read(csuFrameNotifierProvider.notifier).getCSUTripsByFrameId(
-            frameName: frame.frame ?? '',
-            idUnit: frame.idUnit,
-          );
+  //   if (!isOffline) {
+  //     await ref.read(csuFrameNotifierProvider.notifier).getCSUTripsByFrameId(
+  //           frameName: frame.frame ?? '',
+  //           idUnit: frame.idUnit,
+  //         );
 
-      await ref
-          .read(csuTripsOfflineNotifierProvider.notifier)
-          .checkAndUpdateTripsOFFLINEStatus(idUnit: frame.idUnit);
+  //     await ref
+  //         .read(csuTripsOfflineNotifierProvider.notifier)
+  //         .checkAndUpdateTripsOFFLINEStatus(idUnit: frame.idUnit);
 
-      return;
-    }
+  //     return;
+  //   }
 
-    final tripsOfflineOrOnline = ref.read(csuTripsOfflineNotifierProvider);
-    await tripsOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(csuFrameNotifierProvider.notifier)
-          .getCSUTripsByFrameIdOFFLINE(idUnit: frame.idUnit),
-      orElse: () async {
-        await ref.read(csuFrameNotifierProvider.notifier).getCSUTripsByFrameId(
-              frameName: frame.frame ?? '',
-              idUnit: frame.idUnit,
-            );
+  // final tripsOfflineOrOnline = ref.read(csuTripsOfflineNotifierProvider);
+  // await tripsOfflineOrOnline.maybeWhen(
+  //   hasOfflineStorage: () => ref
+  //       .read(csuFrameNotifierProvider.notifier)
+  //       .getCSUTripsByFrameIdOFFLINE(idUnit: frame.idUnit),
+  //   orElse: () async {
+  //     await ref.read(csuFrameNotifierProvider.notifier).getCSUTripsByFrameId(
+  //           frameName: frame.frame ?? '',
+  //           idUnit: frame.idUnit,
+  //         );
 
-        await ref
-            .read(csuTripsOfflineNotifierProvider.notifier)
-            .checkAndUpdateTripsOFFLINEStatus(idUnit: frame.idUnit);
-      },
-    );
-  }
+  //     await ref
+  //         .read(csuTripsOfflineNotifierProvider.notifier)
+  //         .checkAndUpdateTripsOFFLINEStatus(idUnit: frame.idUnit);
+  //   },
+  // );
+  // }
 
   _fillCSUResult(String frameName) async {
     final isOffline = ref.read(isOfflineStateProvider);

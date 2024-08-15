@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 import '../../application/update_frame/frame.dart';
 import '../../constants/constants.dart';
+// import '../../utils/logging.dart';
 
 class FrameRemoteService {
   FrameRemoteService(this._dio, this._dioRequestNotifier);
@@ -16,8 +17,10 @@ class FrameRemoteService {
   // TEST
   String dbName =
       Constants.isTesting ? 'opr_trs_ti_unit_test' : 'opr_trs_ti_unit';
-  String dbOprTrsSpk =
+  String dbOprTrsSpkUnit =
       Constants.isTesting ? 'opr_trs_spk_unit_test' : 'opr_trs_spk_unit';
+  String dbOprTrsSpk = Constants.isTesting ? 'opr_trs_spk_test' : 'opr_trs_spk';
+  String dbOprMstTrayek = 'opr_mst_trayek';
   String dbCustomer = 'sls_mst_cust';
 
   Future<Map<String, List<Frame>>> getFrameList({required int idSPK}) async {
@@ -44,7 +47,7 @@ class FrameRemoteService {
             " FROM " +
             " $dbName AS T" +
             " WHERE" +
-            " T.id_unit IN (SELECT id_unit FROM $dbOprTrsSpk WHERE id_spk = $idSPK)"
+            " T.id_unit IN (SELECT id_unit FROM $dbOprTrsSpkUnit WHERE id_spk = $idSPK)"
       });
 
       final response = await _dio.post(
@@ -111,19 +114,23 @@ class FrameRemoteService {
 
       data.addAll({
         "mode": "SELECT",
-        "command": "SELECT" +
-            " T.id_unit," +
-            " T.frame," +
-            " T.engine," +
-            " T.warna," +
-            " T.id_kend_type," +
-            " T.last_spk," +
-            " T.no_invoice," +
-            " T.c_date," +
-            " (SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
-            " FROM " +
-            " $dbName AS T" +
-            " ORDER BY T.id_unit DESC OFFSET ${page}0 ROWS FETCH FIRST 10 ROWS ONLY"
+        "command": " SELECT * "
+            " FROM $dbName tiu "
+            " WHERE id_unit IN ( "
+            "    SELECT spu.id_unit "
+            "    FROM $dbOprTrsSpkUnit spu "
+            "    WHERE spu.id_spk IN ( "
+            "        SELECT spk.id_spk "
+            "        FROM $dbOprTrsSpk spk "
+            "        WHERE spk.id_trayek IN ( "
+            "            SELECT trayek.id_trayek "
+            "            FROM $dbOprMstTrayek trayek "
+            "            WHERE trayek.nama LIKE '% - merak%' "
+            "        ) "
+            "    ) "
+            " ) "
+            " ORDER BY tiu.id_unit DESC "
+            " OFFSET ${page}0 ROWS FETCH NEXT 10 ROWS ONLY; "
       });
 
       final response = await _dio.post(

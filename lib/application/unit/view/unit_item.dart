@@ -29,15 +29,17 @@ class UnitItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Themes.customColor(FontWeight.bold, 20, Palette.red),
               ),
-              Text(
-                '${frame.custnm}',
-                textAlign: TextAlign.center,
-                style: Themes.customColor(
-                  FontWeight.bold,
-                  15,
-                  Palette.primaryColorDarker,
-                ),
-              ),
+              frame.lastSpk == null
+                  ? Container()
+                  : Text(
+                      frame.lastSpk!,
+                      textAlign: TextAlign.center,
+                      style: Themes.customColor(
+                        FontWeight.bold,
+                        15,
+                        Palette.primaryColorDarker,
+                      ),
+                    ),
               Text(
                 'TGL DIBUAT : ${cDate}',
                 textAlign: TextAlign.center,

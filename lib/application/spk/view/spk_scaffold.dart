@@ -2,6 +2,7 @@ import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/constants/constants.dart';
+import 'package:agung_opr/shared/bottom_nav_widget.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../style/style.dart';
 import '../../check_sheet/shared/providers/cs_providers.dart';
 import '../../widgets/v_appbar.dart';
 import 'spk_header.dart';
@@ -31,6 +31,14 @@ class SPKScaffold extends StatefulHookConsumerWidget {
 }
 
 class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
+  void _isAtBottom() {
+    ref.read(isBottomSPK.notifier).state = true;
+  }
+
+  void _incrementPage() {
+    ref.read(scrollPageProvider.notifier).state++;
+  }
+
   @override
   Widget build(BuildContext context) {
     final hideDone = useState(false);
@@ -52,16 +60,6 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
     final isLoading =
         ref.watch(spkNotifierProvider.select((value) => value.isProcessing));
 
-    final _isBottom = ref.watch(isBottomSPK);
-
-    void _isAtBottom() {
-      ref.read(isBottomSPK.notifier).state = true;
-    }
-
-    void _incrementPage() {
-      ref.read(scrollPageProvider.notifier).state++;
-    }
-
     final page = ref.watch(scrollPageProvider);
 
     Future<void> onScrolled() async {
@@ -70,6 +68,8 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
 
       final _isScrolledBottom =
           controller.position.pixels >= controller.position.maxScrollExtent;
+
+      final _isBottom = ref.read(isBottomSPK);
 
       if (!isLoading &&
           !_isCurrentlySearching &&
@@ -148,37 +148,7 @@ class _SPKScaffoldState extends ConsumerState<SPKScaffold> {
                   ],
                 ),
               )),
-          // drawer: Drawer(),
-          bottomNavigationBar: Container(
-            height: 63,
-            width: MediaQuery.of(context).size.width,
-            color: Palette.greySecondary,
-            child: TextButton(
-              style:
-                  ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-              onPressed: () => context.pop(),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                    size: 24,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'BACK',
-                    style:
-                        Themes.customColor(FontWeight.bold, 14, Colors.black),
-                  )
-                ],
-              ),
-            ),
-          ),
+          bottomNavigationBar: BottomNavWidget(),
         ),
       ),
     );

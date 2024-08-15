@@ -17,14 +17,20 @@ class CSURowItem extends StatelessWidget {
         children: [
           Text(
             '$label : ',
-            style:
-                Themes.customColor(FontWeight.bold, 16, Palette.primaryColor),
+            style: Themes.customColor(
+              FontWeight.w500,
+              16,
+              Palette.primaryColor,
+            ),
           ),
           Flexible(
             child: Text(
               '${text}',
               style: Themes.customColor(
-                  FontWeight.normal, 16, Palette.primaryColor),
+                FontWeight.normal,
+                16,
+                Palette.primaryColor,
+              ),
             ),
           ),
         ],

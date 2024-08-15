@@ -1,27 +1,31 @@
 // ignore_for_file: unused_result
 
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:agung_opr/application/widgets/v_appbar.dart';
-import 'package:agung_opr/style/style.dart';
-
-import '../../../domain/remote_failure.dart';
 import '../../../shared/providers.dart';
 import '../../mode/mode_state.dart';
 import '../../routes/route_names.dart';
-import '../../update_frame/frame.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
+import '../../widgets/v_appbar.dart';
 import '../widget/frame_search_barcode.dart';
 import '../widget/frame_search_without.dart';
 import 'unit_item.dart';
+import "package:agung_opr/shared/bottom_nav_widget.dart";
+
+final scrollUnitPage = StateProvider<int>((ref) {
+  return 1;
+});
+
+final isAtBottomUnitPage = StateProvider<bool>((ref) {
+  return false;
+});
 
 class UnitScaffold extends StatefulHookConsumerWidget {
-  const UnitScaffold();
+  const UnitScaffold({Key? key}) : super(key: key);
 
   @override
   ConsumerState<UnitScaffold> createState() => _UnitScaffoldState();
@@ -29,38 +33,42 @@ class UnitScaffold extends StatefulHookConsumerWidget {
 
 class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  void _isAtBottom() {
+    ref.read(isAtBottomUnitPage.notifier).state = true;
+  }
+
+  void _incrementPage() {
+    ref.read(scrollUnitPage.notifier).state++;
+  }
+
+  void _reset() {
+    ref.read(isAtBottomUnitPage.notifier).state = false;
+    ref.read(scrollUnitPage.notifier).state = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final _page = useState(1);
-    final _isAtBottom = useState(false);
-
-    ref.listen<Option<Either<RemoteFailure, List<Frame>>>>(
-        frameNotifierProvider.select(
-          (state) => state.FOSOFrame,
-        ),
-        (_, failureOrSuccessOption) => failureOrSuccessOption.fold(
-            () {},
-            (either) => either.fold((_) {
-                  _isAtBottom.value = true;
-                }, (frameResponse) {
-                  if (frameResponse != []) {
-                    _isAtBottom.value = false;
-                    ref
-                        .read(frameNotifierProvider.notifier)
-                        .addFrameList(frameResponse);
-                  }
-                })));
 
     Future<void> onScrolled() async {
-      if (_page.value < 10 &&
-          _isAtBottom.value == false &&
-          scrollController.position.pixels >=
-              scrollController.position.maxScrollExtent) {
-        _isAtBottom.value = true;
+      final nearOK = scrollController.position.pixels >
+          0.90 * scrollController.position.maxScrollExtent;
 
-        await _getFrameByPage(_page.value);
+      final isLoading = ref.read(frameNotifierProvider).isProcessing;
+      final _page = ref.read(scrollUnitPage);
 
-        _page.value++;
+      final bottom = ref.read(isAtBottomUnitPage);
+
+      if (!isLoading && _page < 10 && nearOK && bottom == false) {
+        _isAtBottom();
+
+        await _getFrameByPage(_page);
+
+        _incrementPage();
       }
     }
 
@@ -72,54 +80,19 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
     );
 
     final onRefresh = () async {
-      _page.value = 0;
-      _isAtBottom.value = false;
-      return _getFrameByPage(_page.value);
+      _reset();
+      return _getFrameByPage(0);
     };
 
-    final frameList = ref.watch(frameNotifierProvider).frameList;
-
-    final isLoading = ref.watch(
-      frameNotifierProvider.select((value) => value.isProcessing),
+    final frameList = ref.watch(
+      frameNotifierProvider.select((value) => value.frameList),
     );
 
     return KeyboardDismissOnTap(
       child: SafeArea(
         child: Scaffold(
-            appBar: VAppBar(
-              context,
-              'Check Sheet Unit',
-            ),
-            bottomNavigationBar: Container(
-              height: 63,
-              width: MediaQuery.of(context).size.width,
-              color: Palette.greySecondary,
-              child: TextButton(
-                style: ButtonStyle(
-                    padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-                onPressed: () => context.pop(),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      'BACK',
-                      style:
-                          Themes.customColor(FontWeight.bold, 14, Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            appBar: VAppBar(context, 'Check Sheet Unit'),
+            bottomNavigationBar: BottomNavWidget(),
             body: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RefreshIndicator(
@@ -137,34 +110,29 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
                         SizedBox(
                           height: 8,
                         ),
-                        if (!isLoading) ...[
-                          for (int index = 0;
-                              index < frameList.length;
-                              index++) ...[
-                            TextButton(
-                              onPressed: () async {
-                                ref
-                                    .read(modeNotifierProvider.notifier)
-                                    .changeModeAplikasi(
-                                        ModeState.checkSheetUnit());
+                        for (int index = 0;
+                            index < frameList.length;
+                            index++) ...[
+                          TextButton(
+                            onPressed: () async {
+                              ref
+                                  .read(modeNotifierProvider.notifier)
+                                  .changeModeAplikasi(
+                                      ModeState.checkSheetUnit());
 
-                                Map<String, dynamic> frameMap =
-                                    frameList[index].toJson();
+                              Map<String, dynamic> frameMap =
+                                  frameList[index].toJson();
 
-                                await context.pushNamed(
-                                  extra: frameMap,
-                                  RouteNames.CSUResultRoute,
-                                );
-                              },
-                              child: UnitItem(
-                                frame: frameList[index],
-                              ),
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStatePropertyAll(EdgeInsets.zero),
-                              ),
+                              await context.pushNamed(
+                                extra: frameMap,
+                                RouteNames.CSUResultRoute,
+                              );
+                            },
+                            child: UnitItem(frame: frameList[index]),
+                            style: ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
                             ),
-                          ]
+                          ),
                         ]
                       ],
                     ),
@@ -179,26 +147,30 @@ class _UnitScaffoldState extends ConsumerState<UnitScaffold> {
 
     if (!isOffline) {
       await _getFrameByPageOnline(page);
+
+      return;
+    } else {
+      await ref
+          .read(frameOfflineNotifierProvider.notifier)
+          .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
+
+      final frameOfflineOrOnline = ref.read(frameOfflineNotifierProvider);
+      await frameOfflineOrOnline.maybeWhen(
+        hasOfflineStorage: () => ref
+            .read(frameNotifierProvider.notifier)
+            .getFrameListOFFLINEByPage(page: page),
+        orElse: () => _getFrameByPageOnline(page),
+      );
+
       return;
     }
-
-    await ref
-        .read(frameOfflineNotifierProvider.notifier)
-        .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
-
-    final frameOfflineOrOnline = ref.read(frameOfflineNotifierProvider);
-    await frameOfflineOrOnline.maybeWhen(
-      hasOfflineStorage: () => ref
-          .read(frameNotifierProvider.notifier)
-          .getFrameListOFFLINEByPage(page: page),
-      orElse: () => _getFrameByPageOnline(page),
-    );
   }
 
   _getFrameByPageOnline(int page) async {
     await ref
         .read(frameNotifierProvider.notifier)
         .getFrameListByPage(page: page);
+
     await ref
         .read(frameOfflineNotifierProvider.notifier)
         .checkAndUpdateFrameOFFLINEStatusByPage(page: page);
