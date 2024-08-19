@@ -49,6 +49,7 @@ class UpdateCSNotifier extends StateNotifier<UpdateCSState> {
   void changeFillWithValue({
     required SPK spk,
   }) {
+    log('spk $spk');
     state = state.copyWith(
         updateCSForm: state.updateCSForm.copyWith(
       nopol: Nopol(spk.nopol),

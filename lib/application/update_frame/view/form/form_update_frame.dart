@@ -76,9 +76,13 @@ class FormUpdateFrame extends ConsumerWidget {
                         ),
                       ))),
               keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeFrame(frameStr: value, index: index),
+              onChanged: (value) {
+                ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeFrame(frameStr: value, index: index);
+
+                ref.read(updateFrameNotifierProvider.notifier).isValid(index);
+              },
               validator: (_) => ref
                   .read(updateFrameNotifierProvider)
                   .updateFrameList[index]

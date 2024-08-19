@@ -13,6 +13,10 @@ class SPKNotifier extends StateNotifier<SPKState> {
 
   final SPKRepository _repository;
 
+  reset() {
+    state = SPKState.initial();
+  }
+
   Future<void> getSPKList({required int page}) async {
     final Either<RemoteFailure, List<SPK>> FOS;
 

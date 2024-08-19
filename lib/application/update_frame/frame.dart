@@ -13,7 +13,7 @@ class Frame with _$Frame {
     required String? frame,
     required String? engine,
     required String? warna,
-    @JsonKey(name: 'no_invoice') required String? sppdc,
+    @JsonKey(name: 'spb') required String? sppdc,
     @JsonKey(name: 'last_spk') required String? lastSpk,
     @JsonKey(name: 'c_date') required String? tglDibuat,
     @JsonKey(name: 'u_date') required String? uDate,

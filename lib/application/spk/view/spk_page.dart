@@ -28,6 +28,8 @@ class _SPKPageState extends ConsumerState<SPKPage> {
   }
 
   Future<void> loadSpkOnlineOrOffline() async {
+    ref.read(spkNotifierProvider.notifier).reset();
+
     final isOffline = ref.read(isOfflineStateProvider);
     if (!isOffline) {
       await ref.read(spkNotifierProvider.notifier).getSPKList(page: 0);

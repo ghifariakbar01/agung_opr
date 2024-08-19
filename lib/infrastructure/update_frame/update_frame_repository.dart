@@ -200,7 +200,6 @@ class UpdateFrameRepository {
         final idKendTypeInt =
             idKendTypeStr.isNotEmpty ? int.parse(idKendTypeStr) : 0;
 
-        final engineStr = frame.engine.getOrLeave('');
         final warnaStr = frame.warna.getOrLeave('');
         // MANDATORY
         final frameStr = frame.frame.getOrCrash();
@@ -214,7 +213,7 @@ class UpdateFrameRepository {
             .substring(0, DateTime.now().toString().length - 3);
 
         final command =
-            " UPDATE $dbName SET frame = '$frameStr', no_invoice = '$sppdcStr', engine = '$engineStr', " +
+            " UPDATE $dbName SET frame = '$frameStr', spb = '$sppdcStr',  " +
                 " warna = '$warnaStr', id_kend_type = '$idKendTypeInt', " +
                 " u_user = '$nama', u_date = '$cAndUDate' WHERE id_unit = $idUnitInt";
 

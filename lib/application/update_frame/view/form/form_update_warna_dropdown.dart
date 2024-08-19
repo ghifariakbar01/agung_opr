@@ -5,7 +5,8 @@ import '../../../../domain/value_objects_copy.dart';
 import '../../shared/update_frame_providers.dart';
 
 class FormUpdateWarnaDropdown extends ConsumerWidget {
-  const FormUpdateWarnaDropdown({required this.index});
+  const FormUpdateWarnaDropdown({Key? key, required this.index})
+      : super(key: key);
 
   final int index;
 
@@ -32,12 +33,17 @@ class FormUpdateWarnaDropdown extends ConsumerWidget {
               .key,
           onChanged: (String? value) {
             if (value != null) {
+              ref.read(updateFrameNotifierProvider.notifier).checkIfValid();
+
               ref
                   .read(updateFrameNotifierProvider.notifier)
                   .changeWarna(warnaStr: value, index: index);
+
               ref
                   .read(updateFrameNotifierProvider.notifier)
                   .changeWarnaController(warnaStr: value, index: index);
+
+              ref.read(updateFrameNotifierProvider.notifier).checkIfValid();
             }
           },
           items: basicColors.keys.map((colorMap) {

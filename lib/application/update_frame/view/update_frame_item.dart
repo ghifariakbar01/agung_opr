@@ -1,10 +1,9 @@
+import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
 import 'package:agung_opr/application/update_frame/view/form/form_update_warna.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../domain/value_objects_copy.dart';
-import '../shared/update_frame_providers.dart';
 import 'form/form_update_frame.dart';
 import 'form/form_update_info.dart';
 import 'form/form_update_model.dart';
@@ -16,19 +15,11 @@ class UpdateFrameItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<FrameUnit>(
-      updateFrameNotifierProvider
-          .select((value) => value.updateFrameList[index].frame),
-      (_, __) => ref.read(updateFrameNotifierProvider.notifier).checkIfValid(),
-    );
-
-    ref.listen<SPPDC>(
-      updateFrameNotifierProvider.select((value) => value.sppdc),
-      (_, __) => ref.read(updateFrameNotifierProvider.notifier).checkIfValid(),
-    );
+    final isValid = ref.watch(updateFrameNotifierProvider).isValid;
 
     return Form(
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode:
+          isValid ? AutovalidateMode.disabled : AutovalidateMode.always,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Container(

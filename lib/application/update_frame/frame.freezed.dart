@@ -25,7 +25,7 @@ mixin _$Frame {
   String? get frame => throw _privateConstructorUsedError;
   String? get engine => throw _privateConstructorUsedError;
   String? get warna => throw _privateConstructorUsedError;
-  @JsonKey(name: 'no_invoice')
+  @JsonKey(name: 'spb')
   String? get sppdc => throw _privateConstructorUsedError;
   @JsonKey(name: 'last_spk')
   String? get lastSpk => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $FrameCopyWith<$Res> {
       String? frame,
       String? engine,
       String? warna,
-      @JsonKey(name: 'no_invoice') String? sppdc,
+      @JsonKey(name: 'spb') String? sppdc,
       @JsonKey(name: 'last_spk') String? lastSpk,
       @JsonKey(name: 'c_date') String? tglDibuat,
       @JsonKey(name: 'u_date') String? uDate,
@@ -141,7 +141,7 @@ abstract class _$$_FrameCopyWith<$Res> implements $FrameCopyWith<$Res> {
       String? frame,
       String? engine,
       String? warna,
-      @JsonKey(name: 'no_invoice') String? sppdc,
+      @JsonKey(name: 'spb') String? sppdc,
       @JsonKey(name: 'last_spk') String? lastSpk,
       @JsonKey(name: 'c_date') String? tglDibuat,
       @JsonKey(name: 'u_date') String? uDate,
@@ -222,7 +222,7 @@ class _$_Frame implements _Frame {
       required this.frame,
       required this.engine,
       required this.warna,
-      @JsonKey(name: 'no_invoice') required this.sppdc,
+      @JsonKey(name: 'spb') required this.sppdc,
       @JsonKey(name: 'last_spk') required this.lastSpk,
       @JsonKey(name: 'c_date') required this.tglDibuat,
       @JsonKey(name: 'u_date') required this.uDate,
@@ -242,7 +242,7 @@ class _$_Frame implements _Frame {
   @override
   final String? warna;
   @override
-  @JsonKey(name: 'no_invoice')
+  @JsonKey(name: 'spb')
   final String? sppdc;
   @override
   @JsonKey(name: 'last_spk')
@@ -309,7 +309,7 @@ abstract class _Frame implements Frame {
           required final String? frame,
           required final String? engine,
           required final String? warna,
-          @JsonKey(name: 'no_invoice') required final String? sppdc,
+          @JsonKey(name: 'spb') required final String? sppdc,
           @JsonKey(name: 'last_spk') required final String? lastSpk,
           @JsonKey(name: 'c_date') required final String? tglDibuat,
           @JsonKey(name: 'u_date') required final String? uDate,
@@ -329,7 +329,7 @@ abstract class _Frame implements Frame {
   @override
   String? get warna;
   @override
-  @JsonKey(name: 'no_invoice')
+  @JsonKey(name: 'spb')
   String? get sppdc;
   @override
   @JsonKey(name: 'last_spk')

@@ -34,8 +34,6 @@ mixin _$UpdateFrameState {
       throw _privateConstructorUsedError;
   List<TextEditingController> get frameTextController =>
       throw _privateConstructorUsedError;
-  List<TextEditingController> get customerTextController =>
-      throw _privateConstructorUsedError;
   Option<Either<LocalFailure, Unit>> get FOSOUpdateFrame =>
       throw _privateConstructorUsedError;
 
@@ -62,7 +60,6 @@ abstract class $UpdateFrameStateCopyWith<$Res> {
       List<TextEditingController> warnaTextController,
       List<TextEditingController> modelTextController,
       List<TextEditingController> frameTextController,
-      List<TextEditingController> customerTextController,
       Option<Either<LocalFailure, Unit>> FOSOUpdateFrame});
 }
 
@@ -90,7 +87,6 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
     Object? warnaTextController = null,
     Object? modelTextController = null,
     Object? frameTextController = null,
-    Object? customerTextController = null,
     Object? FOSOUpdateFrame = null,
   }) {
     return _then(_value.copyWith(
@@ -138,10 +134,6 @@ class _$UpdateFrameStateCopyWithImpl<$Res, $Val extends UpdateFrameState>
           ? _value.frameTextController
           : frameTextController // ignore: cast_nullable_to_non_nullable
               as List<TextEditingController>,
-      customerTextController: null == customerTextController
-          ? _value.customerTextController
-          : customerTextController // ignore: cast_nullable_to_non_nullable
-              as List<TextEditingController>,
       FOSOUpdateFrame: null == FOSOUpdateFrame
           ? _value.FOSOUpdateFrame
           : FOSOUpdateFrame // ignore: cast_nullable_to_non_nullable
@@ -170,7 +162,6 @@ abstract class _$$_UpdateFrameStateCopyWith<$Res>
       List<TextEditingController> warnaTextController,
       List<TextEditingController> modelTextController,
       List<TextEditingController> frameTextController,
-      List<TextEditingController> customerTextController,
       Option<Either<LocalFailure, Unit>> FOSOUpdateFrame});
 }
 
@@ -196,7 +187,6 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
     Object? warnaTextController = null,
     Object? modelTextController = null,
     Object? frameTextController = null,
-    Object? customerTextController = null,
     Object? FOSOUpdateFrame = null,
   }) {
     return _then(_$_UpdateFrameState(
@@ -244,10 +234,6 @@ class __$$_UpdateFrameStateCopyWithImpl<$Res>
           ? _value._frameTextController
           : frameTextController // ignore: cast_nullable_to_non_nullable
               as List<TextEditingController>,
-      customerTextController: null == customerTextController
-          ? _value._customerTextController
-          : customerTextController // ignore: cast_nullable_to_non_nullable
-              as List<TextEditingController>,
       FOSOUpdateFrame: null == FOSOUpdateFrame
           ? _value.FOSOUpdateFrame
           : FOSOUpdateFrame // ignore: cast_nullable_to_non_nullable
@@ -271,14 +257,12 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       required final List<TextEditingController> warnaTextController,
       required final List<TextEditingController> modelTextController,
       required final List<TextEditingController> frameTextController,
-      required final List<TextEditingController> customerTextController,
       required this.FOSOUpdateFrame})
       : _basicColors = basicColors,
         _updateFrameList = updateFrameList,
         _warnaTextController = warnaTextController,
         _modelTextController = modelTextController,
-        _frameTextController = frameTextController,
-        _customerTextController = customerTextController;
+        _frameTextController = frameTextController;
 
   @override
   final int idSPK;
@@ -336,21 +320,12 @@ class _$_UpdateFrameState implements _UpdateFrameState {
     return EqualUnmodifiableListView(_frameTextController);
   }
 
-  final List<TextEditingController> _customerTextController;
-  @override
-  List<TextEditingController> get customerTextController {
-    if (_customerTextController is EqualUnmodifiableListView)
-      return _customerTextController;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_customerTextController);
-  }
-
   @override
   final Option<Either<LocalFailure, Unit>> FOSOUpdateFrame;
 
   @override
   String toString() {
-    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, basicColors: $basicColors, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, warnaTextController: $warnaTextController, modelTextController: $modelTextController, frameTextController: $frameTextController, customerTextController: $customerTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
+    return 'UpdateFrameState(idSPK: $idSPK, index: $index, sppdc: $sppdc, isValid: $isValid, isProcessing: $isProcessing, basicColors: $basicColors, sjkbTextController: $sjkbTextController, updateFrameList: $updateFrameList, warnaTextController: $warnaTextController, modelTextController: $modelTextController, frameTextController: $frameTextController, FOSOUpdateFrame: $FOSOUpdateFrame)';
   }
 
   @override
@@ -376,8 +351,6 @@ class _$_UpdateFrameState implements _UpdateFrameState {
                 .equals(other._modelTextController, _modelTextController) &&
             const DeepCollectionEquality()
                 .equals(other._frameTextController, _frameTextController) &&
-            const DeepCollectionEquality().equals(
-                other._customerTextController, _customerTextController) &&
             (identical(other.FOSOUpdateFrame, FOSOUpdateFrame) ||
                 other.FOSOUpdateFrame == FOSOUpdateFrame));
   }
@@ -396,7 +369,6 @@ class _$_UpdateFrameState implements _UpdateFrameState {
       const DeepCollectionEquality().hash(_warnaTextController),
       const DeepCollectionEquality().hash(_modelTextController),
       const DeepCollectionEquality().hash(_frameTextController),
-      const DeepCollectionEquality().hash(_customerTextController),
       FOSOUpdateFrame);
 
   @JsonKey(ignore: true)
@@ -419,7 +391,6 @@ abstract class _UpdateFrameState implements UpdateFrameState {
           required final List<TextEditingController> warnaTextController,
           required final List<TextEditingController> modelTextController,
           required final List<TextEditingController> frameTextController,
-          required final List<TextEditingController> customerTextController,
           required final Option<Either<LocalFailure, Unit>> FOSOUpdateFrame}) =
       _$_UpdateFrameState;
 
@@ -447,8 +418,6 @@ abstract class _UpdateFrameState implements UpdateFrameState {
   List<TextEditingController> get modelTextController;
   @override
   List<TextEditingController> get frameTextController;
-  @override
-  List<TextEditingController> get customerTextController;
   @override
   Option<Either<LocalFailure, Unit>> get FOSOUpdateFrame;
   @override

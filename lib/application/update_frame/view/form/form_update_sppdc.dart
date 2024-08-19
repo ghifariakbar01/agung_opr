@@ -9,9 +9,7 @@ import '../../../../style/style.dart';
 import '../../shared/update_frame_providers.dart';
 
 class FormUpdateSPPDC extends ConsumerWidget {
-  const FormUpdateSPPDC({required this.index});
-
-  final int index;
+  const FormUpdateSPPDC();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,6 +64,10 @@ class FormUpdateSPPDC extends ConsumerWidget {
                           ref
                               .read(updateFrameNotifierProvider.notifier)
                               .changeNoSPPDC(noSPPDCStr: sppdc);
+
+                          ref
+                              .read(updateFrameNotifierProvider.notifier)
+                              .checkIfValid();
                         }
                       },
                       child: Ink(
@@ -75,9 +77,13 @@ class FormUpdateSPPDC extends ConsumerWidget {
                         ),
                       ))),
               keyboardType: TextInputType.name,
-              onChanged: (value) => ref
-                  .read(updateFrameNotifierProvider.notifier)
-                  .changeNoSPPDC(noSPPDCStr: value),
+              onChanged: (value) {
+                ref
+                    .read(updateFrameNotifierProvider.notifier)
+                    .changeNoSPPDC(noSPPDCStr: value);
+
+                ref.read(updateFrameNotifierProvider.notifier).checkIfValid();
+              },
               validator: (_) =>
                   ref.read(updateFrameNotifierProvider).sppdc.value.fold(
                         (f) => f.maybeMap(

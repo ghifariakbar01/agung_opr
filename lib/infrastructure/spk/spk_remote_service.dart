@@ -34,8 +34,8 @@ class SPKRemoteService {
             "   spk.supir2_nm," +
             "   spk.nopol," +
             "   spk.tgl_berangkat," +
-            "   spk.u_user, " +
-            "   spk.u_date, " +
+            "   spk.u_user_mobile, " +
+            "   spk.u_date_mobile, " +
             "   spk.is_edit, " +
             "   spk.ket, " +
             "           ( "
@@ -137,8 +137,9 @@ class SPKRemoteService {
             "   spk.supir2_nm," +
             "   spk.nopol," +
             "   spk.tgl_berangkat," +
-            "   spk.u_user, " +
-            "   spk.u_date, " +
+            "   spk.u_user_mobile, " +
+            "   spk.u_date_mobile, " +
+            "   spk.ket, " +
             "   spk.is_edit, " +
             "           ( "
                 "  SELECT TOP 1  "
@@ -167,8 +168,6 @@ class SPKRemoteService {
             " FETCH FIRST " +
             " 10 ROWS ONLY"
       });
-
-      log(data['command']!);
 
       final response = await _dio.post(
         '',
@@ -232,8 +231,9 @@ class SPKRemoteService {
             "   spk.supir2_nm," +
             "   spk.nopol," +
             "   spk.tgl_berangkat," +
-            "   spk.u_user, " +
-            "   spk.u_date, " +
+            "   spk.u_user_mobile, " +
+            "   spk.u_date_mobile, " +
+            "   spk.ket, " +
             "   spk.is_edit, " +
             "           ( "
                 "  SELECT TOP 1  "

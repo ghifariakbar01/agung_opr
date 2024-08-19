@@ -27,6 +27,7 @@ class CheckSheetLoadingBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final SPK selectedSPK = ref.watch(selectedSPKStateProvider);
+
     final ModeState modeApp = ref.watch(modeNotifierProvider);
     final FrameState frameList = ref.watch(frameNotifierProvider);
 
@@ -125,9 +126,7 @@ class CheckSheetLoadingBody extends HookConsumerWidget {
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Palette.primaryColor, width: 2)),
-                            child: FormUpdateSPPDC(
-                              index: 0,
-                            ),
+                            child: FormUpdateSPPDC(),
                           ),
                         ),
                         SizedBox(

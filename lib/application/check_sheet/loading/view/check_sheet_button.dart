@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../constants/assets.dart';
 import '../../../../style/style.dart';
 import '../../../double/double.dart';
 import '../../../update_cs_disable/disable.dart';
 import '../../../widgets/v_async_widget.dart';
 import '../../../widgets/v_button.dart';
+import '../../../widgets/v_dialogs.dart';
 import '../../shared/providers/cs_providers.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 
@@ -38,6 +40,46 @@ class CheckSheetButton extends ConsumerWidget {
 
     final _double = ref.watch(doubleNotifierProvider);
 
+    _updateSpkAndDouble({
+      required SPKDouble spkDouble,
+      required bool isLoading,
+    }) async {
+      final _notifier = ref.read(updateCSNotifierProvider.notifier);
+
+      if (_notifier.isValid()) {
+        if (isLoading) {
+          final updateProvider = ref.read(updateFrameNotifierProvider);
+          final idSPK = updateProvider.idSPK;
+
+          await ref.read(updateFrameNotifierProvider.notifier).updateAllFrame(
+                idSPK: idSPK.toString(),
+                nama: user.user.nama!,
+                sjkb: updateProvider.sppdc,
+                userId: user.user.idUser.toString(),
+                gate: updateCS.updateCSForm.gate.getOrLeave(''),
+                updateFrameList: updateProvider.updateFrameList,
+              );
+        }
+
+        await _notifier.saveQuery();
+        await ref.read(updateSPKNotifierProvider.notifier).saveQuerySPK();
+
+        await ref.read(doubleControllerProvider.notifier).save(spkDouble);
+      } else {
+        await showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (_) => VSimpleDialog(
+            label: 'Spk',
+            labelDescription: 'Mohon mengisi lengkap',
+            asset: Assets.iconCrossed,
+          ),
+        );
+
+        return;
+      }
+    }
+
     return Column(
       children: [
         VAsyncValueWidget<List<SPKDouble>>(
@@ -46,7 +88,6 @@ class CheckSheetButton extends ConsumerWidget {
             return VAsyncValueWidget<UpdateCsDisable>(
               value: disabled,
               data: (dis) {
-                log('data dis $dis');
                 final _currSpk = ref.read(selectedSPKStateProvider);
                 final SPKDouble? _double = _data.firstWhereOrNull(
                     (element) => element.idSpk == _currSpk.idSpk);
@@ -100,41 +141,47 @@ class CheckSheetButton extends ConsumerWidget {
                                 : 'OK',
                     color: isDefect ? Palette.red : null,
                     onPressed: () async {
-                      final _notifier =
-                          ref.read(updateCSNotifierProvider.notifier);
+                      final _isLoading = modeApp.maybeMap(
+                        checkSheetLoading: (_) => true,
+                        orElse: () => false,
+                      );
 
-                      if (_notifier.isValid()) {
-                        await _notifier.saveQuery();
-                        await ref
-                            .read(updateSPKNotifierProvider.notifier)
-                            .saveQuerySPK();
+                      if (_isLoading) {
+                        final updateProvider =
+                            ref.read(updateFrameNotifierProvider);
 
-                        final _isLoading = modeApp.maybeMap(
-                          checkSheetLoading: (_) => true,
-                          orElse: () => false,
-                        );
+                        ref
+                            .read(updateFrameNotifierProvider.notifier)
+                            .checkIfValid();
 
-                        if (_isLoading) {
-                          final updateProvider =
-                              ref.read(updateFrameNotifierProvider);
-                          final idSPK =
-                              ref.read(updateFrameNotifierProvider).idSPK;
+                        final frameValid = updateProvider.isValid;
+                        log('$frameValid');
 
-                          await ref
+                        if (frameValid) {
+                          return _updateSpkAndDouble(
+                            spkDouble: _spkDouble,
+                            isLoading: true,
+                          );
+                        } else {
+                          ref
                               .read(updateFrameNotifierProvider.notifier)
-                              .updateAllFrame(
-                                idSPK: idSPK.toString(),
-                                nama: user.user.nama!,
-                                sjkb: updateProvider.sppdc,
-                                userId: user.user.idUser.toString(),
-                                gate: updateCS.updateCSForm.gate.getOrLeave(''),
-                                updateFrameList: updateProvider.updateFrameList,
-                              );
-                        }
+                              .checkIfValid();
 
-                        await ref
-                            .read(doubleControllerProvider.notifier)
-                            .save(_spkDouble);
+                          return showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (_) => VSimpleDialog(
+                              label: 'Frame & No SPPDC',
+                              labelDescription: 'Mohon mengisi lengkap',
+                              asset: Assets.iconCrossed,
+                            ),
+                          );
+                        }
+                      } else {
+                        return _updateSpkAndDouble(
+                          spkDouble: _spkDouble,
+                          isLoading: false,
+                        );
                       }
                     });
               },

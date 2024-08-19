@@ -39,7 +39,7 @@ class FrameRemoteService {
             " T.engine," +
             " T.warna," +
             " T.id_kend_type," +
-            " T.no_invoice," +
+            " T.spb," +
             " T.c_date," +
             " T.u_date," +
             " T.u_user," +
@@ -68,6 +68,8 @@ class FrameRemoteService {
             try {
               List<Frame> frameList =
                   (list).map((data) => Frame.fromJson(data)).toList();
+
+              log('frameList $frameList');
 
               frameMap.update('$idSPK', (value) => frameList);
 
@@ -205,14 +207,14 @@ class FrameRemoteService {
             " T.engine," +
             " T.warna," +
             " T.id_kend_type," +
-            " T.no_invoice," +
+            " T.spb," +
             " T.last_spk," +
             " T.c_date," +
             "(SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +
             " $dbName AS T" +
             " WHERE T.id_unit LIKE '%$search%' OR T.frame LIKE '%$search%' OR T.engine LIKE '%$search% '" +
-            " OR T.warna LIKE '%$search%' OR T.id_kend_type LIKE '%$search%' OR T.no_invoice LIKE '%$search%' OR T.c_date LIKE '%$search%' " +
+            " OR T.warna LIKE '%$search%' OR T.id_kend_type LIKE '%$search%' OR T.spb LIKE '%$search%' OR T.c_date LIKE '%$search%' " +
             " ORDER BY T.id_unit DESC OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY"
       });
 
@@ -284,7 +286,7 @@ class FrameRemoteService {
             " T.warna," +
             " T.id_kend_type," +
             " T.last_spk," +
-            " T.no_invoice," +
+            " T.spb," +
             " T.c_date," +
             " (SELECT nama FROM $dbCustomer  WHERE id_cust = T.id_cust) AS custnm" +
             " FROM " +

@@ -26,9 +26,9 @@ mixin _$SPK {
   String get spkNo => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_edit')
   bool? get isEdit => throw _privateConstructorUsedError;
-  @JsonKey(name: 'u_user')
+  @JsonKey(name: 'u_user_mobile')
   String? get updatedUser => throw _privateConstructorUsedError;
-  @JsonKey(name: 'u_date')
+  @JsonKey(name: 'u_date_mobile')
   String? get updatedDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'supir1_nm')
   String? get supir1Nm => throw _privateConstructorUsedError;
@@ -57,8 +57,8 @@ abstract class $SPKCopyWith<$Res> {
       {@JsonKey(name: 'id_spk') int idSpk,
       @JsonKey(name: 'spk_no') String spkNo,
       @JsonKey(name: 'is_edit') bool? isEdit,
-      @JsonKey(name: 'u_user') String? updatedUser,
-      @JsonKey(name: 'u_date') String? updatedDate,
+      @JsonKey(name: 'u_user_mobile') String? updatedUser,
+      @JsonKey(name: 'u_date_mobile') String? updatedDate,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
       @JsonKey(name: 'trayek_nama') String? namaTrayek,
@@ -156,8 +156,8 @@ abstract class _$$_SPKCopyWith<$Res> implements $SPKCopyWith<$Res> {
       {@JsonKey(name: 'id_spk') int idSpk,
       @JsonKey(name: 'spk_no') String spkNo,
       @JsonKey(name: 'is_edit') bool? isEdit,
-      @JsonKey(name: 'u_user') String? updatedUser,
-      @JsonKey(name: 'u_date') String? updatedDate,
+      @JsonKey(name: 'u_user_mobile') String? updatedUser,
+      @JsonKey(name: 'u_date_mobile') String? updatedDate,
       @JsonKey(name: 'supir1_nm') String? supir1Nm,
       @JsonKey(name: 'supir2_nm') String? supir2Nm,
       @JsonKey(name: 'trayek_nama') String? namaTrayek,
@@ -249,8 +249,8 @@ class _$_SPK implements _SPK {
       {@JsonKey(name: 'id_spk') required this.idSpk,
       @JsonKey(name: 'spk_no') required this.spkNo,
       @JsonKey(name: 'is_edit') required this.isEdit,
-      @JsonKey(name: 'u_user') required this.updatedUser,
-      @JsonKey(name: 'u_date') required this.updatedDate,
+      @JsonKey(name: 'u_user_mobile') required this.updatedUser,
+      @JsonKey(name: 'u_date_mobile') required this.updatedDate,
       @JsonKey(name: 'supir1_nm') required this.supir1Nm,
       @JsonKey(name: 'supir2_nm') required this.supir2Nm,
       @JsonKey(name: 'trayek_nama') required this.namaTrayek,
@@ -271,10 +271,10 @@ class _$_SPK implements _SPK {
   @JsonKey(name: 'is_edit')
   final bool? isEdit;
   @override
-  @JsonKey(name: 'u_user')
+  @JsonKey(name: 'u_user_mobile')
   final String? updatedUser;
   @override
-  @JsonKey(name: 'u_date')
+  @JsonKey(name: 'u_date_mobile')
   final String? updatedDate;
   @override
   @JsonKey(name: 'supir1_nm')
@@ -362,8 +362,8 @@ abstract class _SPK implements SPK {
       {@JsonKey(name: 'id_spk') required final int idSpk,
       @JsonKey(name: 'spk_no') required final String spkNo,
       @JsonKey(name: 'is_edit') required final bool? isEdit,
-      @JsonKey(name: 'u_user') required final String? updatedUser,
-      @JsonKey(name: 'u_date') required final String? updatedDate,
+      @JsonKey(name: 'u_user_mobile') required final String? updatedUser,
+      @JsonKey(name: 'u_date_mobile') required final String? updatedDate,
       @JsonKey(name: 'supir1_nm') required final String? supir1Nm,
       @JsonKey(name: 'supir2_nm') required final String? supir2Nm,
       @JsonKey(name: 'trayek_nama') required final String? namaTrayek,
@@ -384,10 +384,10 @@ abstract class _SPK implements SPK {
   @JsonKey(name: 'is_edit')
   bool? get isEdit;
   @override
-  @JsonKey(name: 'u_user')
+  @JsonKey(name: 'u_user_mobile')
   String? get updatedUser;
   @override
-  @JsonKey(name: 'u_date')
+  @JsonKey(name: 'u_date_mobile')
   String? get updatedDate;
   @override
   @JsonKey(name: 'supir1_nm')

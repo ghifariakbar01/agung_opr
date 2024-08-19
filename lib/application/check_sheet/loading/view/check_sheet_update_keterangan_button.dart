@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/double/double_notifier.dart';
 import 'package:agung_opr/application/update_cs_disable/update_cs_disable_notifier.dart';
 import 'package:agung_opr/application/update_spk/providers/update_spk_providers.dart';
@@ -60,7 +58,6 @@ class CheckSheetUpdateKeterangan extends ConsumerWidget {
                   return VAsyncValueWidget<UpdateCsDisable>(
                     value: disabled,
                     data: (dis) {
-                      log('data dis update frame $dis');
                       final _currSpk = ref.read(selectedSPKStateProvider);
                       final SPKDouble? _double = _data.firstWhereOrNull(
                           (element) => element.idSpk == _currSpk.idSpk);

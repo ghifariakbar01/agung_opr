@@ -160,8 +160,8 @@ class UpdateSPKRepository {
         .toString()
         .substring(0, DateTime.now().toString().length - 3);
 
-    final String insert = "UPDATE $dbName " +
-        " SET is_edit = 1, u_user = '${_userModelWithPassword.nama}', u_date = '$cAndUDate', ket = '$ket' " +
+    final String insert = " UPDATE $dbName " +
+        " SET is_edit = 1, u_user_mobile = '${_userModelWithPassword.nama}', u_date_mobile = '$cAndUDate', ket = '$ket' " +
         " WHERE id_spk = $idSPK  ";
 
     final SPKIdQuery spkIdQuery = SPKIdQuery(idSPK: idSPK, query: insert);

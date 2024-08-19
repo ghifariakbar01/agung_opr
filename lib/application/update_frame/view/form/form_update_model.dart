@@ -22,6 +22,8 @@ class FormUpdateModel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final frame = ref.watch(updateFrameNotifierProvider);
 
+    final controller = frame.modelTextController[index];
+
     final item = frame.updateFrameList.length < index
         ? IDKendType('')
         : frame.updateFrameList[index].idKendType;
@@ -65,16 +67,22 @@ class FormUpdateModel extends ConsumerWidget {
                           .read(updateFrameNotifierProvider.notifier)
                           .changeIdKendType(idKendTypeStr: id, index: index);
 
-                      frame.modelTextController[index].text = id;
+                      ref
+                          .read(updateFrameNotifierProvider.notifier)
+                          .isValid(index);
+
+                      controller.text = id;
                     }
                   });
             },
-            style:
-                ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+            style: ButtonStyle(
+              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+            ),
             child: IgnorePointer(
               ignoring: true,
               child: TextFormField(
-                controller: frame.modelTextController[index],
+                key: Key(controller.text),
+                controller: controller,
                 decoration: Themes.formStyle(modelStr != ''
                     ? modelStr + ' (ketik untuk ubah teks)'
                     : 'Pilih model'),
@@ -90,7 +98,7 @@ class FormUpdateModel extends ConsumerWidget {
                         empty: (_) => 'kosong',
                         orElse: () => null,
                       ),
-                      (_) => null,
+                      (r) => r == '0' ? 'kosong' : null,
                     ),
               ),
             ),

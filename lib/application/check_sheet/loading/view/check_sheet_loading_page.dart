@@ -215,6 +215,8 @@ class _CheckSheetLoadingPageState extends ConsumerState<CheckSheetLoadingPage> {
     ref.read(frameNotifierProvider.notifier).changeFrameList(
           frameResponse,
         );
+
+    ref.read(updateFrameNotifierProvider.notifier).checkIfValid();
   }
 
   Future<void> _onCSJenis(List<CSJenis> csJenis) async {

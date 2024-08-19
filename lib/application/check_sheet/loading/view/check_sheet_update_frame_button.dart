@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agung_opr/application/double/double_notifier.dart';
 import 'package:agung_opr/application/update_cs_disable/update_cs_disable_notifier.dart';
 import 'package:collection/collection.dart';
@@ -41,7 +39,6 @@ class CheckSheetUpdateFrameButton extends ConsumerWidget {
                   return VAsyncValueWidget<UpdateCsDisable>(
                     value: disabled,
                     data: (dis) {
-                      log('data dis update frame $dis');
                       final _currSpk = ref.read(selectedSPKStateProvider);
                       final SPKDouble? _double = _data.firstWhereOrNull(
                           (element) => element.idSpk == _currSpk.idSpk);
@@ -70,18 +67,26 @@ class CheckSheetUpdateFrameButton extends ConsumerWidget {
                                 final idSPK =
                                     ref.read(updateFrameNotifierProvider).idSPK;
 
-                                await ref
+                                ref
                                     .read(updateFrameNotifierProvider.notifier)
-                                    .updateAllFrame(
-                                      idSPK: idSPK.toString(),
-                                      nama: user.user.nama!,
-                                      sjkb: updateProvider.sppdc,
-                                      userId: user.user.idUser.toString(),
-                                      gate: updateCS.updateCSForm.gate
-                                          .getOrLeave(''),
-                                      updateFrameList:
-                                          updateProvider.updateFrameList,
-                                    );
+                                    .checkIfValid();
+                                final isValid = updateProvider.isValid;
+
+                                if (isValid) {
+                                  await ref
+                                      .read(
+                                          updateFrameNotifierProvider.notifier)
+                                      .updateAllFrame(
+                                        idSPK: idSPK.toString(),
+                                        nama: user.user.nama!,
+                                        sjkb: updateProvider.sppdc,
+                                        userId: user.user.idUser.toString(),
+                                        gate: updateCS.updateCSForm.gate
+                                            .getOrLeave(''),
+                                        updateFrameList:
+                                            updateProvider.updateFrameList,
+                                      );
+                                }
                               }
                             }),
                       );

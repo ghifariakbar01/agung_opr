@@ -29,14 +29,22 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
   }
 
   checkIfValid() {
-    bool isFrameValid() =>
-        List.generate(state.updateFrameList.length, ((index) => isValid(index)))
-                    .firstWhereOrNull((element) => element == false) !=
-                null
-            ? false
-            : true;
+    state = state.copyWith(isValid: false);
 
-    state = state.copyWith(isValid: isFrameValid());
+    List<bool> validOrNot = [];
+
+    for (var i = 0; i < state.updateFrameList.length; i++) {
+      // final frame = state.updateFrameList[i];
+      final boolean = isValid(i);
+      // _changeShowError(isShowError: boolean, index: i);
+      validOrNot.add(boolean);
+    }
+
+    state = state.copyWith(
+        isValid: validOrNot.firstWhere(
+      (val) => val == true,
+      orElse: () => false,
+    ));
   }
 
   Future<void> updateAllFrame({
@@ -84,7 +92,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(idSPK: idSPK);
   }
 
-  void changeShowErrorMessage({required bool isShowError, required int index}) {
+  void _changeShowError({required bool isShowError, required int index}) {
     final list = [...state.updateFrameList]; // Create a copy of the list
 
     final UpdateFrameStateSingle updatedElement =
@@ -109,7 +117,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
               uUser: frame[index].uUser ?? '',
               frame: FrameUnit(frame[index].frame ?? ''),
               warna: WarnaUnit(frame[index].warna ?? ''),
-              engine: EngineUnit(frame[index].engine ?? ''),
               idUnit: IDUnit(frame[index].idUnit.toString()),
               idKendType: IDKendType(frame[index].idKendType != null
                   ? frame[index].idKendType.toString()
@@ -174,37 +181,11 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     }
   }
 
-  void changeIdUnit({required String idUnitStr, required int index}) {
-    final list = [...state.updateFrameList]; // Create a copy of the list
-
-    final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(idUnit: IDUnit(idUnitStr));
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(updateFrameList: list);
-  }
-
   void changeFrame({required String frameStr, required int index}) {
     final list = [...state.updateFrameList]; // Create a copy of the list
 
     final UpdateFrameStateSingle updatedElement =
         list.elementAt(index).copyWith(frame: FrameUnit(frameStr));
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(updateFrameList: list);
-  }
-
-  void changeEngine({required String engineStr, required int index}) {
-    final list = [...state.updateFrameList]; // Create a copy of the list
-
-    final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(engine: EngineUnit(engineStr));
 
     // Update the element at the given index
     list[index] = updatedElement;
@@ -262,11 +243,10 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     final values = [
       frame.frame,
       state.sppdc,
-      frame.idUnit,
-      // frame.warna,
+      frame.idKendType,
+      frame.warna,
       // frame.engine,
       // frame.noReff,
-      // frame.idKendType,
     ];
 
     return Validator.validate(values);
@@ -300,7 +280,7 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
 
   //     this.changeFOSOUpdateFrame(index: index, FOS: optionOf(FOS));
   //   } else {
-  //     this.changeShowErrorMessage(index: index, isShowError: true);
+  // this._changeShowError(index: index, isShowError: true);
 
   //     state = state.copyWith(isProcessing: false);
 

@@ -24,7 +24,6 @@ class UpdateFrameState with _$UpdateFrameState {
     required List<TextEditingController> warnaTextController,
     required List<TextEditingController> modelTextController,
     required List<TextEditingController> frameTextController,
-    required List<TextEditingController> customerTextController,
     required Option<Either<LocalFailure, Unit>> FOSOUpdateFrame,
   }) = _UpdateFrameState;
 
@@ -39,10 +38,9 @@ class UpdateFrameState with _$UpdateFrameState {
         modelTextController: [],
         frameTextController: [],
         warnaTextController: [],
-        customerTextController: [],
         sjkbTextController: TextEditingController(),
         basicColors: {
-          '': Colors.transparent,
+          'Custom (Ketik manual)': Colors.transparent,
           'Hitam': Colors.black,
           'Putih': Colors.white,
           'Merah': Colors.red,
