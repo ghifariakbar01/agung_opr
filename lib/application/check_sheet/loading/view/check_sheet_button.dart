@@ -12,9 +12,9 @@ import '../../../../constants/assets.dart';
 import '../../../../style/style.dart';
 import '../../../double/double.dart';
 import '../../../update_cs_disable/disable.dart';
-import '../../../widgets/v_async_widget.dart';
-import '../../../widgets/v_button.dart';
-import '../../../widgets/v_dialogs.dart';
+import '../../../../common/widgets/v_async_widget.dart';
+import '../../../../common/widgets/v_button.dart';
+import '../../../../common/widgets/v_dialogs.dart';
 import '../../shared/providers/cs_providers.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 

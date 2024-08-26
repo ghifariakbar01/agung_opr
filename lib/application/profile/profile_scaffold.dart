@@ -1,4 +1,4 @@
-import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/common/widgets/v_button.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

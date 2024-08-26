@@ -1,10 +1,10 @@
-import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/common/widgets/v_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/style.dart';
-import '../../../widgets/v_appbar.dart';
+import '../../../../common/widgets/v_appbar.dart';
 import 'check_sheet_unloading_item.dart';
 
 class CheckSheetUnloadingScaffold extends ConsumerWidget {

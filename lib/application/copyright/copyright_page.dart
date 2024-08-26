@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../style/style.dart';
-import '../widgets/app_logo.dart';
+import '../../common/widgets/app_logo.dart';
 
 final packageInfoProvider = FutureProvider((ref) async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();

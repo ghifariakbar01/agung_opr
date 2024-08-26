@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../update_frame/frame.dart';
-import '../../widgets/alert_helper.dart';
-import '../../widgets/loading_overlay.dart';
+import '../../../common/widgets/alert_helper.dart';
+import '../../../common/widgets/loading_overlay.dart';
 import 'unit_scaffold.dart';
 
 class UnitPage extends ConsumerStatefulWidget {

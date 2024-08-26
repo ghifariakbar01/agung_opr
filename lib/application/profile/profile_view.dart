@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../shared/providers.dart';
 import 'widgets/profile_avatar.dart';
 import 'widgets/profile_item.dart';
-import 'widgets/profile_password.dart';
 
 class ProfileView extends ConsumerWidget {
   const ProfileView();

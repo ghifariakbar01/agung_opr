@@ -1,5 +1,5 @@
 import 'package:agung_opr/application/auto_data/shared/auto_data_providers.dart';
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
+import 'package:agung_opr/common/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

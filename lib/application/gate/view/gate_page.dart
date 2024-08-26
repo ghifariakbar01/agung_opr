@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../widgets/loading_overlay.dart';
+import '../../../common/widgets/loading_overlay.dart';
 import '../providers/gate_providers.dart';
 import 'gate_scaffold.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../style/style.dart';
+import '../../style/style.dart';
 
 class BottomNavWidget extends StatelessWidget {
   const BottomNavWidget({super.key});

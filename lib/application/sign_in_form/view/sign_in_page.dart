@@ -4,10 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../domain/auth_failure.dart';
 import '../../../shared/providers.dart';
-import '../../widgets/alert_helper.dart';
-import '../../widgets/loading_overlay.dart';
+import '../../../common/widgets/alert_helper.dart';
+import '../../../common/widgets/loading_overlay.dart';
 
-import '../../widgets/v_button.dart';
+import '../../../common/widgets/v_button.dart';
 import 'sign_in_scaffold.dart';
 
 class SignInPage extends HookConsumerWidget {

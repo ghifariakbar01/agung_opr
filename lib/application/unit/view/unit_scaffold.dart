@@ -10,11 +10,11 @@ import '../../../shared/providers.dart';
 import '../../mode/mode_state.dart';
 import '../../routes/route_names.dart';
 import '../../update_frame/shared/update_frame_providers.dart';
-import '../../widgets/v_appbar.dart';
+import '../../../common/widgets/v_appbar.dart';
 import '../widget/frame_search_barcode.dart';
 import '../widget/frame_search_without.dart';
 import 'unit_item.dart';
-import "package:agung_opr/shared/bottom_nav_widget.dart";
+import "package:agung_opr/common/widgets/bottom_nav_widget.dart";
 
 final scrollUnitPage = StateProvider<int>((ref) {
   return 1;

@@ -9,7 +9,7 @@ import '../../../../../style/style.dart';
 import '../../../../gate/csu_mst_gate.dart';
 import '../../../../gate/providers/gate_providers.dart';
 import '../../../../routes/route_names.dart';
-import '../../../../widgets/alert_helper.dart';
+import '../../../../../common/widgets/alert_helper.dart';
 import '../../shared/csu_providers.dart';
 
 /// [TextEditingController] For displaying value only

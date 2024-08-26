@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../../widgets/v_appbar.dart';
+import '../../../common/widgets/v_appbar.dart';
 import '../csu_mst_gate.dart';
 import '../gate_item.dart';
 import '../providers/gate_providers.dart';

@@ -92,19 +92,6 @@ class UpdateFrameNotifier extends StateNotifier<UpdateFrameState> {
     state = state.copyWith(idSPK: idSPK);
   }
 
-  void _changeShowError({required bool isShowError, required int index}) {
-    final list = [...state.updateFrameList]; // Create a copy of the list
-
-    final UpdateFrameStateSingle updatedElement =
-        list.elementAt(index).copyWith(isShowError: isShowError);
-
-    // Update the element at the given index
-    list[index] = updatedElement;
-
-    // Update the state with the new list
-    state = state.copyWith(updateFrameList: list);
-  }
-
   void changeFillEmptyList({
     required int length,
     required List<Frame> frame,

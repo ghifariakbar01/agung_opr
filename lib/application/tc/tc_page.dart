@@ -9,8 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../application/tc/shared/tc_providers.dart';
 import '../../style/style.dart';
-import '../widgets/v_button.dart';
-import '../widgets/v_dialogs.dart';
+import '../../common/widgets/v_button.dart';
+import '../../common/widgets/v_dialogs.dart';
 
 final _privacy = StateProvider<bool>((ref) => false);
 final _terms = StateProvider<bool>((ref) => false);

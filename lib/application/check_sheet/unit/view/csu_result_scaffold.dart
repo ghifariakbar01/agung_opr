@@ -1,8 +1,8 @@
 import 'package:agung_opr/application/check_sheet/unit/shared/csu_providers.dart';
 import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
-import 'package:agung_opr/application/widgets/v_appbar.dart';
-import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/common/widgets/v_appbar.dart';
+import 'package:agung_opr/common/widgets/v_button.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:agung_opr/style/style.dart';
 import 'package:flutter/material.dart';

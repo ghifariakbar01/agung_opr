@@ -13,8 +13,8 @@ import '../../auto_data/view/data_update_linear_progress.dart';
 import '../../clear_data/clear_data_providers.dart';
 import '../../model/shared/model_providers.dart';
 import '../../user/user_model.dart';
-import '../../widgets/loading_overlay.dart';
-import '../../widgets/v_dialogs.dart';
+import '../../../common/widgets/loading_overlay.dart';
+import '../../../common/widgets/v_dialogs.dart';
 import 'cranny_middle.dart';
 
 class CrannyPage extends StatefulHookConsumerWidget {

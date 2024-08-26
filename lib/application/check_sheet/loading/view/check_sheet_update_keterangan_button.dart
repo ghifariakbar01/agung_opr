@@ -10,9 +10,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../domain/local_failure.dart';
 import '../../../double/double.dart';
 import '../../../update_cs_disable/disable.dart';
-import '../../../widgets/alert_helper.dart';
-import '../../../widgets/v_async_widget.dart';
-import '../../../widgets/v_button.dart';
+import '../../../../common/widgets/alert_helper.dart';
+import '../../../../common/widgets/v_async_widget.dart';
+import '../../../../common/widgets/v_button.dart';
 
 class CheckSheetUpdateKeterangan extends ConsumerWidget {
   const CheckSheetUpdateKeterangan();

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:agung_opr/application/update_frame/shared/update_frame_providers.dart';
-import 'package:agung_opr/application/widgets/loading_overlay.dart';
+import 'package:agung_opr/common/widgets/loading_overlay.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +10,7 @@ import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
 import '../../../update_frame/frame.dart';
-import '../../../widgets/alert_helper.dart';
+import '../../../../common/widgets/alert_helper.dart';
 import '../shared/csu_providers.dart';
 import '../state/csu_ng/csu_ng_result.dart';
 import '../state/csu_result.dart';

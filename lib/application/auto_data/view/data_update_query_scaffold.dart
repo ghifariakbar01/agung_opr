@@ -1,5 +1,5 @@
 import 'package:agung_opr/application/auto_data/view/data_update_query_item.dart';
-import 'package:agung_opr/application/widgets/v_appbar.dart';
+import 'package:agung_opr/common/widgets/v_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

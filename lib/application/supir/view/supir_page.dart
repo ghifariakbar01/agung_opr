@@ -5,8 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../widgets/alert_helper.dart';
-import '../../widgets/loading_overlay.dart';
+import '../../../common/widgets/alert_helper.dart';
+import '../../../common/widgets/loading_overlay.dart';
 
 import '../shared/supir_providers.dart';
 import 'supir_scaffold.dart';

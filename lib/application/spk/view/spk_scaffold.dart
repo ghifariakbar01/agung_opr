@@ -2,7 +2,7 @@ import 'package:agung_opr/application/mode/mode_state.dart';
 import 'package:agung_opr/application/routes/route_names.dart';
 import 'package:agung_opr/application/spk/shared/spk_providers.dart';
 import 'package:agung_opr/constants/constants.dart';
-import 'package:agung_opr/shared/bottom_nav_widget.dart';
+import 'package:agung_opr/common/widgets/bottom_nav_widget.dart';
 import 'package:agung_opr/shared/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../check_sheet/shared/providers/cs_providers.dart';
-import '../../widgets/v_appbar.dart';
+import '../../../common/widgets/v_appbar.dart';
 import 'spk_header.dart';
 import 'spk_item.dart';
 

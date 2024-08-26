@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../double/double.dart';
 import '../../../update_cs_disable/disable.dart';
-import '../../../widgets/v_async_widget.dart';
-import '../../../widgets/v_button.dart';
+import '../../../../common/widgets/v_async_widget.dart';
+import '../../../../common/widgets/v_button.dart';
 import '../../shared/providers/cs_providers.dart';
 import '../../../update_frame/shared/update_frame_providers.dart';
 

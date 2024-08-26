@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../auto_data/view/data_update_linear_progress.dart';
-import '../../widgets/alert_helper.dart';
-import '../../widgets/loading_overlay.dart';
+import '../../../common/widgets/alert_helper.dart';
+import '../../../common/widgets/loading_overlay.dart';
 import 'spk_scaffold.dart';
 
 class SPKPage extends ConsumerStatefulWidget {

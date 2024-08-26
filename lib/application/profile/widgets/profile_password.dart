@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/providers.dart';
 import '../../../style/style.dart';
-import '../../widgets/alert_helper.dart';
+import '../../../common/widgets/alert_helper.dart';
 
 class ProfilePassword extends ConsumerWidget {
   const ProfilePassword({Key? key}) : super(key: key);

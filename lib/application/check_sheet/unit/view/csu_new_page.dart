@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../domain/remote_failure.dart';
 import '../../../../shared/providers.dart';
 import '../../../auto_data/view/data_update_linear_progress.dart';
-import '../../../widgets/alert_helper.dart';
-import '../../../widgets/loading_overlay.dart';
+import '../../../../common/widgets/alert_helper.dart';
+import '../../../../common/widgets/loading_overlay.dart';
 import '../shared/csu_providers.dart';
 
 import '../state/csu_items/csu_items.dart';

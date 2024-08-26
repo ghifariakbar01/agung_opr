@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../widgets/app_logo.dart';
+import '../../../common/widgets/app_logo.dart';
 import 'sign_in_form.dart';
 
 class SignInScaffold extends HookConsumerWidget {

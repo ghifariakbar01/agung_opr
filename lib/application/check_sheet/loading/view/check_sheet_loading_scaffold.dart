@@ -9,8 +9,8 @@ import '../../../../style/style.dart';
 import '../../../mode/mode_state.dart';
 import '../../../routes/route_names.dart';
 
-import '../../../widgets/v_appbar.dart';
-import '../../../widgets/v_async_widget.dart';
+import '../../../../common/widgets/v_appbar.dart';
+import '../../../../common/widgets/v_async_widget.dart';
 import "package:agung_opr/application/check_sheet/loading/view/check_sheet_loading_body.dart.dart";
 
 final hideKelengkapanAndButtonProvider = StateProvider<bool>((ref) {

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/style.dart';
-import '../../widgets/v_appbar.dart';
+import '../../../common/widgets/v_appbar.dart';
 
 final ScrollController _scrollController = ScrollController();
 

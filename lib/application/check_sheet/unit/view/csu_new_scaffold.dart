@@ -1,4 +1,4 @@
-import 'package:agung_opr/application/widgets/v_button.dart';
+import 'package:agung_opr/common/widgets/v_button.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,8 +11,8 @@ import '../../../../shared/providers.dart';
 import '../../../../style/style.dart';
 import '../../../mode/mode_state.dart';
 import '../../../routes/route_names.dart';
-import '../../../widgets/alert_helper.dart';
-import '../../../widgets/v_appbar.dart';
+import '../../../../common/widgets/alert_helper.dart';
+import '../../../../common/widgets/v_appbar.dart';
 import '../shared/csu_providers.dart';
 import 'form/csu_new_form.dart';
 import 'widget/csu_kelengkapan.dart';

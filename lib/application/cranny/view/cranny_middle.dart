@@ -15,8 +15,8 @@ import '../../check_sheet/shared/state/cs_id_query.dart';
 import '../../check_sheet/unit/state/csu_id_query.dart';
 import '../../spk/application/spk_id_query.dart';
 import '../../update_spk/providers/update_spk_providers.dart';
-import '../../widgets/alert_helper.dart';
-import '../../widgets/v_dialogs.dart';
+import '../../../common/widgets/alert_helper.dart';
+import '../../../common/widgets/v_dialogs.dart';
 import 'cranny_scaffold.dart';
 
 class CrannyMiddle extends ConsumerStatefulWidget {
